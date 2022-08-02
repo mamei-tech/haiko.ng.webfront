@@ -1,0 +1,213 @@
+@use 'sass:math';
+
+.multiselect-option {
+    color: $dark-background;
+}
+
+.multiselect:hover {
+    border-color: $primary !important;
+}
+
+.multiselect.is-open.is-active {
+    border-color: $primary-states !important
+}
+
+i.multiselect-clear-icon {
+    opacity: 1;
+    margin-bottom: -2px;
+    padding: 0;
+
+    &:hover {
+        background-color: $white;
+    }
+}
+
+
+.multiselect-dropdown {
+    animation: growdown 100ms ease-in-out forwards;
+}
+
+.multiselect-multiple-label, .multiselect-placeholder, .multiselect-single-label {
+    color: $medium-gray;
+}
+
+:root {
+    --ms-font-size: 14px;
+    --ms-line-height: 1.375;
+    --ms-bg: transparent;
+    --ms-bg-disabled: #{$gray-100};
+    --ms-border-color: #{lighten($black, 5%)};
+    --ms-border-width: 1px;
+    --ms-radius: 4px;
+    --ms-py: 0.5rem;
+    --ms-px: 0.875rem;
+    --ms-ring-width: 1px;
+    --ms-ring-color: #{$primary-states};
+    --ms-placeholder-color: rgba(255, 255, 255, 0.6);
+    --ms-max-height: 10rem;
+
+    --ms-spinner-color: #{$primary};
+    --ms-caret-color: #{$primary};
+    --ms-clear-color: #{$primary};
+    --ms-clear-color-hover: #{$white};
+
+    --ms-tag-font-size: 0.755rem;
+    --ms-tag-line-height: 1.25rem;
+    --ms-tag-font-weight: 200;
+    --ms-tag-bg: #{$default};
+    --ms-tag-bg-disabled: #{$link-disabled};
+    --ms-tag-color: #{$white};
+    --ms-tag-color-disabled: #{$white};
+    --ms-tag-radius: 4px;
+    --ms-tag-py: 0.125rem;
+    --ms-tag-px: 0.5rem;
+    --ms-tag-my: 0.25rem;
+    --ms-tag-mx: 0.25rem;
+
+    --ms-tag-remove-radius: 4px;
+    --ms-tag-remove-py: 0.25rem;
+    --ms-tag-remove-px: 0.25rem;
+    --ms-tag-remove-my: 0rem;
+    --ms-tag-remove-mx: 0.125rem;
+
+    --ms-dropdown-bg: #{$white};
+    --ms-dropdown-border-color: #{$gray-500};
+    --ms-dropdown-border-width: 1px;
+    --ms-dropdown-radius: 10px;
+
+    --ms-option-font-size: 14px;
+    --ms-option-line-height: 1.375;
+    --ms-option-bg-pointed: #{$gray-300};
+    --ms-option-bg-selected: #{$primary};
+    --ms-option-bg-disabled: #{$white};
+    --ms-option-bg-selected-pointed: #{$primary};
+    --ms-option-bg-selected-disabled: rgba(255, 255, 255, 0.8);
+    --ms-option-color-pointed: #rgb (96, 98, 102);;
+    --ms-option-color-selected: #{$white};
+    --ms-option-color-disabled: #{$gray-300};
+    --ms-option-color-selected-pointed: #{$white};
+    --ms-option-color-selected-disabled: #{$gray-300};
+    --ms-option-py: 0.5rem;
+    --ms-option-px: 0.75rem;
+
+    --ms-empty-color: rgba(255, 255, 255, 0.8);
+}
+
+// vue next select
+.icon.loading {
+    display: inline-block;
+    position: relative;
+    width: 8px;
+    min-width: 8px;
+    height: 8px;
+    min-height: 8px;
+}
+
+.icon.loading div {
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    border: 1px solid #999;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    animation: loading 1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    border-color: #999 transparent transparent transparent;
+}
+
+.icon.loading div:nth-child(1) {
+    animation-delay: -0.08s;
+}
+
+.icon.loading div:nth-child(2) {
+    animation-delay: -0.16s;
+}
+
+.inline-flex {
+    display: inline-flex;
+}
+
+.vue-select[aria-expanded="true"].direction-bottom {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.vue-select[aria-expanded="true"].direction-top {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.vue-select.direction-top .vue-dropdown {
+    bottom: 100%;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+.vue-select.direction-bottom .vue-dropdown {
+    top: 100%;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.nav-pills.nav-pills-primary .nav-item .nav-link.active,
+.nav-pills.nav-pills-primary .nav-item .nav-link.active:focus,
+.nav-pills.nav-pills-primary .nav-item .nav-link.active:hover {
+    background: $primary;
+    background-image: -webkit-gradient(
+                    linear,
+                    right top,
+                    left bottom,
+                    from($primary),
+                    color-stop($primary-states),
+                    to($primary)
+    );
+    background-image: linear-gradient(to bottom left, $primary, #ba54f5, $primary);
+    background-size: 210% 210%;
+    background-position: 100% 0;
+}
+
+.nav-pills.nav-pills:not(.flex-column) .nav-item:not(:last-child) .nav-link {
+    margin-right: 10px;
+    margin-bottom: 5px;
+}
+
+.nav-pills .nav-item .nav-link.active,
+.nav-pills .nav-item .nav-link.active:focus,
+.nav-pills .nav-item .nav-link.active:hover {
+    cursor: pointer;
+    background-color: #9a9a9a;
+    color: #fff;
+    -webkit-box-shadow: 2px 2px 6px rgb(0, 0, math.div(0, 40));
+    box-shadow: 2px 2px 6px rgb(0, 0, math.div(0, 40));
+}
+
+.nav-pills:not(.nav-pills-icons):not(.nav-pills-just-icons) .nav-item .nav-link {
+    border-radius: 30px;
+}
+
+.nav-pills .nav-item .nav-link:hover {
+    background-color: #111520;
+    cursor: pointer;
+}
+
+.nav-pills .nav-item .nav-link {
+    padding: 0 15.5px;
+    text-align: center;
+    padding: 11px 23px;
+    min-width: 100px;
+    font-weight: 400;
+    color: hsla(0, 0%, 100%, 0.5);
+    background-color: $black-states;
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: $primary;
+}
+
+.nav-pills .nav-link:hover {
+    color: $primary-states;
+    cursor: pointer;
+}
+
