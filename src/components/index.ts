@@ -1,27 +1,27 @@
-import CompModal from '@/components/CompModal.vue'
-import CompCard from '@/components/cards/CardComp.vue'
-import CompDropdown from '@/components/CompDropdown.vue'
+import CmpModal from '@/components/CmpModal.vue'
+import CmpCard from '@/components/cards/CmpCard.vue'
+import CmpDropdown from '@/components/CmpDropdown.vue'
 import CmpBaseButton from '@/components/buttons/CmpBaseButton.vue'
-import CompBasicInput from '@/components/inputs/CompBasicInput.vue'
-import CompSideBarMenu from '@/components/sidebar/CompSideBarMenu.vue'
-import CompButtonBackTop from '@/components/buttons/CompButtonBackTop.vue'
+import CmpBasicInput from '@/components/inputs/CmpBasicInput.vue'
+import CmpSideBarMenu from '@/components/sidebar/CmpSideBarMenu.vue'
+import CmpButtonBackTop from '@/components/buttons/CmpButtonBackTop.vue'
 
 
 export {
     // buttons
     CmpBaseButton,
-    CompButtonBackTop,
+    CmpButtonBackTop,
 
     // inputs
-    CompBasicInput,
+    CmpBasicInput,
 
     // cards
-    CompCard,
+    CmpCard,
 
     // sidebar
-    CompSideBarMenu,
+    CmpSideBarMenu,
 
     // others
-    CompModal,
-    CompDropdown
+    CmpModal,
+    CmpDropdown
 };

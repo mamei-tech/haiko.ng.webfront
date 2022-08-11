@@ -1,13 +1,14 @@
-import { Problem } from "@/services/definitions/errors";
+import type { Problem } from '@/services/definitions'
+
 
 export function useErrors() {
-    function makeErrorString(problem: Problem): string {
-        let error: string = "";
+    function makeErrorString( problem: Problem ): string {
+        let error: string = ''
 
         Object.keys(problem.errors).forEach(err => {
-            error += err + ": " + problem.errors[ err ].join('. ') + '\n';
+            error += err + ': ' + problem.errors[ err ].join('. ') + '\n'
         })
-        return error;
+        return error
     }
 
     return {

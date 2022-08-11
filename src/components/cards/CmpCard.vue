@@ -47,7 +47,7 @@
 
 
     export default defineComponent({
-        name: 'CompCard',
+        name: 'CmpCard',
         props: {
             title: String,
             subTitle: {

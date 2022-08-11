@@ -17,7 +17,7 @@
 import { RoutePathNames, RoutePaths } from '@/services/definitions/route-paths';
 
 export default {
-    name: 'CompSideBarMenu',
+    name: 'CmpSideBarMenu',
     data() {
         return {
             menu: [

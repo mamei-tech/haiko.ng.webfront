@@ -27,7 +27,7 @@
 
 
     export default defineComponent({
-        name: 'CompDropdown',
+        name: 'CmpDropdown',
         props: {
             tag: {
                 type: String,

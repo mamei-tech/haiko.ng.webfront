@@ -52,7 +52,7 @@ import { useField } from 'vee-validate'
 import type { SetupContext } from 'vue'
 
 export default defineComponent({
-    name: "CompBasicInput",
+    name: "CmpBasicInput",
     props: {
         name: {
             type: String,

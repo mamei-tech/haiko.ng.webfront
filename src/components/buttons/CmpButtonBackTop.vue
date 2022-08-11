@@ -1,5 +1,5 @@
 <!--(CASE OF USE A: want to listen to scroll position at some element of the DOM)-->
-<!--step.1> import the ButtonBackTopComp component, the IScrollInfo interface and the handleScroll function-->
+<!--step.1> import the CmpButtonBackTop component, the IScrollInfo interface and the handleScroll function-->
 <!--step.2> set mandatory prop called "global" to false -->
 <!--step.3> set a ref to the element in which you want to listen to the scroll and pass it to the component in the props "elem"-->
 <!--step.4> assign a function to the @ scroll.passive event handle function in this case -->
@@ -11,14 +11,14 @@
 <template>
     <transition name="back2top-bnt-fade">
         <div v-show="pivot <= infoData.scrollTop">
-            <base-button-comp icon
+            <cmp-base-button icon
                               id="back2top-btn"
                               class="ml-1"
                               buttonType="primary"
                               @doClick="h_BackToTop"
                               :title="'btn.tip-back-top'">
                 <b-icon-arrow-up />
-            </base-button-comp>
+            </cmp-base-button>
         </div>
     </transition>
 </template>
@@ -30,7 +30,7 @@ import type { IScrollInfo } from '@/services/definitions/types-common'
 
 
 export default defineComponent({
-    name: 'ButtonBackTopComp',
+    name: 'CmpButtonBackTop',
     components: {
         CmpBaseButton
     },

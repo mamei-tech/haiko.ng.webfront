@@ -34,7 +34,7 @@
                             <i class="tim-icons icon-zoom-split"></i>
                         </button>
                     </div>
-                    <modal-comp
+                    <cmp-modal
                             v-model:show="searchModalVisible"
                             class="modal-search"
                             id="searchModal"
@@ -49,12 +49,12 @@
                                    :placeholder="'data.ph-search'.toUpperCase()"
                             />
                         </template>
-                    </modal-comp>
+                    </cmp-modal>
 
                     <!-- BUTTONS -->
 
                     <!-- NOTIFICATIONS BTN DROPDOWN -->
-                    <dropdown-comp tag="li" class="nav-item" title-tag="a" :menu-on-right="true">
+                    <cmp-dropdown tag="li" class="nav-item" title-tag="a" :menu-on-right="true">
                         <template v-slot:title>
                             <a href="#"
                                class="dropdown-toggle nav-link"
@@ -81,10 +81,10 @@
                         <li class="nav-link">
                             <a href="#" class="nav-item dropdown-item">Another notification</a>
                         </li>
-                    </dropdown-comp>
+                    </cmp-dropdown>
 
                     <!--  -->
-                    <dropdown-comp tag="li"
+                    <cmp-dropdown tag="li"
                                    class="nav-item"
                                    title-tag="a"
                                    menu-classes="dropdown-navbar"
@@ -116,7 +116,7 @@
                                 {{ common.cap( 'routes.logout' ) }}
                             </a>
                         </li>
-                    </dropdown-comp>
+                    </cmp-dropdown>
                 </ul>
             </div>
         </div>
@@ -127,7 +127,7 @@
 import { defineComponent } from 'vue'
 import { mapActions } from 'pinia'
 import { useAuthStore } from '@/stores/auth'
-import { CompModal, CompDropdown } from '../components'
+import { CmpModal, CmpDropdown } from '../components'
 import { RoutePaths } from '@/services/definitions'
 import useCommon from '@/services/composables/useCommon'
 
@@ -146,8 +146,8 @@ interface INavData {
 export default defineComponent({
     name: 'LayBaseTopNav',
     components: {
-        CompModal,
-        CompDropdown
+        CmpModal,
+        CmpDropdown
     },
     data(): INavData {
         return {

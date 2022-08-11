@@ -47,7 +47,7 @@
     import { defineComponent } from 'vue'
 
     export default defineComponent({
-        name: 'CompModal',
+        name: 'CmpModal',
         props: {
             show: Boolean,
             showClose: {

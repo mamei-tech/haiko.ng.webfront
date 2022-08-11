@@ -1,6 +1,6 @@
 <template>
     <!-- SIDEBAR -->
-    <CompSideBarMenu >
+    <cmp-side-bar-menu>
         <div id="topper-border-cont" class="mp-stylized main-panel" >
             <!-- NAV BAR -->
             <base-top-nav-lay></base-top-nav-lay>
@@ -12,12 +12,12 @@
             </div>
 
             <!-- BACK 2 TOP BUTTON -->
-            <button-back-top-comp class="position-sticky" :global="true" :pivot="160"/>
+            <cmp-button-back-top class="position-sticky" :global="true" :pivot="160"/>
 
             <!-- FOOTER -->
             <footer-content />
         </div>
-    </CompSideBarMenu>
+    </cmp-side-bar-menu>
 
 </template>
 
@@ -26,15 +26,15 @@ import { defineComponent } from 'vue'
 import PerfectScrollbar from 'perfect-scrollbar'
 import ContentFooter from './LayFooterContent.vue'
 import ContentTopNav from './LayBaseTopNav.vue'
-import { CompSideBarMenu, CompButtonBackTop } from '@/components'
+import { CmpSideBarMenu, CmpButtonBackTop } from '@/components'
 
 export default defineComponent({
     name: 'LayBaseDashboard',
     components: {
         ContentFooter,
         ContentTopNav,
-        CompSideBarMenu,
-        CompButtonBackTop
+        CmpSideBarMenu,
+        CmpButtonBackTop
     },
     mounted(this:any): void {
         new PerfectScrollbar('#topper-border-cont')

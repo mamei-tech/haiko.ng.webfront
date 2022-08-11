@@ -1,13 +1,13 @@
 <template>
     <div class="label-container">
-        <h1 class="label-justify">Un2x3</h1>
+        <h1 class="label-justify">HAIKO</h1>
         <h5 class="label-justify" style="font-style: italic">others.adm-system</h5>
     </div>
 
-    <card-comp card-type="auto-margin">
+    <cmp-card card-type="auto-margin">
         <form>
             <div class="form-group">
-                <basic-input-comp
+                <cmp-basic-input
                         id="user"
                         name="username"
                         type="text"
@@ -15,7 +15,7 @@
                 />
             </div>
             <div class="form-group has-label">
-                <basic-input-comp
+                <cmp-basic-input
                         id="password"
                         name="password"
                         type="password"
@@ -26,11 +26,11 @@
         </form>
 
         <template v-slot:footer>
-            <base-button-comp block button-type="primary" @doClick.prevent="hLoginIntent">
+            <cmp-base-button block button-type="primary" @doClick.prevent="hLoginIntent">
                 btn.val-login
-            </base-button-comp>
+            </cmp-base-button>
         </template>
-    </card-comp>
+    </cmp-card>
 </template>
 
 <script lang="ts">
@@ -38,7 +38,7 @@ import { defineComponent } from 'vue'
 import { useRouter } from 'vue-router'
 import { useForm } from 'vee-validate'
 import { useToast } from 'vue-toastification'
-import { CmpBaseButton, CompBasicInput, CompCard } from '@/components'
+import { CmpBaseButton, CmpBasicInput, CmpCard } from '@/components'
 import { VSCHEMA } from '@/views/auth/validation'
 import { RoutePathNames } from '@/services/definitions/route-paths'
 import { useAuthStore } from '@/stores/auth'
@@ -52,9 +52,9 @@ import useCommon from '@/services/composables/useCommon'
 export default defineComponent({
     name:       'LoginView',
     components: {
-        CompCard,
+        CmpCard,
         CmpBaseButton,
-        CompBasicInput
+        CmpBasicInput
     },
     setup() {
         //region ======== DECLARATIONS & LOCAL STATE ============================================
@@ -118,6 +118,3 @@ h5 {
     width  : 40%;
 }
 </style>
-
-No esta cargando los componentes, recuerda que como cambiaste el nombre de los 'define' y de
-los archivos ahora las etiquetas no coinciden
