@@ -20,8 +20,6 @@ const customInstance = axios.create({
     withCredentials: true
 })
 
-// convierte esto a usar pinia fuera de un componente, luego, termina los actions del store auth, que tienes q hacer un
-// fetch con axios
 
 // I think that the code we have in this interceptor is going on detrimental of the app performance
 //  ---- BEFORE A REQUEST ----

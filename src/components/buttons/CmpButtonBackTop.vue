@@ -11,14 +11,14 @@
 <template>
     <transition name="back2top-bnt-fade">
         <div v-show="pivot <= infoData.scrollTop">
-            <cmp-base-button icon
+            <CmpBaseButton icon
                               id="back2top-btn"
                               class="ml-1"
                               buttonType="primary"
-                              @doClick="h_BackToTop"
+                              @doClick="hBackToTop"
                               :title="'btn.tip-back-top'">
                 <b-icon-arrow-up />
-            </cmp-base-button>
+            </CmpBaseButton>
         </div>
     </transition>
 </template>
@@ -74,7 +74,7 @@ export default defineComponent({
             }
         })
 
-        const h_BackToTop = ():void => {
+        const hBackToTop = ():void => {
             elemData.scrollTo({
                 top: 0,
                 behavior: 'smooth'
@@ -85,7 +85,7 @@ export default defineComponent({
             elemData,
             infoData,
 
-            h_BackToTop,
+            hBackToTop,
         }
     },
 

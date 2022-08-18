@@ -48,10 +48,10 @@ export const useAuthStore = defineStore({
          *
          * @param payload user credential data for logged in
          */
-        reqLogin (payload: IAuthFormData) : Promise<void> {
+        async reqLogin (payload: IAuthFormData) : Promise<void> {
 
-            return new Promise<void>((resolve, reject) => {
-                ApiAuth.reqAuth(payload)
+             return await new Promise<void>((resolve, reject) => {
+                ApiAuth.reqAuth(payload as IAuthFormData)
                 .then((response:any) => {
 
                     const at = response.data

@@ -34,7 +34,7 @@
                             <i class="tim-icons icon-zoom-split"></i>
                         </button>
                     </div>
-                    <cmp-modal
+                    <CmpModal
                             v-model:show="searchModalVisible"
                             class="modal-search"
                             id="searchModal"
@@ -49,12 +49,12 @@
                                    :placeholder="'data.ph-search'.toUpperCase()"
                             />
                         </template>
-                    </cmp-modal>
+                    </CmpModal>
 
                     <!-- BUTTONS -->
 
                     <!-- NOTIFICATIONS BTN DROPDOWN -->
-                    <cmp-dropdown tag="li" class="nav-item" title-tag="a" :menu-on-right="true">
+                    <CmpDropdown tag="li" class="nav-item" title-tag="a" :menu-on-right="true">
                         <template v-slot:title>
                             <a href="#"
                                class="dropdown-toggle nav-link"
@@ -81,10 +81,10 @@
                         <li class="nav-link">
                             <a href="#" class="nav-item dropdown-item">Another notification</a>
                         </li>
-                    </cmp-dropdown>
+                    </CmpDropdown>
 
                     <!--  -->
-                    <cmp-dropdown tag="li"
+                    <CmpDropdown tag="li"
                                    class="nav-item"
                                    title-tag="a"
                                    menu-classes="dropdown-navbar"
@@ -94,7 +94,7 @@
                                class="dropdown-toggle nav-link"
                                data-toggle="dropdown"
                                aria-expanded="true">
-                                <div class="photo"><img src="../assets/imgs/anime3.png" /></div>
+                                <div class="photo"><img alt="" src="../assets/imgs/anime3.png" /></div>
 
                                 <b class="caret d-none d-lg-block d-xl-block"></b>
                                 <p class="d-lg-none">Menu</p>
@@ -116,7 +116,7 @@
                                 {{ common.cap( 'routes.logout' ) }}
                             </a>
                         </li>
-                    </cmp-dropdown>
+                    </CmpDropdown>
                 </ul>
             </div>
         </div>

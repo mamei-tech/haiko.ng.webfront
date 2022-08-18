@@ -11,6 +11,8 @@ export default function useToastify( toast: ToastInterface ) {
         toast.error(msg, {
             timeout: 5000,
             position: position,
+            showCloseButtonOnHover: true,
+            pauseOnFocusLoss: true,
             icon: 'tim-icons icon-alert-circle-exc'
         })
     }
@@ -65,6 +67,8 @@ export default function useToastify( toast: ToastInterface ) {
         toast(msg, {
             timeout: 3000,
             position: POSITION.TOP_RIGHT,
+            showCloseButtonOnHover: true,
+            pauseOnFocusLoss: true,
             icon: 'tim-icons icon-bell-55'
         } as PluginOptions)
     }
@@ -96,6 +100,8 @@ export default function useToastify( toast: ToastInterface ) {
             {
                 timeout: 4000,
                 position: POSITION.TOP_RIGHT,
+                showCloseButtonOnHover: true,
+                pauseOnFocusLoss: true,
                 icon: 'tim-icons icon-check-2'
             } as PluginOptions
     }
@@ -110,6 +116,8 @@ export default function useToastify( toast: ToastInterface ) {
         toast.warning(msg, {
             timeout:  4000,
             position: POSITION.TOP_RIGHT,
+            showCloseButtonOnHover: true,
+            pauseOnFocusLoss: true,
             icon:     'tim-icons icon-alert-circle-exc'
         } as PluginOptions)
     }

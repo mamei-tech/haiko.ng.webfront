@@ -12,7 +12,7 @@ import { CmpSideBarMenu } from '@/components'
 
 
 export default defineComponent({
-    name: 'Application',
+    name:       'Application',
     components: {
         CmpSideBarMenu
     }
@@ -24,10 +24,11 @@ export default defineComponent({
 @import "assets/css/fontawesome5.css";
 @import "assets/css/nucleo-icons.css";
 
-// From Libs
-//@import "~vue-toastification/dist/index.css";
-//@import "~nprogress/nprogress.css";
+// from node_modules libs
+@import "vue-toastification/dist/index.css";
+@import "nprogress/nprogress.css";
 
 /*@import '../node_modules/bootstrap/scss/bootstrap.scss';*/
 </style>
 
+<!--TODO then go to fix the text from the login view, then go to fix the login request to connect with the backend -->

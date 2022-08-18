@@ -15,16 +15,8 @@ const router = createRouter({
         {
             path:      RoutePaths.dashboard,
             name:      RoutePathNames.dashboard,
-            component: () => import("../views/auth/ViewLogin.vue"),
+            component: () => import("../views/ViewDashboard.vue"),
             meta:      { layout: LayBaseDashboard }
-        },
-        {
-            path: '/about',
-            name: 'about',
-            // route level code-splitting
-            // this generates a separate chunk (About.[hash].js) for this route
-            // which is lazy-loaded when the route is visited.
-            component: () => import('../views/AboutView.vue')
         }
     ]
 })

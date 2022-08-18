@@ -4,10 +4,10 @@
         <h5 class="label-justify" style="font-style: italic">others.adm-system</h5>
     </div>
 
-    <cmp-card card-type="auto-margin">
+    <CmpCard card-type="auto-margin">
         <form>
             <div class="form-group">
-                <cmp-basic-input
+                <CmpBasicInput
                         id="user"
                         name="username"
                         type="text"
@@ -15,7 +15,7 @@
                 />
             </div>
             <div class="form-group has-label">
-                <cmp-basic-input
+                <CmpBasicInput
                         id="password"
                         name="password"
                         type="password"
@@ -26,11 +26,11 @@
         </form>
 
         <template v-slot:footer>
-            <cmp-base-button block button-type="primary" @doClick.prevent="hLoginIntent">
+            <CmpBaseButton block button-type="primary" @doClick.prevent="hLoginIntent">
                 btn.val-login
-            </cmp-base-button>
+            </CmpBaseButton>
         </template>
-    </cmp-card>
+    </CmpCard>
 </template>
 
 <script lang="ts">

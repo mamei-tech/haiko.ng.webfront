@@ -1,5 +1,5 @@
 <template>
-    <component :is="tag" class="dropdown" :class="{show:isOpen}" @click.prevent="h_ToggleDropdown" v-click-outside="closeDropDown">
+    <component :is="tag" class="dropdown" :class="{show:isOpen}" @click.prevent="hToggleDropdown" v-click-outside="closeDropDown">
 
         <slot name="title-container" :is-open="isOpen">
             <component :is="titleTag"
@@ -8,10 +8,12 @@
                        :aria-expanded="isOpen"
                        :aria-label="title || ariaLabel"
                        data-toggle="dropdown">
+
                 <slot name="title" :is-open="isOpen">
                     <i :class="icon"></i>
                     {{title}}
                 </slot>
+
             </component>
         </slot>
 
@@ -68,7 +70,7 @@
         },
         emits: ['change'],
         methods: {
-            h_ToggleDropdown (): void {
+            hToggleDropdown (): void {
                 this.isOpen = !this.isOpen
                 this.$emit('change', this.isOpen)           // emit a generic event 'cause this is a generic component
             },
