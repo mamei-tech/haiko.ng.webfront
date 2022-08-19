@@ -1,7 +1,7 @@
 <template>
     <div class="label-container">
-        <h1 class="label-justify">HAIKO</h1>
-        <h5 class="label-justify" style="font-style: italic">others.adm-system</h5>
+        <h1 class="label-justify main-title">HAIKO</h1>
+        <h5 class="label-justify main-title-description" style="font-style: italic">Sistema de Administración</h5>
     </div>
 
     <CmpCard card-type="auto-margin">
@@ -11,7 +11,7 @@
                         id="user"
                         name="username"
                         type="text"
-                        :placeholder="'data.ph-user'"
+                        :placeholder="'usuario@correo.cu'"
                 />
             </div>
             <div class="form-group has-label">
@@ -19,7 +19,7 @@
                         id="password"
                         name="password"
                         type="password"
-                        :placeholder="'data.ph-pass'"
+                        :placeholder="'password'"
                         v-on:keydown.enter="hLoginIntent"
                 />
             </div>
@@ -27,7 +27,7 @@
 
         <template v-slot:footer>
             <CmpBaseButton block button-type="primary" @doClick.prevent="hLoginIntent">
-                btn.val-login
+                Entrar
             </CmpBaseButton>
         </template>
     </CmpCard>
@@ -107,6 +107,14 @@ export default defineComponent({
 <style scoped lang="scss">
 h5 {
     margin-bottom : 26px;
+}
+
+.main-title {
+    margin-bottom: 12px;
+}
+
+.main-title-description {
+    margin-bottom: 6%;
 }
 
 .label-justify {

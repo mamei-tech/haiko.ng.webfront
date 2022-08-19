@@ -31,4 +31,3 @@ export default defineComponent({
 /*@import '../node_modules/bootstrap/scss/bootstrap.scss';*/
 </style>
 
-<!--TODO then go to fix the text from the login view, then go to fix the login request to connect with the backend -->
