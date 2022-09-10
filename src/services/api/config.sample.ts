@@ -18,7 +18,7 @@ function getConfig (): IConfig {
             name: 'Un2x3',
             current_version: 1,
         },
-        auth: {
+        listAuth: {
             grand_type: 'password',                     // Oauth2 flow
         },
     };

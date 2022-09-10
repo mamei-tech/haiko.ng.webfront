@@ -23,8 +23,30 @@ export default {
             menu: [
                 {
                     href: { path: RoutePaths.dashboard },
-                    title: ('routes.' + RoutePathNames.dashboard ).toUpperCase(),
+                    title: RoutePathNames.dashboard.toUpperCase(),
                     icon: 'tim-icons icon-chart-pie-36',
+                },
+                {
+                    href: {},
+                    title: ('Personas').toUpperCase(),
+                    icon: 'fa fa-users',
+                    child: [
+                        {
+                            href: { path: RoutePaths.listStaff },
+                            title: RoutePathNames.staff,
+                            icon: 'tim-icons icon-single-02',
+                        },
+                        {
+                            href: { path: RoutePaths.listClients },
+                            title: RoutePathNames.clients,
+                            icon: 'fa fa-heartbeat',
+                        },
+                        {
+                            href: { path: RoutePaths.listAuth },
+                            title: RoutePathNames.auth,
+                            icon: 'tim-icons icon-badge',
+                        }
+                    ]
                 }
             ],
             collapsed: false,
