@@ -1,9 +1,10 @@
 import { RoutePaths, RoutePathNames } from './route-paths'
-import { HCatalogsTable, PAGE_SIZE } from './data-common'
+import { HCatalogsTable, PAGE_SIZE, queryBase } from './data-datatables'
 import { ALIGN_POSITION } from './types-common'
 
 import type { Problem, ErrorDictionary } from '@/services/definitions/types-errors'
-import type { OPSKind, Function0, Function1, IColumnHeader } from './types-common'
+import type { OPSKind, Function0, Function1, IColumnHeader, IDataTableQuery } from './types-common'
+import type { IStaffPage, IStaffRow } from '@/services/definitions/entities/types-staff'
 
 
 export {
@@ -14,6 +15,7 @@ export {
     // Data Definitions
     HCatalogsTable,
     PAGE_SIZE,
+    queryBase,
 
     // Enums
 
@@ -26,5 +28,12 @@ export {
     // Common Types
     Problem,
     ErrorDictionary,
-    ALIGN_POSITION
+    IDataTableQuery,
+    ALIGN_POSITION,
+
+    // =====  ENTITIES =====
+
+    // staff
+    IStaffPage,  IStaffRow
+
 }
