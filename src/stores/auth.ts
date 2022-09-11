@@ -8,6 +8,7 @@ import type { IAuthFormData } from '@/services/definitions/types-forms'
 export const useAuthStore = defineStore({
     id: 'auth',
 
+    persist: true,
     state: () : IAuthState => ({
         isLoggedIn: false,
         authTk: ''
