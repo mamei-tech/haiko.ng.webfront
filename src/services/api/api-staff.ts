@@ -2,8 +2,7 @@ import axios from './api'
 import config from './config'
 
 import type { AxiosPromise } from 'axios'
-import type { IStaffPage } from '@/stores/staff'
-import type { IDataTableQuery } from '@/services/definitions'
+import type { IDataTableQuery, IStaffPage } from '@/services/definitions'
 
 
 const version = config.site.current_version
