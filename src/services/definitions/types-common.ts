@@ -232,3 +232,22 @@ export interface IScrollInfo {
      */
     scrollTop: number;
 }
+
+/**
+ * Describe the basic (but incomplete) data of a data-table page view. The field regarding of the type of the entity
+ * is missing this interface can be adapted to any case
+ */
+export interface IDataListBasicResponse {
+    totalRecords: number                  // Total entity count on the entire system
+}
+
+/**
+ * We are handling the data-table paging  data in the store (Pinia) so we need to store pagination related data in the
+ * store for each entity. Optionally we can handle the pagination data in the View local store using the Vue native
+ * 'reactive' method
+ */
+export interface IBasicPageState {
+    pageNumber: number,
+    pageSize: number,
+    totalRecords: number                  // Total entity count on the entire system
+}

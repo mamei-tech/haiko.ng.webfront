@@ -1,17 +1,3 @@
-/*
- =========================================================
- * Vue Black Dashboard - v1.1.0
- =========================================================
-
- * Product Page: https://www.creative-tim.com/product/black-dashboard
- * Copyright 2019 Creative Tim (http://www.creative-tim.com)
-
- =========================================================
-
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
- */
-
 // Custom style patches
 @import "src/assets/sass/black-dashboard/custom/patches";
 
@@ -79,8 +65,9 @@
 @import "src/assets/sass/black-dashboard/custom/input-group";
 @import "src/assets/sass/black-dashboard/custom/tooltip";
 @import "src/assets/sass/black-dashboard/custom/vue-sidebar-menu";
+
 // Vendor / Plugins
-@import "src/assets/sass/black-dashboard/custom/vendor/multiselect";
+@import "src/assets/sass/black-dashboard/custom/vendor/multiselect";                    // TODO We had to use the new version of vueform/multiselect (its JS stop working with the new version of vue) so the css we had in the code doesn't work anymore. So we copied the content of the original css file from the new version of multiselect
 @import "src/assets/sass/black-dashboard/custom/vendor/plugin-perfect-scrollbar";
 @import "src/assets/sass/black-dashboard/custom/vendor/plugin-animate-bootstrap-notify";
 @import "src/assets/sass/black-dashboard/custom/vendor/slider-bars";

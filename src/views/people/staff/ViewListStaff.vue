@@ -1,6 +1,20 @@
 <template>
     <transition appear name="page-fade">
-        <p>welcome to the CLIENT LIST section</p>
+        <div class="row">
+            <div class="col-12">
+                <CmpCard>
+                    <CmpDataTable table-type="hover"
+                                  :entityMode="eMode"
+                                  :columns="columns"
+                                  :data="staffStore.getStaffList"
+                                  :count="staffStore.getEntitiesCount"
+                                  :has-actions="true"
+                                  :filters="filters"
+                    >
+                    </CmpDataTable>
+                </CmpCard>
+            </div>
+        </div>
     </transition>
 </template>
 
@@ -8,19 +22,29 @@
 import { defineComponent, onMounted } from 'vue'
 import { useStaffStore } from '@/stores/staff'
 import { useToast } from 'vue-toastification'
-import { queryBase } from '@/services/definitions'
+import { EntityTypes, queryBase } from '@/services/definitions'
+import { HStaffTable } from '@/services/definitions/data-datatables'
+import { CmpCard, CmpDataTable } from '@/components'
 import useToastify from '@/services/composables/useToastify'
+
 
 export default defineComponent({
     name: 'ViewListStaff',
-    components: {},
+    components: {
+        CmpCard,
+        CmpDataTable
+    },
     setup() {
 
         //#region ======= DECLARATIONS & LOCAL STATE ==========================================
 
         const staffStore = useStaffStore()
+        const eMode: EntityTypes = EntityTypes.Staff
 
-        const toast = useToast() // The toast lib interface
+        const toast = useToast()                                            // The toast lib interface
+        const columns = HStaffTable
+        const filters = [ 'storeType', 'isActive' ]
+
         const { tfyBasicFail } = useToastify(toast)
 
         //#endregion ==========================================================================
@@ -49,7 +73,13 @@ export default defineComponent({
         //#region ======= EVENTS HANDLERS =====================================================
         //#endregion ==========================================================================
 
-        return {}
+        return {
+            eMode,
+            columns,
+            filters,
+
+            staffStore
+        }
     }
 
 })

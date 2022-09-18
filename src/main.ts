@@ -17,7 +17,7 @@ pinia.use(piniaPluginPersistedstate)                                            
 app.use(pinia)
 
 app.use(DirectivesCollection)
-app.use(Toast, { transition: "Vue-Toastification__fade", maxToasts: 6, newestOnTop: true })     // transition: Vue-Toastification__slideBlurred | transition: Vue-Toastification__bounce
+app.use(Toast, { transition: "Vue-Toastification__fade", maxToasts: 6, newestOnTop: true })            // transition: Vue-Toastification__slideBlurred | transition: Vue-Toastification__bounce
 app.use(router)
 app.use(BootstrapIconsPlugin)
 app.use(VueSidebarMenu)

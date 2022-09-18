@@ -5,8 +5,8 @@ export const PAGE_SIZE = 10
 
 // base datatable page object, commonly used in the first datatable page request
 export const queryBase: IDataTableQuery = {
-    Offset : 0,
-    Limit  : PAGE_SIZE,
+    Offset:  0,
+    Limit:   PAGE_SIZE,
     Orderer: 'id'
 }
 
@@ -23,54 +23,49 @@ export const HCatalogsTable: Partial<IColumnHeader>[] = [
 export const HStaffTable: Partial<IColumnHeader>[] = [
     {
         title: '',
-        chk  : true,
+        chk:   true,
         width: 2
     },
 
     {
-        title : 'Id',
+        title:  'Id',
         hidden: true
     },
 
     {
-        title  : 'Store Name',
+        title:   'Img',
+        navKey:  'avatarPath'
+    },
+
+    {
+        title:   'Nombre',
         sorting: '',
-        navKey : 'storeName'
+        navKey:  'firstName'
     },
 
     {
-        title   : 'Store Type',
+        title:    'Usuario',
         toCenter: true,
-        sorting : '',
-        navKey  : 'storeType',
-        multi   : getStoreTypeSelectOptionsArray()
+        sorting:  '',
+        navKey:   'username'
     },
 
     {
-        title   : "Owner\\'s name",
+        title:    'Contacto',
+        sorting: '',
+        navKey:   'cell'
+    },
+
+    {
+        title:    'Rol',
         toCenter: true,
-        sorting : '',
-        navKey  : 'name'
+        navKey:   'roleId'
     },
 
     {
-        title   : "Owner\\'s Lastname",
-        toCenter: true,
-        sorting : '',
-        navKey  : 'lastName'
-    },
-
-    {
-        title   : 'Active',
-        toCenter: true,
-        navKey  : 'isActive',
-        switch  : true
-    },
-
-    {
-        title  : 'Actions',
+        title:   'Actions',
         toRight: true,
-        width  : 40
+        width:   40
     }
 ]
 

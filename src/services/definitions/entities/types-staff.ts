@@ -1,5 +1,7 @@
-export interface IStaffPage {
-    totalRecords: number;
+import type { IDataListBasicResponse } from '@/services/definitions/types-common'
+
+
+export interface IStaffPage extends IDataListBasicResponse {
     entityList: Array<IStaffRow>;
 }
 

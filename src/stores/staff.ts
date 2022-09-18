@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia'
-
-import type { IDataTableQuery, IStaffPage, IStaffRow } from '@/services/definitions'
 import { ApiStaff } from '@/services/api/api-staff'
+
+import type { IDataTableQuery, IStaffRow,IBasicPageState } from '@/services/definitions'
+
 
 // https://pinia.vuejs.org/core-concepts/#setup-stores
 
@@ -11,15 +12,19 @@ export const useStaffStore = defineStore({
 
     state: () : IStaffState => ({
 
-        staffPage: {
-            totalRecords: 0,
-            entityList:   [] as IStaffRow[]
-        }
+        pageNumber:    0,
+        pageSize:      0,
+        totalRecords: 0,
+        entityPage:   [] as IStaffRow[]
 
     }),
 
+    // Getters are exactly the equivalent of computed values for the state of a Store |  https://pinia.vuejs.org/core-concepts/getters.html
+    // as a convention, we name all the getter with a 'get' prefix
     getters: {
-        // doubleCount: ( state ) => state.counter * 2
+
+        getStaffList: ( state ) : Array<IStaffRow> => state.entityPage,
+        getEntitiesCount: ( state ) : number => state.totalRecords
     },
 
     actions: {
@@ -40,22 +45,34 @@ export const useStaffStore = defineStore({
                 ApiStaff.reqStaffPage(payload)
                 .then((response:any) => {
 
-                    this.staffPage = response.data
+                    this.entityPage = response.data.entityList
+                    this.totalRecords = response.data.totalRecords
+                    this.pageSize = response.data.entityList.length
+                    this.pageNumber = payload.Offset
+
                     resolve()
 
-                }).catch(error => { reject(error) })
+                }).catch(error => {
+
+                    if (error.response.status === 404)
+                    {
+                        this.entityPage = []
+                        this.totalRecords = 0
+                        this.pageSize = 0
+                        this.pageNumber = payload.Offset
+                    }
+
+                    reject(error)
+                })
             })
         }
     }
 })
 
-//region ======== INTERFACES & TYPES ====================================================
+//region ======== STATE INTERFACE =======================================================
 
-/**
- * Authentication State interface
- */
-interface IStaffState {
-    staffPage: IStaffPage
+interface IStaffState extends IBasicPageState {
+    entityPage: Array<IStaffRow>
 }
 
 //endregion =============================================================================
