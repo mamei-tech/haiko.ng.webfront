@@ -32,17 +32,17 @@ export default {
                     icon: 'fa fa-users',
                     child: [
                         {
-                            href: { path: RoutePaths.listStaff },
+                            href: { path: RoutePaths.staffList },
                             title: RoutePathNames.staff,
                             icon: 'tim-icons icon-single-02',
                         },
                         {
-                            href: { path: RoutePaths.listClients },
+                            href: { path: RoutePaths.clientsList },
                             title: RoutePathNames.clients,
                             icon: 'fa fa-heartbeat',
                         },
                         {
-                            href: { path: RoutePaths.listAuth },
+                            href: { path: RoutePaths.authList },
                             title: RoutePathNames.auth,
                             icon: 'tim-icons icon-badge',
                         }

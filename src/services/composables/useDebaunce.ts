@@ -3,6 +3,7 @@ import type { Function1 } from '@/services/definitions'
 
 /***
  * Callback a function after specific(default) timeout of an event trigger
+ * Eg. this could be use in a input for trigger a event when a amount of time has passed
  *
  * @param callback Function to call back when timeout complete
  * @param timeoutCount Number of milliseconds to wait for

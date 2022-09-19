@@ -69,7 +69,7 @@ export default defineComponent({
 
         //endregion =============================================================================
 
-        //region ======== ACTIONS ===============================================================
+        //#region ======= FETCHING DATA & ACTIONS ===============================================
 
         const aReqAccess = ( data: IAuthFormData ) => {
             authStore.reqLogin(data)

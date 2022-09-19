@@ -9,7 +9,7 @@ import { defineComponent } from 'vue'
 
 
 export default defineComponent({
-    name: 'ViewListClients'
+    name: 'ViewAuthClients'                         // Auth = Authorization
 })
 </script>
 

@@ -86,14 +86,11 @@ export type OPSKind = 'deletion' | 'addition' | 'update' | 'enable' | 'disable' 
 
 export type ActionKind = 'delete' | 'create' | 'update' | 'activate'
 
-/***
+/**
  * Definition for entities forms view mode
  */
-export type FormMode = 'edit' | 'create'
+export type FormMode = 'edit' | 'create' | 'details'
 
-/**
- *
- */
 export type EntityGenericNames = 'item' | 'items' | 'store' | 'stores' | 'menu' | 'menus'
 
 /***

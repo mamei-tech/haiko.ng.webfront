@@ -51,14 +51,24 @@
                             ></i>
                         </div>
                     </span>
+                    <!--With debaunce version for trigger the event for request the new data with the search criteria-->
+                    <!--<input v-model="search"-->
+                    <!--       class="form-control"-->
+                    <!--       type="text"-->
+                    <!--       :placeholder="cap('data.ph-search')"-->
+                    <!--       aria-describedby="addon-right addon-left"-->
+                    <!--       @input="debounceListener"-->
+                    <!--       @blur="h_onSrchBlursEvt($event)"-->
+                    <!--       @focus="h_onSrchFocusEvt($event)"                           -->
+                    <!--/>-->
                     <input v-model="search"
                            class="form-control"
                            type="text"
                            :placeholder="cap('data.ph-search')"
                            aria-describedby="addon-right addon-left"
-                           @input="debounceListener"
                            @blur="h_onSrchBlursEvt($event)"
                            @focus="h_onSrchFocusEvt($event)"
+                           @keydown.enter="h_searchChange($event)"
                     />
                 </div>
             </div>
@@ -255,7 +265,6 @@ import { PAGE_SIZE } from '@/services/definitions'
 import { CmpBaseButton } from '@/components'
 import { watch } from '@vue/runtime-core'
 import useCommon from '@/services/composables/useCommon'
-import useDebaunce from '@/services/composables/useDebaunce'
 import Multiselect from '@vueform/multiselect'
 
 import type { SetupContext, PropType } from 'vue'
@@ -347,11 +356,11 @@ export default defineComponent({
         }
     },
     emits: [
-        'detailsIntent',
-        'deleteIntent',
-        'editIntent',
+        'detailsIntent',                        // details, rows action event
+        'deleteIntent',                         // delete, rows action event
+        'editIntent',                           // edit, rows action event
 
-        'navCreateIntent',
+        'navCreateIntent',                      // for creating new entity
 
         'enableIntent',
         'disableIntent',
@@ -360,7 +369,7 @@ export default defineComponent({
 
         'bulkActionIntent',
 
-        'requestIntent'
+        'requestIntent'                        // make a request of data, normally using a IDataTableQuery object as parameter with the event emission
     ],
 
     setup( props: any, ctx: SetupContext ) {
@@ -500,8 +509,8 @@ export default defineComponent({
             })
         }
 
-        const h_searchChange = ( search: string ) => {
-            ls_dtQueryData.Search = search
+        const h_searchChange = ( evt: any ) => {
+            ls_dtQueryData.Search = evt.target.value
             ctx.emit('requestIntent', ls_dtQueryData)
         }
 
@@ -554,14 +563,18 @@ export default defineComponent({
         //endregion =============================================================================
 
         //region ======== WATCHERS ==============================================================
+
+        // TODO we need some comment here
         watch(
                 () => dtFilters,
                 () => h_search(),
                 { deep: true }
         )
+
         //endregion =============================================================================
 
         //region ======== HELPERS ===============================================================
+
         /***
          * Try to empty the selection reactive var to make unchecked all the checked rows in the table
          */
@@ -714,7 +727,7 @@ export default defineComponent({
             h_search,
             h_clearAllFilters,
 
-            ...useDebaunce(h_searchChange),
+            // ...useDebaunce(h_searchChange),
 
             lastSelectedSelectElem,
             isCheckBoxSelected,

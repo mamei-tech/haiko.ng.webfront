@@ -10,6 +10,11 @@
                                   :count="staffStore.getEntitiesCount"
                                   :has-actions="true"
                                   :filters="filters"
+
+                                  @navCreateIntent="h_NavCreateStaff"
+                                  @requestIntent="h_requestQuery"
+
+
                     >
                     </CmpDataTable>
                 </CmpCard>
@@ -19,13 +24,18 @@
 </template>
 
 <script lang="ts">
+
+import { useRouter } from 'vue-router'
 import { defineComponent, onMounted } from 'vue'
 import { useStaffStore } from '@/stores/staff'
 import { useToast } from 'vue-toastification'
-import { EntityTypes, queryBase } from '@/services/definitions'
 import { HStaffTable } from '@/services/definitions/data-datatables'
+import { RoutePathNames } from '@/services/definitions'
+import { EntityTypes, queryBase } from '@/services/definitions'
 import { CmpCard, CmpDataTable } from '@/components'
 import useToastify from '@/services/composables/useToastify'
+
+import type { FormMode, IDataTableQuery } from '@/services/definitions'
 
 
 export default defineComponent({
@@ -41,6 +51,7 @@ export default defineComponent({
         const staffStore = useStaffStore()
         const eMode: EntityTypes = EntityTypes.Staff
 
+        const router = useRouter()
         const toast = useToast()                                            // The toast lib interface
         const columns = HStaffTable
         const filters = [ 'storeType', 'isActive' ]
@@ -49,36 +60,57 @@ export default defineComponent({
 
         //#endregion ==========================================================================
 
-        //#region ======= FETCHING DATA ACTIONS ===============================================
+        //region ======== HOOKS ===============================================================
 
         /**
          * setup is called before component creation, so the onMounted hook is a good time / place to
          * invoke data population method through web API request.
          */
         onMounted(() => {
-
             // populate staff datatable
-            staffStore.reqStaffPages(queryBase)
-            .catch(err => tfyBasicFail(err, 'Staff', 'request'))
+            staffStore.reqStaffPages(queryBase).catch(err => tfyBasicFail(err, 'Staff', 'request'))
         })
 
-        //#endregion ==========================================================================
+        //endregion ===========================================================================
 
-        //#region ======= ACTIONS =============================================================
+        //#region ======= FETCHING DATA & ACTIONS =============================================
+
+        function a_reqQuery( queryData: IDataTableQuery ) {
+            staffStore.reqStaffPages(queryData).catch(err => tfyBasicFail(err, 'Staff', 'request'))
+        }
+
         //#endregion ==========================================================================
 
         //#region ======= COMPUTATIONS & GETTERS ==============================================
         //#endregion ==========================================================================
 
         //#region ======= EVENTS HANDLERS =====================================================
+
+        function h_NavCreateStaff() {
+            router.push({
+                name  : RoutePathNames.staffForm,
+                params: {
+                    fmode: 'create' as FormMode,
+                    id   : '',
+                    cname: RoutePathNames.staffCreate                                  // Translation Name of the Route, this is used when we need to specify a name programmatically, cname = custom name
+                }
+            })
+        }
+
+        function h_requestQuery( queryData: IDataTableQuery ) {
+            a_reqQuery(queryData)
+        }
+
         //#endregion ==========================================================================
 
         return {
             eMode,
             columns,
             filters,
+            staffStore,
 
-            staffStore
+            h_NavCreateStaff,
+            h_requestQuery
         }
     }
 
