@@ -27,12 +27,12 @@ export default function useToastify( toast: ToastInterface ) {
     function _getOpsKind( ops: OPSKind, isPresentTense: boolean = false ): string {
         let opsKind = '[unknown]'
 
-        if (ops === 'deletion') opsKind = isPresentTense ? 'crud-actions.deletion-gerund' : 'crud-actions.deletion-pas'
-        else if (ops === 'addition') opsKind = isPresentTense ? 'crud-actions.addition-gerund' : 'crud-actions.addition-pas'
-        else if (ops === 'enable') opsKind = isPresentTense ? 'crud-actions.enable-gerund' : 'crud-actions.enable-pas'
-        else if (ops === 'disable') opsKind = isPresentTense ? 'crud-actions.disable-gerund' : 'crud-actions.disable-pas'
-        else if (ops === 'update') opsKind = isPresentTense ? 'crud-actions.update-gerund' : 'crud-actions.update-pas'
-        else if (ops === 'request') opsKind = isPresentTense ? 'crud-actions.request-gerund' : 'crud-actions.request-pas'
+        if (ops === 'deletion') opsKind = isPresentTense ? 'eliminando' : 'eliminado'
+        else if (ops === 'addition') opsKind = isPresentTense ? 'creando' : 'agregado'
+        else if (ops === 'enable') opsKind = isPresentTense ? 'activando' : 'activado'
+        else if (ops === 'disable') opsKind = isPresentTense ? 'desactivando' : 'desactivado'
+        else if (ops === 'update') opsKind = isPresentTense ? 'actualizando' : 'actualizado'
+        else if (ops === 'request') opsKind = isPresentTense ? 'solicitando' : 'solicitado'
 
         return opsKind
     }
@@ -93,10 +93,7 @@ export default function useToastify( toast: ToastInterface ) {
         let kind = _getOpsKind(ops)
 
         toast.success(
-            `toasts.ops-ok 
-                subject: ${subject},
-                name: ${name !== undefined && typeof name === 'string' ? name : ''},
-                opsKind:${kind}`),
+            `${ subject } ${ name !== undefined && typeof name === 'string' ? name : '' } ${ kind } correctamente`,
             {
                 timeout: 4000,
                 position: POSITION.TOP_RIGHT,
@@ -104,6 +101,7 @@ export default function useToastify( toast: ToastInterface ) {
                 pauseOnFocusLoss: true,
                 icon: 'tim-icons icon-check-2'
             } as PluginOptions
+        )
     }
 
     /***

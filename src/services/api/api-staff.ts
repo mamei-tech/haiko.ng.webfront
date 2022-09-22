@@ -27,4 +27,15 @@ export class ApiStaff {
 
         return axios.get(url + '/page', { params: payload })
     }
+
+    /**
+     * Deletes a bunch of entities
+     *
+     * @param ids List of entities identifiers
+     */
+    public static reqDelete( ids: Array<number> ): AxiosPromise<void> {
+        return axios.delete(url, {
+            data: ids
+        })
+    }
 }

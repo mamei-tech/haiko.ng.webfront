@@ -91,7 +91,12 @@ export type ActionKind = 'delete' | 'create' | 'update' | 'activate'
  */
 export type FormMode = 'edit' | 'create' | 'details'
 
-export type EntityGenericNames = 'item' | 'items' | 'store' | 'stores' | 'menu' | 'menus'
+/**
+ * This mostly used in the dialog (Dialogfy) custom composable, as constraint type of actual business entities names
+ * when those names will be pases as parameters of some kind
+ */
+export type EntityGenericNames = 'staff'
+// export type EntityGenericNames = 'item' | 'items' | 'store' | 'stores' | 'menu' | 'menus'
 
 /***
  * Table Top Buttons Action Bar (BULK ACTION) clicked action

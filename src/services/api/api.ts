@@ -17,7 +17,9 @@ const customInstance = axios.create({
         Accept: 'application/json',
         'Access-Control-Allow-Origin': '*'
     },
-    withCredentials: true
+    withCredentials: false
+    // TIP about 'withCredentials' and CORS problem:
+    //  this field have to be set in TRUE if the backend specify the origins domains in its CORS policy if the backend use the (*) wildcard then this value must be FALSE
 })
 
 

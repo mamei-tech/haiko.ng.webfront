@@ -1,4 +1,5 @@
 <template>
+
     <div class="label-container">
         <h1 class="label-justify main-title">HAIKO</h1>
         <h5 class="label-justify main-title-description" style="font-style: italic">Sistema de Administración</h5>
@@ -31,6 +32,7 @@
             </CmpBaseButton>
         </template>
     </CmpCard>
+
 </template>
 
 <script lang="ts">
@@ -57,6 +59,7 @@ export default defineComponent({
         CmpBasicInput
     },
     setup() {
+
         //region ======== DECLARATIONS & LOCAL STATE ============================================
 
         const authStore = useAuthStore()
