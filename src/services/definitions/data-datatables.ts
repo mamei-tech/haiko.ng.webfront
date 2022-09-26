@@ -33,7 +33,7 @@ export const HStaffTable: Partial<IColumnHeader>[] = [
     },
 
     {
-        title:   'avtr',
+        title:   'avatar',
         navKey:  'avatarPath',
     },
 

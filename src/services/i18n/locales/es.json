@@ -103,15 +103,16 @@
     },
     "table-headers": {
         "name":    "Nombre",
-        "avtr":    "Avatar",
+        "avatar":  "Avatar",
         "id":      "Id",
         "user":    "Usuario",
         "contact": "Contacto",
-        "role": "Rol"
+        "role":    "Rol"
     },
     "entities":     {
         "staff": {
-            "section-name": "Staff"
+            "name": "Staff",
+            "section-name": "@:entities.staff.name"
         }
     }
 }

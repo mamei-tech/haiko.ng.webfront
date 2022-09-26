@@ -70,7 +70,7 @@ export default function useDialogfy() {
             titleText:      t('dialogs.confirm'),
             text:           t('dialogs.confirmation', {
                 action:  t(`crud-actions.${ action }`),
-                subject: t(`dialogs.${ subject }`)
+                subject: t(`entities.${ subject }.name`)
             }),
             showDenyButton: true
         })

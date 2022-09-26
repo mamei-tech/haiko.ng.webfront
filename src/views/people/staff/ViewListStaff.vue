@@ -15,6 +15,8 @@
                                   @requestIntent="h_reqQuery"
 
                                   @deleteIntent="h_reqDeleteStaff"
+
+                                  @bulkActionIntent="h_BulkActionIntent"
                     >
                     </CmpDataTable>
                 </CmpCard>
@@ -36,7 +38,7 @@ import { CmpCard, CmpDataTable } from '@/components'
 import useDialogfy from '@/services/composables/useDialogfy'
 import useToastify from '@/services/composables/useToastify'
 
-import type { FormMode, IDataTableQuery } from '@/services/definitions'
+import type { FormMode, IDataTableQuery, IBulkData } from '@/services/definitions'
 
 
 export default defineComponent({
@@ -121,6 +123,28 @@ export default defineComponent({
             a_reqQuery(queryData)
         }
 
+        async function h_BulkActionIntent( bulkData: IBulkData ) {
+
+            // This is a somewhat hacky way of cast string to int in typescript. It has to do with type coercion, and
+            // it is a pain to deal with in JS. I use this way because is visually placement and beautiful, in some way;
+            // for a more readable form, use v => parseInt (v)
+            const dataIds = bulkData.ids.map(v => +v)
+            if (bulkData.actionType === 'REMOVE') {
+                const wasConfirmed = await dialogfyConfirmation('delete', 'staff')
+                if (wasConfirmed) a_reqDelete(dataIds)
+            }
+            /*else if (bulkData.actionType === 'ENABLE') {
+                // Need to enable all selected disabled stores. Filter the stores to find whether its id is in the id list and it is not active
+                let ids = stores.value.filter(s => dataIds.indexOf(s.id) !== -1 && !s.isActive).map(s => s.id)
+                a_bulkSwitchState(ids)
+            }
+            else {
+                // Same case as enable but with the disable state
+                let ids = stores.value.filter(s => dataIds.indexOf(s.id) !== -1 && s.isActive).map(s => s.id)
+                a_bulkSwitchState(ids)
+            }*/
+        }
+
         //#endregion ==========================================================================
 
         return {
@@ -131,7 +155,8 @@ export default defineComponent({
 
             h_reqQuery,
             h_reqDeleteStaff,
-            h_navCreateStaff
+            h_navCreateStaff,
+            h_BulkActionIntent
         }
     }
 
