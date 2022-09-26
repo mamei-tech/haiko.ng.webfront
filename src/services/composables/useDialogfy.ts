@@ -1,3 +1,4 @@
+import { i18n } from '@/services/i18n'
 //@ts-ignore               this is 'cause we are customizing the sweetalert2 scss, we don't need de original styles files
 import Swal from 'sweetalert2/dist/sweetalert2.min.js'
 
@@ -5,6 +6,8 @@ import type { SweetAlertOptions, SweetAlertResult } from 'sweetalert2'
 import type { ActionKind, EntityGenericNames } from '@/services/definitions'
 import type { Function1 } from '@/services/definitions'
 
+
+const { t } = i18n.global
 
 export default function useDialogfy() {
 
@@ -64,8 +67,11 @@ export default function useDialogfy() {
     async function dialogfyConfirmation( action: ActionKind, subject: EntityGenericNames ): Promise<boolean> {
         let result: SweetAlertResult = await Swal.fire({
             icon:           'warning',
-            titleText:      'dialogs.confirm',
-            text:           `Esta seguro que desea ${ action } ${ subject }`,
+            titleText:      t('dialogs.confirm'),
+            text:           t('dialogs.confirmation', {
+                action:  t(`crud-actions.${ action }`),
+                subject: t(`dialogs.${ subject }`)
+            }),
             showDenyButton: true
         })
 

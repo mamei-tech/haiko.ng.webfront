@@ -1,4 +1,5 @@
 <template>
+
     <sidebar-menu v-model:collapsed="collapsed"
                   :menu="menu"
                   @update:collapsed="onToggleCollapse"
@@ -11,6 +12,7 @@
     <div id="container" :class="[{'collapsed' : collapsed}, {'onmobile' : isOnMobile}]">
         <slot></slot>
     </div>
+
 </template>
 
 <script>
@@ -23,12 +25,12 @@ export default {
             menu: [
                 {
                     href: { path: RoutePaths.dashboard },
-                    title: RoutePathNames.dashboard.toUpperCase(),
+                    title: this.$t( 'routes.' + RoutePathNames.dashboard ).toUpperCase(),
                     icon: 'tim-icons icon-chart-pie-36',
                 },
                 {
                     href: {},
-                    title: ('Personas').toUpperCase(),
+                    title: this.$t( 'nav.sidebar-people' ).toUpperCase(),
                     icon: 'fa fa-users',
                     child: [
                         {

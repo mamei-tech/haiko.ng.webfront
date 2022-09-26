@@ -38,7 +38,7 @@
                         <button
                                 @click.prevent="h_clearAllFilters()"
                                 type="button"
-                                :title="'others.reset-filters'"
+                                :title="$t('forms.placeholders.reset-filters')"
                                 class="btn remove btn-icon btn-sm"
                         >
                             <i class="tim-icons icon-refresh-01"></i>
@@ -51,6 +51,7 @@
                             ></i>
                         </div>
                     </span>
+
                     <!--With debaunce version for trigger the event for request the new data with the search criteria-->
                     <!--<input v-model="search"-->
                     <!--       class="form-control"-->
@@ -61,15 +62,17 @@
                     <!--       @blur="h_onSrchBlursEvt($event)"-->
                     <!--       @focus="h_onSrchFocusEvt($event)"                           -->
                     <!--/>-->
+
                     <input v-model="search"
                            class="form-control"
                            type="text"
-                           :placeholder="cap('data.ph-search')"
+                           :placeholder="cap($t('forms.placeholders.search'))"
                            aria-describedby="addon-right addon-left"
                            @blur="h_onSrchBlursEvt($event)"
                            @focus="h_onSrchFocusEvt($event)"
                            @keydown.enter="h_searchChange($event)"
                     />
+
                 </div>
             </div>
         </div>
@@ -105,12 +108,16 @@
                             { 'text-right': header.toRight },
                             { 'text-left': header.toLeft },
                             { 'text-center': header.toCenter }
-                        ]"
-                >
+                        ]">
+
                     <!-- printing the header with i18n -->
-                    {{ header.title }}
-                    <!--{{ 'data["' + header.title + '"]'}}-->
-                    <!-- {{ header.navKey ? $t("data." + header.navKey) : $t("data." + header.title) }} -->
+
+                    {{ header.title !== '' ? $t( 'table-headers["' + header.title + '"]' ) : '' }}
+
+                    <!-- some alternatives -->
+                    <!--{{ $t( 'table-headers.' + header.title ) }}-->
+                    <!--{{ $t( 'table-headers["' + header.title + '"]' ) }}-->
+                    <!-- {{ header.navKey ? $t("table-headers." + header.navKey) : $t("table-headers." + header.title) }} -->
 
                     <!-- printing the sorters carets -->
                     <span @click.prevent="h_changeSort(header)"

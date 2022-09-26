@@ -1,8 +1,12 @@
+import { i18n } from '@/services/i18n'
 import { POSITION } from 'vue-toastification'
-import type { PluginOptions, ToastInterface } from 'vue-toastification'
-import type { OPSKind } from '@/services/definitions'
 import { useErrors } from '@/services/helpers/errors-helpers'
 
+import type { PluginOptions, ToastInterface } from 'vue-toastification'
+import type { OPSKind } from '@/services/definitions'
+
+
+const { t } = i18n.global
 
 export default function useToastify( toast: ToastInterface ) {
     const { makeErrorString } = useErrors()
@@ -27,12 +31,12 @@ export default function useToastify( toast: ToastInterface ) {
     function _getOpsKind( ops: OPSKind, isPresentTense: boolean = false ): string {
         let opsKind = '[unknown]'
 
-        if (ops === 'deletion') opsKind = isPresentTense ? 'eliminando' : 'eliminado'
-        else if (ops === 'addition') opsKind = isPresentTense ? 'creando' : 'agregado'
-        else if (ops === 'enable') opsKind = isPresentTense ? 'activando' : 'activado'
-        else if (ops === 'disable') opsKind = isPresentTense ? 'desactivando' : 'desactivado'
-        else if (ops === 'update') opsKind = isPresentTense ? 'actualizando' : 'actualizado'
-        else if (ops === 'request') opsKind = isPresentTense ? 'solicitando' : 'solicitado'
+        if (ops === 'deletion') opsKind = isPresentTense ? t('crud-actions.deletion-gerund') : t('crud-actions.deletion-pas')
+        else if (ops === 'addition') opsKind = isPresentTense ? t('crud-actions.addition-gerund') : t('crud-actions.addition-pas')
+        else if (ops === 'enable') opsKind = isPresentTense ? t('crud-actions.enable-gerund') : t('crud-actions.enable-pas')
+        else if (ops === 'disable') opsKind = isPresentTense ? t('crud-actions.disable-gerund') : t('crud-actions.disable-pas')
+        else if (ops === 'update') opsKind = isPresentTense ? t('crud-actions.update-gerund') : t('crud-actions.update-pas')
+        else if (ops === 'request') opsKind = isPresentTense ? t('crud-actions.request-gerund') : t('crud-actions.request-pas')
 
         return opsKind
     }
@@ -49,8 +53,8 @@ export default function useToastify( toast: ToastInterface ) {
 
         if (eCode === 404)
             details = isBulk
-                ? `'toasts.e404' | subject: ${subject}`
-                : `'toasts.e404-single' | subject: ${subject} | name: ${subjectName}`
+                ? t('toasts.e404', { subject: subject })
+                : t('toasts.e404-single', { subject: subject, name: subjectName })
         else if (eCode === 400) details = makeErrorString(error.response.data)
 
         return details
@@ -74,7 +78,7 @@ export default function useToastify( toast: ToastInterface ) {
     }
 
     /***
-     * Generic fail toastify with a custom message. Usefull for validation
+     * Generic fail toastify with a custom message. Useful for validation
      * errors or other type of error during data manipulation
      */
     const tfyError = ( msg: string ): void => {
@@ -93,12 +97,10 @@ export default function useToastify( toast: ToastInterface ) {
         let kind = _getOpsKind(ops)
 
         toast.success(
-            `${ subject } ${ name !== undefined && typeof name === 'string' ? name : '' } ${ kind } correctamente`,
+            t('toasts.ops-ok', { subject: subject, name: name !== undefined && typeof name === 'string' ? name : '', opsKind: kind }),
             {
                 timeout: 4000,
                 position: POSITION.TOP_RIGHT,
-                showCloseButtonOnHover: true,
-                pauseOnFocusLoss: true,
                 icon: 'tim-icons icon-check-2'
             } as PluginOptions
         )
@@ -135,19 +137,20 @@ export default function useToastify( toast: ToastInterface ) {
 
         // internal backend error with no return
         if (!error.response) {
-            _mkError(`'toasts.ops-fail',  subject: ${subject}, opsKind: ${kind}`)
+            _mkError(t('toasts.ops-fail', { subject: subject, opsKind: kind }))
             return
         }
 
         // backend error return with details
         let details = _getDetails(error, subject, subjectName)
         _mkError(
-            `'toasts.ops-fail-details',
-                subject: ${subject},
-                opsKind: ${kind},
-                name: ${subjectName},
-                status: ${error.response.status},
-                details: ${details}`
+            t('toasts.ops-fail-details', {
+                subject: subject,
+                opsKind: kind,
+                name: subjectName,
+                status: error.response.status,
+                details: details
+            })
         )
     }
 
@@ -155,8 +158,8 @@ export default function useToastify( toast: ToastInterface ) {
         const eCode = error.response !== undefined ? error.response.status : undefined
         let details
 
-        if (eCode === 401 || eCode === 404) details = 'toasts.auth-fail-4xx'
-        else details = 'toasts.auth-fail-unknown'
+        if (eCode === 401 || eCode === 404) details = t('toasts.auth-fail-4xx')
+        else details = t('toasts.auth-fail-unknown')
 
         _mkError(details, POSITION.TOP_CENTER)
     }

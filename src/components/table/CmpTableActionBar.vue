@@ -8,7 +8,7 @@
                 <CmpBaseButton
                         icon
                         buttonType="primary"
-                        :title="'btn.tip-create-new'"
+                        :title="$t('btn.tip-create-new')"
                         @doClick="$emit('navCreateIntent')">
                     <i class="tim-icons icon-simple-add"></i>
                 </CmpBaseButton>
@@ -25,7 +25,7 @@
                             icon
                             class="mr-1"
                             buttonType="success"
-                            :title="'btn.tip-enable-sel'"
+                            :title="$t('btn.tip-enable-sel')"
                             @doClick="$emit('enableChkCollIntent')">
                         <i class="tim-icons icon-check-2"></i>
                     </CmpBaseButton>
@@ -33,7 +33,7 @@
                             icon
                             class="ml-1 mr-1"
                             buttonType="warning"
-                            :title="'btn.tip-disable-sel'"
+                            :title="$t('btn.tip-disable-sel')"
                             @doClick="$emit('disableChkCollIntent')">
                         <i class="tim-icons icon-simple-remove"></i>
                     </CmpBaseButton>
@@ -41,7 +41,7 @@
                             icon
                             class="ml-1"
                             buttonType="danger"
-                            :title="'btn.tip-remove-sel'"
+                            :title="$t('btn.tip-remove-sel')"
                             @doClick="$emit('removeChkCollIntent')">
                         <i class="tim-icons icon-trash-simple"></i>
                     </CmpBaseButton>
@@ -54,7 +54,7 @@
                 <CmpBaseButton
                         icon
                         buttonType="primary"
-                        :title="'btn.tip-create-new'"
+                        :title="$t('btn.tip-create-new')"
                         @doClick="$emit('navCreateIntent')">
                     <i class="tim-icons icon-simple-add"></i>
                 </CmpBaseButton>

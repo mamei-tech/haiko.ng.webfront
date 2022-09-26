@@ -46,7 +46,7 @@
                                    type="text"
                                    class="form-control"
                                    id="inlineFormInputGroup"
-                                   :placeholder="'data.ph-search'.toUpperCase()"
+                                   :placeholder="$t('forms.placeholders.search').toUpperCase()"
                             />
                         </template>
                     </CmpModal>
@@ -113,7 +113,7 @@
                             <a href="#"
                                class="nav-item dropdown-item"
                                @click="hLogOutIntent">
-                                {{ common.cap( 'routes.logout' ) }}
+                                {{ common.cap( $t( 'routes.logout' )) }}
                             </a>
                         </li>
                     </CmpDropdown>
@@ -164,8 +164,8 @@ export default defineComponent({
             const { name } = this.$route
             const { cname } = this.$route.params // Translation Name of the Route, this is used when we need to specify a name programmatically, cname = custom name
 
-            if (cname !== undefined && typeof cname === 'string') return 'routes.' + cname
-            else return 'routes.' + String(name)
+            if (cname !== undefined && typeof cname === 'string') return this.$t('routes.' + cname)
+            else return this.$t('routes.' + String(name))
         }
     },
     methods: {
