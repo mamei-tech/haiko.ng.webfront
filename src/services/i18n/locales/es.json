@@ -14,9 +14,9 @@
         "tip-back":           "Ir atrás",
         "tip-create-new":     "Crear nuevo",
         "tip-add-time-range": "Adicionar rango de tiempo",
-        "tip-enable-sel":     "Habilitar selección",
-        "tip-disable-sel":    "Deshabilitar selección",
-        "tip-remove-sel":     "Eliminar selección",
+        "tip-enable-sel":     "Habilitar selección de {subject}",
+        "tip-disable-sel":    "Deshabilitar selección de {subject}",
+        "tip-remove-sel":     "Eliminar selección de {subject}",
         "tip-remove-entity":  "Eliminar la entidad",
         "tip-cancel":         "Descartar cambios",
         "tip-save":           "Guardar cambios",
@@ -107,9 +107,11 @@
         "id":      "Id",
         "user":    "Usuario",
         "contact": "Contacto",
-        "role":    "Rol"
+        "role":    "Rol",
+        "active": "esta activo?"
     },
     "entities":     {
+        "default": "entidades",
         "staff": {
             "name": "Staff",
             "section-name": "@:entities.staff.name"
