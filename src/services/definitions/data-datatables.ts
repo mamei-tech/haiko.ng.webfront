@@ -33,8 +33,8 @@ export const HStaffTable: Partial<IColumnHeader>[] = [
     },
 
     {
-        title:   'avatar',
-        navKey:  'avatarPath',
+        title:  'avatar',
+        navKey: 'avatarPath'
     },
 
     {
@@ -51,9 +51,9 @@ export const HStaffTable: Partial<IColumnHeader>[] = [
     },
 
     {
-        title:    'contact',
+        title:   'contact',
         sorting: '',
-        navKey:   'cell'
+        navKey:  'cell'
     },
 
     {
@@ -63,9 +63,17 @@ export const HStaffTable: Partial<IColumnHeader>[] = [
     },
 
     {
-        title  : '',            // actions buttons
+        title:    'active',
+        toCenter: true,
+        sorting:  '',
+        navKey:   'isActive',
+        switch:   true
+    },
+
+    {
+        title:   '',            // actions buttons
         toRight: true,
-        width  : 40
+        width:   40
     }
 ]
 

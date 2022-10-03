@@ -44,41 +44,44 @@
         "allowed":          "Permitido",
         "not-allowed":      "No Permitido",
         "adm-system":       "Sistema de Administración",
-        "footer-copyright": "hecho con ❤ por"
+        "footer-copyright": "hecho con ❤ por",
+        "this-ones":        "estos"
     },
     "crud-actions": {
         "delete":          "eliminar",
         "deletion-pas":    "eliminado",
-        "deletion-gerund": "eliminando",
+        "deletion-gerund": "de eliminando",
         "edition":        "editar",
         "edition-pas":    "editado",
-        "edition-gerund": "editando",
+        "edition-gerund": "de edición",
         "create":          "crear",
         "addition-pas":    "agregado",
-        "addition-gerund": "creando",
+        "addition-gerund": "de creación",
         "activate":        "habilitar",
         "enable-pas":      "activado",
-        "enable-gerund":   "activando",
+        "enable-gerund":   "de activación",
+        "deactivate":      "inhabilitar",
         "disable-pas":     "desactivado",
-        "disable-gerund":  "desactivando",
+        "disable-gerund":  "de desactivación",
         "update":          "actualizar",
         "update-pas":      "actualizado",
-        "update-gerund":   "actualizando",
+        "update-gerund":   "de actualización",
         "request-pas":     "solicitado",
-        "request-gerund":  "solicitando"
+        "request-gerund":  "de solicitud"
     },
     "dialogs":      {
         "confirm":      "Por favor, confirme",
-        "confirmation": "Está seguro que desea {action} {subject}"
+        "confirmation": "¿ Está seguro que desea {action} {plural} {subject} ?"
     },
-    "toasts":       {
+    "toasts": {
         "auth-fail-4xx":         "Credenciales inválidas.",
         "auth-fail-unknown":     "Algo no fue bien en la autenticación.",
         "e404":                  "Uno o varios identificadores de {subject} no fueron encontrados en el servidor.",
         "e404-single":           "Identifier de {subject} {name} no fue encontrado en el servidor.",
+        "e401":                  "No autenticado o la autenticación ha expirado.",
         "ops-fail":              "Operación {opsKind} falló para {subject}. Algo ocurrió en el servidor.",
-        "ops-fail-details":      "Operación {opsKind} falló {subject} {name}. Error {status}. {details}",
-        "ops-ok":                "{subject} {name} fue {opsKind} correctamente",
+        "ops-fail-details":      "Operación {opsKind} falló para {subject} {name}. Error {status}. {details}",
+        "ops-ok":                "{subject} {name} {opsKind} correctamente",
         "empty-categories":      "No se encontraron categorías para la tienda.",
         "empty-stores":          "No se encontraron tiendas de acuerda con tipo establecido.",
         "no-item-type-selected": "El producto no puede ser creado, debe seleccionar un tipo de producto."

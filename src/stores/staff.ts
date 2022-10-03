@@ -30,12 +30,13 @@ export const useStaffStore = defineStore({
     actions: {
 
         // ---mutators ---
+        // mutates the states directly without any request call to the backend
 
         /**
          * Delete a bunch of Staff from the store
          * @param payload Staff identifiers list to be deleted
          */
-        deleteStaffList( payload: IdsArray ): void {
+        mutDeleteStaffList( payload: IdsArray ): void {
             this.entityPage = this.entityPage.filter(staffRow => !payload.ids.includes(staffRow.id))
             this.totalRecords -= payload.ids.length
             this.pageSize -= payload.ids.length
@@ -86,7 +87,34 @@ export const useStaffStore = defineStore({
             return await new Promise<void>(( resolve, reject ) => {
                 ApiStaff.reqDelete(payload.ids).then(( response: any ) => {
 
-                    this.deleteStaffList(payload)                                   // deleting the staff from the store
+                    // deleting (mutate / modify) the staff from the local store
+                    this.mutDeleteStaffList(payload)
+                    resolve()
+
+                }).catch(error => { reject(error) })
+            })
+        },
+
+        /**
+         * Tries to toggle the active status of a entity
+         * @param payload entity identifiers list to be toggled
+         */
+        async reqToggleStatus( payload: IdsArray ): Promise<void> {
+
+            return await new Promise<void>(( resolve, reject ) => {
+
+                ApiStaff.bulkToggle(payload.ids).then((response: any ) => {
+
+                    // toggling (mutate / modify) the status of the corresponding staff from the local store
+                    this.entityPage.forEach(s => payload.ids.includes(s.id) ? s.isActive = !s.isActive : null)
+
+                    // alternative using js map function
+                    /*this.entityPage = this.entityPage.map(s => {
+                        if (payload.ids.includes(s.id)) s.isActive = !s.isActive
+
+                        return s
+                    })*/
+
                     resolve()
 
                 }).catch(error => { reject(error) })

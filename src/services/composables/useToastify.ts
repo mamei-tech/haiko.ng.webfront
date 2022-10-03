@@ -56,6 +56,7 @@ export default function useToastify( toast: ToastInterface ) {
                 ? t('toasts.e404', { subject: subject })
                 : t('toasts.e404-single', { subject: subject, name: subjectName })
         else if (eCode === 400) details = makeErrorString(error.response.data)
+        else if (eCode === 401) details = t('toasts.e401')
 
         return details
     }

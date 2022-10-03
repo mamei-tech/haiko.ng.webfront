@@ -29,13 +29,20 @@ export class ApiStaff {
     }
 
     /**
-     * Deletes a bunch of entities
-     *
+     * Invoke an api call to deletes a bunch of entities
      * @param ids List of entities identifiers
      */
     public static reqDelete( ids: Array<number> ): AxiosPromise<void> {
         return axios.delete(url, {
             data: ids
         })
+    }
+
+    /**
+     * Invoke an api call to toggle the status of the entities with the given identifiers
+     * @param ids entities identifiers
+     */
+    public static bulkToggle( ids: Array<number> ): AxiosPromise<void> {
+        return axios.post(url + '/toggle', ids)
     }
 }

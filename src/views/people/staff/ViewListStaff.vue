@@ -4,6 +4,7 @@
             <div class="col-12">
                 <CmpCard>
                     <CmpDataTable table-type="hover"
+                                  :subject="$t('entities.staff.name')"
                                   :entityMode="eMode"
                                   :columns="columns"
                                   :data="staffStore.getStaffList"
@@ -27,6 +28,7 @@
 
 <script lang="ts">
 
+import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { defineComponent, onMounted } from 'vue'
 import { useStaffStore } from '@/stores/staff'
@@ -50,6 +52,8 @@ export default defineComponent({
     setup() {
 
         //#region ======= DECLARATIONS & LOCAL STATE ==========================================
+
+        const {t} = useI18n({useScope: 'global'})
 
         const staffStore = useStaffStore()
         const eMode: EntityTypes = EntityTypes.Staff
@@ -96,6 +100,14 @@ export default defineComponent({
             }).catch(err => tfyBasicFail(err, 'Staff', 'deletion'))
         }
 
+        function a_bulkSwitchState( ids: Array<number> ) {
+            let msgSubject = t('entities.staff.name', ids.length)
+
+            staffStore.reqToggleStatus({ids})
+            .then(() => tfyBasicSuccess(msgSubject, 'update'))
+            .catch(err => tfyBasicFail(err, msgSubject, 'update'))
+        }
+
         //#endregion ==========================================================================
 
         //#region ======= COMPUTATIONS & GETTERS ==============================================
@@ -133,16 +145,23 @@ export default defineComponent({
                 const wasConfirmed = await dialogfyConfirmation('delete', 'staff')
                 if (wasConfirmed) a_reqDelete(dataIds)
             }
-            /*else if (bulkData.actionType === 'ENABLE') {
-                // Need to enable all selected disabled stores. Filter the stores to find whether its id is in the id list and it is not active
-                let ids = stores.value.filter(s => dataIds.indexOf(s.id) !== -1 && !s.isActive).map(s => s.id)
-                a_bulkSwitchState(ids)
+            else if (bulkData.actionType === 'ENABLE') {
+                const wasConfirmed = await dialogfyConfirmation('activate', 'staff', true)
+                if (wasConfirmed) {
+                    // need to enable all selected disabled stores. Filter the staff to find whether Id from the staff in the local store
+                    // actually is in the given Id list ... and also check the Staff isn't active already in the local store
+                    let ids = staffStore.entityPage.filter(s => dataIds.indexOf(s.id) !== -1 && !s.isActive).map(s => s.id)
+                    if (ids.length > 0) a_bulkSwitchState(ids)
+                }
             }
             else {
-                // Same case as enable but with the disable state
-                let ids = stores.value.filter(s => dataIds.indexOf(s.id) !== -1 && s.isActive).map(s => s.id)
-                a_bulkSwitchState(ids)
-            }*/
+                const wasConfirmed = await dialogfyConfirmation('deactivate', 'staff', true)
+                if (wasConfirmed) {
+                    // disable case, same as enable but with the disable state ... and also check the Staff isn't disabled already in the local store
+                    let ids = staffStore.entityPage.filter(s => dataIds.indexOf(s.id) !== -1 &&  s.isActive).map(s => s.id)
+                    if (ids.length > 0) a_bulkSwitchState(ids)
+                }
+            }
         }
 
         //#endregion ==========================================================================
