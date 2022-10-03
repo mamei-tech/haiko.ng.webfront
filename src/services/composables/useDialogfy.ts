@@ -62,14 +62,16 @@ export default function useDialogfy() {
      * over the given target
      * @param action Kind of action to confirm. Eg. create, delete
      * @param subject Subject entity of the action
+     * @param isBulk Tells if the call is for a plural subject (more than one). Eg. in bulk actions
      * @returns true if ok clicked, false otherwise
      */
-    async function dialogfyConfirmation( action: ActionKind, subject: EntityGenericNames ): Promise<boolean> {
+    async function dialogfyConfirmation( action: ActionKind, subject: EntityGenericNames, isBulk = false ): Promise<boolean> {
         let result: SweetAlertResult = await Swal.fire({
             icon:           'warning',
             titleText:      t('dialogs.confirm'),
             text:           t('dialogs.confirmation', {
                 action:  t(`crud-actions.${ action }`),
+                plural:  isBulk ? t('others.this-ones') : '',                           // just for spanish by now
                 subject: t(`entities.${ subject }.name`)
             }),
             showDenyButton: true
