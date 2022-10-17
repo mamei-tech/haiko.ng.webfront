@@ -29,34 +29,27 @@
     transition : 0.3s;
 }
 
-// sidebar carets animation alternative
-// there is another alternative https://v3.vuejs.org/guide/transitions-state.html#animating-state-with-watchers but  I don't want to install another lib
-@keyframes caret-rotate {
-    0% {
-        transform : rotate(-180deg);
+@keyframes rotateDown {
+    from {
+        transform: rotate(0deg);
     }
-    100% {
-        transform : rotate(0deg);
+    to {
+        transform: rotate(180deg);
     }
 }
-
-.caret-rotate-enter-active {
-    animation : caret-rotate 0.3s;
+@keyframes rotateUp {
+    from {
+        transform: rotate(180deg);
+    }
+    to {
+        transform: rotate(0deg);
+    }
 }
-
-.caret-rotate-leave-active {
-    animation : caret-rotate 0.3s reverse;
+.rotate-down {
+    animation: rotateDown 300ms ease 0s 1 reverse forwards;
 }
-
-// this is for animate the upper caret when the sub group close
-.caret-up-fade-enter-active,
-.caret-up-fade-leave-active {
-    transition : opacity 0.5s ease;
-}
-
-.caret-up-fade-enter-from,
-.caret-up-fade-leave-to {
-    opacity : 0;
+.rotate-up {
+    animation: rotateUp 300ms ease 0s 1 reverse forwards;
 }
 
 // used for making a simple colapsable div
@@ -64,18 +57,18 @@
     transform-origin: top;
 }
 .collapsable-enter-active {
-    animation: collapsable reverse 500ms ease;
+    animation: collapsable reverse 300ms ease;
 }
 .collapsable-leave-active {
-    animation: collapsable 500ms ease;
+    animation: collapsable 300ms ease;
 }
 @keyframes collapsable {
     from {
-        //opacity: 1;
-        transform: scaleY(1);
+        opacity: 1;
+        //transform: scaleY(1);
     }
     to {
-        //opacity: 0;
-        transform: scaleY(0);
+        opacity: 0;
+        //transform: scaleY(0);
     }
 }
