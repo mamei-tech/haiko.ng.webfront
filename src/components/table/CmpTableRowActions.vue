@@ -1,5 +1,4 @@
 <template>
-
     <div style="text-align: right">
 
         <!-- DEFAULT -->

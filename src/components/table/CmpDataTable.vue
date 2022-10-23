@@ -39,7 +39,7 @@
                         <button
                                 @click.prevent="h_clearAllFilters()"
                                 type="button"
-                                :title="$t('forms.placeholders.reset-filters')"
+                                :title="$t('form.placeholders.reset-filters')"
                                 class="btn remove btn-icon btn-sm"
                         >
                             <i class="tim-icons icon-refresh-01"></i>
@@ -67,7 +67,7 @@
                     <input v-model="search"
                            class="form-control"
                            type="text"
-                           :placeholder="cap($t('forms.placeholders.search'))"
+                           :placeholder="cap($t('form.placeholders.search'))"
                            aria-describedby="addon-right addon-left"
                            @blur="h_onSrchBlursEvt($event)"
                            @focus="h_onSrchFocusEvt($event)"

@@ -65,11 +65,10 @@
 </template>
 
 <script lang="ts">
-import { i18n } from '@/services/i18n'
 import { defineComponent } from 'vue'
 import { CmpBaseButton } from '@/components'
 import { EntityTypes } from '@/services/definitions'
-
+import { i18n } from '@/services/i18n'
 
 
 import type { SetupContext } from 'vue'

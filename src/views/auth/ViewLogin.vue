@@ -12,7 +12,7 @@
                         id="user"
                         name="username"
                         type="text"
-                        :placeholder="$t('forms.placeholders.user')"
+                        :placeholder="$t('form.placeholders.user')"
                 />
             </div>
             <div class="form-group has-label">
@@ -20,7 +20,7 @@
                         id="password"
                         name="password"
                         type="password"
-                        :placeholder="$t('forms.placeholders.pass')"
+                        :placeholder="$t('form.placeholders.pass')"
                         v-on:keydown.enter="hLoginIntent"
                 />
             </div>
@@ -41,7 +41,7 @@ import { useRouter } from 'vue-router'
 import { useForm } from 'vee-validate'
 import { useToast } from 'vue-toastification'
 import { CmpBaseButton, CmpBasicInput, CmpCard } from '@/components'
-import { VSCHEMA } from '@/views/auth/validation'
+import { VSchemaAuth } from '@/services/definitions'
 import { RoutePathNames } from '@/services/definitions/route-paths'
 import { useAuthStore } from '@/stores/auth'
 
@@ -68,7 +68,7 @@ export default defineComponent({
 
         const { tfyAuthFail } = useToastify(toast)
         const { cap } = useCommon()
-        const { handleSubmit } = useForm<IAuthFormData>({ validationSchema: VSCHEMA })
+        const { handleSubmit } = useForm<IAuthFormData>({ validationSchema: VSchemaAuth })
 
         //endregion =============================================================================
 

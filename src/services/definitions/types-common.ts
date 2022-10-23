@@ -85,18 +85,21 @@ export type IShell<T> = {
 
 /***
  * Definition for API operations that requieres a UI toast feedback
+ * T = type
  */
-export type OPSKind = 'deletion' | 'addition' | 'update' | 'enable' | 'disable' | 'request'
+export type TOPSKind = 'deletion' | 'addition' | 'update' | 'enable' | 'disable' | 'request'
 
 /***
  * Definition for UI actions that requieres a dialog confirmations or UI feedback
+ * T = type
  */
-export type ActionKind = 'delete' | 'create' | 'update' | 'activate' | 'deactivate'
+export type TActionKind = 'delete' | 'create' | 'update' | 'activate' | 'deactivate'
 
 /**
  * Definition for entities forms view mode
+ * T = type
  */
-export type FormMode = 'edit' | 'create' | 'details'
+export type TFormMode = 'edit' | 'create' | 'details'
 
 /**
  * This mostly used in the dialog (Dialogfy) custom composable, as constraint type of actual business entities names

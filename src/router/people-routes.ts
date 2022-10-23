@@ -14,8 +14,8 @@ export const PeopleRoutes: Array<RouteRecordRaw> = [
         meta: { layout: LayBaseDashboard, reqAuth: true }
     },
     {
-        path: RoutePaths.staffForm,
-        name: RoutePathNames.staffForm,
+        path: RoutePaths.staffCreate,
+        name: RoutePathNames.staffCreate,
         component: () => import('../views/people/staff/ViewFormStaff.vue'),
         meta: { layout: LayBaseDashboard, reqAuth: true, }
     },
