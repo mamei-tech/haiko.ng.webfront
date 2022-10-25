@@ -304,8 +304,8 @@ export default defineComponent({
 
         //region ======= HELPERS ==============================================================
 
-        const rotationCaretClass = ref('')                  // rotate the caret | this is the CSS alternative, no Vue transition needed
-        const doWeShowCollapsable = ref(false)              // start the animation of the actual collapsible
+        const rotationCaretClass = ref('')                                      // rotate the caret | this is the CSS alternative, no Vue transition needed
+        const doWeShowCollapsable = ref(cmptdFmode.value === 'create')          // start the animation of the actual collapsible
 
         const h_toggleCollapsable = () => {
             doWeShowCollapsable.value = !doWeShowCollapsable.value
@@ -315,12 +315,6 @@ export default defineComponent({
         //endregion ===========================================================================
 
         //region ======= EVENTS HANDLERS ======================================================
-
-        /*const h_submit = handleSubmit(formData => {
-            if (cmptdFmode.value == ('create' as TFormMode)) a_Create(formData, false)
-            if (cmptdFmode.value == ('edit' as TFormMode) && meta.value.dirty) a_Edit(formData)
-            if (cmptdFmode.value == ('edit' as TFormMode) && !meta.value.dirty) h_Back()
-        })*/
 
         /**
          * Handles the form submission event through the vee-validate 'SubmissionHandler' so we can take advantage of all
