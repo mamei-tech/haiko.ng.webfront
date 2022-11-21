@@ -106,11 +106,25 @@
                                         {{ $t('form.fields.staff.system-role') }}
                                     </label>
                                     <div class="col-md-9">
-                                        <CmpBasicInput
-                                                name="roleId"
-                                                type="number"
-                                                v-model="iniFormData.roleId"
-                                        />
+                                        <CmpMultiselectField placeholder="- rol - "
+                                                             :options="nomencStore.getRolesForMultiselect"
+                                                             name="roleId"
+                                                             class="mb-2"
+                                                             closeOnSelect>
+
+                                            <!--option coming from slot child component ('slots props') [option] -->
+                                            <template #customOption="{option}">
+                                                {{  option.label }}
+                                            </template>
+
+                                            <!-- option coming from slot child component ('slots props') [value] -->
+                                            <template #customSingleLabel="{value}">
+                                                <div class="multiselect-placeholder">
+                                                    {{ value.label }}
+                                                </div>
+                                            </template>
+
+                                        </CmpMultiselectField>
                                     </div>
                                 </div>
 
@@ -200,16 +214,17 @@
 <script lang="ts">
 import { useToast } from 'vue-toastification'
 import { useStaffStore } from '@/stores/staff'
-import { computed, onMounted, ref, defineComponent } from 'vue'
+import { useNomencStore } from '@/stores/nomenc'
+import useFactory from '@/services/composables/useFactory'
+import useToastify from '@/services/composables/useToastify'
+import { computed, onMounted, ref, defineComponent, reactive } from 'vue'
 import { useForm } from "vee-validate";
 import { useRoute, useRouter } from "vue-router";
-import { CmpCard, CmpFormActionsButton, CmpBasicInput, CmpBasicCheckbox } from '@/components'
+import { CmpCard, CmpFormActionsButton, CmpBasicInput, CmpBasicCheckbox, CmpMultiselectField } from '@/components'
 import { RoutePathNames, VSchemaStaffCreate, VSchemaStaffEdit } from '@/services/definitions'
-import useFactory from '@/services/composables/useFactory'
 
 import type { ComputedRef } from 'vue'
-import type { IStaffDto, TFormMode, TOPSKind } from '@/services/definitions'
-import useToastify from '@/services/composables/useToastify'
+import type { IDtoStaff, TFormMode, TOPSKind, IMultiselectBasic } from '@/services/definitions'
 
 
 export default defineComponent({
@@ -219,6 +234,7 @@ export default defineComponent({
         CmpCard,
         CmpBasicInput,
         CmpBasicCheckbox,
+        CmpMultiselectField,
         CmpFormActionsButton
     },
 
@@ -226,35 +242,39 @@ export default defineComponent({
 
         //region ======= DECLARATIONS & LOCAL STATE ===========================================
 
-        const staffStore = useStaffStore()
-
         const route = useRoute()
         const router = useRouter()
+
+        const staffStore = useStaffStore()                              // Pinia store for staff
+        const nomencStore = useNomencStore()                            // Pinia store for nomenclatures
         const { fmode, id } = route.params                              // remember, fmode (form mode) property denotes the mode this form view was called
+
         const toast = useToast()                                        // The toast lib interface
         const { tfyBasicSuccess, tfyBasicFail } = useToastify(toast)
         const { mkStaff } = useFactory()
 
-        let iniFormData = ref(mkStaff())                                // initial form data
+        let iniFormData = reactive<IDtoStaff>(mkStaff())                 // initial form data
+        // let rolesData = ref<IMultiselectBasic[]>([])                  // I will use rer 'cause is only one nested object
 
         //endregion ===========================================================================
 
         //#region ======= FETCHING DATA & ACTIONS =============================================
 
-        /** If this view is called as edit mode rather than creation mode, we need to call the backend API
-         * asking for the resource so we can populate the
+        /**
+         * If this view is called as edit mode rather than creation mode, we need to call the backend API
+         * asking for the resource so we can populate the datatable
+         *
+         * Manually setting the needed values is way cleaner than the other way around. This is needed mainly because api call is asynchronous.
          */
         onMounted(() => {
-            // Manually setting the values is way cleaner than the other way around. This is needed mainly because api call is asynchronous.
+                    // TODO this is for edition mode, so it need to be ready for that mode
 
-            // console.warn(cmptdFmode.value)
-
-            // TODO this is for edition mode, so it need to be ready for that mode
-            /*if (cmptdFmode.value === ('edit' as TFormMode)) {
-                const storeFromApi = await getStore(+id)
-                setValues(storeFromApi)
-            }*/
-        })
+                    /*if (cmptdFmode.value === ('edit' as TFormMode)) {
+                     const storeFromApi = await getStore(+id)
+                     setValues(storeFromApi)
+                     }*/
+                }
+        )
 
         /**
          * Store action for the creating (request) the new entity on the backend system. This value is related to the
@@ -263,13 +283,13 @@ export default defineComponent({
          * @param newStaff payload with the data for the request
          * @param doWeNeedToStay Tell us where to go after the successfully creation of the entity
          */
-        const a_Create = ( newStaff: IStaffDto, doWeNeedToStay: boolean): void => {
+        const a_Create = ( newStaff: IDtoStaff, doWeNeedToStay: boolean): void => {
 
             // some aux vars
             const sub = 'Staff'
             const op: TOPSKind = 'addition'
 
-            staffStore.reqInsertStaff(newStaff).then(() => {
+            staffStore.reqInsertStaff(newStaff, doWeNeedToStay).then(() => {
                 tfyBasicSuccess(sub, op)
 
                 // so now what ?
@@ -279,7 +299,7 @@ export default defineComponent({
             }).catch(err => tfyBasicFail(err, sub, op))
         }
 
-        const a_Edit = ( editedStaff: IStaffDto ): void => {
+        const a_Edit = ( editedStaff: IDtoStaff ): void => {
             console.warn('edit clicked')
         }
 
@@ -295,7 +315,7 @@ export default defineComponent({
         const cmptdFmode: ComputedRef<string | string[]> = computed(() => fmode)
 
         // getting the vee validate method to manipulate the form related actions from the view
-        const { handleSubmit, meta, setValues, resetForm } = useForm<IStaffDto>({
+        const { handleSubmit, meta, setValues, resetForm } = useForm<IDtoStaff>({
             validationSchema: fmode === 'create' as TFormMode ? VSchemaStaffCreate : VSchemaStaffEdit,
             initialValues:    iniFormData
         })
@@ -355,6 +375,7 @@ export default defineComponent({
 
             cmptdFmode,
             iniFormData,
+            nomencStore,
 
             h_submit,
             h_Back,
@@ -363,9 +384,6 @@ export default defineComponent({
             h_toggleCollapsable
         }
     }
-
-    // TODO create a button for stay in the form after new creation, it will apear only in the creation mode of the form
-
 })
 </script>
 

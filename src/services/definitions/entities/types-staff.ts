@@ -12,9 +12,9 @@ export interface IStaffRow {
     id: number,
     firstName: string,
     username: string,
-    roleId: number,
+    roleId: number | string,
     isActive: boolean,
-    created?: Date,                             // TODO poner como info fija "miembro desde" y hacer el cálculo
+    created?: Date,                             // TODO en el modo edit, poner como info fija "miembro desde" y hacer el cálculo
     cell: number,
     avatarPath: string
 }
@@ -22,7 +22,7 @@ export interface IStaffRow {
 /**
  * Main Staff entity interface
  */
-export interface IStaffDto extends IStaffRow {
+export interface IDtoStaff extends IStaffRow {
     lastName: string,
     email: string,
     password? : string,

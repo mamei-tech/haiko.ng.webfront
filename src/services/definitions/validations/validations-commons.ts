@@ -59,9 +59,6 @@ export const VSchemaCommon = {
 
         return true
     },
-
-    // TODO Cuando estes en modo crear, trata que el collapse del password salga desplegado
-    // FIXME campo del rol / de paso arregla el de la tabla
 }
 
 //endregion =============================================================================

@@ -2,12 +2,15 @@ import axios from './api'
 import config from './config'
 
 import type { AxiosPromise } from 'axios'
-import type { IDataTableQuery, IStaffDto, IStaffPage } from '@/services/definitions'
+import type { IDataTableQuery, IDtoStaff, IStaffPage } from '@/services/definitions'
 
 
 const version = config.site.current_version
-const url = `v${ version }/mngmt/mcstaff`
+const url = `v${ version }/mngmt/cmstaff`
 
+/***
+ * REST API class for backend interaction logic related with Staff
+ */
 export class ApiStaff {
 
     /**
@@ -16,7 +19,7 @@ export class ApiStaff {
      * @param staff
      * @returns The identifier of the just created store (the same as the owner)
      */
-    public static insert( staff: IStaffDto ): AxiosPromise<number> {
+    public static insert( staff: IDtoStaff ): AxiosPromise<number> {
         return axios.post(url, staff)
     }
 

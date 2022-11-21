@@ -30,8 +30,9 @@
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { defineComponent, onMounted } from 'vue'
-import { useStaffStore } from '@/stores/staff'
 import { useToast } from 'vue-toastification'
+import { useStaffStore } from '@/stores/staff'
+import { useNomencStore } from '@/stores/nomenc'
 import { HStaffTable } from '@/services/definitions/data-datatables'
 import { RoutePathNames } from '@/services/definitions'
 import { EntityTypes, queryBase } from '@/services/definitions'
@@ -54,13 +55,14 @@ export default defineComponent({
 
         const {t} = useI18n({useScope: 'global'})
 
-        const staffStore = useStaffStore()
+        const staffStore = useStaffStore()                                  // Pinia store for staff
+        const nomencStore = useNomencStore()                                // Pinia store for nomenclatures
         const eMode: EntityTypes = EntityTypes.Staff
 
         const router = useRouter()
         const toast = useToast()                                            // The toast lib interface
-        const columns = HStaffTable
-        const filters = [ 'storeType', 'isActive' ]
+        const columns = HStaffTable                                         // entity customized datatable header
+        const filters = [ 'roleId', 'isActive' ]                            // datatable filters
 
         const { tfyBasicSuccess, tfyBasicFail } = useToastify(toast)
         const { dialogfyConfirmation } = useDialogfy()
@@ -72,9 +74,16 @@ export default defineComponent({
         /**
          * setup is called before component creation, so the onMounted hook is a good time / place to
          * invoke data population method through web API request.
+         *
+         * Manually setting the needed values is way cleaner than the other way around. This is needed mainly because api call is asynchronous.
          */
         onMounted(() => {
-            // populate staff datatable
+
+            // getting roles definitions from the system (side effect)
+            // this is used to fetch staff roles data from the system so we can map the roleId to rolename in the datatable column
+            nomencStore.reqNomencRoles().catch(err => tfyBasicFail(err, 'Roles', 'request'))
+
+            // getting the staff list data for populating staff datatable (side effect)
             staffStore.reqStaffPages(queryBase).catch(err => tfyBasicFail(err, 'Staff', 'request'))
         })
 

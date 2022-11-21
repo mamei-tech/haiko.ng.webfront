@@ -1,11 +1,11 @@
-import type { IStaffDto } from '@/services/definitions'
+import type { IDtoStaff } from '@/services/definitions'
 
 
 export default function useFactory() {
 
     //#region ======= FACTORY METHODS =====================================================
 
-    const mkStaff = (): IStaffDto => {
+    const mkStaff = (): IDtoStaff => {
         return {
             id: 0,
             firstName: '',

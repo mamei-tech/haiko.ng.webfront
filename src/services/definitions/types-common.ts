@@ -263,3 +263,11 @@ export interface IBasicPageState {
     pageSize: number,
     totalRecords: number                  // Total entity count on the entire system
 }
+
+/**
+ * Basic multiselect interface data
+ */
+export interface IMultiselectBasic {
+    value: number|string,
+    label: string
+}

@@ -8,8 +8,9 @@ import { VSchemaCommon } from '@/services/definitions/validations/validations-co
 import { VSchemaAuth } from '@/services/definitions/validations/validations-auth'
 
 import type { Problem, ErrorDictionary } from '@/services/definitions/types-errors'
-import type { TOPSKind, Function0, Function1, IColumnHeader, IDataTableQuery, ITableChkEmit, BULK_ACTION, ById, IIndexable, IChecked, Filter, IBasicPageState, IDataListBasicResponse, TFormMode, TActionKind, EntityGenericNames, IdsArray, IBulkData  } from './types-common'
-import type { IStaffPage, IStaffRow, IStaffDto } from '@/services/definitions/entities/types-staff'
+import type { TOPSKind, Function0, Function1, IColumnHeader, IDataTableQuery, ITableChkEmit, BULK_ACTION, ById, IIndexable, IChecked, Filter, IBasicPageState, IDataListBasicResponse, TFormMode, TActionKind, EntityGenericNames, IdsArray, IBulkData, IMultiselectBasic, IShell, IScrollInfo  } from './types-common'
+import type { IStaffPage, IStaffRow, IDtoStaff } from '@/services/definitions/entities/types-staff'
+import type { IRoleBasic } from '@/services/definitions/entities/types-rbac'
 
 
 export {
@@ -32,7 +33,7 @@ export {
     // Common Types
     Problem,
     ErrorDictionary,
-    IDataTableQuery, ITableChkEmit, IColumnHeader, IIndexable, IChecked, IBasicPageState, IDataListBasicResponse, IBulkData,
+    IDataTableQuery, ITableChkEmit, IColumnHeader, IIndexable, IChecked, IBasicPageState, IDataListBasicResponse, IBulkData, IMultiselectBasic, IShell, IScrollInfo,
     ById, BULK_ACTION, Filter, TFormMode, TActionKind, EntityGenericNames, IdsArray,
     ALIGN_POSITION,
 
@@ -43,6 +44,8 @@ export {
     // =====  ENTITIES =====
 
     // staff
-    IStaffPage,  IStaffRow, IStaffDto
+    IStaffPage,  IStaffRow, IDtoStaff,
 
+    // rbac
+    IRoleBasic
 }
