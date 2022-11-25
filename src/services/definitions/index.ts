@@ -2,6 +2,7 @@ import { ALIGN_POSITION } from './types-common'
 import { RoutePaths, RoutePathNames } from './route-paths'
 import { HCatalogsTable, PAGE_SIZE, queryBase } from './data-datatables'
 import { EntityTypes } from '@/services/definitions/enums-entities'
+import { HTTP_RESPONSES } from '@/services/definitions/enums-common'
 
 import { VSchemaStaffCreate, VSchemaStaffEdit } from '@/services/definitions/validations/validations-people'
 import { VSchemaCommon } from '@/services/definitions/validations/validations-commons'
@@ -25,6 +26,7 @@ export {
 
     // Enums
     EntityTypes,
+    HTTP_RESPONSES,
 
     // Functions & other Types
     TOPSKind,

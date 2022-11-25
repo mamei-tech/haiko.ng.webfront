@@ -43,7 +43,7 @@ export const useStaffStore = defineStore({
                 // so the nomenclatures store has some role data, so we are going to map the roleId to roleName for each role
                 return state.entityPage.map((row: IStaffRow) => {
 
-                    // there is a chance that this line run, and the roleId field was already mapped to the role name, so we have to check first
+                    // there is a chance that this line run, and the roleId field was already mapped to the role name making it a string value so we can used as index anymore, so we have to check first
                     if(isNumber(row.roleId))
                         row.roleId = nomencStore.getRolesByIdMap[+row.roleId].rName
 

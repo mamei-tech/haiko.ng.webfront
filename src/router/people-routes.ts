@@ -14,12 +14,17 @@ export const PeopleRoutes: Array<RouteRecordRaw> = [
         meta: { layout: LayBaseDashboard, reqAuth: true }
     },
     {
+        path: RoutePaths.staffEdit,
+        name: RoutePathNames.staffEdit,
+        component: () => import('../views/people/staff/ViewFormStaff.vue'),
+        meta: { layout: LayBaseDashboard, reqAuth: true, }
+    },
+    {
         path: RoutePaths.staffCreate,
         name: RoutePathNames.staffCreate,
         component: () => import('../views/people/staff/ViewFormStaff.vue'),
         meta: { layout: LayBaseDashboard, reqAuth: true, }
     },
-
 
     // ======== CLIENTS
     {

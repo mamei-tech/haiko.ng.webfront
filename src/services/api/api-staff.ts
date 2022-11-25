@@ -1,5 +1,7 @@
 import axios from './api'
 import config from './config'
+import { HTTP_RESPONSES } from '@/services/definitions'
+import useFactory from '@/services/composables/useFactory'
 
 import type { AxiosPromise } from 'axios'
 import type { IDataTableQuery, IDtoStaff, IStaffPage } from '@/services/definitions'
@@ -7,11 +9,14 @@ import type { IDataTableQuery, IDtoStaff, IStaffPage } from '@/services/definiti
 
 const version = config.site.current_version
 const url = `v${ version }/mngmt/cmstaff`
+const { mkStaff } = useFactory()
 
 /***
  * REST API class for backend interaction logic related with Staff
  */
 export class ApiStaff {
+
+    //#region ======= SERVER INTERACTION METHODS (PROMISES / REQUESTS) ====================
 
     /**
      * Create / insert a new Staff on the system
@@ -42,6 +47,14 @@ export class ApiStaff {
     }
 
     /**
+     * Get formulary data information from server, pertaining to a Staff given its identifier
+     * @param id staff identifier
+     */
+    public static reqStaffById (id: number): AxiosPromise<IDtoStaff> {
+        return axios.get(url + `/${ id }`)
+    }
+
+    /**
      * Invoke an api call to deletes a bunch of entities
      * @param ids List of entities identifiers
      */
@@ -58,4 +71,25 @@ export class ApiStaff {
     public static bulkToggle( ids: Array<number> ): AxiosPromise<void> {
         return axios.post(url + '/toggle', ids)
     }
+
+    //endregion ===========================================================================
+
+    //#region ======= DATA READY METHODS ==================================================
+
+    /**
+     * Tries to get formulary data information, pertaining to a Staff given its identifier.
+     * ❗ If information from server could not be obtained, an empty Entity will be returned then
+     *
+     * @param id staff identifier
+     */
+    public static async getStaffById( id: number ): Promise<IDtoStaff> {
+        const response = await ApiStaff.reqStaffById(+id)
+
+        if (response.status === HTTP_RESPONSES.OK) return response.data as IDtoStaff
+        return mkStaff()
+    }
+
+    //endregion ===========================================================================
+
+
 }

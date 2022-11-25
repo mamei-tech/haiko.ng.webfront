@@ -215,6 +215,7 @@
 import { useToast } from 'vue-toastification'
 import { useStaffStore } from '@/stores/staff'
 import { useNomencStore } from '@/stores/nomenc'
+import { ApiStaff } from '@/services/api/api-staff'
 import useFactory from '@/services/composables/useFactory'
 import useToastify from '@/services/composables/useToastify'
 import { computed, onMounted, ref, defineComponent, reactive } from 'vue'
@@ -224,7 +225,7 @@ import { CmpCard, CmpFormActionsButton, CmpBasicInput, CmpBasicCheckbox, CmpMult
 import { RoutePathNames, VSchemaStaffCreate, VSchemaStaffEdit } from '@/services/definitions'
 
 import type { ComputedRef } from 'vue'
-import type { IDtoStaff, TFormMode, TOPSKind, IMultiselectBasic } from '@/services/definitions'
+import type { IDtoStaff, TFormMode, TOPSKind } from '@/services/definitions'
 
 
 export default defineComponent({
@@ -266,15 +267,14 @@ export default defineComponent({
          *
          * Manually setting the needed values is way cleaner than the other way around. This is needed mainly because api call is asynchronous.
          */
-        onMounted(() => {
-                    // TODO this is for edition mode, so it need to be ready for that mode
+        onMounted(async () => {
 
-                    /*if (cmptdFmode.value === ('edit' as TFormMode)) {
-                     const storeFromApi = await getStore(+id)
-                     setValues(storeFromApi)
-                     }*/
-                }
-        )
+            // Manually populate the form data. This is needed mainly because api call is asynchronous.
+            if (cmptdFmode.value === 'edit' as TFormMode) {
+                const formData = await ApiStaff.getStaffById(+id)
+                setValues(formData)
+            }
+        })
 
         /**
          * Store action for the creating (request) the new entity on the backend system. This value is related to the

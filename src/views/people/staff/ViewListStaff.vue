@@ -15,7 +15,8 @@
                                   @navCreateIntent="h_navCreateStaff"
                                   @requestIntent="h_reqQuery"
 
-                                  @deleteIntent="h_reqDeleteStaff"
+                                  @deleteIntent="h_intentRowDelete"
+                                  @editIntent="h_intentRowEdit"
 
                                   @bulkActionIntent="h_BulkActionIntent"
                     >
@@ -40,7 +41,7 @@ import { CmpCard, CmpDataTable } from '@/components'
 import useDialogfy from '@/services/composables/useDialogfy'
 import useToastify from '@/services/composables/useToastify'
 
-import type { TFormMode, IDataTableQuery, IBulkData, TOPSKind } from '@/services/definitions'
+import type { TFormMode, IDataTableQuery, IBulkData, TOPSKind, IStaffRow } from '@/services/definitions'
 
 
 export default defineComponent({
@@ -127,9 +128,27 @@ export default defineComponent({
 
         //#region ======= EVENTS HANDLERS =====================================================
 
-        async function h_reqDeleteStaff( objectId: number ) {
+        /**
+         * Handler for the intent of deleting a row from the table
+         * @param objectId object identifier to be deleted
+         */
+        async function h_intentRowDelete( objectId: number ) {
             const wasConfirmed = await dialogfyConfirmation('delete', 'staff')
             if (wasConfirmed) a_reqDelete([ objectId ])
+        }
+
+        /**
+         * Handler for the intent of edit a record from the table
+         * @param rowData data of the row
+         */
+        function h_intentRowEdit( rowData: IStaffRow ) {
+            router.push({
+                name:   RoutePathNames.staffEdit,
+                params: {
+                    fmode: 'edit' as TFormMode,
+                    id:    rowData.id,
+                }
+            })
         }
 
         function h_navCreateStaff() {
@@ -184,9 +203,11 @@ export default defineComponent({
             staffStore,
 
             h_reqQuery,
-            h_reqDeleteStaff,
             h_navCreateStaff,
-            h_BulkActionIntent
+            h_BulkActionIntent,
+
+            h_intentRowEdit,
+            h_intentRowDelete
         }
     }
 

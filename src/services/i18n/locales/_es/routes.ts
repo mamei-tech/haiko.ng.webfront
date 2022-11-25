@@ -31,8 +31,7 @@ export default {
     //#region ======== STAFF ================================================================
     [ RoutePathNames.staff ]: "@:{'entities.staff.section-name'}",
     [ RoutePathNames.staffCreate ]: '@:crud-actions.create @:entities.staff.section-name',
-    [ RoutePathNames.staffForm ]: '@:crud-actions.edition @:entities.staff.section-name',
-
+    [ RoutePathNames.staffEdit ]: '@:crud-actions.edition @:entities.staff.section-name',
     // [ RoutePathNames.storesMenus ]: "Gestión de @:{'menu.menu'}s",
     // [ RoutePathNames.storeMenuDetails ]: 'Detalles de @:menu.menu',
     // [ RoutePathNames.storeMenuCreate ]: '@:crud-actions.create @:menu.menu',

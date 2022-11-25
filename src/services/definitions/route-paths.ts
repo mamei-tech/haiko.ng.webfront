@@ -4,9 +4,10 @@ export const RoutePaths = {
 
     // PEOPLE section
 
-    staffList:   '/staff/list',
+    staffList: '/staff/list',
+    // staffForm:   '/staff/:fmode/:id?',
+    staffEdit:   '/staff/:fmode/:id',
     staffCreate: '/staff/:fmode',
-    staffForm:   '/staff/:fmode/:id?',
 
     clientsList: '/clients/list',
     authList:    '/authorization/list'
@@ -20,8 +21,7 @@ export const RoutePathNames = {
 
     staff:       'staff',
     staffCreate: 'staff-create',
-    staffForm:   'staff-edit',
-
+    staffEdit:   'staff-edit',
 
     clients: 'clients',
     auth:    'authorization'
