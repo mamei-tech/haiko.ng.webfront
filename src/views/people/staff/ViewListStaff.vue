@@ -105,8 +105,7 @@ export default defineComponent({
 
             staffStore.reqStaffDeletion({ ids }).then(() => {
                 tfyBasicSuccess(sub, op)
-
-                // If a user delete al the records from a page of the table, then the table becomes empty, so in this case we need to make a request for the remains data (in the server, ... if any) and repopulate the table / page
+                // If a user delete all the records from a page of the table, then the table becomes empty, so in this case we need to make a request for the remains data (in the server, ... if any) and repopulate the table / page
                 if (staffStore.pageSize == 0 && staffStore.totalRecords > 0)
                     staffStore.reqStaffPages(queryBase).catch(err => tfyBasicFail(err, 'Staff', 'request'))
 

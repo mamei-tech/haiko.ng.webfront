@@ -218,11 +218,12 @@ import { useNomencStore } from '@/stores/nomenc'
 import { ApiStaff } from '@/services/api/api-staff'
 import useFactory from '@/services/composables/useFactory'
 import useToastify from '@/services/composables/useToastify'
+import useDialogfy from '@/services/composables/useDialogfy'
 import { computed, onMounted, ref, defineComponent, reactive } from 'vue'
-import { useForm } from "vee-validate";
-import { useRoute, useRouter } from "vue-router";
+import { Field, useForm } from 'vee-validate'
+import { useRoute, useRouter } from 'vue-router'
 import { CmpCard, CmpFormActionsButton, CmpBasicInput, CmpBasicCheckbox, CmpMultiselectField } from '@/components'
-import { RoutePathNames, VSchemaStaffCreate, VSchemaStaffEdit } from '@/services/definitions'
+import { queryBase, RoutePathNames, VSchemaStaffCreate, VSchemaStaffEdit } from '@/services/definitions'
 
 import type { ComputedRef } from 'vue'
 import type { IDtoStaff, TFormMode, TOPSKind } from '@/services/definitions'
@@ -232,6 +233,7 @@ export default defineComponent({
     name: 'ViewFormStaff',
 
     components: {
+        Field,
         CmpCard,
         CmpBasicInput,
         CmpBasicCheckbox,
@@ -252,6 +254,7 @@ export default defineComponent({
 
         const toast = useToast()                                        // The toast lib interface
         const { tfyBasicSuccess, tfyBasicFail } = useToastify(toast)
+        const { dialogfyConfirmation } = useDialogfy()
         const { mkStaff } = useFactory()
 
         let iniFormData = reactive<IDtoStaff>(mkStaff())                 // initial form data
@@ -268,11 +271,9 @@ export default defineComponent({
          * Manually setting the needed values is way cleaner than the other way around. This is needed mainly because api call is asynchronous.
          */
         onMounted(async () => {
-
-            // Manually populate the form data. This is needed mainly because api call is asynchronous.
             if (cmptdFmode.value === 'edit' as TFormMode) {
-                const formData = await ApiStaff.getStaffById(+id)
-                setValues(formData)
+                const formDataFromServer = await ApiStaff.getStaffById(+id)
+                setValues(formDataFromServer)               // using setValues from vee-validate for populating the inputs
             }
         })
 
@@ -300,11 +301,21 @@ export default defineComponent({
         }
 
         const a_Edit = ( editedStaff: IDtoStaff ): void => {
+
+            console.log(editedStaff)
             console.warn('edit clicked')
         }
 
         const a_Delete = ( staffId: number ): void => {
-            console.warn('delete clicked')
+            // some aux vars
+            const sub = 'Staff'
+            const op: TOPSKind = 'deletion'
+
+            staffStore.reqStaffDeletion({ ids: [ staffId ] })
+            .then(() => {
+                tfyBasicSuccess(sub, op)
+                h_Back()
+            }).catch(err => tfyBasicFail(err, sub, op))
         }
 
         //#endregion ==========================================================================
@@ -363,18 +374,25 @@ export default defineComponent({
             router.push({ name: RoutePathNames.staff });
         }
 
-        const h_Delete = async () => {
-            console.log('pending delete function')
+        const h_Delete = async ( objectId: number ) => {
+            if (fmode) {
+                const isOk = await dialogfyConfirmation('delete', 'staff')
+                if (isOk) {
+                    a_Delete(+id)               // id from url params
+                    // a_Delete(iniFormData.value.id!)  this is from original code, to use this way we have to sync 'formDataFromServer' and 'iniFormData' manually
+                }
+            }
         }
 
         //endregion ===========================================================================
 
         return {
+            iniFormData,
+
             doWeShowCollapsable,
             rotationCaretClass,
 
             cmptdFmode,
-            iniFormData,
             nomencStore,
 
             h_submit,
