@@ -13,7 +13,7 @@ import type { ById, IIndexable, IMultiselectBasic, IRoleBasic } from '@/services
 // https://pinia.vuejs.org/core-concepts/#setup-stores
 
 // Sample of option store
-export const useNomencStore = defineStore({
+export const useSt_Nomenclatures = defineStore({
     id: 'nomenc',
 
     state: (): IStaffState => ({

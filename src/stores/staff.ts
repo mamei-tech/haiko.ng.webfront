@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { useNomencStore } from '@/stores/nomenc'
+import { useSt_Nomenclatures } from '@/stores/nomenc'
 import { ApiStaff } from '@/services/api/api-staff'
 import { IsEmptyObj, isNumber } from '@/services/helpers/help-defaults'
 
@@ -7,11 +7,10 @@ import type { IDataTableQuery, IStaffRow, IBasicPageState, IdsArray } from '@/se
 import type { IDtoStaff } from '@/services/definitions'
 
 
-
 // https://pinia.vuejs.org/core-concepts/#setup-stores
 
 // Sample of option store
-export const useStaffStore = defineStore({
+export const useSt_Staff = defineStore({
     id: 'staff',
 
     state: () : IStaffState => ({
@@ -35,9 +34,9 @@ export const useStaffStore = defineStore({
          * @param state Staff store state
          */
         getStaffList: ( state ) : Array<IStaffRow> => {
-            const nomencStore = useNomencStore()                                            // Pinia instance of the nomenclature store
+            const st_Nomenclatures = useSt_Nomenclatures()                                            // Pinia instance of the nomenclature store
 
-            if (IsEmptyObj(nomencStore.getRolesByIdMap)) return state.entityPage       // If there are no roles yet, retrieve the staff page as it is
+            if (IsEmptyObj(st_Nomenclatures.getRolesByIdMap)) return state.entityPage       // If there are no roles yet, retrieve the staff page as it is
             else {
 
                 // so the nomenclatures store has some role data, so we are going to map the roleId to roleName for each role
@@ -45,7 +44,7 @@ export const useStaffStore = defineStore({
 
                     // there is a chance that this line run, and the roleId field was already mapped to the role name making it a string value so we can used as index anymore, so we have to check first
                     if(isNumber(row.roleId))
-                        row.roleId = nomencStore.getRolesByIdMap[+row.roleId].rName
+                        row.roleId = st_Nomenclatures.getRolesByIdMap[+row.roleId].rName
 
                     return row
                 })

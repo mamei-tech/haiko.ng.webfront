@@ -107,7 +107,7 @@
                                     </label>
                                     <div class="col-md-9">
                                         <CmpMultiselectField placeholder="- rol - "
-                                                             :options="nomencStore.getRolesForMultiselect"
+                                                             :options="st_Nomenclatures.getRolesForMultiselect"
                                                              name="roleId"
                                                              class="mb-2"
                                                              closeOnSelect>
@@ -213,8 +213,8 @@
 
 <script lang="ts">
 import { useToast } from 'vue-toastification'
-import { useStaffStore } from '@/stores/staff'
-import { useNomencStore } from '@/stores/nomenc'
+import { useSt_Staff } from '@/stores/staff'
+import { useSt_Nomenclatures } from '@/stores/nomenc'
 import { ApiStaff } from '@/services/api/api-staff'
 import useFactory from '@/services/composables/useFactory'
 import useToastify from '@/services/composables/useToastify'
@@ -257,8 +257,8 @@ export default defineComponent({
         const route = useRoute()
         const router = useRouter()
 
-        const staffStore = useStaffStore()                              // Pinia store for staff
-        const nomencStore = useNomencStore()                            // Pinia store for nomenclatures
+        const st_Staff = useSt_Staff()                                  // Pinia store for staff
+        const st_Nomenclatures = useSt_Nomenclatures()                  // Pinia store for nomenclatures
         const { fmode, id } = route.params                              // remember, fmode (form mode) property denotes the mode this form view was called | checkout the type TFormMode in types definitions
 
         const toast = useToast()                                        // The toast lib interface
@@ -296,7 +296,7 @@ export default defineComponent({
          */
         const a_Create = ( newStaff: IDtoStaff, doWeNeedToStay: boolean): void => {
 
-            staffStore.reqInsertStaff(newStaff).then(() => {
+            st_Staff.reqInsertStaff(newStaff).then(() => {
                 tfyBasicSuccess(ENTITY_NAMES.STAFF, OPS_KIND_STR.ADDITION, newStaff.firstName)
 
                 // so now what ?
@@ -313,7 +313,7 @@ export default defineComponent({
          */
         const a_Edit = ( editedStaff: IDtoStaff, doWeNeedToStay: boolean ): void => {
 
-            staffStore.reqStaffUpdate(editedStaff).then(() => {
+            st_Staff.reqStaffUpdate(editedStaff).then(() => {
                 tfyBasicSuccess(ENTITY_NAMES.STAFF, OPS_KIND_STR.UPDATE, editedStaff.firstName)
 
                 // so now what ?
@@ -324,7 +324,7 @@ export default defineComponent({
 
         const a_Delete = ( staffId: number, entityReference: undefined | string = undefined ): void => {
 
-            staffStore.reqStaffDeletion({ ids: [ staffId ] })
+            st_Staff.reqStaffDeletion({ ids: [ staffId ] })
             .then(() => {
                 tfyBasicSuccess(ENTITY_NAMES.STAFF, OPS_KIND_STR.DELETION, entityReference)
                 h_Back()
@@ -404,7 +404,7 @@ export default defineComponent({
             rotationCaretClass,
 
             cmptdFmode,
-            nomencStore,
+            st_Nomenclatures,
 
             h_submit,
             h_Back,
