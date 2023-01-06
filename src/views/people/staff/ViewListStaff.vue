@@ -35,13 +35,13 @@ import { useToast } from 'vue-toastification'
 import { useStaffStore } from '@/stores/staff'
 import { useNomencStore } from '@/stores/nomenc'
 import { HStaffTable } from '@/services/definitions/data-datatables'
-import { RoutePathNames } from '@/services/definitions'
+import { ACTION_KIND_STR, BULK_ACTIONS, ENTITY_NAMES, FMODE, OPS_KIND_STR, RoutePathNames } from '@/services/definitions'
 import { EntityTypes, queryBase } from '@/services/definitions'
 import { CmpCard, CmpDataTable } from '@/components'
 import useDialogfy from '@/services/composables/useDialogfy'
 import useToastify from '@/services/composables/useToastify'
 
-import type { TFormMode, IDataTableQuery, IBulkData, TOPSKind, IStaffRow } from '@/services/definitions'
+import type { TFormMode, IDataTableQuery, IBulkData, IStaffRow } from '@/services/definitions'
 
 
 export default defineComponent({
@@ -82,10 +82,10 @@ export default defineComponent({
 
             // getting roles definitions from the system (side effect)
             // this is used to fetch staff roles data from the system so we can map the roleId to rolename in the datatable column
-            nomencStore.reqNomencRoles().catch(err => tfyBasicFail(err, 'Roles', 'request'))
+            nomencStore.reqNomencRoles().catch(err => tfyBasicFail(err, ENTITY_NAMES.ROLE, OPS_KIND_STR.REQUEST))
 
             // getting the staff list data for populating staff datatable (side effect)
-            staffStore.reqStaffPages(queryBase).catch(err => tfyBasicFail(err, 'Staff', 'request'))
+            staffStore.reqStaffPages(queryBase).catch(err => tfyBasicFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.REQUEST))
         })
 
         //endregion ===========================================================================
@@ -94,30 +94,31 @@ export default defineComponent({
         // ❗ this functions here for fetching data could be async await functions easily, if is needed
 
         function a_reqQuery( queryData: IDataTableQuery ) {
-            staffStore.reqStaffPages(queryData).catch(err => tfyBasicFail(err, 'Staff', 'request'))
+            staffStore.reqStaffPages(queryData).catch(err => tfyBasicFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.REQUEST))
         }
 
-        function a_reqDelete( ids: Array<number> ) {
-
-            // some aux vars
-            const sub = 'Staff'
-            const op: TOPSKind = 'deletion'
-
+        /**
+         * Request the deletion (from server) of a entities according to the list of identifiers given as parameters
+         *
+         * @param ids List of entities identifiers
+         * @param ref Subject Entity reference e.g identifier, name or something like that
+         */
+        function a_reqDelete( ids: Array<number> , ref: undefined | string = undefined ) {
             staffStore.reqStaffDeletion({ ids }).then(() => {
-                tfyBasicSuccess(sub, op)
+
+                tfyBasicSuccess(ENTITY_NAMES.STAFF, OPS_KIND_STR.DELETION, ref)
+
                 // If a user delete all the records from a page of the table, then the table becomes empty, so in this case we need to make a request for the remains data (in the server, ... if any) and repopulate the table / page
                 if (staffStore.pageSize == 0 && staffStore.totalRecords > 0)
-                    staffStore.reqStaffPages(queryBase).catch(err => tfyBasicFail(err, 'Staff', 'request'))
+                    staffStore.reqStaffPages(queryBase).catch(err => tfyBasicFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.REQUEST))
 
-            }).catch(err => tfyBasicFail(err, sub, op))
+            }).catch(err => tfyBasicFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.DELETION, ref))
         }
 
         function a_bulkSwitchState( ids: Array<number> ) {
-            let msgSubject = t('entities.staff.name', ids.length)
-
             staffStore.reqToggleStatus({ids})
-            .then(() => tfyBasicSuccess(msgSubject, 'update'))
-            .catch(err => tfyBasicFail(err, msgSubject, 'update'))
+            .then(() => tfyBasicSuccess(ENTITY_NAMES.STAFF, OPS_KIND_STR.REQUEST))
+            .catch(err => tfyBasicFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.UPDATE))
         }
 
         //#endregion ==========================================================================
@@ -132,8 +133,11 @@ export default defineComponent({
          * @param objectId object identifier to be deleted
          */
         async function h_intentRowDelete( objectId: number ) {
-            const wasConfirmed = await dialogfyConfirmation('delete', 'staff')
-            if (wasConfirmed) a_reqDelete([ objectId ])
+            // some aux vars
+            const entityReference =staffStore.getStaffByIdFromLocalStorage(objectId)!.firstName
+
+            const wasConfirmed = await dialogfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.STAFF, entityReference)
+            if (wasConfirmed) a_reqDelete([ objectId ], entityReference)
         }
 
         /**
@@ -144,7 +148,7 @@ export default defineComponent({
             router.push({
                 name:   RoutePathNames.staffEdit,
                 params: {
-                    fmode: 'edit' as TFormMode,
+                    fmode: FMODE.EDIT as TFormMode,
                     id:    rowData.id,
                 }
             })
@@ -154,7 +158,7 @@ export default defineComponent({
             router.push({
                 name  : RoutePathNames.staffCreate,
                 params: {
-                    fmode: 'create' as TFormMode,
+                    fmode: FMODE.CREATE as TFormMode,
                     // id   : '', no need for passing ID on creation mode
                 }
             })
@@ -170,12 +174,12 @@ export default defineComponent({
             // it is a pain to deal with in JS. I use this way because is visually placement and beautiful, in some way;
             // for a more readable form, use v => parseInt (v)
             const dataIds = bulkData.ids.map(v => +v)
-            if (bulkData.actionType === 'REMOVE') {
-                const wasConfirmed = await dialogfyConfirmation('delete', 'staff')
+            if (bulkData.actionType === BULK_ACTIONS.REMOVE) {
+                const wasConfirmed = await dialogfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.STAFF)
                 if (wasConfirmed) a_reqDelete(dataIds)
             }
-            else if (bulkData.actionType === 'ENABLE') {
-                const wasConfirmed = await dialogfyConfirmation('activate', 'staff', true)
+            else if (bulkData.actionType === BULK_ACTIONS.ENALBE) {
+                const wasConfirmed = await dialogfyConfirmation(ACTION_KIND_STR.ACTIVATE, ENTITY_NAMES.STAFF, '', true)
                 if (wasConfirmed) {
                     // need to enable all selected disabled stores. Filter the staff to find whether Id from the staff in the local store
                     // actually is in the given Id list ... and also check the Staff isn't active already in the local store
@@ -184,7 +188,7 @@ export default defineComponent({
                 }
             }
             else {
-                const wasConfirmed = await dialogfyConfirmation('deactivate', 'staff', true)
+                const wasConfirmed = await dialogfyConfirmation(ACTION_KIND_STR.DEACTIVATE, ENTITY_NAMES.STAFF, '', true)
                 if (wasConfirmed) {
                     // disable case, same as enable but with the disable state ... and also check the Staff isn't disabled already in the local store
                     let ids = staffStore.entityPage.filter(s => dataIds.indexOf(s.id) !== -1 &&  s.isActive).map(s => s.id)

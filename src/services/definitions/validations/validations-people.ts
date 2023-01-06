@@ -15,6 +15,7 @@ export const VSchemaStaffCreate = {
     username:  VSchemaCommon.username,
     cell:      VSchemaCommon.cell,
     email:     VSchemaCommon.email,
+    roleId:    VSchemaCommon.justARequiredField,
     password:  ( value: string ): boolean | string => {
         if (!required(value)) return t('validation.required')
         if (!regex(value, { regex: regStrongPassword })) return t('validation.password-complexity')
@@ -40,6 +41,7 @@ export const VSchemaStaffEdit = {
     username:  VSchemaCommon.username,
     cell:      VSchemaCommon.cell,
     email:     VSchemaCommon.email,
+    roleId:    VSchemaCommon.justARequiredField,
     password:  ( value: string ): boolean | string => {
         if (!regex(value, { regex: regStrongPassword })) return t('validation.password-complexity')
         return true
@@ -54,3 +56,5 @@ export const VSchemaStaffEdit = {
         return true
     }
 }
+
+//region ======== COMMON VALIDATIONS FIELDS RULES =======================================

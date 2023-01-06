@@ -52,17 +52,30 @@ export const useStaffStore = defineStore({
             }
         },
 
-        getEntitiesCount: ( state ) : number => state.totalRecords
+        getEntitiesCount: ( state ) : number => state.totalRecords,
+
+        /**
+         *
+         *
+         * @param state
+         */
+        getStaffByIdFromLocalStorage: ( state ) => {
+            // Getters are just computed properties behind the scenes, so it's not possible to pass any parameters to them. However, you can return a function from the getter to accept any arguments
+            // Note that when doing this, getters are not cached anymore, they are simply functions that you invoke. You can however cache some results inside of the getter itself, which is uncommon but should prove more performant
+            // https://pinia.vuejs.org/core-concepts/getters.html#passing-arguments-to-getters
+            return (staffId : number) => state.entityPage.find((staff) => staff.id == staffId)
+        }
     },
 
     actions: {
 
         // ---mutators ---
-        // mutates the states directly without any request call to the backend
+        // mutates the states directly without any API server request or call / sideEffect, this just mutate the store
         // https://pinia.vuejs.org/core-concepts/state.html#mutating-the-state | https://pinia.vuejs.org/core-concepts/state.html#replacing-the-state
 
         /**
          * Delete a bunch of Staff from the store
+         * This doesn't make and API server request or call / sideEffect, this just mutate the store
          * @param payload Staff identifiers list to be deleted
          */
         mutDeleteStaffList( payload: IdsArray ): void {
@@ -75,27 +88,15 @@ export const useStaffStore = defineStore({
 
         /**
          * Tries to insert a new Staff
-         * @param payload Staff entity data to me inserted
-         * @param doWeNeedToStay This value with come 'doWeNeedToStay' var from , It is use in the UI logic to say if we stay in the form for maybe create another entity. Here this value is used to define if we need get the page data or no. If we stay we dont need the data, if we leave the form, we need the data.
+         * @param payload Staff entity data to be inserted
+         * @param doWeNeedToStay This value with come 'doWeNeedToStay' var from , It is use in the UI logic to say if we stay in the form for maybe create another entity.
          */
         async reqInsertStaff (payload: IDtoStaff, doWeNeedToStay: boolean = false) : Promise<void> {
 
             return await new Promise<void>((resolve, reject) => {
                 ApiStaff.insert(payload)
-                .then((response:any) => {
-
-                    // we are going request the page to the backend to keep the data sync after the new successfully insertion
-                    const queryData: IDataTableQuery = {
-                        Offset : this.pageNumber,
-                        Limit  : this.pageSize,
-                        Orderer: 'id'
-                    }
-
-                    if(!doWeNeedToStay) this.reqStaffPages(queryData)               // making the request
-
-                    resolve(response.data)
-
-                }).catch(error => {reject(error)})
+                .then((response:any) => {resolve(response.data)})
+                .catch(error => {reject(error)})
             })
         },
 
@@ -133,7 +134,7 @@ export const useStaffStore = defineStore({
         },
 
         /**
-         * Tries to delete a bunch of Staff
+         * Tries to delete a bunch (or just one) of Staff
          * @param payload Staff identifiers list to be deleted
          */
         async reqStaffDeletion( payload: IdsArray ): Promise<void> {
@@ -146,6 +147,21 @@ export const useStaffStore = defineStore({
                     resolve()
 
                 }).catch(error => { reject(error) })
+            })
+        },
+
+        /**
+         * Tries to update Staff data in the backend server
+         *
+         * @param payload Staff entity data to be updated
+         * @param doWeNeedToStay This value with come 'doWeNeedToStay' var from , It is use in the UI logic to say if we stay in the form for maybe create another entity.
+         */
+        async reqStaffUpdate (payload: IDtoStaff, doWeNeedToStay: boolean = false) : Promise<void> {
+
+            return await new Promise<void>((resolve, reject) => {
+                ApiStaff.update(payload)
+                .then((response:any) => {resolve(response.data)})
+                .catch(error => {reject(error)})
             })
         },
 

@@ -33,19 +33,22 @@ export default function useDialogfy() {
      * @param subject Subject or type of entity of the deletion operation.
      * @param target Target to be deleted.
      * @param callback Function callback to be call if the dialog was confirm
-     * @param name Object/Entity name to be deleted
+     * @param ref Subject Entity reference e.g identifier, name or something like that
      * @Deprecated Just a sample method. Don't use it.
      */
     const dfyDeleteConfirmations = (
+
+        // TIP This was from another project, I think we are not using this
+
         subject: string,
         target: string,
         callback: Function1<string>,
-        name: undefined | string = undefined
+        ref: undefined | string = undefined
     ): void => {
         let text = 'Are you sure you want to delete this catalog ?'
 
-        if (name !== undefined && typeof name === 'string')
-            text = `Are you sure you want to the delete the ${ name } catalog ?`
+        if (ref !== undefined && typeof ref === 'string')
+            text = `Are you sure you want to the delete the ${ ref } ?`
 
         Swal.fire({
             icon          : 'warning',
@@ -61,18 +64,19 @@ export default function useDialogfy() {
      * Create a dialog from which to confirm an action
      * over the given target
      * @param action Kind of action to confirm. Eg. create, delete
-     * @param subject Subject entity of the action
+     * @param subject The subject entity of the operation / action
+     * @param ref Subject Entity reference e.g identifier, name or something like that
      * @param isBulk Tells if the call is for a plural subject (more than one). Eg. in bulk actions
      * @returns true if ok clicked, false otherwise
      */
-    async function dialogfyConfirmation( action: TActionKind, subject: EntityGenericNames, isBulk = false ): Promise<boolean> {
+    async function dialogfyConfirmation( action: TActionKind, subject: EntityGenericNames, ref: undefined | string = undefined, isBulk = false ): Promise<boolean> {
         let result: SweetAlertResult = await Swal.fire({
             icon:           'warning',
             titleText:      t('dialogs.confirm'),
             text:           t('dialogs.confirmation', {
                 action:  t(`crud-actions.${ action }`),
-                plural:  isBulk ? t('others.this-ones') : '',                           // just for spanish by now
-                subject: t(`entities.${ subject }.name`)
+                plural:  isBulk ? t('others.this-ones') : '',                      // just for spanish by now
+                subject: t(`entities.${ subject }.name`, {ref: ref})
             }),
             showDenyButton: true
         })

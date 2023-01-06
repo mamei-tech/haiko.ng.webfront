@@ -84,8 +84,8 @@
         "e404-single":           "Identifier de {subject} {name} no fue encontrado en el servidor.",
         "e401":                  "No autenticado o la autenticación ha expirado.",
         "ops-fail":              "Operación {opsKind} falló para {subject}. Algo ocurrió en el servidor.",
-        "ops-fail-details":      "Operación {opsKind} falló para {subject} {name}. Error {status}. {details}",
-        "ops-ok":                "{subject} {name} {opsKind} correctamente",
+        "ops-fail-details":      "Operación {opsKind} falló para {subject} {ref}. Error {status}. {details}",
+        "ops-ok":                "{subject} {ref} {opsKind} correctamente",
         "empty-categories":      "No se encontraron categorías para la tienda.",
         "empty-stores":          "No se encontraron tiendas de acuerda con tipo establecido.",
         "no-item-type-selected": "El producto no puede ser creado, debe seleccionar un tipo de producto."
@@ -149,8 +149,12 @@
     "entities":      {
         "default": "entidades",
         "staff":   {
-            "name":         "Staff",
+            "name":         "Staff {ref}",
             "section-name": "@:entities.staff.name"
+        },
+        "role":   {
+            "name":         "Role {ref}",
+            "section-name": "Roles"
         }
     }
 }

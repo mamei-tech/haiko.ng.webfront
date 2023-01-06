@@ -223,7 +223,16 @@ import { computed, onMounted, ref, defineComponent, reactive } from 'vue'
 import { Field, useForm } from 'vee-validate'
 import { useRoute, useRouter } from 'vue-router'
 import { CmpCard, CmpFormActionsButton, CmpBasicInput, CmpBasicCheckbox, CmpMultiselectField } from '@/components'
-import { queryBase, RoutePathNames, VSchemaStaffCreate, VSchemaStaffEdit } from '@/services/definitions'
+import {
+    queryBase,
+    FMODE,
+    RoutePathNames,
+    VSchemaStaffCreate,
+    VSchemaStaffEdit,
+    ENTITY_NAMES,
+    OPS_KIND_STR,
+    ACTION_KIND_STR
+} from '@/services/definitions'
 
 import type { ComputedRef } from 'vue'
 import type { IDtoStaff, TFormMode, TOPSKind } from '@/services/definitions'
@@ -250,7 +259,7 @@ export default defineComponent({
 
         const staffStore = useStaffStore()                              // Pinia store for staff
         const nomencStore = useNomencStore()                            // Pinia store for nomenclatures
-        const { fmode, id } = route.params                              // remember, fmode (form mode) property denotes the mode this form view was called
+        const { fmode, id } = route.params                              // remember, fmode (form mode) property denotes the mode this form view was called | checkout the type TFormMode in types definitions
 
         const toast = useToast()                                        // The toast lib interface
         const { tfyBasicSuccess, tfyBasicFail } = useToastify(toast)
@@ -258,6 +267,7 @@ export default defineComponent({
         const { mkStaff } = useFactory()
 
         let iniFormData = reactive<IDtoStaff>(mkStaff())                 // initial form data
+        let formDataFromServer: IDtoStaff | undefined = undefined        // save entity data requested from the server
         // let rolesData = ref<IMultiselectBasic[]>([])                  // I will use rer 'cause is only one nested object
 
         //endregion ===========================================================================
@@ -271,8 +281,8 @@ export default defineComponent({
          * Manually setting the needed values is way cleaner than the other way around. This is needed mainly because api call is asynchronous.
          */
         onMounted(async () => {
-            if (cmptdFmode.value === 'edit' as TFormMode) {
-                const formDataFromServer = await ApiStaff.getStaffById(+id)
+            if (cmptdFmode.value === FMODE.EDIT as TFormMode) {
+                formDataFromServer = await ApiStaff.getStaffById(+id)
                 setValues(formDataFromServer)               // using setValues from vee-validate for populating the inputs
             }
         })
@@ -286,36 +296,39 @@ export default defineComponent({
          */
         const a_Create = ( newStaff: IDtoStaff, doWeNeedToStay: boolean): void => {
 
-            // some aux vars
-            const sub = 'Staff'
-            const op: TOPSKind = 'addition'
-
-            staffStore.reqInsertStaff(newStaff, doWeNeedToStay).then(() => {
-                tfyBasicSuccess(sub, op)
+            staffStore.reqInsertStaff(newStaff).then(() => {
+                tfyBasicSuccess(ENTITY_NAMES.STAFF, OPS_KIND_STR.ADDITION, newStaff.firstName)
 
                 // so now what ?
-                if(!doWeNeedToStay) h_Back()                            // so we are going back to the data table
-                else resetForm({ values: mkStaff() })             // so wee need to clean the entire form and stay in it
+                if(!doWeNeedToStay) h_Back()                                  // so we are going back to the data table
+                else resetForm({ values: mkStaff() })                   // so wee need to clean the entire form and stay in it
 
-            }).catch(err => tfyBasicFail(err, sub, op))
+            }).catch(err => tfyBasicFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.ADDITION))
         }
 
-        const a_Edit = ( editedStaff: IDtoStaff ): void => {
+        /**
+         * Action for edit the user
+         * @param editedStaff Staff object containing the edited information
+         * @param doWeNeedToStay This value, in this context, tells if the clicked button was the 'Applied' or the 'Save'
+         */
+        const a_Edit = ( editedStaff: IDtoStaff, doWeNeedToStay: boolean ): void => {
 
-            console.log(editedStaff)
-            console.warn('edit clicked')
+            staffStore.reqStaffUpdate(editedStaff).then(() => {
+                tfyBasicSuccess(ENTITY_NAMES.STAFF, OPS_KIND_STR.UPDATE, editedStaff.firstName)
+
+                // so now what ?
+                if(!doWeNeedToStay) h_Back()                                  // so we are going back to the data table
+
+            }).catch(err => tfyBasicFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.UPDATE))
         }
 
-        const a_Delete = ( staffId: number ): void => {
-            // some aux vars
-            const sub = 'Staff'
-            const op: TOPSKind = 'deletion'
+        const a_Delete = ( staffId: number, entityReference: undefined | string = undefined ): void => {
 
             staffStore.reqStaffDeletion({ ids: [ staffId ] })
             .then(() => {
-                tfyBasicSuccess(sub, op)
+                tfyBasicSuccess(ENTITY_NAMES.STAFF, OPS_KIND_STR.DELETION, entityReference)
                 h_Back()
-            }).catch(err => tfyBasicFail(err, sub, op))
+            }).catch(err => tfyBasicFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.DELETION))
         }
 
         //#endregion ==========================================================================
@@ -327,7 +340,7 @@ export default defineComponent({
 
         // getting the vee validate method to manipulate the form related actions from the view
         const { handleSubmit, meta, setValues, resetForm } = useForm<IDtoStaff>({
-            validationSchema: fmode === 'create' as TFormMode ? VSchemaStaffCreate : VSchemaStaffEdit,
+            validationSchema: fmode === FMODE.CREATE as TFormMode ? VSchemaStaffCreate : VSchemaStaffEdit,
             initialValues:    iniFormData
         })
 
@@ -335,8 +348,8 @@ export default defineComponent({
 
         //region ======= HELPERS ==============================================================
 
-        const rotationCaretClass = ref('')                                      // rotate the caret | this is the CSS alternative, no Vue transition needed
-        const doWeShowCollapsable = ref(cmptdFmode.value === 'create')          // start the animation of the actual collapsible
+        const rotationCaretClass = ref('')                                       // rotate the caret | this is the CSS alternative, no Vue transition needed
+        const doWeShowCollapsable = ref(cmptdFmode.value === FMODE.CREATE)       // start the animation of the actual collapsible
 
         const h_toggleCollapsable = () => {
             doWeShowCollapsable.value = !doWeShowCollapsable.value
@@ -359,9 +372,9 @@ export default defineComponent({
 
             // handling the submission with vee-validate method
             handleSubmit(formData => {
-                if (cmptdFmode.value == ("create" as TFormMode)) a_Create(formData, doWeNeedToStay);
-                if (cmptdFmode.value == ("edit" as TFormMode) && meta.value.dirty) a_Edit(formData);
-                if (cmptdFmode.value == ("edit" as TFormMode) && !meta.value.dirty) h_Back();               // was no changes (no dirty) with the data, so going back normally
+                if (cmptdFmode.value == (FMODE.CREATE as TFormMode)) a_Create(formData, doWeNeedToStay);
+                if (cmptdFmode.value == (FMODE.EDIT as TFormMode) && meta.value.dirty) a_Edit(formData, doWeNeedToStay);
+                if (cmptdFmode.value == (FMODE.EDIT as TFormMode) && !meta.value.dirty) h_Back();               // was no changes (no dirty) with the data, so going back normally
             }).call(this)
         }
 
@@ -374,13 +387,11 @@ export default defineComponent({
             router.push({ name: RoutePathNames.staff });
         }
 
-        const h_Delete = async ( objectId: number ) => {
-            if (fmode) {
-                const isOk = await dialogfyConfirmation('delete', 'staff')
-                if (isOk) {
-                    a_Delete(+id)               // id from url params
-                    // a_Delete(iniFormData.value.id!)  this is from original code, to use this way we have to sync 'formDataFromServer' and 'iniFormData' manually
-                }
+        const h_Delete = async ( event: any ) => {
+
+            if (fmode as TFormMode == FMODE.EDIT) {                                     // 'cause we can deleted something isn't created yet ... (remember we reuse this view for edition too, so we need to check which mode we currently are)
+                const isOk = await dialogfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.STAFF, formDataFromServer!.firstName)
+                if (isOk) a_Delete(+id, formDataFromServer!.firstName)                  // The 'id' comes from url params (vue router we mean)
             }
         }
 

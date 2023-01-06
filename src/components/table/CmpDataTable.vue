@@ -276,7 +276,7 @@ import useCommon from '@/services/composables/useCommon'
 import Multiselect from '@vueform/multiselect'
 
 import type { SetupContext, PropType } from 'vue'
-import type { ById, BULK_ACTION, IIndexable, IColumnHeader, ITableChkEmit, IChecked, IDataTableQuery, Filter  } from '@/services/definitions'
+import type { ById, TBulkAction, IIndexable, IColumnHeader, ITableChkEmit, IChecked, IDataTableQuery, Filter  } from '@/services/definitions'
 
 
 export default defineComponent({
@@ -448,7 +448,7 @@ export default defineComponent({
         const h_EnableChkCollection = () => {
             ctx.emit('bulkActionIntent', {
                 ids: [ ...Object.keys(ls_selections.selected) ],
-                actionType: 'ENABLE' as BULK_ACTION
+                actionType: 'ENABLE' as TBulkAction
             })
             cleanCheckBoxes()
         }
@@ -456,7 +456,7 @@ export default defineComponent({
         const h_DisableChkCollection = () => {
             ctx.emit('bulkActionIntent', {
                 ids: [ ...Object.keys(ls_selections.selected) ],
-                actionType: 'DISABLE' as BULK_ACTION
+                actionType: 'DISABLE' as TBulkAction
             })
             cleanCheckBoxes()
         }
@@ -464,7 +464,7 @@ export default defineComponent({
         const h_RemoveChkCollection = () => {
             ctx.emit('bulkActionIntent', {
                 ids: [ ...Object.keys(ls_selections.selected) ],
-                actionType: 'REMOVE' as BULK_ACTION
+                actionType: 'REMOVE' as TBulkAction
             })
             cleanCheckBoxes()
         }

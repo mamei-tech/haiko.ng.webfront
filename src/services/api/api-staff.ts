@@ -22,10 +22,20 @@ export class ApiStaff {
      * Create / insert a new Staff on the system
      *
      * @param staff
-     * @returns The identifier of the just created store (the same as the owner)
+     * @returns Promise with the identifier of the just created store (the same as the owner)
      */
     public static insert( staff: IDtoStaff ): AxiosPromise<number> {
         return axios.post(url, staff)
+    }
+
+    /**
+     * Update a Staff on the system
+     *
+     * @param staff object with the edited data
+     * @returns ??
+     */
+    public static update( staff: IDtoStaff ): AxiosPromise<number> {
+        return axios.put(url, staff)
     }
 
     /**

@@ -4,6 +4,7 @@ import { useErrors } from '@/services/helpers/errors-helpers'
 
 import type { PluginOptions, ToastInterface } from 'vue-toastification'
 import type { TOPSKind } from '@/services/definitions'
+import type { EntityGenericNames } from '@/services/definitions'
 
 
 const { t } = i18n.global
@@ -87,18 +88,50 @@ export default function useToastify( toast: ToastInterface ) {
     }
 
     /***
+     * Cast a toast for a fail api operation / request
+     *
+     * @param error XHR HTTP Error object
+     * @param subject The subject entity of the operation / action
+     * @param ops Type of API operation for the feedback
+     * @param ref Subject Entity reference e.g identifier, name or something like that
+     */
+    const tfyBasicFail = ( error: any, subject: EntityGenericNames, ops: TOPSKind, ref: undefined | string = undefined ): void => {
+
+        let kind = _getOpsKind(ops, true)
+        let subjectRef = ref !== undefined && typeof ref === 'string' ? ref : ''
+
+        // internal backend error with no return
+        if (!error.response) {
+            _mkError(t('toasts.ops-fail', { subject: subject, opsKind: kind }))
+            return
+        }
+
+        // backend error return with details
+        let details = _getDetails(error, subject, subjectRef)
+        _mkError(
+            t('toasts.ops-fail-details', {
+                subject: subject,
+                opsKind: kind,
+                name: subjectRef,
+                status: error.response.status,
+                details: details
+            })
+        )
+    }
+
+    /***
      * Cast a toast for a successfully operation / request
      *
-     * @param subject The subject entity of the operation
+     * @param subject The subject entity of the operation / action
      * @param ops Type of API operation for the feedback
-     * @param name Object/Entity name was involved int in the api request/operations
+     * @param ref Subject Entity reference e.g identifier, name or something like that
      */
-    const tfyBasicSuccess = ( subject: string, ops: TOPSKind, name: undefined | string = undefined ): void => {
+    const tfyBasicSuccess = ( subject: EntityGenericNames, ops: TOPSKind, ref: undefined | string = undefined ): void => {
 
         let kind = _getOpsKind(ops)
 
         toast.success(
-            t('toasts.ops-ok', { subject: subject, name: name !== undefined && typeof name === 'string' ? name : '', opsKind: kind }),
+            t('toasts.ops-ok', { subject: subject, ref: ref !== undefined && typeof ref === 'string' ? ref : '', opsKind: kind }),
             {
                 timeout: 4000,
                 position: POSITION.TOP_RIGHT,
@@ -121,38 +154,6 @@ export default function useToastify( toast: ToastInterface ) {
             pauseOnFocusLoss: true,
             icon:     'tim-icons icon-alert-circle-exc'
         } as PluginOptions)
-    }
-
-    /***
-     * Cast a toast for a fail api operation / request
-     *
-     * @param error XHR HTTP Error object
-     * @param subject The subject entity of the operation
-     * @param ops Type of API operation for the feedback
-     * @param name Object/Entity name was involved int in the api request/operations
-     */
-    const tfyBasicFail = ( error: any, subject: string, ops: TOPSKind, name: undefined | string = undefined ): void => {
-
-        let kind = _getOpsKind(ops, true)
-        let subjectName = name !== undefined && typeof name === 'string' ? name : ''
-
-        // internal backend error with no return
-        if (!error.response) {
-            _mkError(t('toasts.ops-fail', { subject: subject, opsKind: kind }))
-            return
-        }
-
-        // backend error return with details
-        let details = _getDetails(error, subject, subjectName)
-        _mkError(
-            t('toasts.ops-fail-details', {
-                subject: subject,
-                opsKind: kind,
-                name: subjectName,
-                status: error.response.status,
-                details: details
-            })
-        )
     }
 
     const tfyAuthFail = ( error: any ): void => {

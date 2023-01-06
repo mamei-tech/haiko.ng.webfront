@@ -33,6 +33,7 @@ export const VSchemaCommon = {
 
         return true
     },
+
     firstName: ( value: string ): boolean | string => {
         if (!required(value)) return t('validation.required')
         if (!regex(value, { regex: regAlphaNSpaces })) return t('validation.only-alpha-spaces')
@@ -41,12 +42,14 @@ export const VSchemaCommon = {
 
         return true
     },
+
     lastName:  ( value: string ): boolean | string => {
         if (!regex(value, { regex: regAlphaNSpaces })) return t('validation.only-alpha-spaces')
-        if (!min(value, { length: 6 })) return t('validation.min-length', { length: 6 })
+        if (!min(value, { length: 5 })) return t('validation.min-length', { length: 5 })
         if (!max(value, { length: 30 })) return t('validation.max-length', { length: 30 })
         return true
     },
+
     cell:      ( value: string ): boolean | string => {
         if (!numeric(value)) return t('validation.cellphone')           // TODO test if the user can enter a float number. If so use a regex to ensure only integres
         if (!min(value, { length: 7 })) return t('validation.min-length', { length: 7 })
@@ -54,9 +57,18 @@ export const VSchemaCommon = {
 
         return true
     },
+
     email:     ( value: string ): boolean | string => {
         if (!email(value)) return t('validation.email')
+        return true
+    },
 
+    /**
+     * Intent to be used in any field for a simple 'required' check
+     * @param value
+     */
+    justARequiredField: ( value: string ): boolean | string => {
+        if (!required(value)) return t('validation.required')
         return true
     },
 }

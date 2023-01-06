@@ -84,13 +84,16 @@ export type IShell<T> = {
 }
 
 /***
- * Definition for API operations that requieres a UI toast feedback
+ * Definition for <<API>> operations that requieres a UI toast feedback
  * T = type
+ *
+ * ! The values defined here must match one2one with the definition of OPS_KIND_STR type definition in the 'enums-common.ts' file
+ *
  */
 export type TOPSKind = 'deletion' | 'addition' | 'update' | 'enable' | 'disable' | 'request'
 
 /***
- * Definition for UI actions that requieres a dialog confirmations or UI feedback
+ * Definition for <<UI>> actions that requieres a dialog confirmations or UI feedback
  * T = type
  */
 export type TActionKind = 'delete' | 'create' | 'update' | 'activate' | 'deactivate'
@@ -102,16 +105,19 @@ export type TActionKind = 'delete' | 'create' | 'update' | 'activate' | 'deactiv
 export type TFormMode = 'edit' | 'create' | 'details'
 
 /**
- * This mostly used in the dialog (Dialogfy) custom composable, as constraint type of actual business entities names
+ * This mostly used in the dialog and toast (Dialogfy / Toastify) custom composable, as constraint type of actual business entities names
  * when those names will be pases as parameters of some kind
+ *
+ * ! The values defined here must match one2one with the definition of ENTITY_NAMES in the 'enums-entities.ts' file
+ * ! The values defined here must match one2one with the business entity names we are working with
  */
-export type EntityGenericNames = 'staff'
+export type EntityGenericNames = 'staff' | 'role'
 // export type EntityGenericNames = 'item' | 'items' | 'store' | 'stores' | 'menu' | 'menus'
 
 /***
  * Table Top Buttons Action Bar (BULK ACTION) clicked action
  */
-export type BULK_ACTION = 'ENABLE' | 'DISABLE' | 'REMOVE'
+export type TBulkAction = 'ENABLE' | 'DISABLE' | 'REMOVE'
 
 /***
  * Interface for type the emission argument object for the table's checkbox component
@@ -126,7 +132,7 @@ export interface ITableChkEmit {
  */
 export interface IBulkData {
     ids: string[]
-    actionType: BULK_ACTION
+    actionType: TBulkAction
 }
 
 export type TGetStoreEntities = {
