@@ -9,7 +9,7 @@ import { VSchemaCommon } from '@/services/definitions/validations/validations-co
 import { VSchemaAuth } from '@/services/definitions/validations/validations-auth'
 
 import type { Problem, ErrorDictionary } from '@/services/definitions/types-errors'
-import type { TOPSKind, Function0, Function1, IColumnHeader, IDataTableQuery, ITableChkEmit, TBulkAction, ById, IIndexable, IChecked, Filter, IBasicPageState, IDataListBasicResponse, TFormMode, TActionKind, EntityGenericNames, IdsArray, IBulkData, IMultiselectBasic, IShell, IScrollInfo  } from './types-common'
+import type { TOpsKind, Function0, Function1, IColumnHeader, IDataTableQuery, ITableChkEmit, TBulkAction, ById, IIndexable, IChecked, Filter, IBasicPageState, IDataListBasicResponse, TFormMode, TActionKind, EntityGenericNames, IdsArray, IBulkData, IMultiselectBasic, IShell, IScrollInfo  } from './types-common'
 import type { IStaffPage, IStaffRow, IDtoStaff } from '@/services/definitions/entities/types-staff'
 import type { IRoleBasic } from '@/services/definitions/entities/types-rbac'
 
@@ -34,7 +34,7 @@ export {
     HTTP_RESPONSES,
 
     // Functions & other Types
-    TOPSKind,
+    TOpsKind,
     Function0, Function1,
 
     // Common Types

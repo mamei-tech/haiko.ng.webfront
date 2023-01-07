@@ -53,11 +53,6 @@ export const useSt_Staff = defineStore({
 
         getEntitiesCount: ( state ) : number => state.totalRecords,
 
-        /**
-         *
-         *
-         * @param state
-         */
         getStaffByIdFromLocalStorage: ( state ) => {
             // Getters are just computed properties behind the scenes, so it's not possible to pass any parameters to them. However, you can return a function from the getter to accept any arguments
             // Note that when doing this, getters are not cached anymore, they are simply functions that you invoke. You can however cache some results inside of the getter itself, which is uncommon but should prove more performant

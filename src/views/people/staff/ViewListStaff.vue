@@ -18,7 +18,10 @@
                                   @deleteIntent="h_intentRowDelete"
                                   @editIntent="h_intentRowEdit"
 
-                                  @bulkActionIntent="h_BulkActionIntent"
+                                  @bulkActionIntent="h_intentBulkAction"
+
+                                  @enableIntent="h_intentToggleEnable"
+                                  @disableIntent="h_intentToggleDisable"
                     >
                     </CmpDataTable>
                 </CmpCard>
@@ -35,13 +38,20 @@ import { useToast } from 'vue-toastification'
 import { useSt_Staff } from '@/stores/staff'
 import { useSt_Nomenclatures } from '@/stores/nomenc'
 import { HStaffTable } from '@/services/definitions/data-datatables'
-import { ACTION_KIND_STR, BULK_ACTIONS, ENTITY_NAMES, FMODE, OPS_KIND_STR, RoutePathNames } from '@/services/definitions'
+import {
+    ACTION_KIND_STR,
+    BULK_ACTIONS,
+    ENTITY_NAMES,
+    FMODE,
+    OPS_KIND_STR,
+    RoutePathNames,
+} from '@/services/definitions'
 import { EntityTypes, queryBase } from '@/services/definitions'
 import { CmpCard, CmpDataTable } from '@/components'
 import useDialogfy from '@/services/composables/useDialogfy'
 import useToastify from '@/services/composables/useToastify'
 
-import type { TFormMode, IDataTableQuery, IBulkData, IStaffRow } from '@/services/definitions'
+import type { TOpsKind, TFormMode, IDataTableQuery, IBulkData, IStaffRow } from '@/services/definitions'
 
 
 export default defineComponent({
@@ -115,11 +125,18 @@ export default defineComponent({
             }).catch(err => tfyBasicFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.DELETION, ref))
         }
 
-        function a_bulkSwitchState( ids: Array<number> ) {
+        function a_reqSwitchState( ids: Array<number>, ops: TOpsKind ) {
+            let entityReference: undefined | string = undefined
+
+            // the 'single' case,  used when this is called for switch status toggle intent
+            if (ids.length === 1)
+                entityReference = st_Staff.getStaffByIdFromLocalStorage(ids[ 0 ])!.firstName
+
             st_Staff.reqToggleStatus({ids})
-            .then(() => tfyBasicSuccess(ENTITY_NAMES.STAFF, OPS_KIND_STR.REQUEST))
-            .catch(err => tfyBasicFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.UPDATE))
+            .then(() => tfyBasicSuccess(ENTITY_NAMES.STAFF, ops, entityReference))
+            .catch(err => tfyBasicFail(err, ENTITY_NAMES.STAFF, ops))
         }
+
 
         //#endregion ==========================================================================
 
@@ -133,7 +150,6 @@ export default defineComponent({
          * @param objectId object identifier to be deleted
          */
         async function h_intentRowDelete( objectId: number ) {
-            // some aux vars
             const entityReference =st_Staff.getStaffByIdFromLocalStorage(objectId)!.firstName
 
             const wasConfirmed = await dialogfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.STAFF, entityReference)
@@ -168,7 +184,7 @@ export default defineComponent({
             a_reqQuery(queryData)
         }
 
-        async function h_BulkActionIntent( bulkData: IBulkData ) {
+        async function h_intentBulkAction( bulkData: IBulkData ) {
 
             // This is a somewhat hacky way of cast string to int in typescript. It has to do with type coercion, and
             // it is a pain to deal with in JS. I use this way because is visually placement and beautiful, in some way;
@@ -184,7 +200,7 @@ export default defineComponent({
                     // need to enable all selected disabled stores. Filter the staff to find whether Id from the staff in the local store
                     // actually is in the given Id list ... and also check the Staff isn't active already in the local store
                     let ids = st_Staff.entityPage.filter(s => dataIds.indexOf(s.id) !== -1 && !s.isActive).map(s => s.id)
-                    if (ids.length > 0) a_bulkSwitchState(ids)
+                    if (ids.length > 0) a_reqSwitchState(ids, OPS_KIND_STR.ENABLE)
                 }
             }
             else {
@@ -192,9 +208,17 @@ export default defineComponent({
                 if (wasConfirmed) {
                     // disable case, same as enable but with the disable state ... and also check the Staff isn't disabled already in the local store
                     let ids = st_Staff.entityPage.filter(s => dataIds.indexOf(s.id) !== -1 &&  s.isActive).map(s => s.id)
-                    if (ids.length > 0) a_bulkSwitchState(ids)
+                    if (ids.length > 0) a_reqSwitchState(ids, OPS_KIND_STR.DISABLE)
                 }
             }
+        }
+
+        function h_intentToggleEnable( id: number ) {
+            a_reqSwitchState([id], OPS_KIND_STR.ENABLE)
+        }
+
+        function h_intentToggleDisable( id: number ) {
+            a_reqSwitchState([id], OPS_KIND_STR.DISABLE)
         }
 
         //#endregion ==========================================================================
@@ -207,10 +231,12 @@ export default defineComponent({
 
             h_reqQuery,
             h_navCreateStaff,
-            h_BulkActionIntent,
+            h_intentBulkAction,
 
             h_intentRowEdit,
-            h_intentRowDelete
+            h_intentRowDelete,
+            h_intentToggleEnable,
+            h_intentToggleDisable
         }
     }
 

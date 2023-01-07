@@ -9,7 +9,7 @@ export enum HTTP_RESPONSES {
  * 'Operation Kind String' definition
  * This helps to get OpsKind strings so one don't have to manually write it down on the code, just call this use it
  *
- * ! The values defined here must match one2one with the definition of TOPSKind type definition in the 'types-common.ts' file
+ * ! The values defined here must match one2one with the definition of TOpsKind type definition in the 'types-common.ts' file
  */
 export enum OPS_KIND_STR {
     DELETION = 'deletion',

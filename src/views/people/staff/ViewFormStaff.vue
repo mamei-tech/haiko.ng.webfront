@@ -235,7 +235,7 @@ import {
 } from '@/services/definitions'
 
 import type { ComputedRef } from 'vue'
-import type { IDtoStaff, TFormMode, TOPSKind } from '@/services/definitions'
+import type { IDtoStaff, TFormMode, TOpsKind } from '@/services/definitions'
 
 
 export default defineComponent({

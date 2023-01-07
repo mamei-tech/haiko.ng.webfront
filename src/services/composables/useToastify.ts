@@ -3,7 +3,7 @@ import { POSITION } from 'vue-toastification'
 import { useErrors } from '@/services/helpers/errors-helpers'
 
 import type { PluginOptions, ToastInterface } from 'vue-toastification'
-import type { TOPSKind } from '@/services/definitions'
+import type { TOpsKind } from '@/services/definitions'
 import type { EntityGenericNames } from '@/services/definitions'
 
 
@@ -29,7 +29,7 @@ export default function useToastify( toast: ToastInterface ) {
      * @param ops Type / Kind of the operation
      * @param isPresentTense if tense is current time, then present tense will be used, otherwise gerund tense will be used.
      */
-    function _getOpsKind( ops: TOPSKind, isPresentTense: boolean = false ): string {
+    function _geTOpsKind( ops: TOpsKind, isPresentTense: boolean = false ): string {
         let opsKind = '[unknown]'
 
         if (ops === 'deletion') opsKind = isPresentTense ? t('crud-actions.deletion-gerund') : t('crud-actions.deletion-pas')
@@ -95,9 +95,9 @@ export default function useToastify( toast: ToastInterface ) {
      * @param ops Type of API operation for the feedback
      * @param ref Subject Entity reference e.g identifier, name or something like that
      */
-    const tfyBasicFail = ( error: any, subject: EntityGenericNames, ops: TOPSKind, ref: undefined | string = undefined ): void => {
+    const tfyBasicFail = ( error: any, subject: EntityGenericNames, ops: TOpsKind, ref: undefined | string = undefined ): void => {
 
-        let kind = _getOpsKind(ops, true)
+        let kind = _geTOpsKind(ops, true)
         let subjectRef = ref !== undefined && typeof ref === 'string' ? ref : ''
 
         // internal backend error with no return
@@ -126,9 +126,9 @@ export default function useToastify( toast: ToastInterface ) {
      * @param ops Type of API operation for the feedback
      * @param ref Subject Entity reference e.g identifier, name or something like that
      */
-    const tfyBasicSuccess = ( subject: EntityGenericNames, ops: TOPSKind, ref: undefined | string = undefined ): void => {
+    const tfyBasicSuccess = ( subject: EntityGenericNames, ops: TOpsKind, ref: undefined | string = undefined ): void => {
 
-        let kind = _getOpsKind(ops)
+        let kind = _geTOpsKind(ops)
 
         toast.success(
             t('toasts.ops-ok', { subject: subject, ref: ref !== undefined && typeof ref === 'string' ? ref : '', opsKind: kind }),

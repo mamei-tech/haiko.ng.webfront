@@ -90,7 +90,7 @@ export type IShell<T> = {
  * ! The values defined here must match one2one with the definition of OPS_KIND_STR type definition in the 'enums-common.ts' file
  *
  */
-export type TOPSKind = 'deletion' | 'addition' | 'update' | 'enable' | 'disable' | 'request'
+export type TOpsKind = 'deletion' | 'addition' | 'update' | 'enable' | 'disable' | 'request'
 
 /***
  * Definition for <<UI>> actions that requieres a dialog confirmations or UI feedback
