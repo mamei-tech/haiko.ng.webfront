@@ -4,7 +4,7 @@ import router from '@/router'
 
 //@ts-ignore
 import Nprogress from 'nprogress'
-import { useAuthStore } from '@/stores/auth'
+import { useSt_Auth } from '@/stores/auth'
 import { RoutePaths } from '@/services/definitions/route-paths'
 
 
@@ -28,10 +28,10 @@ const customInstance = axios.create({
 customInstance.interceptors.request.use(
     config => {
 
-        const authStore = useAuthStore()                                                    // https://pinia.vuejs.org/core-concepts/outside-component-usage.html#single-page-applications | I cant' find another way to do this
+        const st_auth = useSt_Auth()                                                    // https://pinia.vuejs.org/core-concepts/outside-component-usage.html#single-page-applications | I cant' find another way to do this
 
         if (config.headers === undefined) config.headers = {}                               // shut up TS mouth
-        config.headers.Authorization = `Bearer ${ authStore.authTk }`                       // assign store token to axios configuration
+        config.headers.Authorization = `Bearer ${ st_auth.authTk }`                       // assign store token to axios configuration
 
         // Trying to show the nprogress bar
         const a = document.querySelector('div#topper-border-cont')
@@ -64,9 +64,9 @@ customInstance.interceptors.response.use(
         // it's expiration time. So we need to handle this
         if (error.response !== undefined && error.response.status === 401) {
 
-            const authStore = useAuthStore()                                                    // https://pinia.vuejs.org/core-concepts/outside-component-usage.html#single-page-applications | I cant' find another way to do this
+            const st_Auth = useSt_Auth()                                                    // https://pinia.vuejs.org/core-concepts/outside-component-usage.html#single-page-applications | I cant' find another way to do this
 
-            authStore.setLoggedOut()
+            st_Auth.setLoggedOut()
             router.push(RoutePaths.login)
         }
 

@@ -5,7 +5,7 @@ import type { IAuthFormData } from '@/services/definitions/types-forms'
 // https://pinia.vuejs.org/core-concepts/#setup-stores
 
 // Sample of option store
-export const useAuthStore = defineStore({
+export const useSt_Auth = defineStore({
     id: 'auth',
 
     persist: true,

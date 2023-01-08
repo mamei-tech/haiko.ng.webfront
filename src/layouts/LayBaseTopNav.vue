@@ -124,7 +124,7 @@
 </template>
 
 <script lang="ts">
-import { useAuthStore } from '@/stores/auth'
+import { useSt_Auth } from '@/stores/auth'
 import { defineComponent } from 'vue'
 import { mapActions } from 'pinia'
 import { CmpModal, CmpDropdown } from '../components'
@@ -171,8 +171,8 @@ export default defineComponent({
 
         //region ======== FROM STORE ============================================================
 
-        // ...mapActions(useAuthStore, { callLogOut: 'setLoggedOut' }),
-        ...mapActions(useAuthStore, ['setLoggedOut']),
+        // ...mapActions(useSt_Auth, { callLogOut: 'setLoggedOut' }),
+        ...mapActions(useSt_Auth, ['setLoggedOut']),
 
         //endregion =============================================================================
 

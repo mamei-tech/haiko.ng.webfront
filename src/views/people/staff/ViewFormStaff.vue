@@ -107,7 +107,7 @@
                                     </label>
                                     <div class="col-md-9">
                                         <CmpMultiselectField placeholder="- rol - "
-                                                             :options="st_Nomenclatures.getRolesForMultiselect"
+                                                             :options="st_nomenclatures.getRolesForMultiselect"
                                                              name="roleId"
                                                              class="mb-2"
                                                              closeOnSelect>
@@ -257,8 +257,8 @@ export default defineComponent({
         const route = useRoute()
         const router = useRouter()
 
-        const st_Staff = useSt_Staff()                                  // Pinia store for staff
-        const st_Nomenclatures = useSt_Nomenclatures()                  // Pinia store for nomenclatures
+        const st_staff = useSt_Staff()                                  // Pinia store for staff
+        const st_nomenclatures = useSt_Nomenclatures()                  // Pinia store for nomenclatures
         const { fmode, id } = route.params                              // remember, fmode (form mode) property denotes the mode this form view was called | checkout the type TFormMode in types definitions
 
         const toast = useToast()                                        // The toast lib interface
@@ -296,7 +296,7 @@ export default defineComponent({
          */
         const a_Create = ( newStaff: IDtoStaff, doWeNeedToStay: boolean): void => {
 
-            st_Staff.reqInsertStaff(newStaff).then(() => {
+            st_staff.reqInsertStaff(newStaff).then(() => {
                 tfyBasicSuccess(ENTITY_NAMES.STAFF, OPS_KIND_STR.ADDITION, newStaff.firstName)
 
                 // so now what ?
@@ -313,7 +313,7 @@ export default defineComponent({
          */
         const a_Edit = ( editedStaff: IDtoStaff, doWeNeedToStay: boolean ): void => {
 
-            st_Staff.reqStaffUpdate(editedStaff).then(() => {
+            st_staff.reqStaffUpdate(editedStaff).then(() => {
                 tfyBasicSuccess(ENTITY_NAMES.STAFF, OPS_KIND_STR.UPDATE, editedStaff.firstName)
 
                 // so now what ?
@@ -324,7 +324,7 @@ export default defineComponent({
 
         const a_Delete = ( staffId: number, entityReference: undefined | string = undefined ): void => {
 
-            st_Staff.reqStaffDeletion({ ids: [ staffId ] })
+            st_staff.reqStaffDeletion({ ids: [ staffId ] })
             .then(() => {
                 tfyBasicSuccess(ENTITY_NAMES.STAFF, OPS_KIND_STR.DELETION, entityReference)
                 h_Back()
@@ -404,7 +404,7 @@ export default defineComponent({
             rotationCaretClass,
 
             cmptdFmode,
-            st_Nomenclatures,
+            st_nomenclatures,
 
             h_submit,
             h_Back,

@@ -7,8 +7,8 @@
                                   :subject="$t('entities.staff.name')"
                                   :entityMode="eMode"
                                   :columns="columns"
-                                  :data="st_Staff.getStaffList"
-                                  :count="st_Staff.getEntitiesCount"
+                                  :data="st_staff.getStaffList"
+                                  :count="st_staff.getEntitiesCount"
                                   :has-actions="true"
                                   :filters="filters"
 
@@ -66,8 +66,8 @@ export default defineComponent({
 
         const {t} = useI18n({useScope: 'global'})
 
-        const st_Staff = useSt_Staff()                                      // Pinia store for staff
-        const st_Nomenclatures = useSt_Nomenclatures()                      // Pinia store for nomenclatures
+        const st_staff = useSt_Staff()                                      // Pinia store for staff
+        const st_nomenclatures = useSt_Nomenclatures()                      // Pinia store for nomenclatures
         const eMode: EntityTypes = EntityTypes.Staff
 
         const router = useRouter()
@@ -92,10 +92,10 @@ export default defineComponent({
 
             // getting roles definitions from the system (side effect)
             // this is used to fetch staff roles data from the system so we can map the roleId to rolename in the datatable column
-            st_Nomenclatures.reqNomencRoles().catch(err => tfyBasicFail(err, ENTITY_NAMES.ROLE, OPS_KIND_STR.REQUEST))
+            st_nomenclatures.reqNomencRoles().catch(err => tfyBasicFail(err, ENTITY_NAMES.ROLE, OPS_KIND_STR.REQUEST))
 
             // getting the staff list data for populating staff datatable (side effect)
-            st_Staff.reqStaffPages(queryBase).catch(err => tfyBasicFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.REQUEST))
+            st_staff.reqStaffPages(queryBase).catch(err => tfyBasicFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.REQUEST))
         })
 
         //endregion ===========================================================================
@@ -104,7 +104,7 @@ export default defineComponent({
         // ❗ this functions here for fetching data could be async await functions easily, if is needed
 
         function a_reqQuery( queryData: IDataTableQuery ) {
-            st_Staff.reqStaffPages(queryData).catch(err => tfyBasicFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.REQUEST))
+            st_staff.reqStaffPages(queryData).catch(err => tfyBasicFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.REQUEST))
         }
 
         /**
@@ -114,13 +114,13 @@ export default defineComponent({
          * @param ref Subject Entity reference e.g identifier, name or something like that
          */
         function a_reqDelete( ids: Array<number> , ref: undefined | string = undefined ) {
-            st_Staff.reqStaffDeletion({ ids }).then(() => {
+            st_staff.reqStaffDeletion({ ids }).then(() => {
 
                 tfyBasicSuccess(ENTITY_NAMES.STAFF, OPS_KIND_STR.DELETION, ref)
 
                 // If a user delete all the records from a page of the table, then the table becomes empty, so in this case we need to make a request for the remains data (in the server, ... if any) and repopulate the table / page
-                if (st_Staff.pageSize == 0 && st_Staff.totalRecords > 0)
-                    st_Staff.reqStaffPages(queryBase).catch(err => tfyBasicFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.REQUEST))
+                if (st_staff.pageSize == 0 && st_staff.totalRecords > 0)
+                    st_staff.reqStaffPages(queryBase).catch(err => tfyBasicFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.REQUEST))
 
             }).catch(err => tfyBasicFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.DELETION, ref))
         }
@@ -130,9 +130,9 @@ export default defineComponent({
 
             // the 'single' case,  used when this is called for switch status toggle intent
             if (ids.length === 1)
-                entityReference = st_Staff.getStaffByIdFromLocalStorage(ids[ 0 ])!.firstName
+                entityReference = st_staff.getStaffByIdFromLocalStorage(ids[ 0 ])!.firstName
 
-            st_Staff.reqToggleStatus({ids})
+            st_staff.reqToggleStatus({ids})
             .then(() => tfyBasicSuccess(ENTITY_NAMES.STAFF, ops, entityReference))
             .catch(err => tfyBasicFail(err, ENTITY_NAMES.STAFF, ops))
         }
@@ -150,7 +150,7 @@ export default defineComponent({
          * @param objectId object identifier to be deleted
          */
         async function h_intentRowDelete( objectId: number ) {
-            const entityReference =st_Staff.getStaffByIdFromLocalStorage(objectId)!.firstName
+            const entityReference =st_staff.getStaffByIdFromLocalStorage(objectId)!.firstName
 
             const wasConfirmed = await dialogfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.STAFF, entityReference)
             if (wasConfirmed) a_reqDelete([ objectId ], entityReference)
@@ -199,7 +199,7 @@ export default defineComponent({
                 if (wasConfirmed) {
                     // need to enable all selected disabled stores. Filter the staff to find whether Id from the staff in the local store
                     // actually is in the given Id list ... and also check the Staff isn't active already in the local store
-                    let ids = st_Staff.entityPage.filter(s => dataIds.indexOf(s.id) !== -1 && !s.isActive).map(s => s.id)
+                    let ids = st_staff.entityPage.filter(s => dataIds.indexOf(s.id) !== -1 && !s.isActive).map(s => s.id)
                     if (ids.length > 0) a_reqSwitchState(ids, OPS_KIND_STR.ENABLE)
                 }
             }
@@ -207,7 +207,7 @@ export default defineComponent({
                 const wasConfirmed = await dialogfyConfirmation(ACTION_KIND_STR.DEACTIVATE, ENTITY_NAMES.STAFF, '', true)
                 if (wasConfirmed) {
                     // disable case, same as enable but with the disable state ... and also check the Staff isn't disabled already in the local store
-                    let ids = st_Staff.entityPage.filter(s => dataIds.indexOf(s.id) !== -1 &&  s.isActive).map(s => s.id)
+                    let ids = st_staff.entityPage.filter(s => dataIds.indexOf(s.id) !== -1 &&  s.isActive).map(s => s.id)
                     if (ids.length > 0) a_reqSwitchState(ids, OPS_KIND_STR.DISABLE)
                 }
             }
@@ -227,7 +227,7 @@ export default defineComponent({
             eMode,
             columns,
             filters,
-            st_Staff,
+            st_staff,
 
             h_reqQuery,
             h_navCreateStaff,

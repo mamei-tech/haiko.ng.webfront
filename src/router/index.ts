@@ -1,4 +1,4 @@
-import { useAuthStore } from '@/stores/auth'
+import { useSt_Auth } from '@/stores/auth'
 import { createRouter, createWebHistory } from 'vue-router'
 import { ApiAuth } from '@/services/api/api-auth'
 import { LayBasePage, LayBaseDashboard } from '@/layouts'
@@ -28,15 +28,15 @@ const router = createRouter({
 // GUARD - authentication checker | axios hook
 router.beforeEach(( to, _, next ) => {
 
-    const store = useAuthStore()                                                // maybe we can put this outside this method to improve speed
+    const st_auth = useSt_Auth()                                                // maybe we can put this outside this method to improve speed
 
-    if (store === undefined) next()
-    else if (to.meta.reqAuth && !store.isLoggedIn) {
+    if (st_auth === undefined) next()
+    else if (to.meta.reqAuth && !st_auth.isLoggedIn) {
         next(RoutePaths.login)
     }
-    else if (to.name === RoutePathNames.login && store.isLoggedIn) {            // Not logged / auth
+    else if (to.name === RoutePathNames.login && st_auth.isLoggedIn) {            // Not logged / auth
         // Try to login but the user is logged in already
-        ApiAuth.setAccessToken(store.authTk)                                    // As the user is logged in already the access_token has to be in the store
+        ApiAuth.setAccessToken(st_auth.authTk)                                    // As the user is logged in already the access_token has to be in the store
         next(RoutePaths.dashboard)
     }
     else {

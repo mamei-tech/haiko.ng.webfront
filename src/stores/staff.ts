@@ -34,9 +34,9 @@ export const useSt_Staff = defineStore({
          * @param state Staff store state
          */
         getStaffList: ( state ) : Array<IStaffRow> => {
-            const st_Nomenclatures = useSt_Nomenclatures()                                            // Pinia instance of the nomenclature store
+            const st_nomenclatures = useSt_Nomenclatures()                                            // Pinia instance of the nomenclature store
 
-            if (IsEmptyObj(st_Nomenclatures.getRolesByIdMap)) return state.entityPage       // If there are no roles yet, retrieve the staff page as it is
+            if (IsEmptyObj(st_nomenclatures.getRolesByIdMap)) return state.entityPage       // If there are no roles yet, retrieve the staff page as it is
             else {
 
                 // so the nomenclatures store has some role data, so we are going to map the roleId to roleName for each role
@@ -44,7 +44,7 @@ export const useSt_Staff = defineStore({
 
                     // there is a chance that this line run, and the roleId field was already mapped to the role name making it a string value so we can used as index anymore, so we have to check first
                     if(isNumber(row.roleId))
-                        row.roleId = st_Nomenclatures.getRolesByIdMap[+row.roleId].rName
+                        row.roleId = st_nomenclatures.getRolesByIdMap[+row.roleId].rName
 
                     return row
                 })

@@ -43,7 +43,7 @@ import { useToast } from 'vue-toastification'
 import { CmpBaseButton, CmpBasicInput, CmpCard } from '@/components'
 import { VSchemaAuth } from '@/services/definitions'
 import { RoutePathNames } from '@/services/definitions/route-paths'
-import { useAuthStore } from '@/stores/auth'
+import { useSt_Auth } from '@/stores/auth'
 
 import type { IAuthFormData } from '@/services/definitions/types-forms'
 
@@ -62,7 +62,7 @@ export default defineComponent({
 
         //region ======== DECLARATIONS & LOCAL STATE ============================================
 
-        const authStore = useAuthStore()
+        const st_auth = useSt_Auth()
         const router = useRouter()
         const toast = useToast() // The toast lib interface
 
@@ -75,7 +75,7 @@ export default defineComponent({
         //#region ======= FETCHING DATA & ACTIONS ===============================================
 
         const aReqAccess = ( data: IAuthFormData ) => {
-            authStore.reqLogin(data)
+            st_auth.reqLogin(data)
             .then(() => { goToDashboard() })
             .catch(error => { tfyAuthFail(error) })
         }
