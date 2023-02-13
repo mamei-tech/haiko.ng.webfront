@@ -56,3 +56,11 @@ export enum BULK_ACTIONS {
     DISABLE = 'DISABLE',
     REMOVE = 'REMOVE',
 }
+
+/**
+ * Keyboard keys map
+ * this enum intent to be filled on demand as the project codebase grow
+ */
+export enum KEYS {
+    ESCAPE = 'Escape'
+}

@@ -212,6 +212,7 @@
 </template>
 
 <script lang="ts">
+import { onBeforeUnmount } from 'vue'
 import { useToast } from 'vue-toastification'
 import { useSt_Staff } from '@/stores/staff'
 import { useSt_Nomenclatures } from '@/stores/nomenc'
@@ -223,15 +224,7 @@ import { computed, onMounted, ref, defineComponent, reactive } from 'vue'
 import { Field, useForm } from 'vee-validate'
 import { useRoute, useRouter } from 'vue-router'
 import { CmpCard, CmpFormActionsButton, CmpBasicInput, CmpBasicCheckbox, CmpMultiselectField } from '@/components'
-import {
-    FMODE,
-    RoutePathNames,
-    VSchemaStaffCreate,
-    VSchemaStaffEdit,
-    ENTITY_NAMES,
-    OPS_KIND_STR,
-    ACTION_KIND_STR
-} from '@/services/definitions'
+import { FMODE, RoutePathNames, VSchemaStaffCreate, VSchemaStaffEdit, ENTITY_NAMES, OPS_KIND_STR, ACTION_KIND_STR, KEYS } from '@/services/definitions'
 
 import type { ComputedRef } from 'vue'
 import type { IDtoStaff, TFormMode, TOpsKind } from '@/services/definitions'
@@ -274,6 +267,7 @@ export default defineComponent({
         //#region ======= FETCHING DATA & ACTIONS =============================================
 
         /**
+         * Vue hook before component is mounted in the DOM
          * If this view is called as edit mode rather than creation mode, we need to call the backend API
          * asking for the resource so we can populate the datatable
          *
@@ -284,6 +278,18 @@ export default defineComponent({
                 formDataFromServer = await ApiStaff.getStaffById(+id)
                 setValues(formDataFromServer)               // using setValues from vee-validate for populating the inputs
             }
+
+            // keyboard keys event handler, we need to clean this kind of event when the component are destroyed
+            document.addEventListener('keydown', h_KeyboardKeyPress)
+        })
+
+        /**
+         * Vue hook before component is unmounted from the DOM
+         */
+        onBeforeUnmount(() => {
+
+            // cleaning the event manually added before to the document. Wee need to keep the things as clean as posible
+            document.removeEventListener('keydown', () => {})
         })
 
         /**
@@ -394,6 +400,10 @@ export default defineComponent({
             }
         }
 
+        const h_KeyboardKeyPress = (event: Event) => {
+            if(event.key === KEYS.ESCAPE) h_Back()
+        }
+
         //endregion ===========================================================================
 
         return {
@@ -409,6 +419,7 @@ export default defineComponent({
             h_Back,
             h_Cancel,
             h_Delete,
+            h_KeyboardKeyPress,
             h_toggleCollapsable
         }
     }

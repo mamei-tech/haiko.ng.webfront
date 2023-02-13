@@ -2,7 +2,7 @@ import { ALIGN_POSITION } from './types-common'
 import { RoutePaths, RoutePathNames } from './route-paths'
 import { HCatalogsTable, PAGE_SIZE } from './data-datatables'
 import { EntityTypes, ENTITY_NAMES } from '@/services/definitions/enums-entities'
-import { HTTP_RESPONSES, OPS_KIND_STR, ACTION_KIND_STR, FMODE, BULK_ACTIONS } from '@/services/definitions/enums-common'
+import { HTTP_RESPONSES, OPS_KIND_STR, ACTION_KIND_STR, FMODE, BULK_ACTIONS, KEYS } from '@/services/definitions/enums-common'
 
 import { VSchemaStaffCreate, VSchemaStaffEdit } from '@/services/definitions/validations/validations-people'
 import { VSchemaCommon } from '@/services/definitions/validations/validations-commons'
@@ -31,6 +31,7 @@ export {
     BULK_ACTIONS,
     ACTION_KIND_STR,
     HTTP_RESPONSES,
+    KEYS,
 
     // Functions & other Types
     TOpsKind,
