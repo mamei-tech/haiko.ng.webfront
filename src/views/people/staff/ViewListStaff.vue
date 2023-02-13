@@ -8,7 +8,6 @@
                                   :entityMode="eMode"
                                   :columns="columns"
                                   :data="st_staff.getStaffList"
-                                  :count="st_staff.getEntitiesCount"
                                   :has-actions="true"
                                   :filters="filters"
 
@@ -31,12 +30,13 @@
 </template>
 
 <script lang="ts">
-import { useI18n } from 'vue-i18n'
+// import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { defineComponent, onMounted } from 'vue'
 import { useToast } from 'vue-toastification'
 import { useSt_Staff } from '@/stores/staff'
 import { useSt_Nomenclatures } from '@/stores/nomenc'
+import { useSt_Pagination } from '@/stores/pagination'
 import { HStaffTable } from '@/services/definitions/data-datatables'
 import {
     ACTION_KIND_STR,
@@ -46,7 +46,7 @@ import {
     OPS_KIND_STR,
     RoutePathNames,
 } from '@/services/definitions'
-import { EntityTypes, queryBase } from '@/services/definitions'
+import { EntityTypes } from '@/services/definitions'
 import { CmpCard, CmpDataTable } from '@/components'
 import useDialogfy from '@/services/composables/useDialogfy'
 import useToastify from '@/services/composables/useToastify'
@@ -64,9 +64,11 @@ export default defineComponent({
 
         //#region ======= DECLARATIONS & LOCAL STATE ==========================================
 
-        const {t} = useI18n({useScope: 'global'})
+        // think we are not using this here
+        // const {t} = useI18n({useScope: 'global'})
 
         const st_staff = useSt_Staff()                                      // Pinia store for staff
+        const st_pagination = useSt_Pagination()                            // Pinia instance of pagination store
         const st_nomenclatures = useSt_Nomenclatures()                      // Pinia store for nomenclatures
         const eMode: EntityTypes = EntityTypes.Staff
 
@@ -95,7 +97,7 @@ export default defineComponent({
             st_nomenclatures.reqNomencRoles().catch(err => tfyBasicFail(err, ENTITY_NAMES.ROLE, OPS_KIND_STR.REQUEST))
 
             // getting the staff list data for populating staff datatable (side effect)
-            st_staff.reqStaffPages(queryBase).catch(err => tfyBasicFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.REQUEST))
+            st_staff.reqStaffPages().catch(err => tfyBasicFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.REQUEST))
         })
 
         //endregion ===========================================================================
@@ -118,9 +120,9 @@ export default defineComponent({
 
                 tfyBasicSuccess(ENTITY_NAMES.STAFF, OPS_KIND_STR.DELETION, ref)
 
-                // If a user delete all the records from a page of the table, then the table becomes empty, so in this case we need to make a request for the remains data (in the server, ... if any) and repopulate the table / page
-                if (st_staff.pageSize == 0 && st_staff.totalRecords > 0)
-                    st_staff.reqStaffPages(queryBase).catch(err => tfyBasicFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.REQUEST))
+                // if a user delete all the records from a page of the table, then the table becomes empty, so in this case we need to make a request for the remains data (in the server, ... if any) and repopulate the table / page
+                if (st_pagination.recordsOnPage == 0 && st_pagination.totalRecords > 0)
+                    st_staff.reqStaffPages().catch(err => tfyBasicFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.REQUEST))
 
             }).catch(err => tfyBasicFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.DELETION, ref))
         }
@@ -228,6 +230,7 @@ export default defineComponent({
             columns,
             filters,
             st_staff,
+            st_pagination,
 
             h_reqQuery,
             h_navCreateStaff,

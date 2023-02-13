@@ -1,22 +1,20 @@
 import { defineStore } from 'pinia'
 import { useSt_Nomenclatures } from '@/stores/nomenc'
+import { useSt_Pagination } from '@/stores/pagination'
 import { ApiStaff } from '@/services/api/api-staff'
 import { IsEmptyObj, isNumber } from '@/services/helpers/help-defaults'
 
-import type { IDataTableQuery, IStaffRow, IBasicPageState, IdsArray } from '@/services/definitions'
+import type { IDataTableQuery, IStaffRow, IdsArray } from '@/services/definitions'
 import type { IDtoStaff } from '@/services/definitions'
 
 
 // https://pinia.vuejs.org/core-concepts/#setup-stores
 
-// Sample of option store
+// staff store
 export const useSt_Staff = defineStore({
     id: 'staff',
 
     state: () : IStaffState => ({
-        pageNumber:    0,
-        pageSize:      0,
-        totalRecords: 0,
         entityPage:   [] as IStaffRow[]
     }),
 
@@ -34,7 +32,7 @@ export const useSt_Staff = defineStore({
          * @param state Staff store state
          */
         getStaffList: ( state ) : Array<IStaffRow> => {
-            const st_nomenclatures = useSt_Nomenclatures()                                            // Pinia instance of the nomenclature store
+            const st_nomenclatures = useSt_Nomenclatures()                                       // Pinia instance of the nomenclature store | check the text on --> https://pinia.vuejs.org/cookbook/composing-stores.html#nested-stores
 
             if (IsEmptyObj(st_nomenclatures.getRolesByIdMap)) return state.entityPage       // If there are no roles yet, retrieve the staff page as it is
             else {
@@ -51,8 +49,6 @@ export const useSt_Staff = defineStore({
             }
         },
 
-        getEntitiesCount: ( state ) : number => state.totalRecords,
-
         getStaffByIdFromLocalStorage: ( state ) => {
             // Getters are just computed properties behind the scenes, so it's not possible to pass any parameters to them. However, you can return a function from the getter to accept any arguments
             // Note that when doing this, getters are not cached anymore, they are simply functions that you invoke. You can however cache some results inside of the getter itself, which is uncommon but should prove more performant
@@ -65,6 +61,8 @@ export const useSt_Staff = defineStore({
 
         // ---mutators ---
         // mutates the states directly without any API server request or call / sideEffect, this just mutate the store
+        // Also, by default, you can directly read and write to the state by accessing it through the store instance,
+        // note you cannot add a new state property if you don't define it in state(), it must contain the
         // https://pinia.vuejs.org/core-concepts/state.html#mutating-the-state | https://pinia.vuejs.org/core-concepts/state.html#replacing-the-state
 
         /**
@@ -73,9 +71,11 @@ export const useSt_Staff = defineStore({
          * @param payload Staff identifiers list to be deleted
          */
         mutDeleteStaffList( payload: IdsArray ): void {
+
+            const st_pagination = useSt_Pagination()                                       // Pinia instance of pagination store | check the text on --> https://pinia.vuejs.org/cookbook/composing-stores.html#nested-stores
+
             this.entityPage = this.entityPage.filter(s => !payload.ids.includes(s.id))
-            this.totalRecords -= payload.ids.length
-            this.pageSize -= payload.ids.length
+            st_pagination.mutUpdateOnDelete(payload.ids.length)
         },
 
         // --- server async calls actions ---
@@ -96,19 +96,17 @@ export const useSt_Staff = defineStore({
 
         /**
          * Tries to get a datatable page of Staff entities from backend
-         *
-         * @param payload query of filters and order criteria from datatable UI controls
          */
-        async reqStaffPages (payload: IDataTableQuery) : Promise<void> {
+        async reqStaffPages () : Promise<void> {
+
+            const st_pagination = useSt_Pagination()                                       // pinia instance of pagination store | check the text on --> https://pinia.vuejs.org/cookbook/composing-stores.html#nested-stores
 
              return await new Promise<void>((resolve, reject) => {
-                ApiStaff.getPage(payload)
+                ApiStaff.getPage(st_pagination.getQueryData)
                 .then((response:any) => {
 
                     this.entityPage = response.data.entityList
-                    this.totalRecords = response.data.totalRecords
-                    this.pageSize = response.data.entityList.length
-                    this.pageNumber = payload.Offset
+                    st_pagination.mutUpdateOnRequest(response.data.totalRecords, response.data.entityList.length, st_pagination.Offset)
 
                     resolve()
 
@@ -117,9 +115,7 @@ export const useSt_Staff = defineStore({
                     if (error.response.status === 404)
                     {
                         this.entityPage = []
-                        this.totalRecords = 0
-                        this.pageSize = 0
-                        this.pageNumber = payload.Offset
+                        st_pagination.mutSetEmptyPage(st_pagination.Offset)
                     }
 
                     reject(error)
@@ -188,7 +184,8 @@ export const useSt_Staff = defineStore({
 
 //region ======== STATE INTERFACE =======================================================
 
-interface IStaffState extends IBasicPageState {
+// interface IStaffState extends IBasicPageState {
+interface IStaffState {
     entityPage: Array<IStaffRow>
 }
 

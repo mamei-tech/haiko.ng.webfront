@@ -3,13 +3,6 @@ import type { IColumnHeader, IDataTableQuery } from '@/services/definitions'
 // H means headers
 export const PAGE_SIZE = 10
 
-// base datatable page object, commonly used in the first datatable page request
-export const queryBase: IDataTableQuery = {
-    Offset:  0,
-    Limit:   PAGE_SIZE,
-    Orderer: 'id'
-}
-
 export const HCatalogsTable: Partial<IColumnHeader>[] = [
     { title: '', chk: true, width: 2 },
     { title: 'Id', navKey: '_id', hidden: true },

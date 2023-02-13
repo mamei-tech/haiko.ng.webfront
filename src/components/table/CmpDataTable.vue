@@ -258,7 +258,7 @@
     <CmpTableEmpty v-else />
 
     <!-- PAGINATION -->
-    <CmpTablePagination v-if="data.length > 0" :size="ls_pageSize" :total="count" v-on:next="h_computePaginationData" />
+    <CmpTablePagination v-if="data.length > 0" v-on:next="h_computePaginationData" />
 </template>
 
 <script lang="ts">
@@ -269,14 +269,15 @@ import CmpTableEmpty from './CmpTableEmpty.vue'
 import CmpTableChkbox from './CmpTableChkbox.vue'
 import CmpTableRowActions from './CmpTableRowActions.vue'
 import CmpTableActionBar from './CmpTableActionBar.vue'
-import { PAGE_SIZE } from '@/services/definitions'
 import { CmpBaseButton } from '@/components'
 import { watch } from '@vue/runtime-core'
 import useCommon from '@/services/composables/useCommon'
 import Multiselect from '@vueform/multiselect'
+import { useSt_Pagination } from '@/stores/pagination'
 
 import type { SetupContext, PropType } from 'vue'
 import type { ById, TBulkAction, IIndexable, IColumnHeader, ITableChkEmit, IChecked, IDataTableQuery, Filter  } from '@/services/definitions'
+
 
 
 export default defineComponent({
@@ -307,11 +308,6 @@ export default defineComponent({
             type:        Array,
             default:     (): IColumnHeader[] => [],
             description: 'Table columns'
-        },
-        count:               {
-            type:        Number,
-            default:     0,
-            description: 'The number of all the records/document of this type of entity in the database'
         },
         data:                {
             type:        Object as PropType<IIndexable[]>,
@@ -390,22 +386,17 @@ export default defineComponent({
         const pageSizeOptions = { '10': 10, '25': 25, '50': 50, '100': 100 }                            // pagination size (options) data
         const ls_selections = reactive<{ selected: ById<IChecked> }>({ selected: {} })            // ls =  local state
         const ls_rootChkBoxState = ref<boolean>(false)
-        const ls_pageSize = ref<number>(PAGE_SIZE)
         const ls_columns = ref<Array<Partial<IColumnHeader>>>([ ...props.columns ])
         const lastSelectedSelectElemRef = ref<number>(0)                                          // Receive the value of item selected in select component
-        const isAnyCheckboxSelectedRef = ref<boolean>(false)                                      //  True if at least, one checkbox component filter was selected
+        const isAnyCheckboxSelectedRef = ref<boolean>(false)                                      // True if at least, one checkbox component filter was selected
         const selectFilterListRef = <any> ref([])                                                 // reference to any select component filter
-        let ls_dtQueryData: IDataTableQuery = {
-            Offset: 0,
-            Limit: PAGE_SIZE,
-            Orderer: 'id',
-            Search: '',
-            OrderDir: 'ASC'
-        }
+
         const eMode = toRaw(props.entityMode)                                                           // Returns the raw, original object of a reactive or readonly proxy. This is an escape hatch that can be used to temporarily read without incurring proxy access/tracking overhead or write without triggering changes.
         const search = ref('')
         const { cap } = useCommon()
-        const dtFilters = reactive<any>({})                                                      // Store the datatable filters
+        const dtFilters = reactive<any>({})
+
+        const st_pagination = useSt_Pagination()                            // Pinia instance of pagination store// Store the datatable filters
 
         //endregion =============================================================================
 
@@ -470,17 +461,12 @@ export default defineComponent({
         }
 
         const h_pageSizeChange = ( evt: any ) => {
-            ls_pageSize.value = +evt
-            if (ls_pageSize.value === 0) {
-                ls_pageSize.value = PAGE_SIZE
-            }
+            st_pagination.mutSelectorPageSize(+evt)
+            ctx.emit('requestIntent', st_pagination.getQueryData)
         }
 
         const h_computePaginationData = ( nextPage: number ) => {
-            ls_dtQueryData.Offset = nextPage == 1 ? 0 : nextPage * ls_pageSize.value - ls_pageSize.value
-            ls_dtQueryData.Limit = ls_pageSize.value
-
-            ctx.emit('requestIntent', ls_dtQueryData)
+            ctx.emit('requestIntent', st_pagination.getQueryData)
         }
 
         /***
@@ -502,17 +488,15 @@ export default defineComponent({
                             break
                     }
                     let key = getNavKey(header)
-                    // Handling the orderer as API expects it:
-                    // CamelCase with first letter caps.
-                    // Specially handling the 'id' header,
-                    // hopefully this is the only corner case
-                    if (key !== 'id') {
-                        key = key.replace(/^\w/, c => c.toUpperCase())
-                    }
-                    ls_dtQueryData.Orderer = key
-                    ls_dtQueryData.OrderDir = header.sorting
 
-                    ctx.emit('requestIntent', ls_dtQueryData)
+                    // Handling the orderer as API expects it: CamelCase with first letter caps. Specially handling the 'id' header,
+                    // hopefully this is the only corner case
+                    if (key !== 'id') key = key.replace(/^\w/, c => c.toUpperCase())
+
+                    st_pagination.Orderer = key
+                    st_pagination.OrderDir = header.sorting
+
+                    ctx.emit('requestIntent', st_pagination.getQueryData)
                 }
                 else if (header.sorting !== undefined) header.sorting = ''
 
@@ -521,14 +505,14 @@ export default defineComponent({
         }
 
         const h_searchChange = ( evt: any ) => {
-            ls_dtQueryData.Search = evt.target.value
-            ctx.emit('requestIntent', ls_dtQueryData)
+            st_pagination.Search = evt.target.value
+            ctx.emit('requestIntent', st_pagination.getQueryData)
         }
 
         const h_cleanInputSearch = () => {
-            ls_dtQueryData.Search = ''
+            st_pagination.Search = ''
             search.value = ''
-            ctx.emit('requestIntent', ls_dtQueryData)
+            ctx.emit('requestIntent', st_pagination.getQueryData)
         }
 
         /**
@@ -539,16 +523,15 @@ export default defineComponent({
          */
         function h_search() {
             const dataFilter: Filter = {}
-
             Object.keys(dtFilters).forEach(k => {
                 if (dtFilters[ k ]) {
                     dataFilter[ `Filters[${ cap(k) }]` ] = dtFilters[ k ]
                 }
             })
 
-            ls_dtQueryData.Filters = { ...dataFilter }
+            st_pagination.Filters = { ...dataFilter }
 
-            ctx.emit('requestIntent', ls_dtQueryData)
+            ctx.emit('requestIntent', st_pagination.getQueryData)
         }
 
         /***
@@ -556,7 +539,7 @@ export default defineComponent({
          */
         const h_clearAllFilters = () => {
             search.value = ''
-            ls_dtQueryData.Search = ''
+            st_pagination.Search = ''
             isAnyCheckboxSelectedRef.value = false
             cleanCheckBoxes()
 
@@ -568,7 +551,7 @@ export default defineComponent({
                 if (elemSelect !== undefined) elemSelect.remove([ 0 ])
             }
 
-            ctx.emit('requestIntent', ls_dtQueryData)
+            ctx.emit('requestIntent', st_pagination.getQueryData)
         }
 
         //endregion =============================================================================
@@ -705,7 +688,6 @@ export default defineComponent({
         return {
 
             eMode,
-            ls_pageSize,
             ls_selections,
             ls_rootChkBoxState,
             ls_columns,

@@ -42,4 +42,8 @@ export default {
     // [ RoutePathNames.itemsForm ]: 'Editar @:items.menu-item',
     // [ RoutePathNames.itemCreate ]: '@:crud-actions.create @:items.menu-item'
     //#endregion  ===========================================================================
+
+    //#region ======== AUTH =================================================================
+    [ RoutePathNames.auth ]: "auth_temp",
+    //#endregion  ===========================================================================
 }

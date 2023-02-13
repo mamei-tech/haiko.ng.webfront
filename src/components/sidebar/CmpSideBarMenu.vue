@@ -16,7 +16,10 @@
 </template>
 
 <script>
+import { mapActions } from 'pinia'
 import { RoutePathNames, RoutePaths } from '@/services/definitions/route-paths';
+import { useSt_Pagination } from '@/stores/pagination'
+
 
 export default {
     name: 'CmpSideBarMenu',
@@ -45,7 +48,7 @@ export default {
                         },
                         {
                             href: { path: RoutePaths.authList },
-                            title: RoutePathNames.auth,
+                            title: this.$t( 'routes.' + RoutePathNames.auth ),
                             icon: 'tim-icons icon-badge',
                         }
                     ]
@@ -60,12 +63,16 @@ export default {
         window.addEventListener( 'resize', this.onResize );
     },
     methods: {
-        onToggleCollapse( collapsed ) {
-        },
+        ...mapActions(useSt_Pagination, ['mutResetState']),
+
+        onToggleCollapse( collapsed ) {},
         onItemClick() {
             if (this.isOnMobile) {
                 this.collapsed = true;
             }
+
+            // resetting pagination state
+            this.mutResetState()
         },
         onResize() {
             if (window.innerWidth <= 991) {
@@ -81,6 +88,4 @@ export default {
 </script>
 
 <style lang="scss">
-
-
 </style>
