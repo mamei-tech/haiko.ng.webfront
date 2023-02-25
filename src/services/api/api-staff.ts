@@ -1,15 +1,17 @@
 import axios from './api'
 import config from './config'
-import { HTTP_RESPONSES } from '@/services/definitions'
+import { HTTP_HEADER_FORM_DATA, HTTP_RESPONSES } from '@/services/definitions'
 import useFactory from '@/services/composables/useFactory'
+import useCommon from '@/services/composables/useCommon'
 
 import type { AxiosPromise } from 'axios'
 import type { IDataTableQuery, IDtoStaff, IStaffPage } from '@/services/definitions'
 
 
-const version = config.site.current_version
+const version = config.server.current_version
 const url = `v${ version }/mngmt/cmstaff`
 const { mkStaff } = useFactory()
+const { toFormData } = useCommon()
 
 /***
  * REST API class for backend interaction logic related with Staff
@@ -21,21 +23,36 @@ export class ApiStaff {
     /**
      * Create / insert a new Staff on the system
      *
+     * ❗❗❗ The IDtoStaff.avatarImg field is a File so we can upload the avatar image to the sever. For the
+     * backend server is easier to handle the uploaded file is we sen the entire data as **multipart/form-data**.
+     * If we did not have the file field (IDtoStaff.avatarImg) we can sent the data as norma javascript o
+     *
      * @param staff
      * @returns Promise with the identifier of the just created store (the same as the owner)
      */
     public static insert( staff: IDtoStaff ): AxiosPromise<number> {
-        return axios.post(url, staff)
+        // return axios.post(url, staff)
+
+        return axios.post(url, toFormData(staff), {
+            headers: { 'Content-Type': HTTP_HEADER_FORM_DATA }
+        })
     }
 
     /**
      * Update a Staff on the system
      *
+     * ❗❗❗ The IDtoStaff.avatarImg field is a File so we can upload the avatar image to the sever. For the
+     * backend server is easier to handle the uploaded file is we sen the entire data as **multipart/form-data**.
+     * If we did not have the file field (IDtoStaff.avatarImg) we can sent the data as norma javascript object (JSON)
+     *
      * @param staff object with the edited data
      * @returns ??
      */
     public static update( staff: IDtoStaff ): AxiosPromise<number> {
-        return axios.put(url, staff)
+
+        return axios.put(url, toFormData(staff), {
+            headers: { 'Content-Type': HTTP_HEADER_FORM_DATA }
+        })
     }
 
     /**
@@ -100,6 +117,5 @@ export class ApiStaff {
     }
 
     //endregion ===========================================================================
-
 
 }

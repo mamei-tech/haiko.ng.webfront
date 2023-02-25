@@ -12,7 +12,7 @@ Nprogress.configure({ trickleSpeed: 1500, showSpinner: false, easing: 'ease', sp
 
 
 const customInstance = axios.create({
-    baseURL: config.site.api,
+    baseURL: config.server.api,
     headers: {
         Accept: 'application/json',
         'Access-Control-Allow-Origin': '*'

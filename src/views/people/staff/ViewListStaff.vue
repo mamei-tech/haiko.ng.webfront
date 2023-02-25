@@ -77,7 +77,7 @@ export default defineComponent({
         const columns = HStaffTable                                         // entity customized datatable header
         const filters = [ 'roleId', 'isActive' ]                            // datatable filters
 
-        const { tfyBasicSuccess, tfyBasicFail } = useToastify(toast)
+        const { tfyBasicSuccess, tfyBasicFailOps } = useToastify(toast)
         const { dialogfyConfirmation } = useDialogfy()
 
         //#endregion ==========================================================================
@@ -94,19 +94,19 @@ export default defineComponent({
 
             // getting roles definitions from the system (side effect)
             // this is used to fetch staff roles data from the system so we can map the roleId to rolename in the datatable column
-            st_nomenclatures.reqNomencRoles().catch(err => tfyBasicFail(err, ENTITY_NAMES.ROLE, OPS_KIND_STR.REQUEST))
+            st_nomenclatures.reqNomencRoles().catch(err => tfyBasicFailOps(err, ENTITY_NAMES.ROLE, OPS_KIND_STR.REQUEST))
 
             // getting the staff list data for populating staff datatable (side effect)
-            st_staff.reqStaffPages().catch(err => tfyBasicFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.REQUEST))
+            st_staff.reqStaffPages().catch(err => tfyBasicFailOps(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.REQUEST))
         })
 
         //endregion ===========================================================================
 
         //#region ======= FETCHING DATA & ACTIONS =============================================
-        // ❗ this functions here for fetching data could be async await functions easily, if is needed
 
-        function a_reqQuery( queryData: IDataTableQuery ) {
-            st_staff.reqStaffPages(queryData).catch(err => tfyBasicFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.REQUEST))
+        // ❗ this functions here for fetching data could be async await functions easily, if is needed
+        function a_reqQuery( queryData: IDataTableQuery | undefined = undefined ) {
+            st_staff.reqStaffPages().catch(err => tfyBasicFailOps(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.REQUEST))
         }
 
         /**
@@ -122,9 +122,9 @@ export default defineComponent({
 
                 // if a user delete all the records from a page of the table, then the table becomes empty, so in this case we need to make a request for the remains data (in the server, ... if any) and repopulate the table / page
                 if (st_pagination.recordsOnPage == 0 && st_pagination.totalRecords > 0)
-                    st_staff.reqStaffPages().catch(err => tfyBasicFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.REQUEST))
+                    st_staff.reqStaffPages().catch(err => tfyBasicFailOps(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.REQUEST))
 
-            }).catch(err => tfyBasicFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.DELETION, ref))
+            }).catch(err => tfyBasicFailOps(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.DELETION, ref))
         }
 
         function a_reqSwitchState( ids: Array<number>, ops: TOpsKind ) {
@@ -136,7 +136,7 @@ export default defineComponent({
 
             st_staff.reqToggleStatus({ids})
             .then(() => tfyBasicSuccess(ENTITY_NAMES.STAFF, ops, entityReference))
-            .catch(err => tfyBasicFail(err, ENTITY_NAMES.STAFF, ops))
+            .catch(err => tfyBasicFailOps(err, ENTITY_NAMES.STAFF, ops))
         }
 
 
@@ -182,8 +182,8 @@ export default defineComponent({
             })
         }
 
-        function h_reqQuery( queryData: IDataTableQuery ) {
-            a_reqQuery(queryData)
+        function h_reqQuery( _: IDataTableQuery ) {
+            a_reqQuery()
         }
 
         async function h_intentBulkAction( bulkData: IBulkData ) {

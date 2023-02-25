@@ -1,7 +1,85 @@
-img{
-    max-width: 100%;
-    border-radius: $border-radius-sm;
+img {
+    max-width     : 100%;
+    border-radius : $border-radius-sm;
 }
-.img-raised{
-    box-shadow: $box-shadow-raised;
+
+.img-raised {
+    box-shadow : $box-shadow-raised;
+}
+
+.avatar-profile-container:hover .avatar-profile-overlay {
+    overflow : hidden;
+    opacity  : 1;
+}
+
+.avatar-profile-container {
+    text-align: center !important;
+}
+
+.a-edit-btn-icon {
+    color         : white;
+    font-size     : 165%;
+    position      : absolute;
+    top           : 50%;
+    left          : 50%;
+    transform     : translate(-50%, -50%);
+    -ms-transform : translate(-50%, -50%);
+    text-align    : center;
+}
+
+
+.avatar-profile-overlay {
+    overflow         : hidden;
+    position         : absolute;
+    top              : 0;
+    bottom           : 0;
+    right            : 0;
+    left             : 0;
+    opacity          : 0;
+    border-radius    : 50%;
+    //transition       : .8s ease;
+    background-color : rgba(0, 0, 0, .8);
+}
+
+// ❗❗ there was a problem with the avatar overlay position and animation. When an error message is shown,
+// the components justify on the center, revealing the overlay for avatar image selection, so the user
+// can apreciate in the UI that the components are separated.
+// To fix the problem I had to made 2 things:
+//
+// * don't use transitions at all to show the overlay
+// * correct the alignment with
+
+.avatar-profile-overlay-normal {
+    left             : 0;
+}
+
+.avatar-profile-overlay-fix {
+    left             : 9.2%;
+}
+
+.avatar-profile {
+    overflow      : hidden;
+    border-radius : 50%;
+    border        : double $primary;
+    margin-bottom : 15px;
+}
+
+// === queries and breakpoints ===
+
+@media (min-width : 611px) {
+
+    // adjust profile avatar size in normal or big screens
+    .avatar-profile, .avatar-profile-overlay {
+        width  : 250px;
+        height : 250px;
+    }
+}
+
+@media (max-width : 610px) {
+
+    // adjust profile avatar size in small screens
+    .avatar-profile, .avatar-profile-overlay {
+        width  : 150px;
+        height : 150px;
+    }
 }

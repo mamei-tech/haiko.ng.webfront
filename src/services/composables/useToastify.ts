@@ -95,7 +95,7 @@ export default function useToastify( toast: ToastInterface ) {
      * @param ops Type of API operation for the feedback
      * @param ref Subject Entity reference e.g identifier, name or something like that
      */
-    const tfyBasicFail = ( error: any, subject: EntityGenericNames, ops: TOpsKind, ref: undefined | string = undefined ): void => {
+    const tfyBasicFailOps = ( error: any, subject: EntityGenericNames, ops: TOpsKind, ref: undefined | string = undefined ): void => {
 
         let kind = _geTOpsKind(ops, true)
         let subjectRef = ref !== undefined && typeof ref === 'string' ? ref : ''
@@ -169,7 +169,7 @@ export default function useToastify( toast: ToastInterface ) {
     return {
         tfyPrimary,
         tfyAuthFail,
-        tfyBasicFail,
+        tfyBasicFailOps,
         tfyBasicSuccess,
         tfyBasicWarning,
         tfyError

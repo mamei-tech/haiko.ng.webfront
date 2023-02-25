@@ -1,13 +1,14 @@
 import axios from './api'
 import config from './config'
 import qs from 'query-string'
+import { HTTP_HEADER_FORM_URLENCODED } from '@/services/definitions'
 
 import type { AxiosPromise } from 'axios'
 import type { IAuthFormData } from '../definitions/types-forms'
 import type { IAuthResponse } from '../definitions/types-api'
 
 
-const version = config.site.current_version
+const version = config.server.current_version
 const url = `v${ version }/cauth`
 
 
@@ -20,7 +21,7 @@ export class ApiAuth {
     public static reqAuth( formData: IAuthFormData ): AxiosPromise<IAuthResponse> {
 
         return axios.post(`${ url }`, qs.stringify(formData), {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            headers: { 'Content-Type': HTTP_HEADER_FORM_URLENCODED }
         })
     }
 

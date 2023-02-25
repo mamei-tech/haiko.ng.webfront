@@ -5,7 +5,7 @@ import type { AxiosPromise } from 'axios'
 import type { IRoleBasic } from '@/services/definitions'
 
 
-const version = config.site.current_version
+const version = config.server.current_version
 const url = `v${ version }/mngmt/cmnomenclators`
 
 /***

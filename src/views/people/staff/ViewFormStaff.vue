@@ -190,6 +190,16 @@
                             </div>
 
                             <div class="col-xs-12 col-md-6">
+                                <div class="row justify-content-center avatar-div-component-holder">
+
+                                    <CmpAvatarInput
+                                            name="avatarImg"
+                                            :statics="configStatic"
+                                            :avatar="iniFormData.avatarPath"
+                                            :max-size="5"
+                                            v-on:fileSelected="h_avatar_change"/>
+
+                                </div>
                             </div>
 
                         </div>
@@ -212,6 +222,7 @@
 </template>
 
 <script lang="ts">
+import config from '@/services/api/config'
 import { onBeforeUnmount } from 'vue'
 import { useToast } from 'vue-toastification'
 import { useSt_Staff } from '@/stores/staff'
@@ -223,11 +234,11 @@ import useDialogfy from '@/services/composables/useDialogfy'
 import { computed, onMounted, ref, defineComponent, reactive } from 'vue'
 import { Field, useForm } from 'vee-validate'
 import { useRoute, useRouter } from 'vue-router'
-import { CmpCard, CmpFormActionsButton, CmpBasicInput, CmpBasicCheckbox, CmpMultiselectField } from '@/components'
+import { CmpCard, CmpFormActionsButton, CmpBasicInput, CmpBasicCheckbox, CmpMultiselectField, CmpAvatarInput } from '@/components'
 import { FMODE, RoutePathNames, VSchemaStaffCreate, VSchemaStaffEdit, ENTITY_NAMES, OPS_KIND_STR, ACTION_KIND_STR, KEYS } from '@/services/definitions'
 
 import type { ComputedRef } from 'vue'
-import type { IDtoStaff, TFormMode, TOpsKind } from '@/services/definitions'
+import type { IDtoStaff, TFormMode } from '@/services/definitions'
 
 
 export default defineComponent({
@@ -237,6 +248,7 @@ export default defineComponent({
         Field,
         CmpCard,
         CmpBasicInput,
+        CmpAvatarInput,
         CmpBasicCheckbox,
         CmpMultiselectField,
         CmpFormActionsButton
@@ -249,18 +261,18 @@ export default defineComponent({
         const route = useRoute()
         const router = useRouter()
 
-        const st_staff = useSt_Staff()                                  // Pinia store for staff
-        const st_nomenclatures = useSt_Nomenclatures()                  // Pinia store for nomenclatures
+        const st_staff = useSt_Staff()                                  // pinia store for staff
+        const st_nomenclatures = useSt_Nomenclatures()                  // pinia store for nomenclatures
         const { fmode, id } = route.params                              // remember, fmode (form mode) property denotes the mode this form view was called | checkout the type TFormMode in types definitions
 
-        const toast = useToast()                                        // The toast lib interface
-        const { tfyBasicSuccess, tfyBasicFail } = useToastify(toast)
+        const toast = useToast()                                        // the toast lib interface
+        const { tfyBasicSuccess, tfyBasicFailOps } = useToastify(toast)
         const { dialogfyConfirmation } = useDialogfy()
         const { mkStaff } = useFactory()
 
         let iniFormData = reactive<IDtoStaff>(mkStaff())                 // initial form data
-        let formDataFromServer: IDtoStaff | undefined = undefined        // save entity data requested from the server
-        // let rolesData = ref<IMultiselectBasic[]>([])                  // I will use rer 'cause is only one nested object
+        let formDataFromServer: IDtoStaff | undefined = undefined        // aux variable to save entity data requested from the server
+        // let rolesData = ref<IMultiselectBasic[]>([])                  // I will use ref 'cause is only one nested object
 
         //endregion ===========================================================================
 
@@ -277,6 +289,15 @@ export default defineComponent({
             if (cmptdFmode.value === FMODE.EDIT as TFormMode) {
                 formDataFromServer = await ApiStaff.getStaffById(+id)
                 setValues(formDataFromServer)               // using setValues from vee-validate for populating the inputs
+
+                // -----
+                // ❗❗ This here is a patch, I'm not proud of this workaround but I'm having troubles to get the current
+                // state of the form data (avatarPath from server specifically), and as we fallow the 'emit events'
+                // approach to update the form data from the CmpAvatarInput component (i'm not using v-model for that
+                // component) we need a reactive for the edition mode (when de data comes from server), so this.
+                // Perhaps we can try the v-model way
+
+                iniFormData.avatarPath = formDataFromServer.avatarPath
             }
 
             // keyboard keys event handler, we need to clean this kind of event when the component are destroyed
@@ -300,7 +321,6 @@ export default defineComponent({
          * @param doWeNeedToStay Tell us where to go after the successfully creation of the entity
          */
         const a_Create = ( newStaff: IDtoStaff, doWeNeedToStay: boolean): void => {
-
             st_staff.reqInsertStaff(newStaff).then(() => {
                 tfyBasicSuccess(ENTITY_NAMES.STAFF, OPS_KIND_STR.ADDITION, newStaff.firstName)
 
@@ -308,7 +328,7 @@ export default defineComponent({
                 if(!doWeNeedToStay) h_Back()                                  // so we are going back to the data table
                 else resetForm({ values: mkStaff() })                   // so wee need to clean the entire form and stay in it
 
-            }).catch(err => tfyBasicFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.ADDITION))
+            }).catch(err => tfyBasicFailOps(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.ADDITION))
         }
 
         /**
@@ -324,7 +344,7 @@ export default defineComponent({
                 // so now what ?
                 if(!doWeNeedToStay) h_Back()                                  // so we are going back to the data table
 
-            }).catch(err => tfyBasicFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.UPDATE))
+            }).catch(err => tfyBasicFailOps(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.UPDATE))
         }
 
         const a_Delete = ( staffId: number, entityReference: undefined | string = undefined ): void => {
@@ -333,7 +353,7 @@ export default defineComponent({
             .then(() => {
                 tfyBasicSuccess(ENTITY_NAMES.STAFF, OPS_KIND_STR.DELETION, entityReference)
                 h_Back()
-            }).catch(err => tfyBasicFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.DELETION))
+            }).catch(err => tfyBasicFailOps(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.DELETION))
         }
 
         //#endregion ==========================================================================
@@ -344,7 +364,7 @@ export default defineComponent({
         const cmptdFmode: ComputedRef<string | string[]> = computed(() => fmode)
 
         // getting the vee validate method to manipulate the form related actions from the view
-        const { handleSubmit, meta, setValues, resetForm } = useForm<IDtoStaff>({
+        const { handleSubmit, meta, setValues, setFieldValue, resetForm } = useForm<IDtoStaff>({
             validationSchema: fmode === FMODE.CREATE as TFormMode ? VSchemaStaffCreate : VSchemaStaffEdit,
             initialValues:    iniFormData
         })
@@ -400,8 +420,15 @@ export default defineComponent({
             }
         }
 
-        const h_KeyboardKeyPress = (event: Event) => {
-            if(event.key === KEYS.ESCAPE) h_Back()
+        // const h_KeyboardKeyPress = (event: Event) => {
+        const h_KeyboardKeyPress = (event: any) => {
+            if(event.key === KEYS.ESCAPE) h_Back()                       // going back if SCAPE is pressed
+        }
+
+        // TIP ❗❗ perhaps we can replace this with the v-model way (two-way data binding) as you do with the other inputs
+        //      see the note around line 297 in the 'onMounted' method
+        const h_avatar_change = (f: any) => {
+            setFieldValue('avatarImg', f)
         }
 
         //endregion ===========================================================================
@@ -420,7 +447,10 @@ export default defineComponent({
             h_Cancel,
             h_Delete,
             h_KeyboardKeyPress,
-            h_toggleCollapsable
+            h_toggleCollapsable,
+            h_avatar_change,
+
+            configStatic: config.server.statics
         }
     }
 })

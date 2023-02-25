@@ -14,7 +14,7 @@ export interface IStaffRow {
     username: string,
     roleId: number | string,
     isActive: boolean,
-    created?: Date,                             // TODO en el modo edit, poner como info fija "miembro desde" y hacer el cálculo
+    created?: Date,
     cell: number,
     avatarPath: string
 }
@@ -28,4 +28,5 @@ export interface IDtoStaff extends IStaffRow {
     password? : string,
     passwordConf?: string,
     locale: string,
+    avatarImg?: File                    // on server this value is only used in the request DTO for crete / update, this value doesn't exist in the Staff entity / model
 }
