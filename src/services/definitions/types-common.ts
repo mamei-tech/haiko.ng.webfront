@@ -66,6 +66,10 @@ export interface IColumnHeader {
      * Sorting information of the header
      */
     sorting: SortDir | undefined
+    /***
+     * Comes in handy when we need to handle the cell as a picture cell
+     */
+    picture: boolean | undefined
 }
 
 /***

@@ -14,55 +14,14 @@ export const HCatalogsTable: Partial<IColumnHeader>[] = [
 ]
 
 export const HStaffTable: Partial<IColumnHeader>[] = [
-    {
-        title: '',
-        chk:   true,
-        width: 2
-    },
-
-    {
-        title:  'id',
-        hidden: true
-    },
-
-    {
-        title:  'avatar',
-        navKey: 'avatarPath'
-    },
-
-    {
-        title:   'name',
-        sorting: '',
-        navKey:  'firstName'
-    },
-
-    {
-        title:    'user',
-        toCenter: true,
-        sorting:  '',
-        navKey:   'username'
-    },
-
-    {
-        title:   'contact',
-        sorting: '',
-        navKey:  'cell'
-    },
-
-    {
-        title:    'role',
-        toCenter: true,
-        navKey:   'roleId'
-    },
-
-    {
-        title:    'active',
-        toCenter: true,
-        sorting:  '',
-        navKey:   'isActive',
-        switch:   true
-    },
-
+    { title: '', chk: true, width: 2 },
+    { title: 'id', hidden: true },
+    { title: 'avatar', toCenter: true, navKey: 'avatarPath', picture: true, width: 8 },
+    { title: 'name', sorting: '', navKey: 'firstName' },
+    { title: 'user', toCenter: true, sorting: '', navKey: 'username' },
+    { title: 'contact', sorting: '', navKey: 'cell' },
+    { title: 'role', toCenter: true, navKey: 'roleId' },
+    { title: 'active', toCenter: true, sorting: '', navKey: 'isActive', switch: true },
     {
         title:   '',            // actions buttons
         toRight: true,

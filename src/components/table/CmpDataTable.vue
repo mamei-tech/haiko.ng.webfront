@@ -223,6 +223,18 @@
 
                 </td>
 
+                <!-- picture mode -->
+                <td v-else-if="chkHasValue(rowObj, header) && !header.hidden && header.picture"
+                    class="text-center"
+                    rowspan="1" colspan="1"
+                    :style="[{ width: header.width + '%' }]"
+                >
+                    <CmpTablePictureCell
+                            :type="PICTURE_TYPE_CELL.USER"
+                            :statics="configStatic"
+                            :picture="getRowValue( rowObj, header )"/>
+                </td>
+
                 <!-- normal mode -->
                 <td v-else-if="chkHasValue(rowObj, header) && !header.hidden"
                     rowspan="1"
@@ -235,8 +247,8 @@
                     :style="[{ width: header.width + '%' }]"
                 >
                     {{ getRowValue( rowObj, header ) }}
-
                 </td>
+
             </template>
 
             <!-- ACTIONS BUTTONS TD -->
@@ -262,11 +274,13 @@
 </template>
 
 <script lang="ts">
+import config from '@/services/api/config'
 import { onBeforeUpdate, computed, defineComponent, toRaw, reactive, ref } from 'vue'
 import CmpTablePagination from './CmpTablePagination.vue'
 import CmpSwitchCell from './CmpSwitchCell.vue'
 import CmpTableEmpty from './CmpTableEmpty.vue'
 import CmpTableChkbox from './CmpTableChkbox.vue'
+import CmpTablePictureCell from './CmpTablePictureCell.vue'
 import CmpTableRowActions from './CmpTableRowActions.vue'
 import CmpTableActionBar from './CmpTableActionBar.vue'
 import { CmpBaseButton } from '@/components'
@@ -274,10 +288,10 @@ import { watch } from '@vue/runtime-core'
 import useCommon from '@/services/composables/useCommon'
 import Multiselect from '@vueform/multiselect'
 import { useSt_Pagination } from '@/stores/pagination'
+import { PICTURE_TYPE_CELL } from '@/services/definitions'
 
 import type { SetupContext, PropType } from 'vue'
 import type { ById, TBulkAction, IIndexable, IColumnHeader, ITableChkEmit, IChecked, IDataTableQuery, Filter  } from '@/services/definitions'
-
 
 
 export default defineComponent({
@@ -291,7 +305,8 @@ export default defineComponent({
         CmpTableEmpty,
         CmpTableChkbox,
         CmpTableActionBar,
-        CmpTableRowActions
+        CmpTableRowActions,
+        CmpTablePictureCell
     },
     props: {
         subject:             {
@@ -726,7 +741,10 @@ export default defineComponent({
             isCheckBoxSelected,
             tableClass,
 
-            cap
+            cap,
+
+            configStatic: config.server.statics,
+            PICTURE_TYPE_CELL: PICTURE_TYPE_CELL
         }
     }
 })

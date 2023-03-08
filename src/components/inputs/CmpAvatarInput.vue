@@ -26,6 +26,7 @@
 // https://www.vuescript.com/file-uploader-agent/
 import { computed, defineComponent, ref } from 'vue'
 import { i18n } from '@/services/i18n'
+import { IMG_AVATAR_NAME, RELPATH_DEFAULT_AVATAR_IMG } from '@/services/definitions'
 
 import type { SetupContext } from 'vue'
 
@@ -33,30 +34,30 @@ import type { SetupContext } from 'vue'
 export default defineComponent({
     name: "CmpAvatarInput",
     props: {
-        name: {
-            type: String,
-            description: "The name of the input, should be the same name using in the model / dto",
+        name:    {
+            type:        String,
+            description: 'The name of the input, should be the same name using in the model / dto'
         },
         maxSize: {
-            type: Number,
-            default: 5,
-            required: true,
-            description: "Maximum allowed size to be uploaded in megabytes",
+            type:        Number,
+            default:     5,
+            required:    true,
+            description: 'Maximum allowed size to be uploaded in megabytes'
         },
         statics: {
-            type: String,
-            required: true,
-            description: "Server root URL for the statics files folder",
+            type:        String,
+            required:    true,
+            description: 'Server root URL for the statics files folder'
         },
-        avatar: {
-            type: String,
-            required: true,
-            description: "The URL of the avatar profile image",
+        avatar:  {
+            type:        String,
+            required:    true,
+            description: 'The URL of the avatar profile image'
         }
     },
     setup(props, ctx: SetupContext) {
 
-        //region  ======== DECLARATIONS & LOCAL STATE ============================================
+        //region  ======== DECLARATIONS & LOCAL STATE =============================================
 
         let ref_fileInput = ref()
         let errorMessage = ref<string>('')                                          // validation error message
@@ -65,18 +66,18 @@ export default defineComponent({
         const allowed_extensions = ["jpg", "jpeg", "png", "gif"]
         const { t } = i18n.global
 
-        //endregion =============================================================================
+        //endregion ===============================================================================
 
         //region ======== COMPUTATIONS & GETTERS ==================================================
 
         const avatar = computed(() => {
 
-            if(props.avatar === '' || props.avatar == undefined) return '/src/assets/imgs/defaults/avatar.png'
-            return props.statics?.concat(props.avatar, '/profile_avatar.jpg')
+            if (props.avatar === '' || props.avatar == undefined) return RELPATH_DEFAULT_AVATAR_IMG
+            return props.statics?.concat(props.avatar, IMG_AVATAR_NAME)
 
             // something like
             // http://localhost:7000/statics/media/staff/avatars/1953288944/profile_avatar.jpg
-        });
+        })
 
         //endregion ===============================================================================
 

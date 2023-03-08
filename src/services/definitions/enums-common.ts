@@ -64,3 +64,12 @@ export enum BULK_ACTIONS {
 export enum KEYS {
     ESCAPE = 'Escape'
 }
+
+/***
+ * This enum was created to select the kind of default picture needs to be used in a datatable cell
+ */
+export enum PICTURE_TYPE_CELL {
+    DEFAULT = 0,
+    PRODUCT = 1,
+    USER = 2
+}
