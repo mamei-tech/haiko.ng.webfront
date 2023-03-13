@@ -26,7 +26,7 @@
 // https://www.vuescript.com/file-uploader-agent/
 import { computed, defineComponent, ref } from 'vue'
 import { i18n } from '@/services/i18n'
-import { IMG_AVATAR_NAME, RELPATH_DEFAULT_AVATAR_IMG } from '@/services/definitions'
+import { IMG_ORG_AVATAR_NAME, RELPATH_DEFAULT_AVATAR_IMG } from '@/services/definitions'
 
 import type { SetupContext } from 'vue'
 
@@ -63,7 +63,8 @@ export default defineComponent({
         let errorMessage = ref<string>('')                                          // validation error message
         let previewImg = ref<string | ArrayBuffer | null | undefined>(undefined)    // preview image url from FileReader loader event. This are update inside the 'h_fileSelection' handler method
 
-        const allowed_extensions = ["jpg", "jpeg", "png", "gif"]
+        // const allowed_extensions = ["jpg", "jpeg", "png", "gif"]
+        const allowed_extensions = ["jpg", "jpeg", "png"]
         const { t } = i18n.global
 
         //endregion ===============================================================================
@@ -73,7 +74,7 @@ export default defineComponent({
         const avatar = computed(() => {
 
             if (props.avatar === '' || props.avatar == undefined) return RELPATH_DEFAULT_AVATAR_IMG
-            return props.statics?.concat(props.avatar, IMG_AVATAR_NAME)
+            return props.statics?.concat(props.avatar, IMG_ORG_AVATAR_NAME)
 
             // something like
             // http://localhost:7000/statics/media/staff/avatars/1953288944/profile_avatar.jpg

@@ -1,7 +1,7 @@
 import { ALIGN_POSITION } from './types-common'
 import { RoutePaths, RoutePathNames } from './route-paths'
 import { HCatalogsTable, PAGE_SIZE } from './data-datatables'
-import { HTTP_HEADER_FORM_DATA, HTTP_HEADER_FORM_URLENCODED,RELPATH_DEFAULT_AVATAR_IMG, RELPATH_DEFAULT_PRODUCT_IMG, IMG_AVATAR_NAME, IMG_PRODUCT_NAME } from './data-strs'
+import { HTTP_HEADER_FORM_DATA, HTTP_HEADER_FORM_URLENCODED,RELPATH_DEFAULT_AVATAR_IMG, RELPATH_DEFAULT_PRODUCT_IMG, IMG_ORG_AVATAR_NAME, IMG_AVATAR_SMALL_THUMBNAIL, IMG_PRODUCT_NAME } from './data-strs'
 import { EntityTypes, ENTITY_NAMES } from '@/services/definitions/enums-entities'
 import { HTTP_RESPONSES, OPS_KIND_STR, ACTION_KIND_STR, FMODE, BULK_ACTIONS, KEYS, PICTURE_TYPE_CELL } from '@/services/definitions/enums-common'
 
@@ -40,7 +40,9 @@ export {
     HTTP_HEADER_FORM_URLENCODED,
     RELPATH_DEFAULT_AVATAR_IMG,
     RELPATH_DEFAULT_PRODUCT_IMG,
-    IMG_AVATAR_NAME,
+
+    IMG_AVATAR_SMALL_THUMBNAIL,
+    IMG_ORG_AVATAR_NAME,
     IMG_PRODUCT_NAME,
 
     // Functions & other Types

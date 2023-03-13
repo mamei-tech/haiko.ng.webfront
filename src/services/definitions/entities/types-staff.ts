@@ -20,7 +20,7 @@ export interface IStaffRow {
 }
 
 /**
- * Main Staff entity interface
+ * Extended Staff entity interface
  */
 export interface IDtoStaff extends IStaffRow {
     lastName: string,
@@ -28,5 +28,6 @@ export interface IDtoStaff extends IStaffRow {
     password? : string,
     passwordConf?: string,
     locale: string,
+
     avatarImg?: File                    // on server this value is only used in the request DTO for crete / update, this value doesn't exist in the Staff entity / model
 }
