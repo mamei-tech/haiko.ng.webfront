@@ -28,6 +28,14 @@ export default function useDialogfy() {
         } as SweetAlertOptions)
     }
 
+    const dfyShowAlert = ( title: string, txt: string ): void => {
+        Swal.fire({
+            titleText: title,
+            text:      txt,
+            icon:      'warning'
+        } as SweetAlertOptions)
+    }
+
     /***
      * Dialog for confirm a deletion, showing the confirm and decline buttons.
      * @param subject Subject or type of entity of the deletion operation.
@@ -69,7 +77,7 @@ export default function useDialogfy() {
      * @param isBulk Tells if the call is for a plural subject (more than one). Eg. in bulk actions
      * @returns true if ok clicked, false otherwise
      */
-    async function dialogfyConfirmation( action: TActionKind, subject: EntityGenericNames, ref: undefined | string = undefined, isBulk = false ): Promise<boolean> {
+    async function dfyConfirmation( action: TActionKind, subject: EntityGenericNames, ref: undefined | string = undefined, isBulk = false ): Promise<boolean> {
         let result: SweetAlertResult = await Swal.fire({
             icon:           'warning',
             titleText:      t('dialogs.confirm'),
@@ -86,9 +94,10 @@ export default function useDialogfy() {
 
     return {
 
+        dfyShowAlert,
         dfyBasicOKBtn,
         dfyDeleteConfirmations,
-        dialogfyConfirmation
+        dfyConfirmation
 
     }
 }

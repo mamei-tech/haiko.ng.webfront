@@ -1,7 +1,20 @@
 <template>
+
+    <!-- btn to remove the image -->
+    <!--<div v-if="(previewImg !== null && previewImg !== undefined) || cmp_avatar !== RELPATH_DEFAULT_AVATAR_IMG">-->
+    <div class="rm-btn-avatar-container" v-if="shallWeShowRmBtn">
+        <button type="button" class="btn btn-round btn-icon btn-fab btn-default"
+                v-on:click="h_removeImage"
+                :title="$t('btn.tip-rm-picture')"
+        >
+            <i class="tim-icons icon-trash-simple"></i>
+        </button>
+    </div>
+
+    <!-- profile image container -->
     <div class="form-group avatar-profile-container">
 
-        <img v-if="previewImg === undefined" class="avatar-profile" :src="avatar" alt="profile avatar">
+        <img v-if="previewImg === undefined" class="avatar-profile" :src="cmp_avatar" alt="profile avatar">
         <img v-else class="avatar-profile" :src="previewImg" alt="profile avatar">
 
         <!-- INPUT -->
@@ -62,6 +75,7 @@ export default defineComponent({
         let ref_fileInput = ref()
         let errorMessage = ref<string>('')                                          // validation error message
         let previewImg = ref<string | ArrayBuffer | null | undefined>(undefined)    // preview image url from FileReader loader event. This are update inside the 'h_fileSelection' handler method
+        let shallWeShowRmBtn = ref<boolean>(false)
 
         // const allowed_extensions = ["jpg", "jpeg", "png", "gif"]
         const allowed_extensions = ["jpg", "jpeg", "png"]
@@ -71,9 +85,11 @@ export default defineComponent({
 
         //region ======== COMPUTATIONS & GETTERS ==================================================
 
-        const avatar = computed(() => {
+        const cmp_avatar = computed(() => {
 
             if (props.avatar === '' || props.avatar == undefined) return RELPATH_DEFAULT_AVATAR_IMG
+
+            shallWeShowRmBtn.value = true
             return props.statics?.concat(props.avatar, IMG_ORG_AVATAR_NAME)
 
             // something like
@@ -93,11 +109,22 @@ export default defineComponent({
 
             reader.onload = e => { previewImg.value = e.target?.result }        // registering the onload event on the FileReader so we can run the inner code next line when wi trigger the 'onload' event
             reader.readAsDataURL(ref_fileInput.value?.files[ 0 ])               // triggering the just register (onload) event, so we can actually get the blob of the file and saving it int the reactive variable
+
+            shallWeShowRmBtn.value = true;                                      // showing the remove img btn
         }
 
         //#endregion ==============================================================================
 
         //region ======== EVENTS HANDLERS =========================================================
+
+        const h_removeImage = async () => {
+
+            ref_fileInput.value.files = undefined;
+            previewImg.value = RELPATH_DEFAULT_AVATAR_IMG
+
+            shallWeShowRmBtn.value = false                                      // hiding the remove img btn
+            ctx.emit('removePicture')
+        }
 
         const h_fileSelection = async () => {
             const _file = ref_fileInput.value?.files[0]
@@ -129,19 +156,21 @@ export default defineComponent({
 
         return {
             props,
-            avatar,
+            cmp_avatar,
             ref_fileInput,
             errorMessage,
             previewImg,
 
-            h_fileSelection
+            RELPATH_DEFAULT_AVATAR_IMG,
+            shallWeShowRmBtn,
+
+            h_fileSelection,
+            h_removeImage
         }
     },
-    emits: ['fileSelected']
+    emits: ['fileSelected', 'removePicture']
 });
 </script>
 
 <style lang="scss">
 </style>
-
-

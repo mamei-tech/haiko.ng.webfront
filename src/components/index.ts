@@ -1,5 +1,6 @@
 import CmpBaseButton from '@/components/buttons/CmpBaseButton.vue'
 import CmpModal from '@/components/CmpModal.vue'
+import CmpTooltip from '@/components/CmpTooltip.vue'
 import CmpCard from '@/components/cards/CmpCard.vue'
 import CmpDropdown from '@/components/CmpDropdown.vue'
 import CmpDataTable from '@/components/table/CmpDataTable.vue'
@@ -30,6 +31,10 @@ export {
 
     // sidebar
     CmpSideBarMenu,
+
+    // tooltip
+    CmpTooltip,
+
 
     //tables
     CmpDataTable,

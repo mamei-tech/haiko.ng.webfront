@@ -22,7 +22,8 @@
         "tip-cancel":         "Descartar cambios",
         "tip-save":           "Guardar cambios",
         "tip-save-stay":      "Guardar cambios y continuar en el formulario",
-        "tip-back-top":       "Subir"
+        "tip-back-top":       "Subir",
+        "tip-rm-picture":     "Eliminar imagen"
     },
     "nav":           {
         "sidebar-people": "People"
@@ -74,8 +75,10 @@
         "request-gerund":  "de solicitud"
     },
     "dialogs":       {
+        "title-alert": "Atención",
         "confirm":      "Por favor, confirme",
-        "confirmation": "¿ Está seguro que desea {action} {plural} {subject} ?"
+        "confirmation": "¿ Está seguro que desea {action} {plural} {subject} ?",
+        "img-rm-alert": "Ha eliminado la imagen de perfil. Si a continuación aplica los cambios, la imagen se eliminará de forma permanente"
     },
     "toasts":        {
         "auth-fail-4xx":         "Credenciales inválidas.",

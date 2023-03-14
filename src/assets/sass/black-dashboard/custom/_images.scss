@@ -61,6 +61,11 @@ div.picture-table-cell .cell-picture {
     background-color : rgba(0, 0, 0, .8);
 }
 
+div.rm-btn-avatar-container {
+    position: absolute;
+    left: 28%
+}
+
 // ❗❗ there was a problem with the avatar overlay position and animation. When an error message is shown,
 // the components justify on the center, revealing the overlay for avatar image selection, so the user
 // can apreciate in the UI that the components are separated.
@@ -85,6 +90,20 @@ div.picture-table-cell .cell-picture {
 }
 
 // === queries and breakpoints ===
+
+@media (min-width : 1160px) and (max-width: 1600px) {
+
+    div.rm-btn-avatar-container {
+        left: 24%;
+    }
+}
+
+@media (max-width : 1300px) {
+
+    div.rm-btn-avatar-container {
+        left: 14%;
+    }
+}
 
 @media (min-width : 611px) {
 

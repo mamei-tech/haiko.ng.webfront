@@ -197,7 +197,9 @@
                                             :statics="configStatic"
                                             :avatar="iniFormData.avatarPath"
                                             :max-size="5"
-                                            v-on:fileSelected="h_avatar_change"/>
+                                            v-on:fileSelected="h_avatarChange"
+                                            v-on:removePicture="h_removePicture"
+                                    />
 
                                 </div>
                             </div>
@@ -228,6 +230,7 @@ import { useToast } from 'vue-toastification'
 import { useSt_Staff } from '@/stores/staff'
 import { useSt_Nomenclatures } from '@/stores/nomenc'
 import { ApiStaff } from '@/services/api/api-staff'
+import { i18n } from '@/services/i18n'
 import useFactory from '@/services/composables/useFactory'
 import useToastify from '@/services/composables/useToastify'
 import useDialogfy from '@/services/composables/useDialogfy'
@@ -239,6 +242,7 @@ import { FMODE, RoutePathNames, VSchemaStaffCreate, VSchemaStaffEdit, ENTITY_NAM
 
 import type { ComputedRef } from 'vue'
 import type { IDtoStaff, TFormMode } from '@/services/definitions'
+
 
 
 export default defineComponent({
@@ -258,6 +262,7 @@ export default defineComponent({
 
         //region ======= DECLARATIONS & LOCAL STATE ===========================================
 
+        const { t } = i18n.global
         const route = useRoute()
         const router = useRouter()
 
@@ -267,7 +272,7 @@ export default defineComponent({
 
         const toast = useToast()                                        // the toast lib interface
         const { tfyBasicSuccess, tfyBasicFailOps } = useToastify(toast)
-        const { dialogfyConfirmation } = useDialogfy()
+        const { dfyConfirmation, dfyShowAlert } = useDialogfy()
         const { mkStaff } = useFactory()
 
         let iniFormData = reactive<IDtoStaff>(mkStaff())                 // initial form data
@@ -415,7 +420,7 @@ export default defineComponent({
         const h_Delete = async ( event: any ) => {
 
             if (fmode as TFormMode == FMODE.EDIT) {                                     // 'cause we can deleted something isn't created yet ... (remember we reuse this view for edition too, so we need to check which mode we currently are)
-                const isOk = await dialogfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.STAFF, formDataFromServer!.firstName)
+                const isOk = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.STAFF, formDataFromServer!.firstName)
                 if (isOk) a_Delete(+id, formDataFromServer!.firstName)                  // The 'id' comes from url params (vue router we mean)
             }
         }
@@ -427,9 +432,20 @@ export default defineComponent({
 
         // TIP ❗❗ perhaps we can replace this with the v-model way (two-way data binding) as you do with the other inputs
         //      see the note around line 297 in the 'onMounted' method
-        const h_avatar_change = (f: any) => {
+        const h_avatarChange = (f: any) => {
             setFieldValue('avatarImg', f)
         }
+
+        const h_removePicture = () => {
+            // if there is NO data on server, we do nothing
+            if(formDataFromServer?.avatarPath === undefined || formDataFromServer?.avatarPath === '') return
+
+            // if there is data (profile picture in this particular case) we need to alert the user the image
+            // will be complete completely on server if the user click apply or save btns
+            dfyShowAlert(t('dialogs.title-alert'), t('dialogs.img-rm-alert'))
+            setFieldValue('avatarImg', undefined)
+        }
+
 
         //endregion ===========================================================================
 
@@ -448,7 +464,8 @@ export default defineComponent({
             h_Delete,
             h_KeyboardKeyPress,
             h_toggleCollapsable,
-            h_avatar_change,
+            h_avatarChange,
+            h_removePicture,
 
             configStatic: config.server.statics
         }

@@ -78,7 +78,7 @@ export default defineComponent({
         const filters = [ 'roleId', 'isActive' ]                            // datatable filters
 
         const { tfyBasicSuccess, tfyBasicFailOps } = useToastify(toast)
-        const { dialogfyConfirmation } = useDialogfy()
+        const { dfyConfirmation } = useDialogfy()
 
         //#endregion ==========================================================================
 
@@ -154,7 +154,7 @@ export default defineComponent({
         async function h_intentRowDelete( objectId: number ) {
             const entityReference =st_staff.getStaffByIdFromLocalStorage(objectId)!.firstName
 
-            const wasConfirmed = await dialogfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.STAFF, entityReference)
+            const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.STAFF, entityReference)
             if (wasConfirmed) a_reqDelete([ objectId ], entityReference)
         }
 
@@ -193,11 +193,11 @@ export default defineComponent({
             // for a more readable form, use v => parseInt (v)
             const dataIds = bulkData.ids.map(v => +v)
             if (bulkData.actionType === BULK_ACTIONS.REMOVE) {
-                const wasConfirmed = await dialogfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.STAFF)
+                const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.STAFF)
                 if (wasConfirmed) a_reqDelete(dataIds)
             }
             else if (bulkData.actionType === BULK_ACTIONS.ENALBE) {
-                const wasConfirmed = await dialogfyConfirmation(ACTION_KIND_STR.ACTIVATE, ENTITY_NAMES.STAFF, '', true)
+                const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.ACTIVATE, ENTITY_NAMES.STAFF, '', true)
                 if (wasConfirmed) {
                     // need to enable all selected disabled stores. Filter the staff to find whether Id from the staff in the local store
                     // actually is in the given Id list ... and also check the Staff isn't active already in the local store
@@ -206,7 +206,7 @@ export default defineComponent({
                 }
             }
             else {
-                const wasConfirmed = await dialogfyConfirmation(ACTION_KIND_STR.DEACTIVATE, ENTITY_NAMES.STAFF, '', true)
+                const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DEACTIVATE, ENTITY_NAMES.STAFF, '', true)
                 if (wasConfirmed) {
                     // disable case, same as enable but with the disable state ... and also check the Staff isn't disabled already in the local store
                     let ids = st_staff.entityPage.filter(s => dataIds.indexOf(s.id) !== -1 &&  s.isActive).map(s => s.id)
