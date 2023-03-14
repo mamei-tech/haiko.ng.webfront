@@ -56,10 +56,7 @@ import type { TOpsKind, TFormMode, IDataTableQuery, IBulkData, IStaffRow } from 
 
 export default defineComponent({
     name: 'ViewListStaff',
-    components: {
-        CmpCard,
-        CmpDataTable
-    },
+    components: { CmpCard, CmpDataTable },
     setup() {
 
         //#region ======= DECLARATIONS & LOCAL STATE ==========================================

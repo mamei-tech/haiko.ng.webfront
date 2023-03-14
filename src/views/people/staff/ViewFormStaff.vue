@@ -281,7 +281,7 @@ export default defineComponent({
 
         //endregion ===========================================================================
 
-        //#region ======= FETCHING DATA & ACTIONS =============================================
+        //region ======== HOOKS ===============================================================
 
         /**
          * Vue hook before component is mounted in the DOM
@@ -317,6 +317,10 @@ export default defineComponent({
             // cleaning the event manually added before to the document. Wee need to keep the things as clean as posible
             document.removeEventListener('keydown', () => {})
         })
+
+        //endregion ===========================================================================
+
+        //#region ======= FETCHING DATA & ACTIONS =============================================
 
         /**
          * Store action for the creating (request) the new entity on the backend system. This value is related to the
