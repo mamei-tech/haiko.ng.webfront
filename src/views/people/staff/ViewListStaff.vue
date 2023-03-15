@@ -30,28 +30,20 @@
 </template>
 
 <script lang="ts">
-// import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
-import { defineComponent, onMounted } from 'vue'
+import { defineComponent, ref, onMounted } from 'vue'
 import { useToast } from 'vue-toastification'
 import { useSt_Staff } from '@/stores/staff'
 import { useSt_Nomenclatures } from '@/stores/nomenc'
 import { useSt_Pagination } from '@/stores/pagination'
 import { HStaffTable } from '@/services/definitions/data-datatables'
-import {
-    ACTION_KIND_STR,
-    BULK_ACTIONS,
-    ENTITY_NAMES,
-    FMODE,
-    OPS_KIND_STR,
-    RoutePathNames,
-} from '@/services/definitions'
+import { ACTION_KIND_STR, BULK_ACTIONS, ENTITY_NAMES, FMODE, OPS_KIND_STR, RoutePathNames } from '@/services/definitions'
 import { EntityTypes } from '@/services/definitions'
 import { CmpCard, CmpDataTable } from '@/components'
 import useDialogfy from '@/services/composables/useDialogfy'
 import useToastify from '@/services/composables/useToastify'
 
-import type { TOpsKind, TFormMode, IDataTableQuery, IBulkData, IStaffRow } from '@/services/definitions'
+import type { TOpsKind, TFormMode, IDataTableQuery, IBulkData, IStaffRow, IColumnHeader } from '@/services/definitions'
 
 
 export default defineComponent({
@@ -61,9 +53,6 @@ export default defineComponent({
 
         //#region ======= DECLARATIONS & LOCAL STATE ==========================================
 
-        // think we are not using this here
-        // const {t} = useI18n({useScope: 'global'})
-
         const st_staff = useSt_Staff()                                      // Pinia store for staff
         const st_pagination = useSt_Pagination()                            // Pinia instance of pagination store
         const st_nomenclatures = useSt_Nomenclatures()                      // Pinia store for nomenclatures
@@ -71,7 +60,8 @@ export default defineComponent({
 
         const router = useRouter()
         const toast = useToast()                                            // The toast lib interface
-        const columns = HStaffTable                                         // entity customized datatable header
+        // const columns = HStaffTable                                      // entity customized datatable header
+        const columns = ref<Partial<IColumnHeader>[]>(HStaffTable)          // entity customized datatable header | As here the data for the filter is dynamically (side-effect) obtained, we need to use ref so we can fill the data
         const filters = [ 'roleId', 'isActive' ]                            // datatable filters
 
         const { tfyBasicSuccess, tfyBasicFailOps } = useToastify(toast)
@@ -91,7 +81,18 @@ export default defineComponent({
 
             // getting roles definitions from the system (side effect)
             // this is used to fetch staff roles data from the system so we can map the roleId to rolename in the datatable column
-            st_nomenclatures.reqNomencRoles().catch(err => tfyBasicFailOps(err, ENTITY_NAMES.ROLE, OPS_KIND_STR.REQUEST))
+            st_nomenclatures.reqNomencRoles()
+            .then(() => {
+                columns.value[6].multi = st_nomenclatures.getRolesForMultiselect
+                // the 6th column is 'role' / 'roleId' column. In this datatable this is a (column) 'multi' filter
+                // (see filters in the declaration section). So, rather define the 'multi' filter data statically in the
+                // data-datable.ts file, we weed to do it dynamically. Hence this here and no the conventionally
+                // definition in data-datable.ts.
+                // ...
+                // Regarding the use of '.then()' for the callback, we jus could use async in the hook and later awaited
+                // (await) the reqNomencRoles() call ... but I like the old fashion way
+            })
+            .catch(err => tfyBasicFailOps(err, ENTITY_NAMES.ROLE, OPS_KIND_STR.REQUEST))
 
             // getting the staff list data for populating staff datatable (side effect)
             st_staff.reqStaffPages().catch(err => tfyBasicFailOps(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.REQUEST))

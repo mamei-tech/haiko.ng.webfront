@@ -55,7 +55,8 @@ export const useSt_Pagination = defineStore({
                 Limit:    this.Limit,
                 Orderer:  this.Orderer,
                 OrderDir: this.OrderDir,
-                Search:   this.Search
+                Search:   this.Search,
+                Filters:  this.Filters
             }
         }
 

@@ -3,9 +3,7 @@
 
 import { defineStore } from 'pinia'
 import { toDicIds } from '@/services/helpers/help-conversion'
-import { mapRolesNom2Multiselect } from '@/services/helpers/help-forms'
 import { ApiNomenclaturesMng } from '@/services/api/api-nomenclatures-manager'
-
 
 import type { ById, IIndexable, IMultiselectBasic, IRoleBasic } from '@/services/definitions'
 
@@ -27,11 +25,15 @@ export const useSt_Nomenclatures = defineStore({
     getters: {
 
         /**
-         * Get the roles form the state in a multiselect component form ({value: ___, label: ___})
+         * Get the roles form the state in a multiselect component format ({value: ___, label: ___})
          *
          * @param state Nomenclatures ROLES state
          */
-        getRolesForMultiselect: ( state ): IMultiselectBasic[] => mapRolesNom2Multiselect(state.roles),
+        getRolesForMultiselect: ( state ): IMultiselectBasic[] => {
+            return state.roles.map((roleData: IRoleBasic) => {
+                return { value: roleData.id, label: roleData.rName }
+            })
+        },
 
         /**
          * Map the roles to a dictionary where the RoleId is the key of the role value (rName, role name)
