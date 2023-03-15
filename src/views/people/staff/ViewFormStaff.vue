@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-12">
 
-                <CmpCard :hasFormBackBtn="true" v-on:doClick="h_Back">
+                <CmpCard :hasFormBackBtn="true" v-on:doClick="h_back">
 
                     <!-- FORM -->
                     <form class="form-horizontal">
@@ -212,8 +212,8 @@
                         <CmpFormActionsButton
                                 :show-delete="cmptdFmode === 'edit'"
                                 v-on:saveIntent="h_submit"
-                                v-on:deleteIntent="h_Delete"
-                                v-on:cancelIntent="h_Cancel"
+                                v-on:deleteIntent="h_delete"
+                                v-on:cancelIntent="h_cancel"
                         />
                     </template>
                 </CmpCard>
@@ -281,7 +281,7 @@ export default defineComponent({
 
         //endregion ===========================================================================
 
-        //region ======== HOOKS ===============================================================
+        //region ======= HOOKS ================================================================
 
         /**
          * Vue hook before component is mounted in the DOM
@@ -306,7 +306,7 @@ export default defineComponent({
             }
 
             // keyboard keys event handler, we need to clean this kind of event when the component are destroyed
-            document.addEventListener('keydown', h_KeyboardKeyPress)
+            window.addEventListener('keydown', h_keyboardKeyPress)
         })
 
         /**
@@ -315,7 +315,7 @@ export default defineComponent({
         onBeforeUnmount(() => {
 
             // cleaning the event manually added before to the document. Wee need to keep the things as clean as posible
-            document.removeEventListener('keydown', () => {})
+            window.removeEventListener('keydown', h_keyboardKeyPress)
         })
 
         //endregion ===========================================================================
@@ -334,7 +334,7 @@ export default defineComponent({
                 tfyBasicSuccess(ENTITY_NAMES.STAFF, OPS_KIND_STR.ADDITION, newStaff.firstName)
 
                 // so now what ?
-                if(!doWeNeedToStay) h_Back()                                  // so we are going back to the data table
+                if(!doWeNeedToStay) h_back()                                  // so we are going back to the data table
                 else resetForm({ values: mkStaff() })                   // so wee need to clean the entire form and stay in it
 
             }).catch(err => tfyBasicFailOps(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.ADDITION))
@@ -351,7 +351,7 @@ export default defineComponent({
                 tfyBasicSuccess(ENTITY_NAMES.STAFF, OPS_KIND_STR.UPDATE, editedStaff.firstName)
 
                 // so now what ?
-                if(!doWeNeedToStay) h_Back()                                  // so we are going back to the data table
+                if(!doWeNeedToStay) h_back()                                  // so we are going back to the data table
 
             }).catch(err => tfyBasicFailOps(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.UPDATE))
         }
@@ -361,7 +361,7 @@ export default defineComponent({
             st_staff.reqStaffDeletion({ ids: [ staffId ] })
             .then(() => {
                 tfyBasicSuccess(ENTITY_NAMES.STAFF, OPS_KIND_STR.DELETION, entityReference)
-                h_Back()
+                h_back()
             }).catch(err => tfyBasicFailOps(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.DELETION))
         }
 
@@ -408,20 +408,20 @@ export default defineComponent({
             handleSubmit(formData => {
                 if (cmptdFmode.value == (FMODE.CREATE as TFormMode)) a_Create(formData, doWeNeedToStay);
                 if (cmptdFmode.value == (FMODE.EDIT as TFormMode) && meta.value.dirty) a_Edit(formData, doWeNeedToStay);
-                if (cmptdFmode.value == (FMODE.EDIT as TFormMode) && !meta.value.dirty) h_Back();               // was no changes (no dirty) with the data, so going back normally
+                if (cmptdFmode.value == (FMODE.EDIT as TFormMode) && !meta.value.dirty) h_back();               // was no changes (no dirty) with the data, so going back normally
             }).call(this)
         }
 
-        const h_Back = () => {
+        const h_back = () => {
             // router.back()
             router.push({ name: RoutePathNames.staff });
         }
 
-        const h_Cancel = () => {
+        const h_cancel = () => {
             router.push({ name: RoutePathNames.staff });
         }
 
-        const h_Delete = async ( event: any ) => {
+        const h_delete = async ( event: any ) => {
 
             if (fmode as TFormMode == FMODE.EDIT) {                                     // 'cause we can deleted something isn't created yet ... (remember we reuse this view for edition too, so we need to check which mode we currently are)
                 const isOk = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.STAFF, formDataFromServer!.firstName)
@@ -429,13 +429,13 @@ export default defineComponent({
             }
         }
 
-        // const h_KeyboardKeyPress = (event: Event) => {
-        const h_KeyboardKeyPress = (event: any) => {
-            if(event.key === KEYS.ESCAPE) h_Back()                       // going back if SCAPE is pressed
+        // const h_keyboardKeyPress = (event: Event) => {
+        const h_keyboardKeyPress = (event: any) => {
+            if(event.key === KEYS.ESCAPE) h_back()                       // going back if SCAPE is pressed
         }
 
-        // TIP ❗❗ perhaps we can replace this with the v-model way (two-way data binding) as you do with the other inputs
-        //      see the note around line 297 in the 'onMounted' method
+        // TIP ❗❗ perhaps we can replace this with the v-model way (two-way data binding) as you do with the other
+        //   inputs see the note around line 297 in the 'onMounted' method
         const h_avatarChange = (f: any) => {
             setFieldValue('avatarImg', f)
         }
@@ -463,10 +463,10 @@ export default defineComponent({
             st_nomenclatures,
 
             h_submit,
-            h_Back,
-            h_Cancel,
-            h_Delete,
-            h_KeyboardKeyPress,
+            h_back,
+            h_cancel,
+            h_delete,
+            h_keyboardKeyPress,
             h_toggleCollapsable,
             h_avatarChange,
             h_removePicture,
