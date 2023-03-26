@@ -103,7 +103,7 @@ export default defineComponent({
         });
         //endregion =============================================================================
 
-        //region ======== EVENTS HANDLERS =======================================================
+        //region ======== EVENTS HANDLERS & WATCHERS ============================================
         const onInputFocused = () => {
             isFocused.value = true;
         };

@@ -255,7 +255,6 @@
             <td class="actions" v-if="hasActions && chkHasId(rowObj)">
                 <!-- we can are going to adapt the action bar buttons according to the entity given in entityMode props -->
 
-                <!--<CmpTableRowActions v-if="entityTypes.Store === entityMode || entityTypes.Menu === entityMode"-->
                 <CmpTableRowActions :mode="eMode"
                                     :identifier="rowObj['id']"
                                     v-on:deleteIntent="$emit('deleteIntent', $event)"
@@ -433,7 +432,7 @@ export default defineComponent({
 
         //endregion =============================================================================
 
-        //region ======== EVENTS HANDLERS =======================================================
+        //region ======== EVENTS HANDLERS & WATCHERS ============================================
 
         const h_onSrchFocusEvt = ( evt: any ) => {
             if (evt.target.value.length < 4) inputToggleFocusClass(evt.target.parentElement.parentNode)

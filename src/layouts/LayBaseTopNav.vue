@@ -176,7 +176,7 @@ export default defineComponent({
 
         //endregion =============================================================================
 
-        //region ======== EVENTS HANDLERS =======================================================
+        //region ======== EVENTS HANDLERS & WATCHERS ============================================
 
         hLogOutIntent(): void {
             this.setLoggedOut()

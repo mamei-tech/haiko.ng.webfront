@@ -42,7 +42,7 @@
             const { value, handleChange } = useField(props.name as string, "", { initialValue: props.checked })
             //endregion =============================================================================
 
-            //region ======== EVENTS HANDLERS =======================================================
+            //region ======== EVENTS HANDLERS & WATCHERS ============================================
             const hdlChange = (evt: Event) => {
                 // @ts-ignore
                 handleChange(evt.target!.checked)
