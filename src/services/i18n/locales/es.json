@@ -45,6 +45,8 @@
         "enable":           "Activo",
         "disabled":         "Inactivo",
         "available":        "Habilitado",
+        "granted":          "Otorgado",
+        "ungranted":        "No otorgado",
         "unavailable":      "Inhabilitado",
         "allowed":          "Permitido",
         "not-allowed":      "No Permitido",
@@ -132,24 +134,28 @@
             }
         },
         "placeholders":  {
-            "username":        "nickname__78",
-            "staff-firstname": "Escriba el nombre del empleado",
-            "staff-lastname":  "Escriba los apellidos del empleado",
-            "reset-filters":   "Restablecer filtros",
-            "user":            "usuario",
-            "pass":            "contraseña",
-            "search":          "buscar",
-            "email":           "correo.del.staff{'@'}.dominio.que"
+            "username":         "nickname__78",
+            "staff-firstname":  "Escriba el nombre del empleado",
+            "staff-lastname":   "Escriba los apellidos del empleado",
+            "role-rname":       "nombre del rol",
+            "role-description": "describe aspectos relevantes del rol",
+            "reset-filters":    "Restablecer filtros",
+            "user":             "usuario",
+            "pass":             "contraseña",
+            "search":           "buscar",
+            "email":            "correo.del.staff{'@'}.dominio.que"
         }
     },
     "table-headers": {
-        "name":    "Nombre",
-        "avatar":  "Avatar",
-        "id":      "Id",
-        "user":    "Usuario",
-        "contact": "Contacto",
-        "role":    "Rol",
-        "active":  "activo?"
+        "name":        "@:data.Name",
+        "avatar":      "Avatar",
+        "id":          "Id",
+        "user":        "Usuario",
+        "contact":     "Contacto",
+        "role":        "Rol",
+        "rname":       "@:table-headers.role",
+        "active":      "activo?",
+        "description": "@:data.Description"
     },
     "entities":      {
         "default": "entidades",
@@ -158,7 +164,7 @@
             "section-name": "@:entities.staff.name"
         },
         "role":   {
-            "name":         "Role {ref}",
+            "name":         "Rol {ref}",
             "section-name": "Roles"
         }
     }

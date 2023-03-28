@@ -3,7 +3,7 @@
         <!-- we are going to adapt the action bar buttons according to the entity given in entityMode props -->
 
         <!-- DEFAULT MODE -->
-        <template v-if="entityMode === entityTypes.Default">
+        <template v-if="entityMode === ENTITY_TYPE.DEFAULT">
             <div class="col-1 p-0" style="text-align: end">
                 <CmpBaseButton
                         icon
@@ -15,9 +15,8 @@
             </div>
         </template>
 
-        <!-- EDR MODE, enable disable remove, for now its the proper mode for STORE, MENUS entities -->
-        <!--<template v-else-if="entityMode === entityTypes.Store || entityTypes.Menu">-->
-        <template v-else-if="entityMode === entityTypes.Staff">
+        <!--<template v-else-if="entityMode === ENTITY_TYPE.Store || ENTITY_TYPE.Menu">-->
+        <template v-else-if="entityMode === ENTITY_TYPE.COMMON">
             <div class="col-11 p-0">
                 <transition name="slide-fade">
                     <div v-show="chkCount > 1" >
@@ -61,13 +60,31 @@
             </div>
         </template>
 
+        <!-- Action bar with only the create btn -->
+        <template v-else-if="entityMode === ENTITY_TYPE.COMMON_NOEJC">
+            <div class="col-11 p-0">
+                <!-- nothing here in this mode -->
+            </div>
+
+            <!-- ALWAYS SHOWED -->
+            <div class="col-1 p-0" style="text-align: end">
+                <CmpBaseButton
+                        icon
+                        buttonType="primary"
+                        :title="$t('btn.tip-create-new')"
+                        @doClick="$emit('navCreateIntent')">
+                    <i class="tim-icons icon-simple-add"></i>
+                </CmpBaseButton>
+            </div>
+        </template>
+
     </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { CmpBaseButton } from '@/components'
-import { EntityTypes } from '@/services/definitions'
+import { ENTITY_TYPE } from '@/services/definitions'
 import { i18n } from '@/services/i18n'
 
 
@@ -104,7 +121,7 @@ import type { SetupContext } from 'vue'
             return {
 
                 pSubject: props.subject === '' || props.subject === undefined ? t('entities.default') : props.subject,                        // processed subject
-                entityTypes: EntityTypes
+                ENTITY_TYPE: ENTITY_TYPE
             }
         }
     })

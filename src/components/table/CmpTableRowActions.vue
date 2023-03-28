@@ -2,8 +2,7 @@
     <div style="text-align: right">
 
         <!-- DEFAULT -->
-        <!--<template v-if="mode === entityTypes.Default || mode === entityTypes.Items">-->
-        <template v-if="mode === entityTypes.Default">
+        <template v-if="mode === ENTITY_TYPE.DEFAULT">
 
             <!-- btn details -->
             <button @click.prevent="$emit('detailsIntent', identifier)"
@@ -33,19 +32,10 @@
             </button>
         </template>
 
-        <!-- Staff  -->
-        <template v-else-if="mode === entityTypes.Staff">
+        <!-- COMMON  -->
+        <template v-else-if="mode === ENTITY_TYPE.COMMON || mode === ENTITY_TYPE.COMMON_NOEJC">
 
-            <!--btn edit meuns-->
-            <button @click.prevent="$emit('detailsIntent', identifier)"
-                    type="button"
-                    :title="$t('btn.val-details')"
-                    class="btn like btn-link btn-icon btn-fab btn-info btn-sm"
-            >
-                <i class="tim-icons icon-calendar-60"></i>
-            </button>
-
-            <!-- btn edit stores -->
+            <!-- btn edit -->
             <button @click.prevent="$emit('editIntent', identifier)"
                     type="button"
                     :title="$t('btn.val-edit')"
@@ -69,7 +59,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { EntityTypes } from '@/services/definitions'
+import { ENTITY_TYPE } from '@/services/definitions'
 
 import type { SetupContext } from 'vue'
 
@@ -93,7 +83,7 @@ export default defineComponent({
 
     setup( _: any, __: SetupContext ) {
         return {
-            entityTypes: EntityTypes
+            ENTITY_TYPE: ENTITY_TYPE
         }
     }
 });

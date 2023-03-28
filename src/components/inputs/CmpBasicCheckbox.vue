@@ -1,23 +1,22 @@
 <template>
     <div class="form-group">
-
         <!-- INPUT -->
         <div class="form-check">
             <label class="form-check-label">
                 <input class="form-check-input"
                        type="checkbox"
-                       v-bind="$attrs"
-                       :checked="value"
+                       :checked="status"
                        @change="hdlChange">
-                <span class="form-check-sign"></span>{{ value ? labels[0] : labels[1] }}
+                <span class="form-check-sign"></span>{{ status ? labels[0] : labels[1] }}
             </label>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-    import { useField } from "vee-validate"
-    import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
+
+import type { SetupContext } from 'vue'
 
 
     export default defineComponent({
@@ -36,22 +35,39 @@
                 description: "Labels for when the value is true (position 0) or when is false (position 1)"
             }
         },
-        setup (props, _) {
+        setup( props, __: SetupContext ) {
 
             //region ======== DECLARATIONS & LOCAL STATE ============================================
-            const { value, handleChange } = useField(props.name as string, "", { initialValue: props.checked })
+
+            const status = ref(props.checked)               // store the boolean status of the input
+
             //endregion =============================================================================
 
+            //region ======= HOOKS ================================================================
+            //endregion ===========================================================================
+
+            //region ======= FETCHING DATA & ACTIONS ==============================================
+            //endregion ===========================================================================
+
+            //region ======= COMPUTATIONS & GETTERS ===============================================
+            //endregion ===========================================================================
+
+            //region ======= HELPERS ==============================================================
+            //endregion ===========================================================================
+
             //region ======== EVENTS HANDLERS & WATCHERS ============================================
-            const hdlChange = (evt: Event) => {
+
+            const hdlChange = (_: Event) => {
                 // @ts-ignore
-                handleChange(evt.target!.checked)
+                //  handleChange(evt.target!.checked)
+                status.value = !status.value
             }
+
             //endregion =============================================================================
 
             return {
+                status,
 
-                value,
                 hdlChange
             }
         }

@@ -28,6 +28,12 @@ export default {
     // [ RoutePathNames.storeMenuCreate ]: '@:crud-actions.create @:menu.menu',
     //#endregion  ===========================================================================
 
+    //#region ======== ROLES ================================================================
+    [ RoutePathNames.roles ]: "@:{'entities.role.section-name'}",
+    [ RoutePathNames.rolesCreate ]: '@:crud-actions.create @:entities.role.section-name',
+    [ RoutePathNames.rolesEdit ]: '@:crud-actions.edition @:entities.role.section-name',
+    //#endregion  ===========================================================================
+
     //#region ======== STAFF ================================================================
     [ RoutePathNames.staff ]: "@:{'entities.staff.section-name'}",
     [ RoutePathNames.staffCreate ]: '@:crud-actions.create @:entities.staff.section-name',

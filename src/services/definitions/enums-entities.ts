@@ -2,10 +2,10 @@
  * This enum is used to specify to a component how it should specialize / adapt according to the entity that is defined.
  * This helps to tailor the components to specific use cases and entities accordingly
  */
-export enum EntityTypes {
-    // TODO refactor this EntityTypes to ENTITY_TYPES
-    Default = 0,
-    Staff = 1
+export enum ENTITY_TYPE {
+    DEFAULT = 0,
+    COMMON = 1,             // STAFF | ROLE
+    COMMON_NOEJC = 2        // common no edit just create | no action 'details' action btn in the row, no action bar at all
 }
 
 /**
