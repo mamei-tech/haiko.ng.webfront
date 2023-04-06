@@ -20,6 +20,9 @@
         "skipLibCheck":                 true,
         "esModuleInterop":              true,
         "allowSyntheticDefaultImports": true,
-        "sourceMap":                    true
+        "sourceMap":                    true,
+        "lib":                          ["dom", "es2017"]
+        //        "lib":                          ["esnext"]
+        // https://stackoverflow.com/questions/45422573/property-entries-does-not-exist-on-type-objectconstructor
     }
 }
