@@ -20,22 +20,30 @@ import type { SetupContext } from 'vue'
 
 
     export default defineComponent({
-        name: 'CmpBasicCheckbox',
+        name:  'CmpBasicCheckbox',
         props: {
-            name: {
-                type: String,
-                description: "The name of the input"
+            name:        {
+                type:        String,
+                description: 'The name of the input'
             },
-            checked: {
-                type: Boolean,
-                description: "Input value"
+            checked:     {
+                type:        Boolean,
+                description: 'Input value'
             },
-            labels: {
-                type: Array,
-                description: "Labels for when the value is true (position 0) or when is false (position 1)"
+            labels:      {
+                type:        Array,
+                description: 'Labels for when the value is true (position 0) or when is false (position 1)'
+            },
+            identifier_a: {
+                type:        String,
+                description: 'This props may come in handy when we need to feedback the parent component with identifier info, firing the "statusChanged" event'
+            },
+            identifier_b: {
+                type:        String,
+                description: 'This props may come in handy when we need to feedback the parent component with identifier info, firing the "statusChanged" event'
             }
         },
-        setup( props, __: SetupContext ) {
+        setup( props, ctx: SetupContext ) {
 
             //region ======== DECLARATIONS & LOCAL STATE ============================================
 
@@ -61,6 +69,9 @@ import type { SetupContext } from 'vue'
                 // @ts-ignore
                 //  handleChange(evt.target!.checked)
                 status.value = !status.value
+                ctx.emit(
+                        'statusChanged',
+                        props.name as string, status.value, props.identifier_a, props.identifier_b)
             }
 
             //endregion =============================================================================
@@ -70,6 +81,7 @@ import type { SetupContext } from 'vue'
 
                 hdlChange
             }
-        }
+        },
+        emits: ['statusChanged']
     })
 </script>

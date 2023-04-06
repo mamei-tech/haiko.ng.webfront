@@ -20,6 +20,10 @@
     import { defineComponent } from 'vue'
 
 
+    /*
+    * U may wonder why we have two CheckBox components. This one comes in handy when we need to used alongside
+    * a form integrated with
+    * */
     export default defineComponent({
         name: 'CmpVeeCheckbox',
         props: {

@@ -10,11 +10,41 @@
     vertical-align: middle;
 }
 
-.collapsable-form-section-divisor {
+div.caret-container-narrow .caret-form-section {
+    margin-top: 10px;
+    margin-right: 6%;
+    height: 14px;
+    width: 14px;
+    color: $primary;
+    float: right;
+    vertical-align: middle;
+}
+
+hr.collapsable-form-section-divisor {
     width: 90%;
     border-width: thin;
     border-color: $primary !important;
     opacity: 0.2;
+}
+
+hr.collapsable-form-section-divisor.hr-50 {
+    margin-block-start: 5px;
+    margin-block-end: 5px;
+}
+
+hr.collapsable-form-section-divisor.hr-100 {
+    margin-block-start: 10px;
+    margin-block-end: 10px;
+}
+
+hr.collapsable-form-section-divisor.hr-200 {
+    margin-block-start: 20px;
+    margin-block-end: 20px;
+}
+
+hr.collapsable-form-section-divisor.hr-300 {
+    margin-block-start: 30px;
+    margin-block-end: 30px;
 }
 
 .form-control {
