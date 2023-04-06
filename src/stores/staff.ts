@@ -4,7 +4,7 @@ import { useSt_Pagination } from '@/stores/pagination'
 import { ApiStaff } from '@/services/api/api-staff'
 import { IsEmptyObj, isNumber } from '@/services/helpers/help-defaults'
 
-import type { IDataTableQuery, IStaffRow, IdsArray } from '@/services/definitions'
+import type { IStaffRow, IdsArray } from '@/services/definitions'
 import type { IDtoStaff } from '@/services/definitions'
 
 
@@ -36,7 +36,6 @@ export const useSt_Staff = defineStore({
 
             if (IsEmptyObj(st_nomenclatures.getRolesByIdMap)) return state.entityPage       // If there are no roles yet, retrieve the staff page as it is
             else {
-
                 // so the nomenclatures store has some role data, so we are going to map the roleId to roleName for each role
                 return state.entityPage.map((row: IStaffRow) => {
 

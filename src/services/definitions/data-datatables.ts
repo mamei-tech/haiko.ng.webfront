@@ -1,4 +1,4 @@
-import type { IColumnHeader, IDataTableQuery } from '@/services/definitions'
+import type { IColumnHeader } from '@/services/definitions'
 
 // H means headers
 export const PAGE_SIZE = 10
@@ -29,3 +29,13 @@ export const HStaffTable: Partial<IColumnHeader>[] = [
     }
 ]
 
+export const HRolesTable: Partial <IColumnHeader>[] = [
+    { title: 'id', hidden: false },
+    { title: 'rname', navKey: 'rName' },
+    { title: 'description' },
+    {
+        title:   '',            // actions buttons
+        toRight: true,
+        width:   40
+    }
+]

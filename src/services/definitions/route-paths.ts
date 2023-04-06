@@ -3,6 +3,9 @@ export const RoutePaths = {
     dashboard: '/dashboard',
 
     // PEOPLE section
+    rolesLists:   '/roles/list',
+    rolesEdit:    '/roles/:fmode/:id',
+    rolesCreate: '/roles/:fmode',
 
     staffList: '/staff/list',
     // staffForm:   '/staff/:fmode/:id?',
@@ -18,6 +21,9 @@ export const RoutePathNames = {
     dashboard: 'dashboard',
 
     // PEOPLE section
+    roles: 'roles',
+    rolesEdit: 'roles-edit',
+    rolesCreate: 'roles-create',
 
     staff:       'staff',
     staffCreate: 'staff-create',

@@ -8,7 +8,6 @@
                     <!-- FORM -->
                     <form class="form-horizontal">
                         <div class="row">
-
                             <div class="col-xm-12 col-md-6">
                                 <h3 class="text">{{ $t("form.section.staff-information") }}</h3>
 
@@ -134,7 +133,7 @@
                                         {{ $t('data.status') }}
                                     </label>
                                     <div class="col-md-9">
-                                        <CmpBasicCheckbox name="isActive"
+                                        <CmpVeeCheckbox name="isActive"
                                                           :checked="iniFormData.isActive"
                                                           v-model="iniFormData.isActive"
                                                           :labels="[$t('others.available'), $t('others.unavailable')]"
@@ -203,7 +202,6 @@
 
                                 </div>
                             </div>
-
                         </div>
                     </form>
 
@@ -237,12 +235,11 @@ import useDialogfy from '@/services/composables/useDialogfy'
 import { computed, onMounted, ref, defineComponent, reactive } from 'vue'
 import { Field, useForm } from 'vee-validate'
 import { useRoute, useRouter } from 'vue-router'
-import { CmpCard, CmpFormActionsButton, CmpBasicInput, CmpBasicCheckbox, CmpMultiselectField, CmpAvatarInput } from '@/components'
+import { CmpCard, CmpFormActionsButton, CmpBasicInput, CmpVeeCheckbox, CmpMultiselectField, CmpAvatarInput } from '@/components'
 import { FMODE, RoutePathNames, VSchemaStaffCreate, VSchemaStaffEdit, ENTITY_NAMES, OPS_KIND_STR, ACTION_KIND_STR, KEYS } from '@/services/definitions'
 
 import type { ComputedRef } from 'vue'
 import type { IDtoStaff, TFormMode } from '@/services/definitions'
-
 
 
 export default defineComponent({
@@ -253,7 +250,7 @@ export default defineComponent({
         CmpCard,
         CmpBasicInput,
         CmpAvatarInput,
-        CmpBasicCheckbox,
+        CmpVeeCheckbox,
         CmpMultiselectField,
         CmpFormActionsButton
     },
@@ -271,13 +268,13 @@ export default defineComponent({
         const { fmode, id } = route.params                              // remember, fmode (form mode) property denotes the mode this form view was called | checkout the type TFormMode in types definitions
 
         const toast = useToast()                                        // the toast lib interface
-        const { tfyBasicSuccess, tfyBasicFailOps } = useToastify(toast)
+        const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
         const { dfyConfirmation, dfyShowAlert } = useDialogfy()
         const { mkStaff } = useFactory()
 
-        let iniFormData = reactive<IDtoStaff>(mkStaff())                 // initial form data
-        let formDataFromServer: IDtoStaff | undefined = undefined        // aux variable to save entity data requested from the server
-        // let rolesData = ref<IMultiselectBasic[]>([])                  // I will use ref 'cause is only one nested object
+        const iniFormData = reactive<IDtoStaff>(mkStaff())                 // initial form data
+        let formDataFromServer: IDtoStaff | undefined = undefined          // aux variable to save entity data requested from the server
+        // const rolesData = ref<IMultiselectBasic[]>([])                  // I will use ref 'cause is only one nested object
 
         //endregion ===========================================================================
 
@@ -331,13 +328,13 @@ export default defineComponent({
          */
         const a_Create = ( newStaff: IDtoStaff, doWeNeedToStay: boolean): void => {
             st_staff.reqInsertStaff(newStaff).then(() => {
-                tfyBasicSuccess(ENTITY_NAMES.STAFF, OPS_KIND_STR.ADDITION, newStaff.firstName)
+                tfyCRUDSuccess(ENTITY_NAMES.STAFF, OPS_KIND_STR.ADDITION, newStaff.firstName)
 
                 // so now what ?
                 if(!doWeNeedToStay) h_back()                                  // so we are going back to the data table
                 else resetForm({ values: mkStaff() })                   // so wee need to clean the entire form and stay in it
 
-            }).catch(err => tfyBasicFailOps(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.ADDITION))
+            }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.ADDITION))
         }
 
         /**
@@ -348,21 +345,21 @@ export default defineComponent({
         const a_Edit = ( editedStaff: IDtoStaff, doWeNeedToStay: boolean ): void => {
 
             st_staff.reqStaffUpdate(editedStaff).then(() => {
-                tfyBasicSuccess(ENTITY_NAMES.STAFF, OPS_KIND_STR.UPDATE, editedStaff.firstName)
+                tfyCRUDSuccess(ENTITY_NAMES.STAFF, OPS_KIND_STR.UPDATE, editedStaff.firstName)
 
                 // so now what ?
                 if(!doWeNeedToStay) h_back()                                  // so we are going back to the data table
 
-            }).catch(err => tfyBasicFailOps(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.UPDATE))
+            }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.UPDATE))
         }
 
         const a_Delete = ( staffId: number, entityReference: undefined | string = undefined ): void => {
 
             st_staff.reqStaffDeletion({ ids: [ staffId ] })
             .then(() => {
-                tfyBasicSuccess(ENTITY_NAMES.STAFF, OPS_KIND_STR.DELETION, entityReference)
+                tfyCRUDSuccess(ENTITY_NAMES.STAFF, OPS_KIND_STR.DELETION, entityReference)
                 h_back()
-            }).catch(err => tfyBasicFailOps(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.DELETION))
+            }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.DELETION))
         }
 
         //#endregion ==========================================================================
@@ -375,7 +372,8 @@ export default defineComponent({
         // getting the vee validate method to manipulate the form related actions from the view
         const { handleSubmit, meta, setValues, setFieldValue, resetForm } = useForm<IDtoStaff>({
             validationSchema: fmode === FMODE.CREATE as TFormMode ? VSchemaStaffCreate : VSchemaStaffEdit,
-            initialValues:    iniFormData
+            initialValues:    iniFormData,
+            initialErrors:    undefined
         })
 
         //endregion ===========================================================================
@@ -392,7 +390,7 @@ export default defineComponent({
 
         //endregion ===========================================================================
 
-        //region ======= EVENTS HANDLERS ======================================================
+        //region ======== EVENTS HANDLERS & WATCHERS ==========================================
 
         /**
          * Handles the form submission event through the vee-validate 'SubmissionHandler' so we can take advantage of all
@@ -401,14 +399,14 @@ export default defineComponent({
          * @param event The DOM event coming from our Vue UI custom component (CmpFormActionsButton in this case)
          * @param doWeNeedToStay This is a boolean data coming from our Vue UI custom component (CmpFormActionsButton in this case). Tell us where to go after the successfully creation of the entity
          */
-        const h_submit = (event: Event, doWeNeedToStay: boolean) => {
+        const h_submit = ( event: Event, doWeNeedToStay: boolean ) => {
             event.preventDefault()
 
             // handling the submission with vee-validate method
             handleSubmit(formData => {
-                if (cmptdFmode.value == (FMODE.CREATE as TFormMode)) a_Create(formData, doWeNeedToStay);
-                if (cmptdFmode.value == (FMODE.EDIT as TFormMode) && meta.value.dirty) a_Edit(formData, doWeNeedToStay);
-                if (cmptdFmode.value == (FMODE.EDIT as TFormMode) && !meta.value.dirty) h_back();               // was no changes (no dirty) with the data, so going back normally
+                if (cmptdFmode.value == (FMODE.CREATE as TFormMode)) a_Create(formData, doWeNeedToStay)
+                if (cmptdFmode.value == (FMODE.EDIT as TFormMode) && meta.value.dirty) a_Edit(formData, doWeNeedToStay)
+                if (cmptdFmode.value == (FMODE.EDIT as TFormMode) && !meta.value.dirty) h_back()               // was no changes (no dirty) with the data, so going back normally
             }).call(this)
         }
 

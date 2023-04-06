@@ -1,3 +1,7 @@
+export interface IDataTablePage<T> extends IDataListBasicResponse {
+    entityList: Array<T>;
+}
+
 export interface IIndexable {
     id: number
 }
@@ -256,7 +260,7 @@ export interface IScrollInfo {
 }
 
 /**
- * Describe the basic (but incomplete) data of a data-table page view. The field regarding of the type of the entity
+ * Describe the basic (but in a incomplete manner) data of a data-table page view. The field regarding of the type of the entity
  * is missing this interface can be adapted to any case
  */
 export interface IDataListBasicResponse {

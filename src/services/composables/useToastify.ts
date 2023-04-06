@@ -49,7 +49,7 @@ export default function useToastify( toast: ToastInterface ) {
             return ''
         }
 
-        let details = error.response.data.title
+        let details = error.response.data.title ?? ''
         const eCode = error.response.status
 
         if (eCode === 404)
@@ -79,12 +79,26 @@ export default function useToastify( toast: ToastInterface ) {
         } as PluginOptions)
     }
 
-    /***
-     * Generic fail toastify with a custom message. Useful for validation
-     * errors or other type of error during data manipulation
+    /**
+     * Generic and simple fail toastify with a custom message. Useful for validation
+     * errors or other type of simple errors during data manipulation
      */
     const tfyError = ( msg: string ): void => {
         _mkError(msg)
+    }
+
+    /**
+     * Simple function to toastify errors backend request where made
+     * @param error XHR HTTP Error object
+     * @param msg Custom message, default to empty string
+     */
+    const tfyBasicRqError = ( error: any, msg: string = '' ): void => {
+
+        if (msg === '') _mkError(error.response.data.title)
+        else _mkError(msg + '. ' + error.response.data.title)
+
+        // console.error('response_code ', error.response.status)
+        // TODO we could use 'error.response.data.type' code to generate a i18n error information and forget about the 'error.response.data.title' that has no translation
     }
 
     /***
@@ -95,7 +109,7 @@ export default function useToastify( toast: ToastInterface ) {
      * @param ops Type of API operation for the feedback
      * @param ref Subject Entity reference e.g identifier, name or something like that
      */
-    const tfyBasicFailOps = ( error: any, subject: EntityGenericNames, ops: TOpsKind, ref: undefined | string = undefined ): void => {
+    const tfyCRUDFail = ( error: any, subject: EntityGenericNames, ops: TOpsKind, ref: undefined | string = undefined ): void => {
 
         let kind = _geTOpsKind(ops, true)
         let subjectRef = ref !== undefined && typeof ref === 'string' ? ref : ''
@@ -126,12 +140,29 @@ export default function useToastify( toast: ToastInterface ) {
      * @param ops Type of API operation for the feedback
      * @param ref Subject Entity reference e.g identifier, name or something like that
      */
-    const tfyBasicSuccess = ( subject: EntityGenericNames, ops: TOpsKind, ref: undefined | string = undefined ): void => {
+    const tfyCRUDSuccess = ( subject: EntityGenericNames, ops: TOpsKind, ref: undefined | string = undefined ): void => {
 
         let kind = _geTOpsKind(ops)
 
         toast.success(
             t('toasts.ops-ok', { subject: subject, ref: ref !== undefined && typeof ref === 'string' ? ref : '', opsKind: kind }),
+            {
+                timeout: 4000,
+                position: POSITION.TOP_RIGHT,
+                icon: 'tim-icons icon-check-2'
+            } as PluginOptions
+        )
+    }
+
+    /***
+     * A basic toast for a successfully operation / request
+     * rQ means request
+     *
+     * @param msg Message to be show in the toast
+     */
+    const tfyBasicSuccess = ( msg: string): void => {
+        toast.success(
+            msg,
             {
                 timeout: 4000,
                 position: POSITION.TOP_RIGHT,
@@ -169,7 +200,9 @@ export default function useToastify( toast: ToastInterface ) {
     return {
         tfyPrimary,
         tfyAuthFail,
-        tfyBasicFailOps,
+        tfyCRUDFail,
+        tfyCRUDSuccess,
+        tfyBasicRqError,
         tfyBasicSuccess,
         tfyBasicWarning,
         tfyError

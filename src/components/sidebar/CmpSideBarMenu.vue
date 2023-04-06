@@ -37,6 +37,11 @@ export default {
                     icon: 'fa fa-users',
                     child: [
                         {
+                            href: { path: RoutePaths.rolesLists },
+                            title: RoutePathNames.roles,
+                            icon: 'tim-icons icon-tablet-2',
+                        },
+                        {
                             href: { path: RoutePaths.staffList },
                             title: RoutePathNames.staff,
                             icon: 'tim-icons icon-single-02',

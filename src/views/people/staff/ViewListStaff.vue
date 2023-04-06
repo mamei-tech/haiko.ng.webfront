@@ -15,7 +15,7 @@
                                   @requestIntent="h_reqQuery"
 
                                   @deleteIntent="h_intentRowDelete"
-                                  @editIntent="h_intentRowEdit"
+                                  @editIntent="h_navRowEdit"
 
                                   @bulkActionIntent="h_intentBulkAction"
 
@@ -38,7 +38,7 @@ import { useSt_Nomenclatures } from '@/stores/nomenc'
 import { useSt_Pagination } from '@/stores/pagination'
 import { HStaffTable } from '@/services/definitions/data-datatables'
 import { ACTION_KIND_STR, BULK_ACTIONS, ENTITY_NAMES, FMODE, OPS_KIND_STR, RoutePathNames } from '@/services/definitions'
-import { EntityTypes } from '@/services/definitions'
+import { ENTITY_TYPE } from '@/services/definitions'
 import { CmpCard, CmpDataTable } from '@/components'
 import useDialogfy from '@/services/composables/useDialogfy'
 import useToastify from '@/services/composables/useToastify'
@@ -56,7 +56,7 @@ export default defineComponent({
         const st_staff = useSt_Staff()                                      // Pinia store for staff
         const st_pagination = useSt_Pagination()                            // Pinia instance of pagination store
         const st_nomenclatures = useSt_Nomenclatures()                      // Pinia store for nomenclatures
-        const eMode: EntityTypes = EntityTypes.Staff
+        const eMode: ENTITY_TYPE = ENTITY_TYPE.COMMON
 
         const router = useRouter()
         const toast = useToast()                                            // The toast lib interface
@@ -64,12 +64,12 @@ export default defineComponent({
         const columns = ref<Partial<IColumnHeader>[]>(HStaffTable)          // entity customized datatable header | As here the data for the filter is dynamically (side-effect) obtained, we need to use ref so we can fill the data
         const filters = [ 'roleId', 'isActive' ]                            // datatable filters
 
-        const { tfyBasicSuccess, tfyBasicFailOps } = useToastify(toast)
+        const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
         const { dfyConfirmation } = useDialogfy()
 
         //#endregion ==========================================================================
 
-        //region ======== HOOKS ===============================================================
+        //region ======= HOOKS ================================================================
 
         /**
          * setup is called before component creation, so the onMounted hook is a good time / place to
@@ -92,10 +92,10 @@ export default defineComponent({
                 // Regarding the use of '.then()' for the callback, we jus could use async in the hook and later awaited
                 // (await) the reqNomencRoles() call ... but I like the old fashion way
             })
-            .catch(err => tfyBasicFailOps(err, ENTITY_NAMES.ROLE, OPS_KIND_STR.REQUEST))
+            .catch(err => tfyCRUDFail(err, ENTITY_NAMES.ROLE, OPS_KIND_STR.REQUEST))
 
             // getting the staff list data for populating staff datatable (side effect)
-            st_staff.reqStaffPages().catch(err => tfyBasicFailOps(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.REQUEST))
+            st_staff.reqStaffPages().catch(err => tfyCRUDFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.REQUEST))
         })
 
         //endregion ===========================================================================
@@ -104,7 +104,7 @@ export default defineComponent({
 
         // ❗ this functions here for fetching data could be async await functions easily, if is needed
         function a_reqQuery( queryData: IDataTableQuery | undefined = undefined ) {
-            st_staff.reqStaffPages().catch(err => tfyBasicFailOps(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.REQUEST))
+            st_staff.reqStaffPages().catch(err => tfyCRUDFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.REQUEST))
         }
 
         /**
@@ -116,13 +116,13 @@ export default defineComponent({
         function a_reqDelete( ids: Array<number> , ref: undefined | string = undefined ) {
             st_staff.reqStaffDeletion({ ids }).then(() => {
 
-                tfyBasicSuccess(ENTITY_NAMES.STAFF, OPS_KIND_STR.DELETION, ref)
+                tfyCRUDSuccess(ENTITY_NAMES.STAFF, OPS_KIND_STR.DELETION, ref)
 
                 // if a user delete all the records from a page of the table, then the table becomes empty, so in this case we need to make a request for the remains data (in the server, ... if any) and repopulate the table / page
                 if (st_pagination.recordsOnPage == 0 && st_pagination.totalRecords > 0)
-                    st_staff.reqStaffPages().catch(err => tfyBasicFailOps(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.REQUEST))
+                    st_staff.reqStaffPages().catch(err => tfyCRUDFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.REQUEST))
 
-            }).catch(err => tfyBasicFailOps(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.DELETION, ref))
+            }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.DELETION, ref))
         }
 
         function a_reqSwitchState( ids: Array<number>, ops: TOpsKind ) {
@@ -133,8 +133,8 @@ export default defineComponent({
                 entityReference = st_staff.getStaffByIdFromLocalStorage(ids[ 0 ])!.firstName
 
             st_staff.reqToggleStatus({ids})
-            .then(() => tfyBasicSuccess(ENTITY_NAMES.STAFF, ops, entityReference))
-            .catch(err => tfyBasicFailOps(err, ENTITY_NAMES.STAFF, ops))
+            .then(() => tfyCRUDSuccess(ENTITY_NAMES.STAFF, ops, entityReference))
+            .catch(err => tfyCRUDFail(err, ENTITY_NAMES.STAFF, ops))
         }
 
 
@@ -160,7 +160,7 @@ export default defineComponent({
          * Handler for the intent of edit a record from the table
          * @param rowData data of the row
          */
-        function h_intentRowEdit( rowData: IStaffRow ) {
+        function h_navRowEdit( rowData: IStaffRow ) {
             router.push({
                 name:   RoutePathNames.staffEdit,
                 params: {
@@ -234,7 +234,7 @@ export default defineComponent({
             h_navCreateStaff,
             h_intentBulkAction,
 
-            h_intentRowEdit,
+            h_navRowEdit,
             h_intentRowDelete,
             h_intentToggleEnable,
             h_intentToggleDisable

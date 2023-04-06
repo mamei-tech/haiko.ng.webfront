@@ -5,7 +5,7 @@ import useFactory from '@/services/composables/useFactory'
 import useCommon from '@/services/composables/useCommon'
 
 import type { AxiosPromise } from 'axios'
-import type { IDataTableQuery, IDtoStaff, IStaffPage } from '@/services/definitions'
+import type { IDataTableQuery, IDtoStaff, IDataTablePage, IStaffRow } from '@/services/definitions'
 
 
 const version = config.server.current_version
@@ -59,7 +59,7 @@ export class ApiStaff {
      * Request datatable page data according to the given query parameters
      * @param queryParams Parameterized request for the entities. Contains query params such as pagination details and filter options for searching.
      */
-    public static getPage( queryParams: IDataTableQuery ): AxiosPromise<IStaffPage> {
+    public static getPage( queryParams: IDataTableQuery ): AxiosPromise<IDataTablePage<IStaffRow>> {
 
         const payload = {
             Orderer: queryParams.Orderer,

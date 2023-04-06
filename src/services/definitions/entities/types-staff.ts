@@ -1,10 +1,5 @@
 import type { IDataListBasicResponse } from '@/services/definitions/types-common'
 
-
-export interface IStaffPage extends IDataListBasicResponse {
-    entityList: Array<IStaffRow>;
-}
-
 /**
  * Interface for describing a Staff row on the datatable
  */

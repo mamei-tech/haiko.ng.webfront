@@ -1,4 +1,4 @@
-import type { IDtoStaff } from '@/services/definitions'
+import type { IDtoRole, IDtoStaff } from '@/services/definitions'
 
 
 export default function useFactory() {
@@ -22,10 +22,21 @@ export default function useFactory() {
         }
     }
 
+    const mkRole = (): IDtoRole => {
+        return {
+            id: 0,
+            rName: "",
+            description: "",
+            permsToGrant: [],
+            permsToRemove: [],
+        }
+    }
+
     //#endregion ==========================================================================
 
     return {
-        mkStaff
+        mkStaff,
+        mkRole
     }
 }
 

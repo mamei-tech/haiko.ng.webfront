@@ -5,7 +5,7 @@ import { regStrongPassword, VSchemaCommon } from '@/services/definitions/validat
 const { t } = i18n.global
 
 /**
- * Staff validation schema. Prepare to be used with Vee-validate lib when creating a new Staff
+ * Staff validation schema. Prepared to be used with Vee-validate lib when creating a new Staff
  * The 'creating' part is important, 'cause when the form is on creation mode, the pass an confirmations field should
  * be required as we are creating a new Staff, so we need a password
  */
