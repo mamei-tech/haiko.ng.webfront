@@ -23,7 +23,9 @@
         "tip-save":           "Guardar cambios",
         "tip-save-stay":      "Guardar cambios y continuar en el formulario",
         "tip-back-top":       "Subir",
-        "tip-rm-picture":     "Eliminar imagen"
+        "tip-rm-picture":     "Eliminar imagen",
+        "tip-grant-all":      "Otorgar todos los permisos",
+        "tip-revoke-all":     "Revocar todos los permisos"
     },
     "nav":           {
         "sidebar-people": "People"

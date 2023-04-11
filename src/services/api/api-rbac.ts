@@ -4,7 +4,7 @@ import { HTTP_RESPONSES } from '@/services/definitions'
 
 import type { AxiosPromise } from 'axios'
 import type { IDataTableQuery, IDataTablePage, IDtoRole } from '@/services/definitions'
-import type { IPermAssoc } from '@/services/definitions/entities/types-rbac'
+import type { IPermAssocId } from '@/services/definitions/entities/types-rbac'
 
 
 const version = config.server.current_version
@@ -42,10 +42,10 @@ export class ApiRbac {
      *
      * @param id role identifier
      */
-    public static async getGetPermsRoleMapAssoc( id: number ): Promise<Array<IPermAssoc>> {
+    public static async getGetPermsRoleMapAssoc( id: number ): Promise<Array<IPermAssocId>> {
         const response = await axios.get(url + `/assoc/${ id }`)
 
-        if (response.status === HTTP_RESPONSES.OK) return response.data as Array<IPermAssoc>
+        if (response.status === HTTP_RESPONSES.OK) return response.data as Array<IPermAssocId>
         return []
     }
 

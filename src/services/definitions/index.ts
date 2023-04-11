@@ -13,7 +13,7 @@ import { VSchemaRole } from '@/services/definitions/validations/validations-rbac
 import type { Problem, ErrorDictionary } from '@/services/definitions/types-errors'
 import type { TOpsKind, Function0, Function1, IColumnHeader, IDataTableQuery, ITableChkEmit, TBulkAction, ById, IIndexable, IChecked, Filter, IDataListBasicResponse, TFormMode, TActionKind, EntityGenericNames, IdsArray, IBulkData, IMultiselectBasic, IShell, IScrollInfo, IDataTablePage  } from './types-common'
 import type { IStaffRow, IDtoStaff } from '@/services/definitions/entities/types-staff'
-import type { IRoleBasic, IDtoRole, IPermAssoc, IGroupPermsDict } from '@/services/definitions/entities/types-rbac'
+import type { IRoleBasic, IDtoRole, IPermAssocId, IPermAssoc, IGroupPermsDict } from '@/services/definitions/entities/types-rbac'
 
 
 export {
@@ -66,5 +66,5 @@ export {
     IStaffRow, IDtoStaff,
 
     // rbac
-    IRoleBasic, IDtoRole,  IPermAssoc
+    IRoleBasic, IDtoRole,  IPermAssocId, IPermAssoc
 }

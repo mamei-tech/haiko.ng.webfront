@@ -24,7 +24,15 @@ export interface IDtoRole extends IIndexable {
 /**
  * Hold the permission data plus a field (IsAssociated) telling if if the permission is associated with an specific role
  */
-export interface IPermAssoc extends IIndexable {
+export interface IPermAssocId extends IPermAssoc {
+    id: number
+}
+
+/**
+ * Hold the permission data plus a field (IsAssociated) telling if if the permission is associated with an specific role
+ * ❗ exclude the permission identifier
+ */
+export interface IPermAssoc {
     /**
      * Permission name
      */
@@ -34,12 +42,12 @@ export interface IPermAssoc extends IIndexable {
     /**
      * Tells if the permission is associated with the role
      */
-    isAssociated: true
+    isAssociated: Boolean
 }
 
 /**
- *
+ * Dictionary for hold the role permission grouped by permission's groups (sring)
  */
 export interface IGroupPermsDict {
-    [ key: string ]: Array<IPermAssoc>
+    [ key: string ]: { [ key: string ]: IPermAssoc }
 }

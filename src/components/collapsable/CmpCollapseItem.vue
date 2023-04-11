@@ -15,7 +15,7 @@
     <Transition name="collapsable">
         <div class="collapsable-div" v-if="doWeShowCollapsable">
 
-            <!-- slot for custom content -->
+            <!-- slot for custom content | default -->
             <slot></slot>
 
         </div>

@@ -63,30 +63,43 @@
 
                             </div>
 
+                            <div class="col-xm-12 col-md-6">
+                                <CmpBaseButton
+                                        icon
+                                        class="mr-1"
+                                        buttonType="success"
+                                        :title="$t('btn.tip-grant-all')"
+                                        @doClick="h_aggregationMode(true)">
+                                    <i class="tim-icons icon-check-2"></i>
+                                </CmpBaseButton>
+                                <CmpBaseButton
+                                        icon
+                                        class="ml-1"
+                                        buttonType="danger"
+                                        :title="$t('btn.tip-revoke-all')"
+                                        @doClick="h_aggregationMode(false)">
+                                    <i class="tim-icons icon-simple-delete"></i>
+                                </CmpBaseButton>
+                            </div>
+
                             <!-- permission list grouped with collapsable items -->
                             <div class="col-xm-12 col-md-12">
-                                <template v-for="(perms, group) in permsByGroup" :key="group">
-
-                                    <CmpCollapseItem :title="group">
-                                        <div v-for="(perm, pIndex) in perms" class="row" :key="pIndex">
-                                            <label class="text-sm-left text-md-right col-md-4 col-form-label">
-                                                <p style="font-weight: 900">{{ perm.pName }} | </p> {{
-                                                    perm.description
-                                                }}
-                                            </label>
-                                            <div class="col-md-8">
-                                                <CmpBasicCheckbox :checked="perm.isAssociated"
-                                                                  :name="perm.pName"
-                                                                  :identifier_a="perm.id + ''"
-                                                                  :identifier_b="perm.group"
-                                                                  :labels="[$t('others.granted'), $t('others.ungranted')]"
-                                                                  v-on:statusChanged="h_permMod"
-                                                />
-                                            </div>
+                                <CmpCollapseItem v-for="(permsDict, group) in permsByGroup" :key="group" :title="group">
+                                    <div v-for="(perm, permId) in permsDict" class="row" :key="permId">
+                                        <label class="text-sm-left text-md-right col-md-4 col-form-label">
+                                            <p style="font-weight: 900">{{ perm.pName }} | </p> {{ perm.description }}
+                                        </label>
+                                        <div class="col-md-8">
+                                            <CmpBasicCheckbox :checked="perm.isAssociated"
+                                                              :name="perm.pName"
+                                                              :identifier_a="permId + ''"
+                                                              :identifier_b="perm.group"
+                                                              :labels="[$t('others.granted'), $t('others.ungranted')]"
+                                                              v-on:statusChanged="h_permMod"
+                                            />
                                         </div>
-                                    </CmpCollapseItem>
-
-                                </template>
+                                    </div>
+                                </CmpCollapseItem>
                             </div>
 
                         </div>
@@ -115,7 +128,7 @@ import { useToast } from 'vue-toastification'
 import { useRoute, useRouter } from 'vue-router'
 import { useForm } from 'vee-validate'
 import { useSt_Rbac } from '@/stores/rbac'
-import { CmpCard, CmpFormActionsButton, CmpBasicInput, CmpCollapseItem, CmpBasicCheckbox } from '@/components'
+import { CmpCard, CmpFormActionsButton, CmpBasicInput, CmpCollapseItem, CmpBasicCheckbox, CmpBaseButton } from '@/components'
 import useFactory from '@/services/composables/useFactory'
 import useToastify from '@/services/composables/useToastify'
 import { ApiRbac } from '@/services/api/api-rbac'
@@ -128,7 +141,7 @@ import {
 } from '@/services/definitions'
 
 import type { ComputedRef } from 'vue'
-import type { TFormMode, IDtoRole, IPermAssoc, IGroupPermsDict } from '@/services/definitions'
+import type { TFormMode, IDtoRole, IPermAssocId, IGroupPermsDict, IPermAssoc } from '@/services/definitions'
 
 
 export default defineComponent({
@@ -137,6 +150,7 @@ export default defineComponent({
     components: {
         CmpCard,
         CmpBasicInput,
+        CmpBaseButton,
         CmpCollapseItem,
         CmpBasicCheckbox,
         CmpFormActionsButton
@@ -158,8 +172,9 @@ export default defineComponent({
 
         const iniFormData = ref<IDtoRole>(mkRole())                     // initial form data
 
-        const permsByGroup = ref<IGroupPermsDict>()                     // permission list grouped by perm group from server data
-        const perms2mod = ref<{ [ key: number ]: { status: boolean, group: string } }>({})          // a register of permission to modify on the server
+        const permsByGroup = ref<IGroupPermsDict>({})              // permission list grouped by perm group from server data
+        const perms2mod = ref<{ [ key: number ]: { status: boolean, group: string } }>({})          // a register of permission to modify on the server. This is a dict using the database perm identifier as keys
+        let withAggregationMode = false                                 // allow to know if either of the two aggregation buttons were clicked, comes in handy in the edition flow to prepare the data
 
         // !!!! we are not using reactivity for `permsToGrant` and `permsToRemove` fields for IDtoRole object.
         // The reactivity for the UI resides with `perms2mod` ref object handled by `h_permMod` method. The
@@ -182,11 +197,17 @@ export default defineComponent({
             ApiRbac.getGetPermsRoleMapAssoc(+id).then(( data ) => {
                 // group the perm list retrieved from server by 'obj.group' name in the perm list
                 // so it should be easier to represent in the UI as we want to group by the server permission group field
-                permsByGroup.value = data.reduce(( accumulator: IGroupPermsDict, obj: IPermAssoc ) => {
+                permsByGroup.value = data.reduce(( accumulator: IGroupPermsDict, obj: IPermAssocId ) => {
                     const key = obj.group
-                    if (!accumulator[ key ]) accumulator[ key ] = []
+                    if (!accumulator[ key ]) accumulator[ key ] = {}
 
-                    accumulator[ key ].push(obj)
+                    accumulator[ key ][ obj.id + '' ] = {
+                        pName:        obj.pName,
+                        group:        obj.group,
+                        description:  obj.description,
+                        isAssociated: obj.isAssociated
+                        // all but the id 'cause we are using the perm id as the id
+                    }
                     return accumulator
                 }, {})
             })
@@ -243,24 +264,31 @@ export default defineComponent({
             // the backend do his job in a easier way so ...
             Object.entries(perms2mod.value).forEach(( [ permId, updatedPerm ] ) => {
 
-                // filtering the perms that actually have not being modify, 'because
-                // it current status is the same as the initial status of the data
-                if (permsByGroup.value === undefined) return
-                const initialPermList: IPermAssoc | undefined = permsByGroup.value[ updatedPerm.group ].find(( p ) => {             // initialPermList, not grouped like permsByGroup
-                    if (p.id === +permId) return p
-                })
+                if (withAggregationMode) {
+                    updatedPerm.status                                                                              // selecting the proper group for the perm to update
+                            ? formData.permsToGrant.push(+permId)
+                            : formData.permsToRemove.push(+permId)
+                    // in aggregation mode, the two perm group will be synced, so there is no need to compare
+                    // checking if the data change, we just iterate over the perms2mod group and use that data
+                }
+                else {
+                    // filtering the perms that actually have not being modify, 'because
+                    // it current status is the same as the initial (permsByGroup) status of the data
+                    if (permsByGroup.value[ updatedPerm.group ][ permId ].isAssociated !== updatedPerm.status)      // if values are not the same as initial, then this perm actually changed so we saved in the form that that becomes the payload of the request
+                    {
+                        updatedPerm.status                                                                          // selecting the proper group for the perm to update
+                                ? formData.permsToGrant.push(+permId)
+                                : formData.permsToRemove.push(+permId)
+                    }
+                }
 
-                if(initialPermList === undefined) return
-                if(initialPermList.isAssociated !== updatedPerm.status)                         // if values are not the same as initial, then this perm actually changed so we saved in the form that that becomes the payload of the request
-                    updatedPerm.status                                                          // selecting the proper group for the perm to update
-                            ? formData.permsToGrant.push(+initialPermList.id)
-                            : formData.permsToRemove.push(+initialPermList.id)
+                // with this, we will have the both group synced when the iteration finished
+                permsByGroup.value[ updatedPerm.group ][ permId ].isAssociated = updatedPerm.status                 // syncing permByGroup so when the form are submitted the UI (perms checked/unchecked) will properly match to the user actions in the perms
             })
 
-            // check if we really need to submit the data checking if the user really change the data
+            // check if we really is data to submit the data comparing if the user really change the data
             // in other words: checking the 'dirtiness' of the form
-            if (formData.permsToGrant.length == 0 && formData.permsToRemove.length == 0 && !isFormDirty)
-            {
+            if (formData.permsToGrant.length == 0 && formData.permsToRemove.length == 0 && !isFormDirty) {
                 // nothing change, so there is nothing to submit
                 if(!doWeNeedToStay) h_back()
                 return
@@ -276,6 +304,7 @@ export default defineComponent({
                 if(!doWeNeedToStay) h_back()                                  // so we are going back to the data table
 
                 // cleaning the storage / records of the permission to update. Comes in handy when the user click the save / apply btn again
+                withAggregationMode = false
                 perms2mod.value = {}
                 resetForm({
                     values: {
@@ -352,9 +381,27 @@ export default defineComponent({
          */
         const h_permMod = (permName:string | undefined, isCheck: boolean, permId: string | undefined, permGroup:string | undefined) => {
 
-            if (permId !== undefined)
+            if (permId !== undefined && permGroup !== undefined)
                 perms2mod.value[ +permId ] = { status: isCheck, group: permGroup as string }
         }
+
+        /**
+         * Handles the manipulation of the data when the aggregation button ara used, so the UI can
+         * represents the changes (mark all / remove all) in a properly manner
+         *
+         * @param toGrant boolean value coming from the event, which btn was clicked so we kno if we need to mark all or remove all
+         */
+        const h_aggregationMode = ( toGrant: boolean ) => {
+            withAggregationMode = true
+
+            Object.entries(permsByGroup.value as IGroupPermsDict).forEach(( [ group, permsDict ] ) => {
+                Object.entries(permsDict as { [ key: string ]: IPermAssoc }).forEach(( [ permId, perm ] ) => {
+                    perms2mod.value[ +permId ] = { status: toGrant, group: group }
+                    permsByGroup.value[group][permId].isAssociated = toGrant
+                })
+            })
+        }
+
 
         //endregion ===========================================================================
 
@@ -370,6 +417,7 @@ export default defineComponent({
             h_cancel,
             h_permMod,
             h_beforeSubmit,
+            h_aggregationMode,
             h_keyboardKeyPress
         }
     }

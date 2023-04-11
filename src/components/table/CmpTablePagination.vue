@@ -40,8 +40,8 @@
 </template>
 
 <script lang="ts">
-    import { computed, defineComponent, reactive, watch } from 'vue'
-    import type { ComputedRef, SetupContext } from 'vue'
+    import { defineComponent, watch } from 'vue'
+    import type { SetupContext } from 'vue'
     import { useSt_Pagination } from '@/stores/pagination'
 
 
