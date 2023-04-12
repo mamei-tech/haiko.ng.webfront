@@ -110,7 +110,7 @@
                         <CmpFormActionsButton
                                 :show-delete="cmptdFmode === 'edit'"
                                 v-on:saveIntent="h_beforeSubmit"
-                                v-on:deleteIntent=""
+                                v-on:deleteIntent="h_delete"
                                 v-on:cancelIntent="h_cancel"
                         />
                     </template>
@@ -131,8 +131,10 @@ import { useSt_Rbac } from '@/stores/rbac'
 import { CmpCard, CmpFormActionsButton, CmpBasicInput, CmpCollapseItem, CmpBasicCheckbox, CmpBaseButton } from '@/components'
 import useFactory from '@/services/composables/useFactory'
 import useToastify from '@/services/composables/useToastify'
+import useDialogfy from '@/services/composables/useDialogfy'
 import { ApiRbac } from '@/services/api/api-rbac'
 import {
+    ACTION_KIND_STR,
     ENTITY_NAMES,
     FMODE,
     KEYS, OPS_KIND_STR,
@@ -166,7 +168,9 @@ export default defineComponent({
         const router = useRouter()
 
         const toast = useToast()                                        // the toast lib interface
-        const { tfyCRUDSuccess, tfyBasicRqError } = useToastify(toast)
+        const { tfyCRUDSuccess, tfyBasicRqError, tfyCRUDFail } = useToastify(toast)
+        const { dfyConfirmation } = useDialogfy()
+
         const { fmode, id } = route.params                              // remember, fmode (form mode) property denotes the mode this form view was called | checkout the type TFormMode in types definitions
         const { mkRole } = useFactory()
 
@@ -318,6 +322,14 @@ export default defineComponent({
             }).catch(err => tfyBasicRqError(err))
         }
 
+        const a_Delete = ( staffId: number, entityReference: undefined | string = undefined ): void => {
+            st_rbac.reqRoleDeletion({ ids: [ staffId ] })
+            .then(() => {
+                tfyCRUDSuccess(ENTITY_NAMES.ROLE, OPS_KIND_STR.DELETION, entityReference)
+                h_back()
+            }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.ROLE, OPS_KIND_STR.DELETION))
+        }
+
         //#endregion ==========================================================================
 
         //region ======= COMPUTATIONS & GETTERS ===============================================
@@ -402,6 +414,14 @@ export default defineComponent({
             })
         }
 
+        const h_delete = async ( event: any ) => {
+            const roleName = st_rbac.getRoleByIdFromLocalStorage(+id)?.rName ?? ''
+
+            if (fmode as TFormMode == FMODE.EDIT) {                                     // 'cause we can deleted something isn't created yet ... (remember we reuse this view for edition too, so we need to check which mode we currently are)
+                const isOk = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.ROLE, roleName)
+                if (isOk) a_Delete(+id, roleName)                                       // The 'id' comes from url params (vue router we mean)
+            }
+        }
 
         //endregion ===========================================================================
 
@@ -415,6 +435,7 @@ export default defineComponent({
 
             h_back,
             h_cancel,
+            h_delete,
             h_permMod,
             h_beforeSubmit,
             h_aggregationMode,

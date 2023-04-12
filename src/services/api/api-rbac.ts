@@ -59,6 +59,14 @@ export class ApiRbac {
         return axios.put(url, payload)
     }
 
+    /**
+     * Invoke an api call to deletes a bunch of entities
+     * @param ids List of entities identifiers
+     */
+    public static delete( ids: Array<number> ): AxiosPromise<void> {
+        return axios.delete(url, { data: ids })
+    }
+
     //endregion ===========================================================================
 
     //#region ======= DATA READY METHODS ==================================================

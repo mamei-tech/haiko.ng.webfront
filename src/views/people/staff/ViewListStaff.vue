@@ -149,8 +149,8 @@ export default defineComponent({
          * Handler for the intent of deleting a row from the table
          * @param objectId object identifier to be deleted
          */
-        async function h_intentRowDelete( objectId: number ) {
-            const entityReference =st_staff.getStaffByIdFromLocalStorage(objectId)!.firstName
+        const h_intentRowDelete = async ( objectId: number ): Promise<void> => {
+            const entityReference = st_staff.getStaffByIdFromLocalStorage(objectId)!.firstName
 
             const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.STAFF, entityReference)
             if (wasConfirmed) a_reqDelete([ objectId ], entityReference)

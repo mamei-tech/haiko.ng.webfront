@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia'
-
-import type { IDtoRole } from '@/services/definitions'
 import { useSt_Pagination } from '@/stores/pagination'
 import { ApiRbac } from '@/services/api/api-rbac'
+
+import type { IDtoRole, IdsArray } from '@/services/definitions'
 
 
 // https://pinia.vuejs.org/core-concepts/#setup-stores
@@ -21,6 +21,13 @@ export const useSt_Rbac = defineStore({
      */
     getters: {
 
+        getRoleByIdFromLocalStorage: ( state ) => {
+            return (roleId : number) => state.entityPage.find((role) => role.id == roleId)
+
+            // Getters are just computed properties behind the scenes, so it's not possible to pass any parameters to them. However, you can return a function from the getter to accept any arguments
+            // Note that when doing this, getters are not cached anymore, they are simply functions that you invoke. You can however cache some results inside of the getter itself, which is uncommon but should prove more performant
+            // https://pinia.vuejs.org/core-concepts/getters.html#passing-arguments-to-getters
+        }
     },
 
     actions: {
@@ -30,6 +37,19 @@ export const useSt_Rbac = defineStore({
         // Also, by default, you can directly read and write to the state by accessing it through the store instance,
         // note you cannot add a new state property if you don't define it in state(), it must contain the
         // https://pinia.vuejs.org/core-concepts/state.html#mutating-the-state | https://pinia.vuejs.org/core-concepts/state.html#replacing-the-state
+
+        /**
+         * Delete a bunch of Role from the local store
+         * This doesn't make and API server request or call / sideEffect, this just mutate the store
+         * @param payload Staff identifiers list to be deleted
+         */
+        mutDeleteRoleList( payload: IdsArray ): void {
+
+            const st_pagination = useSt_Pagination()                                       // Pinia instance of pagination store | check the text on --> https://pinia.vuejs.org/cookbook/composing-stores.html#nested-stores
+
+            this.entityPage = this.entityPage.filter(s => !payload.ids.includes(s.id))
+            st_pagination.mutUpdateOnDelete(payload.ids.length)
+        },
 
         // --- server async calls actions ---
         /**
@@ -59,7 +79,24 @@ export const useSt_Rbac = defineStore({
                     reject(error)
                 })
             })
-        }
+        },
+
+        /**
+         * Tries to delete a bunch (or just one) of Role
+         * @param payload Staff identifiers list to be deleted
+         */
+        async reqRoleDeletion( payload: IdsArray ): Promise<void> {
+
+            return await new Promise<void>(( resolve, reject ) => {
+                ApiRbac.delete(payload.ids).then(( response: any ) => {
+
+                    // deleting (mutate / modify) the staff from the local store
+                    this.mutDeleteRoleList(payload)
+                    resolve()
+
+                }).catch(error => { reject(error) })
+            })
+        },
     }
 })
 

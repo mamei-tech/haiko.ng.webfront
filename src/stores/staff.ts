@@ -23,7 +23,6 @@ export const useSt_Staff = defineStore({
      * as a convention, we name all the getter with a 'get' prefix
      */
     getters: {
-
         /**
          * Retrieve the staff list page data for the datatable. If the nomenclature store has bean called already
          * Then this method tries to map the roleID of each staff row to the role name according to the nomenclature
@@ -49,10 +48,11 @@ export const useSt_Staff = defineStore({
         },
 
         getStaffByIdFromLocalStorage: ( state ) => {
+            return (staffId : number) => state.entityPage.find((staff) => staff.id == staffId)
+
             // Getters are just computed properties behind the scenes, so it's not possible to pass any parameters to them. However, you can return a function from the getter to accept any arguments
             // Note that when doing this, getters are not cached anymore, they are simply functions that you invoke. You can however cache some results inside of the getter itself, which is uncommon but should prove more performant
             // https://pinia.vuejs.org/core-concepts/getters.html#passing-arguments-to-getters
-            return (staffId : number) => state.entityPage.find((staff) => staff.id == staffId)
         }
     },
 
@@ -65,7 +65,7 @@ export const useSt_Staff = defineStore({
         // https://pinia.vuejs.org/core-concepts/state.html#mutating-the-state | https://pinia.vuejs.org/core-concepts/state.html#replacing-the-state
 
         /**
-         * Delete a bunch of Staff from the store
+         * Delete a bunch of Staff from the local store
          * This doesn't make and API server request or call / sideEffect, this just mutate the store
          * @param payload Staff identifiers list to be deleted
          */

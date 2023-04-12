@@ -26,14 +26,16 @@
 <script lang="ts">
 import { defineComponent, onMounted } from 'vue'
 import { CmpCard, CmpDataTable } from '@/components'
-import { ENTITY_NAMES, ENTITY_TYPE, FMODE, OPS_KIND_STR, RoutePathNames } from '@/services/definitions'
+import { ACTION_KIND_STR, ENTITY_NAMES, ENTITY_TYPE, FMODE, OPS_KIND_STR, RoutePathNames } from '@/services/definitions'
 import { useRouter } from 'vue-router'
 import { useSt_Rbac } from '@/stores/rbac'
 import { useToast } from 'vue-toastification'
 import useToastify from '@/services/composables/useToastify'
+import useDialogfy from '@/services/composables/useDialogfy'
 import { HRolesTable } from '@/services/definitions/data-datatables'
 
 import type { IDtoRole, IDataTableQuery, TFormMode } from '@/services/definitions'
+import { useSt_Pagination } from '@/stores/pagination'
 
 
 export default defineComponent({
@@ -44,13 +46,15 @@ export default defineComponent({
         //#region ======= DECLARATIONS & LOCAL STATE ==========================================
 
         const st_rbac = useSt_Rbac()                                        // Pinia store for rbac / roles
+        const st_pagination = useSt_Pagination()                            // Pinia instance of pagination store
         const eMode: ENTITY_TYPE = ENTITY_TYPE.COMMON_NOEJC
 
         const router = useRouter()
         const toast = useToast()                                            // The toast lib interface
         const columns = HRolesTable                                         // entity customized datatable header
 
-        const { tfyCRUDFail } = useToastify(toast)
+        const { tfyCRUDFail, tfyCRUDSuccess } = useToastify(toast)
+        const { dfyConfirmation } = useDialogfy()
 
         //#endregion ==========================================================================
 
@@ -73,6 +77,25 @@ export default defineComponent({
         //#endregion ==========================================================================
 
         //#region ======= ACTIONS =============================================================
+
+        /**
+         * Request the deletion (from server) of a entities according to the list of identifiers given as parameters
+         *
+         * @param ids List of entities identifiers
+         * @param ref Subject Entity reference e.g identifier, name or something like that
+         */
+        const a_reqDelete = async ( ids: Array<number>, ref: undefined | string = undefined ): Promise<void> => {
+            st_rbac.reqRoleDeletion({ ids }).then(() => {
+
+                tfyCRUDSuccess(ENTITY_NAMES.ROLE, OPS_KIND_STR.DELETION, ref)
+
+                // if a user delete all the records from a page of the table, then the table becomes empty, so in this case we need to make a request for the remains data (in the server, ... if any) and repopulate the table / page
+                if (st_pagination.recordsOnPage == 0 && st_pagination.totalRecords > 0)
+                    st_rbac.reqRolePages().catch(err => tfyCRUDFail(err, ENTITY_NAMES.ROLE, OPS_KIND_STR.REQUEST))
+
+            }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.ROLE, OPS_KIND_STR.DELETION, ref))
+        }
+
         //#endregion ==========================================================================
 
         //#region ======= COMPUTATIONS & GETTERS ==============================================
@@ -90,8 +113,11 @@ export default defineComponent({
             })
         }
 
-        const h_intentRowDelete = ( objectId: number ): void => {
-            console.log('row deletion intention')
+        const h_intentRowDelete = async ( objectId: number ): Promise<void> => {
+            const entityReference = st_rbac.getRoleByIdFromLocalStorage(objectId)!.rName
+
+            const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.ROLE, entityReference)
+            if (wasConfirmed) a_reqDelete([ objectId ], entityReference)
         }
 
         const h_navRowEdit = ( rowData: IDtoRole ): void => {
