@@ -50,7 +50,18 @@ export class ApiRbac {
     }
 
     /**
-     * Make the request to update the Role data and the permission association to the role
+     * Create / insert a new role and its associated permission on the system
+     *
+     * @param newRoleData
+     * @returns Promise with the identifier of the just created store (the same as the owner)
+     */
+    // public static insertRolePerms( newRoleData: IDtoRole ): AxiosPromise<number> {
+    public static insertRolePerms( newRoleData: IDtoRole ) {
+        return axios.post(url, newRoleData)
+    }
+
+    /**
+     * Make the request to update the role data and the permission association to the role
      *
      * @param id role identifier
      * @param payload

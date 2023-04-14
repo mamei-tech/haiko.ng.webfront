@@ -6,7 +6,7 @@
                 <input class="form-check-input"
                        type="checkbox"
                        :checked="checked"
-                       @change="hdlChange">
+                       @change="h_change">
                 <span class="form-check-sign"></span>{{ labelStatus ? labels[0] : labels[1] }}
             </label>
         </div>
@@ -65,7 +65,7 @@ export default defineComponent({
 
         //region ======== EVENTS HANDLERS & WATCHERS ============================================
 
-        const hdlChange = ( e: Event ) => {
+        const h_change = ( e: Event ) => {
             e.preventDefault()
 
             const target = (<HTMLInputElement> e.target)
@@ -87,7 +87,7 @@ export default defineComponent({
 
         return {
             labelStatus,
-            hdlChange
+            h_change
         }
     },
     emits: [ 'statusChanged' ]

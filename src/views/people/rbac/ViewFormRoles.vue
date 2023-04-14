@@ -108,7 +108,7 @@
                     <!-- FORM ACTION BUTTONS -->
                     <template v-slot:footer>
                         <CmpFormActionsButton
-                                :show-delete="cmptdFmode === 'edit'"
+                                :show-delete="cpt_fMode === 'edit'"
                                 v-on:saveIntent="h_beforeSubmit"
                                 v-on:deleteIntent="h_delete"
                                 v-on:cancelIntent="h_cancel"
@@ -122,7 +122,7 @@
 </template>
 
 <script lang="ts">
-import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, ref } from 'vue'
 import { onMounted, defineComponent } from 'vue'
 import { useToast } from 'vue-toastification'
 import { useRoute, useRouter } from 'vue-router'
@@ -197,8 +197,10 @@ export default defineComponent({
          */
         onMounted(async () => {
 
+            const roleId = cpt_fMode.value === FMODE.EDIT ? +id : 0
+
             // getting the perm ~ roles association
-            ApiRbac.getGetPermsRoleMapAssoc(+id).then(( data ) => {
+            ApiRbac.getGetPermsRoleMapAssoc(roleId).then(( data ) => {
                 // group the perm list retrieved from server by 'obj.group' name in the perm list
                 // so it should be easier to represent in the UI as we want to group by the server permission group field
                 permsByGroup.value = data.reduce(( accumulator: IGroupPermsDict, obj: IPermAssocId ) => {
@@ -220,8 +222,8 @@ export default defineComponent({
             // data **should** be in the store by now, so we pull the data form the store instead.
             // ❗❗ we do this as a exploit, regarding to the fact possibly there is no more than 10 roles defined
             // in the system
-            if (cmptdFmode.value === FMODE.EDIT as TFormMode) {
-                const role = st_rbac.entityPage.filter(r => r.id === +id)[0]        // getting the role from store
+            if (cpt_fMode.value === FMODE.EDIT as TFormMode) {
+                const role = st_rbac.entityPage.filter(r => r.id === roleId)[0]        // getting the role from store
 
                 // this is so the form does not appear as dirty
                 // https://vee-validate.logaretm.com/v4/guide/components/handling-forms/ | resetting the form
@@ -261,7 +263,7 @@ export default defineComponent({
          * @param isFormDirty tells is form is dirty (has change in the vee-validate controlled inputs)
          * @param doWeNeedToStay Tell us where to go after the successfully creation of the entity
          */
-        const a_Edit = async ( formData: IDtoRole, isFormDirty: boolean, doWeNeedToStay: boolean ): Promise<void> => {
+        const a_edit = async ( formData: IDtoRole, isFormDirty: boolean, doWeNeedToStay: boolean ): Promise<void> => {
 
             // ---- preparing the data
             // I think that if we separate the perms to REMOVE off the role and the perms that need to be GRANT to the role
@@ -305,24 +307,46 @@ export default defineComponent({
 
                 // ---- ok that was good, so now what ?
                 tfyCRUDSuccess(ENTITY_NAMES.ROLE, OPS_KIND_STR.UPDATE, formData.rName)
-                if(!doWeNeedToStay) h_back()                                  // so we are going back to the data table
 
-                // cleaning the storage / records of the permission to update. Comes in handy when the user click the save / apply btn again
-                withAggregationMode = false
-                perms2mod.value = {}
-                resetForm({
-                    values: {
-                        ...formData,
-                        permsToGrant: [],
-                        permsToRemove: [],
-                    },
-                    errors:{},
-                })
+                // so now what ?
+                if(!doWeNeedToStay) h_back()                // so we are going back to the data table
+                else hpr_cleanForm(formData)                 //
 
             }).catch(err => tfyBasicRqError(err))
         }
 
-        const a_Delete = ( staffId: number, entityReference: undefined | string = undefined ): void => {
+        /**
+         * Store action for the creating (request) the new entity on the backend system.
+         * doWeNeedToStay => This value is related to the * type of save button in the CmpFormActionsButton:
+         * APPLY or SAVE (and exit) normally
+         *
+         * @param formData data fo the roles and the perms selection coming from the from
+         * @param isFormDirty tells is form is dirty (has change in the vee-validate controlled inputs)
+         * @param doWeNeedToStay Tell us where to go after the successfully creation of the entity
+         */
+        const a_create = async ( formData: IDtoRole, isFormDirty: boolean, doWeNeedToStay: boolean): Promise<void> => {
+
+            // in this CREATE case, doesn't matter if the aggregation mode was clicked. As we don't have any initial
+            // data other than no association, in other words: all perms association with the nonexistent role yet,
+            // will be false
+            Object.entries(perms2mod.value).forEach(( [ permId, updatedPerm ] ) => {
+                updatedPerm.status                                                                              // selecting the proper group for the perm to update
+                        ? formData.permsToGrant.push(+permId)
+                        : formData.permsToRemove.push(+permId)
+
+            })
+
+            st_rbac.reqInsertRolePerms(formData).then(() => {
+                tfyCRUDSuccess(ENTITY_NAMES.ROLE, OPS_KIND_STR.ADDITION, formData.rName)
+
+                // so now what ?
+                if (!doWeNeedToStay) h_back()                                 // so we are going back to the data table
+                else hpr_cleanForm()                                          // so wee need to clean the entire form and stay in it
+
+            }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.ADDITION))
+        }
+
+        const a_delete = ( staffId: number, entityReference: undefined | string = undefined ): void => {
             st_rbac.reqRoleDeletion({ ids: [ staffId ] })
             .then(() => {
                 tfyCRUDSuccess(ENTITY_NAMES.ROLE, OPS_KIND_STR.DELETION, entityReference)
@@ -335,7 +359,7 @@ export default defineComponent({
         //region ======= COMPUTATIONS & GETTERS ===============================================
 
         // compute the form mode: creation mode or edition mode
-        const cmptdFmode: ComputedRef<string | string[]> = computed(() => fmode)
+        const cpt_fMode: ComputedRef<string | string[]> = computed(() => fmode)
 
         // getting the vee validate method to manipulate the form related actions from the view
         const { handleSubmit, meta, resetForm } = useForm<IDtoRole>({
@@ -347,6 +371,27 @@ export default defineComponent({
         //endregion ===========================================================================
 
         //region ======= HELPERS ==============================================================
+
+        /**
+         * Tiny helper method to clean the form and local state data, cleaning the storage / records of
+         * the permission to update. Comes in handy when the user click the save / apply btn again
+         *
+         * @param useThisData Objet that we can use to use this data in the form after cleaning
+         */
+        const hpr_cleanForm = ( useThisData: IDtoRole | undefined = undefined ) => {
+
+            withAggregationMode = false
+            perms2mod.value = {}
+            resetForm({
+                values: {
+                    ...useThisData ?? mkRole(),
+                    permsToGrant: [],
+                    permsToRemove: [],
+                },
+                errors:{},
+            })
+        }
+
         //endregion ===========================================================================
 
         //region ======== EVENTS HANDLERS & WATCHERS ==========================================
@@ -363,9 +408,9 @@ export default defineComponent({
             event.preventDefault()
 
             handleSubmit(formData => {
-                if (cmptdFmode.value == (FMODE.CREATE as TFormMode))  console.log('to create action')
-                if (cmptdFmode.value == (FMODE.EDIT as TFormMode)) a_Edit(formData, meta.value.dirty, doWeNeedToStay)
-                // if (cmptdFmode.value == (FMODE.EDIT as TFormMode) && !meta.value.dirty) h_back()
+                if (cpt_fMode.value == (FMODE.CREATE as TFormMode)) a_create(formData, meta.value.dirty, doWeNeedToStay)
+                if (cpt_fMode.value == (FMODE.EDIT as TFormMode)) a_edit(formData, meta.value.dirty, doWeNeedToStay)
+                // if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && !meta.value.dirty) h_back()
             }).call(this)
         }
 
@@ -415,18 +460,19 @@ export default defineComponent({
         }
 
         const h_delete = async ( event: any ) => {
-            const roleName = st_rbac.getRoleByIdFromLocalStorage(+id)?.rName ?? ''
-
             if (fmode as TFormMode == FMODE.EDIT) {                                     // 'cause we can deleted something isn't created yet ... (remember we reuse this view for edition too, so we need to check which mode we currently are)
+
+                const roleName = st_rbac.getRoleByIdFromLocalStorage(+id)?.rName ?? ''
+
                 const isOk = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.ROLE, roleName)
-                if (isOk) a_Delete(+id, roleName)                                       // The 'id' comes from url params (vue router we mean)
+                if (isOk) a_delete(+id, roleName)                                       // The 'id' comes from url params (vue router we mean)
             }
         }
 
         //endregion ===========================================================================
 
         return {
-            cmptdFmode,
+            cpt_fMode,
             iniFormData,
             permsByGroup,
 

@@ -144,16 +144,16 @@
                                 <!-- change / set password -->
                                 <div class="row" @click.prevent="h_toggleCollapsable">
                                     <h5 class="text-sm-left text-md-right col-md-3 col-form-label">
-                                        {{ cmptdFmode === 'edit' ? $t( 'form.fields-common.change-password' ) : $t( 'form.fields-common.set-password' ) }}
+                                        {{ cpt_fMode === 'edit' ? $t( 'form.fields-common.change-password' ) : $t( 'form.fields-common.set-password' ) }}
                                     </h5>
                                     <div class="col-md-9">
                                         <i class="tim-icons icon-minimal-down caret-form-section"
-                                           :class="rotationCaretClass" />
+                                           :class="hpr_rotationCaretClass" />
                                     </div>
                                     <hr class="collapsable-form-section-divisor">
                                 </div>
                                 <Transition name="collapsable">
-                                    <div class="collapsable-div" v-if="doWeShowCollapsable">
+                                    <div class="collapsable-div" v-if="hpr_doWeShowCollapsable">
                                         <div class="row">
                                             <label class="text-sm-left text-md-right col-md-3 col-form-label">
                                                 {{ $t( 'form.fields-common.password' ) }}
@@ -208,7 +208,7 @@
                     <!-- FORM ACTION BUTTONS -->
                     <template v-slot:footer>
                         <CmpFormActionsButton
-                                :show-delete="cmptdFmode === 'edit'"
+                                :show-delete="cpt_fMode === 'edit'"
                                 v-on:saveIntent="h_submit"
                                 v-on:deleteIntent="h_delete"
                                 v-on:cancelIntent="h_cancel"
@@ -288,7 +288,7 @@ export default defineComponent({
          * Manually setting the needed values is way cleaner than the other way around. This is needed mainly because api call is asynchronous.
          */
         onMounted(async () => {
-            if (cmptdFmode.value === FMODE.EDIT as TFormMode) {
+            if (cpt_fMode.value === FMODE.EDIT as TFormMode) {
                 formDataFromServer = await ApiStaff.getStaffById(+id)
                 setValues(formDataFromServer)               // using setValues from vee-validate for populating the inputs
 
@@ -320,13 +320,14 @@ export default defineComponent({
         //#region ======= FETCHING DATA & ACTIONS =============================================
 
         /**
-         * Store action for the creating (request) the new entity on the backend system. This value is related to the
-         * type of save button in the CmpFormActionsButton: APPLY or SAVE normally
+         * Store action for the creating (request) the new entity on the backend system.
+         * doWeNeedToStay => This value is related to the * type of save button in the CmpFormActionsButton:
+         * APPLY or SAVE (and exit) normally
          *
          * @param newStaff payload with the data for the request
          * @param doWeNeedToStay Tell us where to go after the successfully creation of the entity
          */
-        const a_Create = ( newStaff: IDtoStaff, doWeNeedToStay: boolean): void => {
+        const a_create = ( newStaff: IDtoStaff, doWeNeedToStay: boolean): void => {
             st_staff.reqInsertStaff(newStaff).then(() => {
                 tfyCRUDSuccess(ENTITY_NAMES.STAFF, OPS_KIND_STR.ADDITION, newStaff.firstName)
 
@@ -342,7 +343,7 @@ export default defineComponent({
          * @param editedStaff Staff object containing the edited information
          * @param doWeNeedToStay This value, in this context, tells if the clicked button was the 'Applied' or the 'Save'
          */
-        const a_Edit = ( editedStaff: IDtoStaff, doWeNeedToStay: boolean ): void => {
+        const a_edit = ( editedStaff: IDtoStaff, doWeNeedToStay: boolean ): void => {
 
             st_staff.reqStaffUpdate(editedStaff).then(() => {
                 tfyCRUDSuccess(ENTITY_NAMES.STAFF, OPS_KIND_STR.UPDATE, editedStaff.firstName)
@@ -353,8 +354,7 @@ export default defineComponent({
             }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.UPDATE))
         }
 
-        const a_Delete = ( staffId: number, entityReference: undefined | string = undefined ): void => {
-
+        const a_delete = ( staffId: number, entityReference: undefined | string = undefined ): void => {
             st_staff.reqStaffDeletion({ ids: [ staffId ] })
             .then(() => {
                 tfyCRUDSuccess(ENTITY_NAMES.STAFF, OPS_KIND_STR.DELETION, entityReference)
@@ -367,7 +367,7 @@ export default defineComponent({
         //region ======= COMPUTATIONS & GETTERS ===============================================
 
         // compute the form mode: creation mode or edition mode
-        const cmptdFmode: ComputedRef<string | string[]> = computed(() => fmode)
+        const cpt_fMode: ComputedRef<string | string[]> = computed(() => fmode)
 
         // getting the vee validate method to manipulate the form related actions from the view
         const { handleSubmit, meta, setValues, setFieldValue, resetForm } = useForm<IDtoStaff>({
@@ -380,17 +380,17 @@ export default defineComponent({
 
         //region ======= HELPERS ==============================================================
 
-        const rotationCaretClass = ref('')                                       // rotate the caret | this is the CSS alternative, no Vue transition needed
-        const doWeShowCollapsable = ref(cmptdFmode.value === FMODE.CREATE)       // start the animation of the actual collapsible
-
-        const h_toggleCollapsable = () => {
-            doWeShowCollapsable.value = !doWeShowCollapsable.value
-            rotationCaretClass.value === 'rotate-up' ? rotationCaretClass.value = 'rotate-down' : rotationCaretClass.value = 'rotate-up'
-        }
+        const hpr_rotationCaretClass = ref('')                                       // rotate the caret | this is the CSS alternative, no Vue transition needed
+        const hpr_doWeShowCollapsable = ref(cpt_fMode.value === FMODE.CREATE)       // start the animation of the actual collapsible
 
         //endregion ===========================================================================
 
         //region ======== EVENTS HANDLERS & WATCHERS ==========================================
+
+        const h_toggleCollapsable = () => {
+            hpr_doWeShowCollapsable.value = !hpr_doWeShowCollapsable.value
+            hpr_rotationCaretClass.value === 'rotate-up' ? hpr_rotationCaretClass.value = 'rotate-down' : hpr_rotationCaretClass.value = 'rotate-up'
+        }
 
         /**
          * Handles the form submission event through the vee-validate 'SubmissionHandler' so we can take advantage of all
@@ -404,9 +404,9 @@ export default defineComponent({
 
             // handling the submission with vee-validate method
             handleSubmit(formData => {
-                if (cmptdFmode.value == (FMODE.CREATE as TFormMode)) a_Create(formData, doWeNeedToStay)
-                if (cmptdFmode.value == (FMODE.EDIT as TFormMode) && meta.value.dirty) a_Edit(formData, doWeNeedToStay)
-                if (cmptdFmode.value == (FMODE.EDIT as TFormMode) && !meta.value.dirty) h_back()               // was no changes (no dirty) with the data, so going back normally
+                if (cpt_fMode.value == (FMODE.CREATE as TFormMode)) a_create(formData, doWeNeedToStay)
+                if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && meta.value.dirty) a_edit(formData, doWeNeedToStay)
+                if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && !meta.value.dirty) h_back()               // was no changes (no dirty) with the data, so going back normally
             }).call(this)
         }
 
@@ -423,7 +423,7 @@ export default defineComponent({
 
             if (fmode as TFormMode == FMODE.EDIT) {                                     // 'cause we can deleted something isn't created yet ... (remember we reuse this view for edition too, so we need to check which mode we currently are)
                 const isOk = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.STAFF, formDataFromServer!.firstName)
-                if (isOk) a_Delete(+id, formDataFromServer!.firstName)                  // The 'id' comes from url params (vue router we mean)
+                if (isOk) a_delete(+id, formDataFromServer!.firstName)                  // The 'id' comes from url params (vue router we mean)
             }
         }
 
@@ -454,10 +454,10 @@ export default defineComponent({
         return {
             iniFormData,
 
-            doWeShowCollapsable,
-            rotationCaretClass,
+            hpr_doWeShowCollapsable,
+            hpr_rotationCaretClass,
 
-            cmptdFmode,
+            cpt_fMode,
             st_nomenclatures,
 
             h_submit,

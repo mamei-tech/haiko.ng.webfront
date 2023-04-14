@@ -111,6 +111,7 @@
         "password-complexity":               "Al menos 2 letras mayúsculas, 1 caracter espacial {'(!@#$&._*)'} , números y letras, de 8 y 20 caracteres",
         "password-confirmation":             "El campo no coincide con la contraseña definida",
         "only-alpha-spaces":                 "El campo solo debe contener caracteres y espacios, terminando solo en caracteres",
+        "only-alpha-digits-spaces":          "El campo solo debe contener caracteres, números y espacios, comenzado solo en caracteres",
         "only-alpha-digits-underscore-dots": "El campo solo debe contener caracteres, guion bajo, puntos y números, sin espacios",
         "upload-file-max-size":              "El archivo a utilizar debe tener un tamaño menor de {size} MB",
         "avatar-invalid-extension":          "La extensión de la imagen utilizada no esta permitida"

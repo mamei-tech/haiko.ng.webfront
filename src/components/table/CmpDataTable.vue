@@ -35,7 +35,7 @@
             <!-- SEARCH INPUT -->
             <div class="form-group has-icon" v-if="hasSearch">
                 <div class="mb-0 input-group">
-                    <div v-if="isAnyFilerActive " class="pr-3 justify-content-left">
+                    <div v-if="cpt_isAnyFilerActive " class="pr-3 justify-content-left">
                         <button
                                 @click.prevent="h_clearAllFilters()"
                                 type="button"
@@ -47,7 +47,7 @@
                     </div>
                     <span class="input-group-prepend" @click="h_search">
                         <div class="input-group-text">
-                            <i :class="searchHasText ? 'multiselect-clear multiselect-clear-icon' : 'tim-icons icon-zoom-split'"
+                            <i :class="cpt_searchHasText ? 'multiselect-clear multiselect-clear-icon' : 'tim-icons icon-zoom-split'"
                                @click="h_cleanInputSearch()"
                             ></i>
                         </div>
@@ -80,7 +80,7 @@
     </template>
 
     <!-- TABLE -->
-    <table v-if="data.length > 0" class="table table-responsive-sm" :class="tableClass">
+    <table v-if="data.length > 0" class="table table-responsive-sm" :class="cpt_tableClass">
         <!-- TABLE HEADER -->
         <thead :class="theadClasses">
         <tr>
@@ -135,7 +135,7 @@
         <!-- Another row if field filters are specified -->
         <tr v-if="filters.length > 0">
             <template v-for="(header, i) in ls_columns" :key="`filter-${header.title}`" class="text-center">
-                <th v-if="(header.chk || header.switch) && filters.includes(getNavKey(header))"
+                <th v-if="(header.chk || header.switch) && filters.includes(hpr_getNavKey(header))"
                     colspan="1"
                     rowspan="1"
                     :style="[{ width: header.width + '%' }]"
@@ -145,24 +145,24 @@
                             <input class="form-check-input"
                                    type="checkbox"
                                    v-on:editIntent="$emit('editIntent', $event)"
-                                   :checked="dtFilters[getNavKey(header)]"
-                                   v-model="dtFilters[getNavKey(header)]"
-                                   @click="isCheckBoxSelected($event)"
+                                   :checked="dtFilters[hpr_getNavKey(header)]"
+                                   v-model="dtFilters[hpr_getNavKey(header)]"
+                                   @click="hpr_isCheckBoxSelected($event)"
                             />
                             <span class="form-check-sign"></span>
                         </label>
                     </div>
                 </th>
-                <th v-else-if="filters.includes(getNavKey(header)) && header.multi"
+                <th v-else-if="filters.includes(hpr_getNavKey(header)) && header.multi"
                     colspan="1"
                     rowspan="1"
                     :style="[{ width: header.width + '%' }]"
                 >
                     <div class="form-group input-group">
                         <multiselect
-                                v-model="dtFilters[getNavKey(header)]"
+                                v-model="dtFilters[hpr_getNavKey(header)]"
                                 :options="header.multi"
-                                @change="lastSelectedSelectElem($event)"
+                                @change="hpr_lastSelectedSelectElem($event)"
                                 :ref="
                                     el => {
                                         if (el) selectFilterListRef [i] = el;
@@ -191,14 +191,14 @@
                 </td>
 
                 <!-- switch / toggle mode for a cell -->
-                <td v-else-if="chkHasValue(rowObj, header) && !header.hidden && header.switch"
+                <td v-else-if="hpr_chkHasValue(rowObj, header) && !header.hidden && header.switch"
                     rowspan="1"
                     colspan="1"
                     :style="[{ width: header.width + '%' }]"
                 >
                     <!-- main role -->
                     <CmpSwitchCell :identifier="rowObj['id']"
-                                   :is-enable="getRowValue(rowObj, header)"
+                                   :is-enable="hpr_getRowValue(rowObj, header)"
                                    v-on:enableIntent="$emit('enableIntent', $event)"
                                    v-on:disableIntent="$emit('disableIntent', $event)"
                                    v-if="header.switchRole !== undefined && header.switchRole === 'main'"
@@ -206,7 +206,7 @@
 
                     <!-- secondary role | when we need two switches in the data-grid -->
                     <CmpSwitchCell :identifier="rowObj['id']"
-                                   :is-enable="getRowValue(rowObj, header)"
+                                   :is-enable="hpr_getRowValue(rowObj, header)"
                                    v-on:enableIntent="$emit('enableIntentSecond', $event)"
                                    v-on:disableIntent="$emit('disableIntentSecond', $event)"
                                    v-else-if="header.switchRole !== undefined && header.switchRole === 'secondary'"
@@ -214,7 +214,7 @@
 
                     <!-- default switch -->
                     <CmpSwitchCell :identifier="rowObj['id']"
-                                   :is-enable="getRowValue(rowObj, header)"
+                                   :is-enable="hpr_getRowValue(rowObj, header)"
                                    v-on:enableIntent="$emit('enableIntent', $event)"
                                    v-on:disableIntent="$emit('disableIntent', $event)"
                                    v-else
@@ -224,7 +224,7 @@
                 </td>
 
                 <!-- picture mode -->
-                <td v-else-if="chkHasValue(rowObj, header) && !header.hidden && header.picture"
+                <td v-else-if="hpr_chkHasValue(rowObj, header) && !header.hidden && header.picture"
                     class="text-center"
                     rowspan="1" colspan="1"
                     :style="[{ width: header.width + '%' }]"
@@ -232,11 +232,11 @@
                     <CmpTablePictureCell
                             :type="PICTURE_TYPE_CELL.USER"
                             :statics="configStatic"
-                            :picture="getRowValue( rowObj, header )"/>
+                            :picture="hpr_getRowValue( rowObj, header )"/>
                 </td>
 
                 <!-- normal mode -->
-                <td v-else-if="chkHasValue(rowObj, header) && !header.hidden"
+                <td v-else-if="hpr_chkHasValue(rowObj, header) && !header.hidden"
                     rowspan="1"
                     colspan="1"
                     :class="[
@@ -246,13 +246,13 @@
                         ]"
                     :style="[{ width: header.width + '%' }]"
                 >
-                    {{ getRowValue( rowObj, header ) }}
+                    {{ hpr_getRowValue( rowObj, header ) }}
                 </td>
 
             </template>
 
             <!-- ACTIONS BUTTONS TD -->
-            <td class="actions" v-if="hasActions && chkHasId(rowObj)">
+            <td class="actions" v-if="hasActions && hpr_chkHasId(rowObj)">
                 <!-- we can are going to adapt the action bar buttons according to the entity given in entityMode props -->
 
                 <CmpTableRowActions :mode="eMode"
@@ -401,7 +401,7 @@ export default defineComponent({
         const ls_selections = reactive<{ selected: ById<IChecked> }>({ selected: {} })            // ls =  local state
         const ls_rootChkBoxState = ref<boolean>(false)
         const ls_columns = ref<Array<Partial<IColumnHeader>>>([ ...props.columns ])
-        const lastSelectedSelectElemRef = ref<number>(0)                                          // Receive the value of item selected in select component
+        const hpr_lastSelectedSelectElemRef = ref<number>(0)                                          // Receive the value of item selected in select component
         const isAnyCheckboxSelectedRef = ref<boolean>(false)                                      // True if at least, one checkbox component filter was selected
         const selectFilterListRef = <any> ref([])                                                 // reference to any select component filter
 
@@ -427,27 +427,27 @@ export default defineComponent({
 
         //region ======== COMPUTATIONS & GETTERS ================================================
 
-        const tableClass = computed((): string => props.tableType && `table-${ props.tableType }`)
-        const searchHasText = computed(() => search.value.length > 0)
+        const cpt_tableClass = computed((): string => props.tableType && `table-${ props.tableType }`)
+        const cpt_searchHasText = computed(() => search.value.length > 0)
 
         //endregion =============================================================================
 
         //region ======== EVENTS HANDLERS & WATCHERS ============================================
 
         const h_onSrchFocusEvt = ( evt: any ) => {
-            if (evt.target.value.length < 4) inputToggleFocusClass(evt.target.parentElement.parentNode)
+            if (evt.target.value.length < 4) hpr_inputToggleFocusClass(evt.target.parentElement.parentNode)
         }
 
         const h_onSrchBlursEvt = ( evt: any ) => {
-            if (evt.target.value.length < 4) inputToggleFocusClass(evt.target.parentElement.parentNode)
+            if (evt.target.value.length < 4) hpr_inputToggleFocusClass(evt.target.parentElement.parentNode)
         }
 
         const h_ChkAllObjects = ( evt: any ) => {
-            ls_selections.selected = updateChckAllToSelection(evt.target.checked, props.data)
+            ls_selections.selected = hpr_updateChckAllToSelection(evt.target.checked, props.data)
         }
 
         const h_ChkObject = ( args: ITableChkEmit ) => {
-            updateChkSelection(ls_selections.selected, args)
+            hpr_updateChkSelection(ls_selections.selected, args)
         }
 
         const h_EnableChkCollection = () => {
@@ -455,7 +455,7 @@ export default defineComponent({
                 ids: [ ...Object.keys(ls_selections.selected) ],
                 actionType: 'ENABLE' as TBulkAction
             })
-            cleanCheckBoxes()
+            hpr_cleanCheckBoxes()
         }
 
         const h_DisableChkCollection = () => {
@@ -463,7 +463,7 @@ export default defineComponent({
                 ids: [ ...Object.keys(ls_selections.selected) ],
                 actionType: 'DISABLE' as TBulkAction
             })
-            cleanCheckBoxes()
+            hpr_cleanCheckBoxes()
         }
 
         const h_RemoveChkCollection = () => {
@@ -471,7 +471,7 @@ export default defineComponent({
                 ids: [ ...Object.keys(ls_selections.selected) ],
                 actionType: 'REMOVE' as TBulkAction
             })
-            cleanCheckBoxes()
+            hpr_cleanCheckBoxes()
         }
 
         const h_pageSizeChange = ( evt: any ) => {
@@ -501,7 +501,7 @@ export default defineComponent({
                             header.sorting = 'ASC'
                             break
                     }
-                    let key = getNavKey(header)
+                    let key = hpr_getNavKey(header)
 
                     // Handling the orderer as API expects it: CamelCase with first letter caps. Specially handling the 'id' header,
                     // hopefully this is the only corner case
@@ -555,7 +555,7 @@ export default defineComponent({
             search.value = ''
             st_pagination.Search = ''
             isAnyCheckboxSelectedRef.value = false
-            cleanCheckBoxes()
+            hpr_cleanCheckBoxes()
 
             for (let filter in dtFilters) {
                 if (dtFilters[ filter ]) dtFilters[ filter ] = false
@@ -586,9 +586,9 @@ export default defineComponent({
         /***
          * Try to empty the selection reactive var to make unchecked all the checked rows in the table
          */
-        const cleanCheckBoxes = () => {
+        const hpr_cleanCheckBoxes = () => {
             ls_rootChkBoxState.value = false
-            ls_selections.selected = updateChckAllToSelection(false)
+            ls_selections.selected = hpr_updateChckAllToSelection(false)
         }
 
         /***
@@ -598,7 +598,7 @@ export default defineComponent({
          * @param status The new status from the root checkbox input event
          * @param data The props containing all the data represented on the table
          */
-        const updateChckAllToSelection = (
+        const hpr_updateChckAllToSelection = (
                 status: boolean,
                 data: Array<IIndexable> | undefined = undefined
         ): ById<IChecked> => {
@@ -619,7 +619,7 @@ export default defineComponent({
          * @param source The source collection of already selected (or none) ID object
          * @param updateData ITableChkEmit data. Coming from the checked row cell, containing the object id and its new checked status.
          */
-        const updateChkSelection = ( source: ById<IChecked>, updateData: ITableChkEmit ): void => {
+        const hpr_updateChkSelection = ( source: ById<IChecked>, updateData: ITableChkEmit ): void => {
             if (updateData.newStatus) source[ updateData.id ] = { chked: updateData.newStatus }
             else delete source[ updateData.id ]
         }
@@ -630,7 +630,7 @@ export default defineComponent({
          *
          * @param formGroupEl Div with the form-group class thet the input (event target) belongs to
          */
-        const inputToggleFocusClass = ( formGroupEl: Element ) => {
+        const hpr_inputToggleFocusClass = ( formGroupEl: Element ) => {
             formGroupEl.classList.toggle('input-group-focus')
         }
 
@@ -638,7 +638,7 @@ export default defineComponent({
          * Get navigation key for obtain the row object property value. Like 2D matrix['navigation_key']
          * @param column object describing the header properties
          */
-        const getNavKey = ( column: Partial<IColumnHeader> ): string => {
+        const hpr_getNavKey = ( column: Partial<IColumnHeader> ): string => {
             return column.navKey !== undefined ? column.navKey : column.title!.toLowerCase()
         }
 
@@ -647,8 +647,8 @@ export default defineComponent({
          * @param obj row object
          * @param column object describing the header properties
          */
-        const chkHasValue = ( obj: any, column: IColumnHeader ): boolean => {
-            const key = getNavKey(column)
+        const hpr_chkHasValue = ( obj: any, column: IColumnHeader ): boolean => {
+            const key = hpr_getNavKey(column)
 
             return obj[ key ] !== undefined
         }
@@ -657,7 +657,7 @@ export default defineComponent({
          * Check if the row object has an id property
          * @param obj row object
          */
-        const chkHasId = ( obj: any ): boolean => {
+        const hpr_chkHasId = ( obj: any ): boolean => {
             return obj[ 'id' ] !== undefined
         }
 
@@ -666,8 +666,8 @@ export default defineComponent({
          * @param obj row object
          * @param column object describing the header properties
          */
-        const getRowValue = ( obj: any, column: IColumnHeader ): string | number => {
-            const key = getNavKey(column)
+        const hpr_getRowValue = ( obj: any, column: IColumnHeader ): string | number => {
+            const key = hpr_getNavKey(column)
             return obj[ key ]
         }
 
@@ -675,15 +675,15 @@ export default defineComponent({
          * Check if a item was selected in select component filter
          * @param evt
          */
-        const lastSelectedSelectElem = ( evt: any ) => {
-            lastSelectedSelectElemRef.value = +evt
+        const hpr_lastSelectedSelectElem = ( evt: any ) => {
+            hpr_lastSelectedSelectElemRef.value = +evt
         }
 
         /***
          * Check if a item was selected in checkbox component filter
          * @param evt
          */
-        const isCheckBoxSelected = ( evt: any ) => {
+        const hpr_isCheckBoxSelected = ( evt: any ) => {
             isAnyCheckboxSelectedRef.value = evt.target!.checked
         }
 
@@ -692,9 +692,9 @@ export default defineComponent({
          * E.g: A word on input search field, a checkbox or all checkbox selected,
          * or an item of select component
          */
-        const isAnyFilerActive = computed(() => {
+        const cpt_isAnyFilerActive = computed(() => {
             let chkBoxSelected = Object.keys(ls_selections.selected).length
-            return search.value.length > 0 || chkBoxSelected > 0 || lastSelectedSelectElemRef.value > 0 || isAnyCheckboxSelectedRef.value
+            return search.value.length > 0 || chkBoxSelected > 0 || hpr_lastSelectedSelectElemRef.value > 0 || isAnyCheckboxSelectedRef.value
         })
 
         //endregion =============================================================================
@@ -707,16 +707,16 @@ export default defineComponent({
             ls_columns,
             dtFilters,
             selectFilterListRef,
-            lastSelectedSelectElemRef,
-            isAnyFilerActive,
+            hpr_lastSelectedSelectElemRef,
+            cpt_isAnyFilerActive,
             pageSizeOptions,
             search,
-            searchHasText,
+            cpt_searchHasText,
 
-            getNavKey,
-            chkHasValue,
-            getRowValue,
-            chkHasId,
+            hpr_getNavKey,
+            hpr_chkHasValue,
+            hpr_getRowValue,
+            hpr_chkHasId,
 
             h_onSrchFocusEvt,
             h_onSrchBlursEvt,
@@ -736,9 +736,9 @@ export default defineComponent({
 
             // ...useDebaunce(h_searchChange),
 
-            lastSelectedSelectElem,
-            isCheckBoxSelected,
-            tableClass,
+            hpr_lastSelectedSelectElem,
+            hpr_isCheckBoxSelected,
+            cpt_tableClass,
 
             cap,
 

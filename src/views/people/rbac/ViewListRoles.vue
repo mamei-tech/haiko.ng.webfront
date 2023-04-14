@@ -103,11 +103,11 @@ export default defineComponent({
 
         //#region ======= EVENTS HANDLERS =====================================================
 
-        const h_navCreateRole = ():void => {
+        const h_navCreateRole = (): void => {
             router.push({
-                name  : RoutePathNames.rolesCreate,
+                name:   RoutePathNames.rolesCreate,
                 params: {
-                    fmode: FMODE.CREATE as TFormMode,
+                    fmode: FMODE.CREATE as TFormMode
                     // id   : '', no need for passing ID on creation mode
                 }
             })

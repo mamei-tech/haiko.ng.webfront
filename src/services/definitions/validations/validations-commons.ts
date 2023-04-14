@@ -9,7 +9,12 @@ const { t } = i18n.global
  * The value hast to end with letters.
  */
 export const regAlphaNSpaces: RegExp = /^([a-z|A-Z]+( ){0,1})+[a-z|A-Z]$/
-export const regAlphaDigitsUnderscoreNDots: RegExp = /^([a-z|A-Z]+(.){0,1}(_){0,2}\d*)+[a-z|A-Z](_){0,2}\d*$/
+export const regOnlyAlphanumericAndSpaces  = /^([a-z|A-Z|0-9]+( ){0,1})+[a-z|A-Z|0-9]( )*$/
+
+/**
+ * Only match with characters, numbers, underscores and dots, No spaces. Good for using against with nicknames or system usernames
+ */
+export const regAlphaDigitsUnderscoreNDots: RegExp = /^[a-zA-Z][a-zA-Z0-9._]*$/
 
 /**
  * Strong password validation regex. Requirements are:

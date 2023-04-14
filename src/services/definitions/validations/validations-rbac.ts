@@ -1,6 +1,6 @@
 import { i18n } from '@/services/i18n'
 import { max, min, regex, required } from '@vee-validate/rules'
-import { regAlphaDigitsUnderscoreNDots } from '@/services/definitions/validations/validations-commons'
+import { regAlphaDigitsUnderscoreNDots, regOnlyAlphanumericAndSpaces } from '@/services/definitions/validations/validations-commons'
 
 
 const { t } = i18n.global
@@ -19,6 +19,7 @@ export const VSchemaRole = {
     },
     description: ( value: string ): boolean | string => {
         if (!required(value)) return t('validation.required')
+        if (!regex(value, { regex: regOnlyAlphanumericAndSpaces })) return t('validation.only-alpha-digits-spaces')
         if (!min(value, { length: 4 })) return t('validation.min-length', { length: 4 })
         if (!max(value, { length: 80 })) return t('validation.max-length', { length: 80 })
 

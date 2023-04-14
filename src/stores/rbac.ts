@@ -97,6 +97,20 @@ export const useSt_Rbac = defineStore({
                 }).catch(error => { reject(error) })
             })
         },
+
+        /**
+         * Tries to insert a new Role and its associated permission
+         * @param payload Role and Perms data to be inserted
+         * @param doWeNeedToStay This value with come 'doWeNeedToStay' var from , It is use in the UI logic to say if we stay in the form for maybe create another entity.
+         */
+        async reqInsertRolePerms (payload: IDtoRole, doWeNeedToStay: boolean = false) : Promise<void> {
+
+            return await new Promise<void>((resolve, reject) => {
+                ApiRbac.insertRolePerms(payload)
+                .then((response:any) => {resolve(response.data)})
+                .catch(error => {reject(error)})
+            })
+        },
     }
 })
 

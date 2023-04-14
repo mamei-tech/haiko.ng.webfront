@@ -240,7 +240,6 @@ export default defineComponent({
             h_intentToggleDisable
         }
     }
-
 })
 </script>
 
