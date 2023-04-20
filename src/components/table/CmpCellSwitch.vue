@@ -31,7 +31,7 @@
 
 
     export default defineComponent({
-        name: 'CmpSwitchCell',
+        name: 'CmpCellSwitch',
         props: {
             identifier: {
                 type: Number,

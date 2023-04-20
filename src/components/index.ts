@@ -7,7 +7,7 @@ import CmpDataTable from '@/components/table/CmpDataTable.vue'
 import CmpBasicInput from '@/components/inputs/CmpBasicInput.vue'
 import CmpAvatarInput from '@/components/inputs/CmpAvatarInput.vue'
 import CmpSideBarMenu from '@/components/sidebar/CmpSideBarMenu.vue'
-import CmpTablePictureCell from '@/components/table/CmpDataTable.vue'
+import CmpTableCellPicture from '@/components/table/CmpDataTable.vue'
 import CmpVeeCheckbox from '@/components/inputs/CmpVeeCheckbox.vue'
 import CmpBasicCheckbox from '@/components/inputs/CmpBasicCheckbox.vue'
 import CmpButtonBackTop from '@/components/buttons/CmpButtonBackTop.vue'
@@ -43,7 +43,7 @@ export {
 
     //tables
     CmpDataTable,
-    CmpTablePictureCell,
+    CmpTableCellPicture,
 
     // others
     CmpModal,

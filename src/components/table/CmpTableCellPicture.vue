@@ -12,7 +12,7 @@ import type { SetupContext } from 'vue'
 
 
 export default defineComponent({
-    name:  'CmpTablePictureCell',
+    name:  'CmpTableCellPicture',
     props: {
         picture: {
             type:        String,

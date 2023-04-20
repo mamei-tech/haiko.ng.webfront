@@ -197,7 +197,7 @@
                     :style="[{ width: header.width + '%' }]"
                 >
                     <!-- main role -->
-                    <CmpSwitchCell :identifier="rowObj['id']"
+                    <CmpCellSwitch :identifier="rowObj['id']"
                                    :is-enable="hpr_getRowValue(rowObj, header)"
                                    v-on:enableIntent="$emit('enableIntent', $event)"
                                    v-on:disableIntent="$emit('disableIntent', $event)"
@@ -205,7 +205,7 @@
                     />
 
                     <!-- secondary role | when we need two switches in the data-grid -->
-                    <CmpSwitchCell :identifier="rowObj['id']"
+                    <CmpCellSwitch :identifier="rowObj['id']"
                                    :is-enable="hpr_getRowValue(rowObj, header)"
                                    v-on:enableIntent="$emit('enableIntentSecond', $event)"
                                    v-on:disableIntent="$emit('disableIntentSecond', $event)"
@@ -213,7 +213,7 @@
                     />
 
                     <!-- default switch -->
-                    <CmpSwitchCell :identifier="rowObj['id']"
+                    <CmpCellSwitch :identifier="rowObj['id']"
                                    :is-enable="hpr_getRowValue(rowObj, header)"
                                    v-on:enableIntent="$emit('enableIntent', $event)"
                                    v-on:disableIntent="$emit('disableIntent', $event)"
@@ -229,7 +229,7 @@
                     rowspan="1" colspan="1"
                     :style="[{ width: header.width + '%' }]"
                 >
-                    <CmpTablePictureCell
+                    <CmpTableCellPicture
                             :type="PICTURE_TYPE_CELL.USER"
                             :statics="configStatic"
                             :picture="hpr_getRowValue( rowObj, header )"/>
@@ -276,10 +276,10 @@
 import config from '@/services/api/config'
 import { onBeforeUpdate, computed, defineComponent, toRaw, reactive, ref } from 'vue'
 import CmpTablePagination from './CmpTablePagination.vue'
-import CmpSwitchCell from './CmpSwitchCell.vue'
+import CmpCellSwitch from './CmpCellSwitch.vue'
 import CmpTableEmpty from './CmpTableEmpty.vue'
 import CmpTableChkbox from './CmpTableChkbox.vue'
-import CmpTablePictureCell from './CmpTablePictureCell.vue'
+import CmpTableCellPicture from './CmpTableCellPicture.vue'
 import CmpTableRowActions from './CmpTableRowActions.vue'
 import CmpTableActionBar from './CmpTableActionBar.vue'
 import { CmpBaseButton } from '@/components'
@@ -300,12 +300,12 @@ export default defineComponent({
         CmpBaseButton,
 
         CmpTablePagination,
-        CmpSwitchCell,
+        CmpCellSwitch,
         CmpTableEmpty,
         CmpTableChkbox,
         CmpTableActionBar,
         CmpTableRowActions,
-        CmpTablePictureCell
+        CmpTableCellPicture
     },
     props: {
         subject:             {
