@@ -1,10 +1,9 @@
-import type { IDataListBasicResponse } from '@/services/definitions/types-common'
+import type { IIndexable } from '@/services/definitions/types-common'
 
 /**
  * Interface for describing a Staff row on the datatable
  */
-export interface IStaffRow {
-    id: number,
+export interface IStaffRow extends IIndexable {
     firstName: string,
     username: string,
     roleId: number | string,

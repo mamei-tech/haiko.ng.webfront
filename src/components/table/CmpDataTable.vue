@@ -235,6 +235,15 @@
                             :picture="hpr_getRowValue( rowObj, header )"/>
                 </td>
 
+                <!-- list mode | UoM (listOPillsUoM)  version -->
+                <td v-else-if="hpr_chkHasValue(rowObj, header) && !header.hidden && header.listOPillsUoM"
+                    class="text-left"
+                    rowspan="1" colspan="1"
+                    :style="[{ width: header.width + '%' }]"
+                >
+                    <CmpCellListUoM :units="hpr_getRowValue( rowObj, header )" />
+                </td>
+
                 <!-- normal mode -->
                 <td v-else-if="hpr_chkHasValue(rowObj, header) && !header.hidden"
                     rowspan="1"
@@ -280,6 +289,7 @@ import CmpCellSwitch from './CmpCellSwitch.vue'
 import CmpTableEmpty from './CmpTableEmpty.vue'
 import CmpTableChkbox from './CmpTableChkbox.vue'
 import CmpTableCellPicture from './CmpTableCellPicture.vue'
+import CmpCellListUoM from './CmpCellListUoM.vue'
 import CmpTableRowActions from './CmpTableRowActions.vue'
 import CmpTableActionBar from './CmpTableActionBar.vue'
 import { CmpBaseButton } from '@/components'
@@ -303,6 +313,7 @@ export default defineComponent({
         CmpCellSwitch,
         CmpTableEmpty,
         CmpTableChkbox,
+        CmpCellListUoM,
         CmpTableActionBar,
         CmpTableRowActions,
         CmpTableCellPicture

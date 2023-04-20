@@ -27,8 +27,12 @@
         "tip-grant-all":      "Otorgar todos los permisos",
         "tip-revoke-all":     "Revocar todos los permisos"
     },
-    "nav":           {
-        "sidebar-people": "People"
+    "nav": {
+        "sb": {
+            "people":    "Personas",
+            "inventory": "Inventario",
+            "ops":       "Operaciones"
+        }
     },
     "data":          {
         "status":             "Estado",
@@ -79,7 +83,7 @@
         "request-gerund":  "de solicitud"
     },
     "dialogs":       {
-        "title-alert": "Atención",
+        "title-alert":  "Atención",
         "confirm":      "Por favor, confirme",
         "confirmation": "¿ Está seguro que desea {action} {plural} {subject} ?",
         "img-rm-alert": "Ha eliminado la imagen de perfil. Si a continuación aplica los cambios, la imagen se eliminará de forma permanente"
@@ -158,6 +162,8 @@
         "role":        "Rol",
         "rname":       "@:table-headers.role",
         "active":      "activo?",
+        "category":    "Categoría",
+        "units":       "@:entities.munits.section-name",
         "description": "@:data.Description"
     },
     "entities":      {
@@ -166,9 +172,13 @@
             "name":         "Staff {ref}",
             "section-name": "@:entities.staff.name"
         },
-        "role":   {
+        "role":    {
             "name":         "Rol {ref}",
             "section-name": "Roles"
+        },
+        "munits": {
+            "name": "Unidades de Medida",
+            "section-name": "Unidades"
         }
     }
 }

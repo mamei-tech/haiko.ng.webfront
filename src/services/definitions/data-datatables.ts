@@ -39,3 +39,14 @@ export const HRolesTable: Partial <IColumnHeader>[] = [
         width:   40
     }
 ]
+
+export const HUoMTable: Partial <IColumnHeader>[] = [
+    { title: 'id', hidden: true },
+    { title: 'category', navKey: 'ucName' },
+    { title: 'units', listOPillsUoM: true },
+    {
+        title:   '',            // actions buttons
+        toRight: true,
+        width:   40
+    }
+]

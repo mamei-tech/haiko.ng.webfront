@@ -4,6 +4,7 @@ import { ApiAuth } from '@/services/api/api-auth'
 import { LayBasePage, LayBaseDashboard } from '@/layouts'
 import { RoutePaths, RoutePathNames } from '@/services/definitions'
 import { PeopleRoutes } from '@/router/people-routes'
+import { InventoryRoutes } from '@/router/inventory-routes'
 
 
 const router = createRouter({
@@ -21,6 +22,7 @@ const router = createRouter({
             component: () => import('../views/ViewDashboard.vue'),
             meta:      { layout: LayBaseDashboard }
         },
+        ...InventoryRoutes,
         ...PeopleRoutes
     ]
 })
@@ -28,19 +30,19 @@ const router = createRouter({
 // GUARD - authentication checker | axios hook
 router.beforeEach(( to, _, next ) => {
 
-    const st_auth = useSt_Auth()                                                // maybe we can put this outside this method to improve speed
+    const st_auth = useSt_Auth()                                                    // maybe we can put this outside this method to improve speed
 
     if (st_auth === undefined) next()
     else if (to.meta.reqAuth && !st_auth.isLoggedIn) {
         next(RoutePaths.login)
     }
-    else if (to.name === RoutePathNames.login && st_auth.isLoggedIn) {            // Not logged / auth
+    else if (to.name === RoutePathNames.login && st_auth.isLoggedIn) {              // Not logged / auth
         // Try to login but the user is logged in already
-        ApiAuth.setAccessToken(st_auth.authTk)                                    // As the user is logged in already the access_token has to be in the store
+        ApiAuth.setAccessToken(st_auth.authTk)                                      // As the user is logged in already the access_token has to be in the store
         next(RoutePaths.dashboard)
     }
     else {
-        next()                                                                  // Carry on
+        next()                                                                      // Carry on
     }
 })
 

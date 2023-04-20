@@ -70,10 +70,19 @@ export interface IColumnHeader {
      * Sorting information of the header
      */
     sorting: SortDir | undefined
-    /***
+    /**
      * Comes in handy when we need to handle the cell as a picture cell
      */
     picture: boolean | undefined
+    /**
+     * - list of pills - | <UnitOfMeasurement version>
+     * This will be used when the cells needs to render a list of 'pills' containing text. May implement other version to differentiate the render logic
+     * The render will depend of the following properties:
+     *  - isActive: for using a opaque color when is inactive
+     *  - uname: the name of the units, it will be text of the pill
+     *  - uType: for render an indicative for the units of reference
+     */
+    listOPillsUoM: boolean | undefined
 }
 
 /***

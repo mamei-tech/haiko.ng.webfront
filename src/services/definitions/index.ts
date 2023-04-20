@@ -14,6 +14,7 @@ import type { Problem, ErrorDictionary } from '@/services/definitions/types-erro
 import type { TOpsKind, Function0, Function1, IColumnHeader, IDataTableQuery, ITableChkEmit, TBulkAction, ById, IIndexable, IChecked, Filter, IDataListBasicResponse, TFormMode, TActionKind, EntityGenericNames, IdsArray, IBulkData, IMultiselectBasic, IShell, IScrollInfo, IDataTablePage  } from './types-common'
 import type { IStaffRow, IDtoStaff } from '@/services/definitions/entities/types-staff'
 import type { IRoleBasic, IDtoRole, IPermAssocId, IPermAssoc, IGroupPermsDict } from '@/services/definitions/entities/types-rbac'
+import type { IDtoUoM, IDtoUoMCategory } from '@/services/definitions/entities/types-uom'
 
 
 export {
@@ -66,5 +67,8 @@ export {
     IStaffRow, IDtoStaff,
 
     // rbac
-    IRoleBasic, IDtoRole,  IPermAssocId, IPermAssoc
+    IRoleBasic, IDtoRole,  IPermAssocId, IPermAssoc,
+
+    // uom
+    IDtoUoM, IDtoUoMCategory
 }

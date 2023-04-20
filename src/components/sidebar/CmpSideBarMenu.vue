@@ -2,6 +2,7 @@
 
     <sidebar-menu v-model:collapsed="collapsed"
                   :menu="menu"
+                  :showOneChild="true"
                   @update:collapsed="onToggleCollapse"
                   @item-click="onItemClick" />
 
@@ -33,13 +34,13 @@ export default {
                 },
                 {
                     href: {},
-                    title: this.$t( 'nav.sidebar-people' ).toUpperCase(),
+                    title: this.$t( 'nav.sb.people' ).toUpperCase(),
                     icon: 'fa fa-users',
                     child: [
                         {
                             href: { path: RoutePaths.rolesLists },
                             title: RoutePathNames.roles,
-                            icon: 'tim-icons icon-tablet-2',
+                            icon: 'tim-icons icon-badge',
                         },
                         {
                             href: { path: RoutePaths.staffList },
@@ -50,13 +51,26 @@ export default {
                             href: { path: RoutePaths.clientsList },
                             title: RoutePathNames.clients,
                             icon: 'fa fa-heartbeat',
-                        },
-                        {
-                            href: { path: RoutePaths.authList },
-                            title: this.$t( 'routes.' + RoutePathNames.auth ),
-                            icon: 'tim-icons icon-badge',
                         }
                     ]
+                },
+                {
+                    href: {},
+                    title: this.$t( 'nav.sb.inventory' ).toUpperCase(),
+                    icon: 'tim-icons icon-components',
+                    child: [
+                        {
+                            href: { path: RoutePaths.muList },
+                            title: this.$t( 'routes.' + RoutePathNames.munits ).toLowerCase(),
+                            icon: 'tim-icons icon-support-17',
+                        },
+                    ]
+                },
+                {
+                    href: {},
+                    title: this.$t( 'nav.sb.ops' ).toUpperCase(),
+                    icon: 'tim-icons icon-compass-05',
+                    child: []
                 }
             ],
             collapsed: false,

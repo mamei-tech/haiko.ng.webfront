@@ -2,9 +2,10 @@ export const RoutePaths = {
     login:     '/',
     dashboard: '/dashboard',
 
-    // PEOPLE section
-    rolesLists:   '/roles/list',
-    rolesEdit:    '/roles/:fmode/:id',
+    //#region ======= PEOPLE ==============================================================
+
+    rolesLists:  '/roles/list',
+    rolesEdit:   '/roles/:fmode/:id',
     rolesCreate: '/roles/:fmode',
 
     staffList: '/staff/list',
@@ -13,16 +14,29 @@ export const RoutePaths = {
     staffCreate: '/staff/:fmode',
 
     clientsList: '/clients/list',
-    authList:    '/authorization/list'
+
+    //#endregion ==========================================================================
+
+    //#region ======= INVENTORY ===========================================================
+
+    muList:   '/mu/list',
+    muEdit:   '/mu/:fmode/:id',
+    muCreate: '/mu/:fmode'
+
+    //#endregion ==========================================================================
+
+    //#region ======= OPERATIONS ==========================================================
+    //#endregion ==========================================================================
 }
 
 export const RoutePathNames = {
     login:     'login',
     dashboard: 'dashboard',
 
-    // PEOPLE section
-    roles: 'roles',
-    rolesEdit: 'roles-edit',
+    //#region ======= PEOPLE ==============================================================
+
+    roles:       'roles',
+    rolesEdit:   'roles-edit',
     rolesCreate: 'roles-create',
 
     staff:       'staff',
@@ -30,7 +44,18 @@ export const RoutePathNames = {
     staffEdit:   'staff-edit',
 
     clients: 'clients',
-    auth:    'authorization'
 
-    // ...
+    //#endregion ==========================================================================
+
+    //#region ======= INVENTORY ===========================================================
+
+    munits:   'units',
+    muCreate: 'units-create',
+    muEdit:   'units-edit'
+
+    //#endregion ==========================================================================
+
+    //#region ======= OPERATIONS ==========================================================
+
+    //#endregion ==========================================================================
 }
