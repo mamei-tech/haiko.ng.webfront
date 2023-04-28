@@ -74,18 +74,24 @@ export default function useDialogfy() {
      * @param action Kind of action to confirm. Eg. create, delete
      * @param subject The subject entity of the operation / action
      * @param ref Subject Entity reference e.g identifier, name or something like that
+     * @param extraMsg Option string that can be used as extra information in the confirmation dialog
      * @param isBulk Tells if the call is for a plural subject (more than one). Eg. in bulk actions
      * @returns true if ok clicked, false otherwise
      */
-    async function dfyConfirmation( action: TActionKind, subject: EntityGenericNames, ref: undefined | string = undefined, isBulk = false ): Promise<boolean> {
+    async function dfyConfirmation( action: TActionKind, subject: EntityGenericNames, ref: undefined | string = undefined, extraMsg:string = '', isBulk = false ): Promise<boolean> {
+
+        let text = t('dialogs.confirmation', {
+            action:  t(`crud-actions.${ action }`),
+            plural:  isBulk ? t('others.this-ones') : '',                      // just for spanish by now
+            subject: t(`entities.${ subject }.name`, {ref: ref})})
+
+        if (extraMsg !== '')
+            text = text + '. ' + extraMsg
+
         let result: SweetAlertResult = await Swal.fire({
             icon:           'warning',
             titleText:      t('dialogs.confirm'),
-            text:           t('dialogs.confirmation', {
-                action:  t(`crud-actions.${ action }`),
-                plural:  isBulk ? t('others.this-ones') : '',                      // just for spanish by now
-                subject: t(`entities.${ subject }.name`, {ref: ref})
-            }),
+            text:           text,
             showDenyButton: true
         })
 

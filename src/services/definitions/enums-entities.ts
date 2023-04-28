@@ -17,5 +17,7 @@ export enum ENTITY_TYPE {
 export enum ENTITY_NAMES {
     DEFAULT = 'default',
     STAFF = 'staff',
-    ROLE = 'role'
+    ROLE = 'role',
+    UOMCATEGORY = 'uomcatetgory',
+    UOM = 'unit'
 }

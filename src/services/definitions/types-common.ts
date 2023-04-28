@@ -128,8 +128,7 @@ export type TFormMode = 'edit' | 'create' | 'details'
  * ! The values defined here must match one2one with the definition of ENTITY_NAMES in the 'enums-entities.ts' file
  * ! The values defined here must match one2one with the business entity names we are working with
  */
-export type EntityGenericNames = 'staff' | 'role'
-// export type EntityGenericNames = 'item' | 'items' | 'store' | 'stores' | 'menu' | 'menus'
+export type EntityGenericNames = 'staff' | 'role' | 'uomcatetgory' | 'uom'
 
 /***
  * Table Top Buttons Action Bar (BULK ACTION) clicked action

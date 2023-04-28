@@ -143,9 +143,10 @@ export default function useToastify( toast: ToastInterface ) {
     const tfyCRUDSuccess = ( subject: EntityGenericNames, ops: TOpsKind, ref: undefined | string = undefined ): void => {
 
         let kind = _geTOpsKind(ops)
+        let tSubject = t('entities.' + subject + '.name')
 
         toast.success(
-            t('toasts.ops-ok', { subject: subject, ref: ref !== undefined && typeof ref === 'string' ? ref : '', opsKind: kind }),
+            t('toasts.ops-ok', { subject: tSubject, ref: ref !== undefined && typeof ref === 'string' ? ref : '', opsKind: kind }),
             {
                 timeout: 4000,
                 position: POSITION.TOP_RIGHT,

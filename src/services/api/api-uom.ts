@@ -20,4 +20,12 @@ export class ApiUoM {
 
         return axios.get(url + '/page', {})
     }
+
+    /**
+     * Invoke an api call to deletes a UoM Category from the server
+     * @param categoryId UoM category identifier to be deleted
+     */
+    public static deleteCat( categoryId: number ): AxiosPromise<void> {
+        return axios.delete(url + `/category/${ categoryId }`)
+    }
 }

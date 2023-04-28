@@ -82,11 +82,14 @@
         "request-pas":     "solicitado",
         "request-gerund":  "de solicitud"
     },
-    "dialogs":       {
-        "title-alert":  "Atención",
-        "confirm":      "Por favor, confirme",
-        "confirmation": "¿ Está seguro que desea {action} {plural} {subject} ?",
-        "img-rm-alert": "Ha eliminado la imagen de perfil. Si a continuación aplica los cambios, la imagen se eliminará de forma permanente"
+    "dialogs": {
+        "title-alert":             "Atención",
+        "title-alert-not-allowed": "No permitido",
+        "confirm":                 "Por favor, confirme",
+        "confirmation":            "¿ Está seguro que desea {action} {plural} {subject} ?",
+        "img-rm-alert":            "Ha eliminado la imagen de perfil. Si a continuación aplica los cambios, la imagen se eliminará de forma permanente",
+        "cant-delete-uomcat":      "No se pueden eliminar las categorías de unidades por defecto.",
+        "uomcat-del-confirmation": "Considere que esta acción también elimina todas las unidades asociadas a esta categoría."
     },
     "toasts":        {
         "auth-fail-4xx":         "Credenciales inválidas.",
@@ -163,7 +166,7 @@
         "rname":       "@:table-headers.role",
         "active":      "activo?",
         "category":    "Categoría",
-        "units":       "@:entities.munits.section-name",
+        "units":       "@:entities.uom.section-name",
         "description": "@:data.Description"
     },
     "entities":      {
@@ -176,8 +179,12 @@
             "name":         "Rol {ref}",
             "section-name": "Roles"
         },
-        "munits": {
-            "name": "Unidades de Medida",
+        "uom": {
+            "name":         "Unidad de Medida",
+            "section-name": "Unidades"
+        },
+        "uomcatetgory": {
+            "name":         "@:{'table-headers.category'} de unidades",
             "section-name": "Unidades"
         }
     }

@@ -1,8 +1,10 @@
 import { defineStore } from 'pinia'
 import { useSt_Pagination } from '@/stores/pagination'
 import { ApiUoM } from '@/services/api/api-uom'
+import { ApiStaff } from '@/services/api/api-staff'
 
 import type { IDtoUoMCategory } from '@/services/definitions'
+import type { IdsArray } from '@/services/definitions'
 
 
 // https://pinia.vuejs.org/core-concepts/#setup-stores
@@ -20,6 +22,14 @@ export const useSt_UoM = defineStore({
      * as a convention, we name all the getter with a 'get' prefix
      */
     getters: {
+
+        getCatByIdFromLocalStorage: ( state ) => {
+            return (uomCategoryId : number) => state.entityPage.find((category) => category.id == uomCategoryId)
+
+            // Getters are just computed properties behind the scenes, so it's not possible to pass any parameters to them. However, you can return a function from the getter to accept any arguments
+            // Note that when doing this, getters are not cached anymore, they are simply functions that you invoke. You can however cache some results inside of the getter itself, which is uncommon but should prove more performant
+            // https://pinia.vuejs.org/core-concepts/getters.html#passing-arguments-to-getters
+        }
     },
 
     actions: {
@@ -30,8 +40,17 @@ export const useSt_UoM = defineStore({
         // note you cannot add a new state property if you don't define it in state(), it must contain the
         // https://pinia.vuejs.org/core-concepts/state.html#mutating-the-state | https://pinia.vuejs.org/core-concepts/state.html#replacing-the-state
 
-        // --- server async calls actions ---
+        /**
+         * Delete a UoM Category from the local store
+         * This doesn't make and API server request or call / sideEffect, this just mutate the store
+         * @param catId UoM category identifier
+         */
+        mutDeleteStaffList( catId: number ): void {
+            this.entityPage = this.entityPage.filter(s => s.id !== catId)
+        },
 
+
+        // --- server async calls actions ---
 
         /**
          * Tries to get a datatable page of UoM Categories entities from backend
@@ -59,6 +78,23 @@ export const useSt_UoM = defineStore({
 
                     reject(error)
                 })
+            })
+        },
+
+        /**
+         * Tries to delete a UoM Category
+         * @param payload UoM Category identifier list to be deleted
+         */
+        async reqUoMCatDeletion( payload: number ): Promise<void> {
+
+            return await new Promise<void>(( resolve, reject ) => {
+                ApiUoM.deleteCat(payload).then(( response: any ) => {
+
+                    // deleting (mutate / modify) the uom category from the local store
+                    this.mutDeleteStaffList(payload)
+                    resolve()
+
+                }).catch(error => { reject(error) })
             })
         },
     }

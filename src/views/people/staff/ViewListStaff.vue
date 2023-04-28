@@ -195,7 +195,7 @@ export default defineComponent({
                 if (wasConfirmed) a_reqDelete(dataIds)
             }
             else if (bulkData.actionType === BULK_ACTIONS.ENALBE) {
-                const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.ACTIVATE, ENTITY_NAMES.STAFF, '', true)
+                const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.ACTIVATE, ENTITY_NAMES.STAFF, '', '', true)
                 if (wasConfirmed) {
                     // need to enable all selected disabled stores. Filter the staff to find whether Id from the staff in the local store
                     // actually is in the given Id list ... and also check the Staff isn't active already in the local store
@@ -204,7 +204,7 @@ export default defineComponent({
                 }
             }
             else {
-                const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DEACTIVATE, ENTITY_NAMES.STAFF, '', true)
+                const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DEACTIVATE, ENTITY_NAMES.STAFF, '', '', true)
                 if (wasConfirmed) {
                     // disable case, same as enable but with the disable state ... and also check the Staff isn't disabled already in the local store
                     let ids = st_staff.entityPage.filter(s => dataIds.indexOf(s.id) !== -1 &&  s.isActive).map(s => s.id)
