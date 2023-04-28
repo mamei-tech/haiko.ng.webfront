@@ -5,7 +5,7 @@
         <!-- If you need another direction of action bar function create a dynamic component here -->
         <CmpTableActionBar
                 :subject="this.$props.subject"
-                :entityMode="eMode"
+                :mode="abar_mode"
                 :chkCount="Object.keys(ls_selections.selected).length"
                 v-on:navCreateIntent="$emit('navCreateIntent')"
                 v-on:enableChkCollIntent="h_EnableChkCollection"
@@ -264,7 +264,7 @@
             <td class="actions" v-if="hasActions && hpr_chkHasId(rowObj)">
                 <!-- we can are going to adapt the action bar buttons according to the entity given in entityMode props -->
 
-                <CmpTableRowActions :mode="eMode"
+                <CmpTableRowActions :mode="abutton_mode"
                                     :identifier="rowObj['id']"
                                     v-on:deleteIntent="$emit('deleteIntent', $event)"
                                     v-on:detailsIntent="$emit('detailsIntent', $event)"
@@ -324,9 +324,14 @@ export default defineComponent({
             description: 'This should be the translation (❗means the translated string) value string for a specific entity of the business. This value could be used for contextualization in components tips & titles and others translations strings.',
             required:    false,
         },
-        entityMode:          {
+        actionBarMode:          {
             type:        Number,
-            description: 'The type of the entity that indicate the component how to adapt according with the given entity type',
+            description: 'Tells in which mode should the action bar most be rendered',
+            required:    true,
+        },
+        actionBtnMode:          {
+            type:        Number,
+            description: 'Tells in which mode should rendered the rows\' action buttons',
             required:    true
         },
         columns:             {
@@ -412,11 +417,19 @@ export default defineComponent({
         const ls_selections = reactive<{ selected: ById<IChecked> }>({ selected: {} })            // ls =  local state
         const ls_rootChkBoxState = ref<boolean>(false)
         const ls_columns = ref<Array<Partial<IColumnHeader>>>([ ...props.columns ])
-        const hpr_lastSelectedSelectElemRef = ref<number>(0)                                          // Receive the value of item selected in select component
+        const hpr_lastSelectedSelectElemRef = ref<number>(0)                                      // Receive the value of item selected in select component
         const isAnyCheckboxSelectedRef = ref<boolean>(false)                                      // True if at least, one checkbox component filter was selected
         const selectFilterListRef = <any> ref([])                                                 // reference to any select component filter
 
-        const eMode = toRaw(props.entityMode)                                                           // Returns the raw, original object of a reactive or readonly proxy. This is an escape hatch that can be used to temporarily read without incurring proxy access/tracking overhead or write without triggering changes.
+        /**
+         * Datatable action *bar* mode
+         */
+        const abar_mode = toRaw(props.actionBarMode)                                                      // Returns the raw, original object of a reactive or readonly proxy. This is an escape hatch that can be used to temporarily read without incurring proxy access/tracking overhead or write without triggering changes.
+        /**
+         * Datatable action *button* mode
+         */
+        const abutton_mode = toRaw(props.actionBtnMode)                                                     // Returns the raw, original object of a reactive or readonly proxy. This is an escape hatch that can be used to temporarily read without incurring proxy access/tracking overhead or write without triggering changes.
+
         const search = ref('')
         const { cap } = useCommon()
         const dtFilters = reactive<any>({})
@@ -602,17 +615,14 @@ export default defineComponent({
             ls_selections.selected = hpr_updateChckAllToSelection(false)
         }
 
-        /***
+        /**
          * If status is true, return a new selection for selecting all the object from table (the same as data). Otherwise
          * return an empty selection collection.
          *
          * @param status The new status from the root checkbox input event
          * @param data The props containing all the data represented on the table
          */
-        const hpr_updateChckAllToSelection = (
-                status: boolean,
-                data: Array<IIndexable> | undefined = undefined
-        ): ById<IChecked> => {
+        const hpr_updateChckAllToSelection = ( status: boolean, data: Array<IIndexable> | undefined = undefined ): ById<IChecked> => {
             ls_rootChkBoxState.value = status
 
             if (status)
@@ -639,7 +649,7 @@ export default defineComponent({
          * After the addition to this class to the element the styles applies the correct border
          * color to the form group (class) element (div)
          *
-         * @param formGroupEl Div with the form-group class thet the input (event target) belongs to
+         * @param formGroupEl Div with the form-group class the input (event target) belongs to
          */
         const hpr_inputToggleFocusClass = ( formGroupEl: Element ) => {
             formGroupEl.classList.toggle('input-group-focus')
@@ -712,7 +722,9 @@ export default defineComponent({
 
         return {
 
-            eMode,
+            abar_mode,
+            abutton_mode,
+
             ls_selections,
             ls_rootChkBoxState,
             ls_columns,

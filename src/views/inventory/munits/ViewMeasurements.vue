@@ -4,13 +4,16 @@
             <div class="col-12">
                 <CmpCard>
                     <CmpDataTable table-type="hover"
-                                  :subject="$t('entities.staff.name')"
-                                  :entityMode="eMode"
+                                  :subject="$t('entities.uomcatetgory.name')"
+
+                                  :action-bar-mode="abar_mode"
+                                  :action-btn-mode="abutton_mode"
+
                                   :columns="columns"
                                   :data="st_uom.entityPage"
                                   :has-actions="true"
 
-                                  @navCreateIntent=""
+                                  @navCreateIntent="h_navCreateUoMCatIntent"
                                   @requestIntent=""
 
                                   @deleteIntent="h_intentRowDelete"
@@ -29,15 +32,24 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue'
 import { useToast } from 'vue-toastification'
+import { i18n } from '@/services/i18n'
+import { useRouter } from 'vue-router'
 import { useSt_UoM } from '@/stores/uom'
 import useToastify from '@/services/composables/useToastify'
 import useDialogfy from '@/services/composables/useDialogfy'
-import { HUoMTable } from '@/services/definitions/data-datatables'
-import { ACTION_KIND_STR, ENTITY_NAMES, ENTITY_TYPE, OPS_KIND_STR } from '@/services/definitions'
-import { CmpCard, CmpDataTable } from '@/components'
-import { i18n } from '@/services/i18n'
+import { HUoMCatTable } from '@/services/definitions/data-datatables'
+import {
+    ACTION_KIND_STR,
+    ENTITY_NAMES,
+    DT_ACTIONBAR_MODE,
+    FMODE,
+    OPS_KIND_STR,
+    RoutePathNames, DT_ACTION_BUTTON_MODE
 
-import type { IColumnHeader } from '@/services/definitions'
+} from '@/services/definitions'
+import { CmpCard, CmpDataTable } from '@/components'
+
+import type { IColumnHeader, TFormMode } from '@/services/definitions'
 
 
 export default defineComponent({
@@ -49,11 +61,14 @@ export default defineComponent({
 
         const { t } = i18n.global
 
-        const st_uom = useSt_UoM()                                          // Pinia store for uom
-        const eMode: ENTITY_TYPE = ENTITY_TYPE.COMMON
-
         const toast = useToast()                                            // The toast lib interface
-        const columns = ref<Partial<IColumnHeader>[]>(HUoMTable)          // entity customized datatable header | As here the data for the filter is dynamically (side-effect) obtained, we need to use ref so we can fill the datas
+        const st_uom = useSt_UoM()                                          // Pinia store for uom
+        const router = useRouter()
+
+
+        const abar_mode: DT_ACTIONBAR_MODE = DT_ACTIONBAR_MODE.NOEJC                        // datatable action bar mode
+        const abutton_mode: DT_ACTION_BUTTON_MODE = DT_ACTION_BUTTON_MODE.JEDINDEL          // datatable button mode
+        const columns = ref<Partial<IColumnHeader>[]>(HUoMCatTable)            // entity customized datatable header | As here the data for the filter is dynamically (side-effect) obtained, we need to use ref so we can fill the datas
 
         const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
         const { dfyConfirmation, dfyShowAlert } = useDialogfy()
@@ -115,14 +130,27 @@ export default defineComponent({
             dfyShowAlert(t('dialogs.title-alert-not-allowed'),  t('dialogs.cant-delete-uomcat'))
         }
 
+        const h_navCreateUoMCatIntent = (): void => {
+            router.push({
+                name:   RoutePathNames.muCreate,
+                params: {
+                    fmode: FMODE.CREATE as TFormMode
+                    // id   : '', no need for passing ID on creation mode
+                }
+            })
+        }
+
         //#endregion ==========================================================================
 
         return {
-            eMode,
+            abar_mode,
+            abutton_mode,
+
             st_uom,
             columns,
 
-            h_intentRowDelete
+            h_intentRowDelete,
+            h_navCreateUoMCatIntent
         }
     }
 

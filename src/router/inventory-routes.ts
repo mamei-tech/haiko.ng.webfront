@@ -13,19 +13,19 @@ export const InventoryRoutes: Array<RouteRecordRaw> = [
         name:      RoutePathNames.munits,
         component: () => import('../views/inventory/munits/ViewMeasurements.vue'),
         meta:      { layout: LayBaseDashboard, reqAuth: true }
-    }
-    /*{
-        path:      RoutePaths.staffEdit,
-        name:      RoutePathNames.staffEdit,
-        component: () => import('../views/people/staff/ViewFormStaff.vue'),
+    },
+    {
+        path:      RoutePaths.muEdit,
+        name:      RoutePathNames.muEdit,
+        component: () => import('../views/inventory/munits/ViewFormUoM.vue'),
         meta:      { layout: LayBaseDashboard, reqAuth: true }
     },
     {
-        path:      RoutePaths.staffCreate,
-        name:      RoutePathNames.staffCreate,
-        component: () => import('../views/people/staff/ViewFormStaff.vue'),
+        path:      RoutePaths.muCreate,
+        name:      RoutePathNames.muCreate,
+        component: () => import('../views/inventory/munits/ViewFormUoM.vue'),
         meta:      { layout: LayBaseDashboard, reqAuth: true }
-    }*/
+    }
 
     //#endregion ==========================================================================
 ]

@@ -5,13 +5,13 @@
                 <CmpCard>
                     <CmpDataTable table-type="hover"
                                   :subject="$t('entities.role.name')"
-                                  :entityMode="eMode"
+
+                                  :action-bar-mode="abar_mode"
+                                  :action-btn-mode="abutton_mode"
+
                                   :columns="columns"
                                   :data="st_rbac.entityPage"
                                   :has-actions="true"
-
-                                  @navCreateIntent="h_navCreateRole"
-                                  @requestIntent="h_reqQuery"
 
                                   @deleteIntent="h_intentRowDelete"
                                   @editIntent="h_navRowEdit"
@@ -26,16 +26,24 @@
 <script lang="ts">
 import { defineComponent, onMounted } from 'vue'
 import { CmpCard, CmpDataTable } from '@/components'
-import { ACTION_KIND_STR, ENTITY_NAMES, ENTITY_TYPE, FMODE, OPS_KIND_STR, RoutePathNames } from '@/services/definitions'
+import {
+    ACTION_KIND_STR,
+    ENTITY_NAMES,
+    DT_ACTIONBAR_MODE,
+    FMODE,
+    OPS_KIND_STR,
+    RoutePathNames,
+    DT_ACTION_BUTTON_MODE
+} from '@/services/definitions'
 import { useRouter } from 'vue-router'
 import { useSt_Rbac } from '@/stores/rbac'
+import { useSt_Pagination } from '@/stores/pagination'
 import { useToast } from 'vue-toastification'
 import useToastify from '@/services/composables/useToastify'
 import useDialogfy from '@/services/composables/useDialogfy'
 import { HRolesTable } from '@/services/definitions/data-datatables'
 
 import type { IDtoRole, IDataTableQuery, TFormMode } from '@/services/definitions'
-import { useSt_Pagination } from '@/stores/pagination'
 
 
 export default defineComponent({
@@ -45,13 +53,15 @@ export default defineComponent({
 
         //#region ======= DECLARATIONS & LOCAL STATE ==========================================
 
-        const st_rbac = useSt_Rbac()                                        // Pinia store for rbac / roles
-        const st_pagination = useSt_Pagination()                            // Pinia instance of pagination store
-        const eMode: ENTITY_TYPE = ENTITY_TYPE.COMMON_NOEJC
+        const st_rbac = useSt_Rbac()                                                        // Pinia store for rbac / roles
+        const st_pagination = useSt_Pagination()                                            // Pinia instance of pagination store
+
+        const abar_mode: DT_ACTIONBAR_MODE = DT_ACTIONBAR_MODE.NOEJC                        // datatable action bar mode
+        const abutton_mode: DT_ACTION_BUTTON_MODE = DT_ACTION_BUTTON_MODE.JEDINDEL          // datatable button mode
+        const columns = HRolesTable                                                         // entity customized datatable header
 
         const router = useRouter()
         const toast = useToast()                                            // The toast lib interface
-        const columns = HRolesTable                                         // entity customized datatable header
 
         const { tfyCRUDFail, tfyCRUDSuccess } = useToastify(toast)
         const { dfyConfirmation } = useDialogfy()
@@ -130,18 +140,15 @@ export default defineComponent({
             })
         }
 
-        const h_reqQuery = ( _: IDataTableQuery ): void => {
-            console.log('request query intention')
-        }
-
         //#endregion ==========================================================================
 
         return {
-            eMode,
+            abar_mode,
+            abutton_mode,
+
             columns,
             st_rbac,
 
-            h_reqQuery,
             h_navRowEdit,
             h_navCreateRole,
             h_intentRowDelete

@@ -3,7 +3,7 @@
         <!-- we are going to adapt the action bar buttons according to the entity given in entityMode props -->
 
         <!-- DEFAULT MODE -->
-        <template v-if="entityMode === ENTITY_TYPE.DEFAULT">
+        <template v-if="mode === DT_ACTIONBAR_MODE.DEFAULT">
             <div class="col-1 p-0" style="text-align: end">
                 <CmpBaseButton
                         icon
@@ -15,8 +15,8 @@
             </div>
         </template>
 
-        <!--<template v-else-if="entityMode === ENTITY_TYPE.Store || ENTITY_TYPE.Menu">-->
-        <template v-else-if="entityMode === ENTITY_TYPE.COMMON">
+        <!--<template v-else-if="entityMode === DT_ACTIONBAR_MODE.Store || DT_ACTIONBAR_MODE.Menu">-->
+        <template v-else-if="mode === DT_ACTIONBAR_MODE.COMMON">
             <div class="col-11 p-0">
                 <transition name="slide-fade">
                     <div v-show="chkCount > 1" >
@@ -61,7 +61,7 @@
         </template>
 
         <!-- Action bar with only the create btn -->
-        <template v-else-if="entityMode === ENTITY_TYPE.COMMON_NOEJC">
+        <template v-else-if="mode === DT_ACTIONBAR_MODE.NOEJC">
             <div class="col-11 p-0">
                 <!-- nothing here in this mode -->
             </div>
@@ -84,7 +84,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { CmpBaseButton } from '@/components'
-import { ENTITY_TYPE } from '@/services/definitions'
+import { DT_ACTIONBAR_MODE } from '@/services/definitions'
 import { i18n } from '@/services/i18n'
 
 
@@ -100,7 +100,7 @@ import type { SetupContext } from 'vue'
                 description: 'This should be the translation (❗means the translated string) value string for a specific entity of the business. This value could be used for contextualization in the actions button bar.',
                 required:    false
             },
-            entityMode: {
+            mode: {
                 type:        Number,
                 default:     0,
                 description: 'The mode (sets of buttons) to show in the table top action bar according to the specified entity type'
@@ -121,7 +121,7 @@ import type { SetupContext } from 'vue'
             return {
 
                 pSubject: props.subject === '' || props.subject === undefined ? t('entities.default') : props.subject,                        // processed subject
-                ENTITY_TYPE: ENTITY_TYPE
+                DT_ACTIONBAR_MODE
             }
         }
     })

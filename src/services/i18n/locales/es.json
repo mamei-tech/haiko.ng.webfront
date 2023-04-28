@@ -145,11 +145,12 @@
         },
         "placeholders":  {
             "username":         "nickname__78",
-            "staff-firstname":  "Escriba el nombre del empleado",
-            "staff-lastname":   "Escriba los apellidos del empleado",
+            "staff-firstname":  "escriba el nombre del empleado",
+            "staff-lastname":   "escriba los apellidos del empleado",
             "role-rname":       "nombre del rol",
             "role-description": "describe aspectos relevantes del rol",
             "reset-filters":    "Restablecer filtros",
+            "uom-cat-ucname":   "nombre de la nueva categoría para unidades medida",
             "user":             "usuario",
             "pass":             "contraseña",
             "search":           "buscar",
@@ -164,7 +165,10 @@
         "contact":     "Contacto",
         "role":        "Rol",
         "rname":       "@:table-headers.role",
-        "active":      "activo?",
+        "uom":         "@:{'entities.uom.name'}",
+        "uType":       "@:{'entities.uom.u-type'}",
+        "ratio":       "Tasa de Conversión",
+        "active":      "Activo?",
         "category":    "Categoría",
         "units":       "@:entities.uom.section-name",
         "description": "@:data.Description"
@@ -181,7 +185,8 @@
         },
         "uom": {
             "name":         "Unidad de Medida",
-            "section-name": "Unidades"
+            "section-name": "Unidades",
+            "u-type":       "Tipo de unidad"
         },
         "uomcatetgory": {
             "name":         "@:{'table-headers.category'} de unidades",

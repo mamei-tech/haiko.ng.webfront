@@ -2,7 +2,7 @@
     <div style="text-align: right">
 
         <!-- DEFAULT -->
-        <template v-if="mode === ENTITY_TYPE.DEFAULT">
+        <template v-if="mode ===  DT_ACTION_BUTTON_MODE.DEFAULT">
 
             <!-- btn details -->
             <button @click.prevent="$emit('detailsIntent', identifier)"
@@ -32,8 +32,8 @@
             </button>
         </template>
 
-        <!-- COMMON  -->
-        <template v-else-if="mode === ENTITY_TYPE.COMMON || mode === ENTITY_TYPE.COMMON_NOEJC">
+        <!-- JUST EDIT AND DELETE  -->
+        <template v-else-if="mode === DT_ACTION_BUTTON_MODE.JEDINDEL">
 
             <!-- btn edit -->
             <button @click.prevent="$emit('editIntent', identifier)"
@@ -54,12 +54,25 @@
             </button>
         </template>
 
+        <!-- JUST DELETE  -->
+        <template v-else-if="mode === DT_ACTION_BUTTON_MODE.JDEL">
+
+            <!-- btn delete -->
+            <button @click.prevent="$emit('deleteIntent', identifier)"
+                    type="button"
+                    :title="$t('btn.val-del')"
+                    class="btn remove btn-link btn-icon btn-fab btn-danger btn-sm"
+            >
+                <i class="tim-icons icon-trash-simple"></i>
+            </button>
+        </template>
+
     </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { ENTITY_TYPE } from '@/services/definitions'
+import { DT_ACTION_BUTTON_MODE } from '@/services/definitions'
 
 import type { SetupContext } from 'vue'
 
@@ -83,7 +96,7 @@ export default defineComponent({
 
     setup( _: any, __: SetupContext ) {
         return {
-            ENTITY_TYPE: ENTITY_TYPE
+            DT_ACTION_BUTTON_MODE
         }
     }
 });

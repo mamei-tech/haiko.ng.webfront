@@ -2,7 +2,7 @@ import { ALIGN_POSITION } from './types-common'
 import { RoutePaths, RoutePathNames } from './route-paths'
 import { HCatalogsTable, PAGE_SIZE } from './data-datatables'
 import { HTTP_HEADER_FORM_DATA, HTTP_HEADER_FORM_URLENCODED,RELPATH_DEFAULT_AVATAR_IMG, RELPATH_DEFAULT_PRODUCT_IMG, IMG_ORG_AVATAR_NAME, IMG_AVATAR_SMALL_THUMBNAIL, IMG_PRODUCT_NAME } from './data-strs'
-import { ENTITY_TYPE, ENTITY_NAMES } from '@/services/definitions/enums-entities'
+import { DT_ACTIONBAR_MODE, ENTITY_NAMES, DT_ACTION_BUTTON_MODE } from '@/services/definitions/enums-entities'
 import { HTTP_RESPONSES, OPS_KIND_STR, ACTION_KIND_STR, FMODE, BULK_ACTIONS, KEYS, PICTURE_TYPE_CELL } from '@/services/definitions/enums-common'
 
 import { VSchemaStaffCreate, VSchemaStaffEdit } from '@/services/definitions/validations/validations-people'
@@ -27,7 +27,8 @@ export {
     PAGE_SIZE,
 
     // Enums
-    ENTITY_TYPE,
+    DT_ACTIONBAR_MODE,
+    DT_ACTION_BUTTON_MODE,
     PICTURE_TYPE_CELL,
     ENTITY_NAMES,
     OPS_KIND_STR,

@@ -16,7 +16,7 @@ import type { SetupContext } from 'vue'
 
 /**
  * This is a component just for listing pills based on text.
- * This is the version for HUoMTable | listOPillsUoM
+ * This is the version for HUoMCatTable | listOPillsUoM
  *
  * According the type of the unit in the category it belongs to (less than, greater than or the referece unit in the category)
  * this component render the correspondan pill

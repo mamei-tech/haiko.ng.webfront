@@ -19,9 +19,9 @@ export const RoutePaths = {
 
     //#region ======= INVENTORY ===========================================================
 
-    muList:   '/mu/list',
-    muEdit:   '/mu/:fmode/:id',
-    muCreate: '/mu/:fmode'
+    muList:   '/mu/list',                   // uom = mu = units of measurement
+    muEdit:   '/mu/:fmode/:id',             // uom = mu = units of measurement
+    muCreate: '/mu/:fmode'                  // uom = mu = units of measurement
 
     //#endregion ==========================================================================
 
@@ -49,9 +49,9 @@ export const RoutePathNames = {
 
     //#region ======= INVENTORY ===========================================================
 
-    munits:   'units',
-    muCreate: 'units-create',
-    muEdit:   'units-edit'
+    munits:   'units',                      // uom = mu = units of measurement
+    muCreate: 'units-create',               // uom = mu = units of measurement
+    muEdit:   'units-edit'                  // uom = mu = units of measurement
 
     //#endregion ==========================================================================
 

@@ -5,7 +5,10 @@
                 <CmpCard>
                     <CmpDataTable table-type="hover"
                                   :subject="$t('entities.staff.name')"
-                                  :entityMode="eMode"
+
+                                  :action-bar-mode="abar_mode"
+                                  :action-btn-mode="abutton_mode"
+
                                   :columns="columns"
                                   :data="st_staff.getStaffList"
                                   :has-actions="true"
@@ -37,8 +40,16 @@ import { useSt_Staff } from '@/stores/staff'
 import { useSt_Nomenclatures } from '@/stores/nomenc'
 import { useSt_Pagination } from '@/stores/pagination'
 import { HStaffTable } from '@/services/definitions/data-datatables'
-import { ACTION_KIND_STR, BULK_ACTIONS, ENTITY_NAMES, FMODE, OPS_KIND_STR, RoutePathNames } from '@/services/definitions'
-import { ENTITY_TYPE } from '@/services/definitions'
+import {
+    ACTION_KIND_STR,
+    BULK_ACTIONS,
+    DT_ACTION_BUTTON_MODE,
+    ENTITY_NAMES,
+    FMODE,
+    OPS_KIND_STR,
+    RoutePathNames
+} from '@/services/definitions'
+import { DT_ACTIONBAR_MODE } from '@/services/definitions'
 import { CmpCard, CmpDataTable } from '@/components'
 import useDialogfy from '@/services/composables/useDialogfy'
 import useToastify from '@/services/composables/useToastify'
@@ -53,16 +64,18 @@ export default defineComponent({
 
         //#region ======= DECLARATIONS & LOCAL STATE ==========================================
 
-        const st_staff = useSt_Staff()                                      // Pinia store for staff
-        const st_pagination = useSt_Pagination()                            // Pinia instance of pagination store
-        const st_nomenclatures = useSt_Nomenclatures()                      // Pinia store for nomenclatures
-        const eMode: ENTITY_TYPE = ENTITY_TYPE.COMMON
+        const st_staff = useSt_Staff()                                                      // Pinia store for staff
+        const st_pagination = useSt_Pagination()                                            // Pinia instance of pagination store
+        const st_nomenclatures = useSt_Nomenclatures()                                      // Pinia store for nomenclatures
+
+        const abar_mode: DT_ACTIONBAR_MODE = DT_ACTIONBAR_MODE.COMMON                       // datatable action bar mode
+        const abutton_mode: DT_ACTION_BUTTON_MODE = DT_ACTION_BUTTON_MODE.JEDINDEL          // datatable button mode
+        const columns = ref<Partial<IColumnHeader>[]>(HStaffTable)                          // entity customized datatable header | As here the data for the filter is dynamically (side-effect) obtained, we need to use ref so we can fill the data
+        const filters = [ 'roleId', 'isActive' ]                                            // datatable filters
 
         const router = useRouter()
         const toast = useToast()                                            // The toast lib interface
         // const columns = HStaffTable                                      // entity customized datatable header
-        const columns = ref<Partial<IColumnHeader>[]>(HStaffTable)          // entity customized datatable header | As here the data for the filter is dynamically (side-effect) obtained, we need to use ref so we can fill the data
-        const filters = [ 'roleId', 'isActive' ]                            // datatable filters
 
         const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
         const { dfyConfirmation } = useDialogfy()
@@ -224,7 +237,9 @@ export default defineComponent({
         //#endregion ==========================================================================
 
         return {
-            eMode,
+            abar_mode,
+            abutton_mode,
+
             columns,
             filters,
             st_staff,
