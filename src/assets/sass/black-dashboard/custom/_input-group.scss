@@ -81,6 +81,10 @@
     }
 }
 
+label.has-error {
+    color: $danger-states !important;
+}
+
 .has-success {
     .form-control-feedback, .control-label {
         color: $success;

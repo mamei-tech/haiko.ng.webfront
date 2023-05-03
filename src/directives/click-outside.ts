@@ -1,9 +1,9 @@
 export default {
 
     beforeMount: function( el: any, binding: any ) {
-        el.clickOutsideEvent = function( event: any ) {
-            if (!(el === event.target || el.contains(event.target))) {
-                binding.value(event, el)
+        el.clickOutsideEvent = function( evt: any ) {
+            if (!(el === evt.target || el.contains(evt.target))) {
+                binding.value(evt, el)
             }
         }
         document.body.addEventListener('click', el.clickOutsideEvent)

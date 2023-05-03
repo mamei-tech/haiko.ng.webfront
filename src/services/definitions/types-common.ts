@@ -1,3 +1,6 @@
+import type { HTML_INPUT_TYPE } from '@/services/definitions'
+
+
 export interface IDataTablePage<T> extends IDataListBasicResponse {
     entityList: Array<T>;
 }
@@ -83,6 +86,18 @@ export interface IColumnHeader {
      *  - uType: for render an indicative for the units of reference
      */
     listOPillsUoM: boolean | undefined
+    /**
+     * Tells if we want a normal / basic editable cell on click event
+     */
+    cellEditable: boolean | undefined
+    /**
+     * A function of /services/definition/validation/ schema, to be used as a callback for validating the editable cell data when it changes
+     */
+    cellValidation: Function
+    /**
+     * Tells to the component which kind of HTML input render
+     */
+    cellEditableType: HTML_INPUT_TYPE
 }
 
 /***
@@ -265,6 +280,15 @@ export interface IScrollInfo {
      * gets or sets the number of pixels that the content of an element has been scrolled up
      */
     scrollTop: number;
+}
+
+/**
+ * Used as object to hold the data when a datatable cell is updated
+ */
+export interface ICellUpdate {
+    entityId: number,
+    entityField: string
+    updatedValue: string | number
 }
 
 /**

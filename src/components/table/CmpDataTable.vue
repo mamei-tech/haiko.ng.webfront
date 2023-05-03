@@ -179,7 +179,6 @@
         <!-- TABLE BODY -->
         <tbody :class="tbodyClasses">
         <tr v-for="(rowObj, index) in data" :key="index" class="d-md-table-row">
-
             <template v-for="(header, index) in ls_columns" :key="index">
 
                 <!-- checkbox cell -->
@@ -245,19 +244,26 @@
                 </td>
 
                 <!-- normal mode -->
+                <CmpTableEditableCellNormal v-else-if="hpr_chkHasValue(rowObj, header) && !header.hidden && header.cellEditable"
+                                            :style="[{ width: header.width + '%' }]"
+                                            :class="[ { 'text-right': header.toRight }, { 'text-left': header.toLeft }, { 'text-center': header.toCenter } ]"
+
+                                            :cell-data="hpr_getRowValue( rowObj, header )"
+                                            :ref-field="hpr_getNavKey(header)"
+                                            :ref-id="rowObj.id ?? 0"
+                                            :validation="header.cellValidation ?? hlpr_empty"
+                                            :input-type="header.cellEditableType ?? 'text'"
+
+                                            @fieldUpdateIntent="h_passCellUpdateEmission"
+                />
                 <td v-else-if="hpr_chkHasValue(rowObj, header) && !header.hidden"
                     rowspan="1"
                     colspan="1"
-                    :class="[
-                            { 'text-right': header.toRight },
-                            { 'text-left': header.toLeft },
-                            { 'text-center': header.toCenter }
-                        ]"
+                    :class="[ { 'text-right': header.toRight }, { 'text-left': header.toLeft }, { 'text-center': header.toCenter } ]"
                     :style="[{ width: header.width + '%' }]"
                 >
                     {{ hpr_getRowValue( rowObj, header ) }}
                 </td>
-
             </template>
 
             <!-- ACTIONS BUTTONS TD -->
@@ -292,6 +298,7 @@ import CmpTableCellPicture from './CmpTableCellPicture.vue'
 import CmpCellListUoM from './CmpCellListUoM.vue'
 import CmpTableRowActions from './CmpTableRowActions.vue'
 import CmpTableActionBar from './CmpTableActionBar.vue'
+import CmpTableEditableCellNormal from './CmpTableEditableCellNormal.vue'
 import { CmpBaseButton } from '@/components'
 import { watch } from '@vue/runtime-core'
 import useCommon from '@/services/composables/useCommon'
@@ -300,7 +307,7 @@ import { useSt_Pagination } from '@/stores/pagination'
 import { PICTURE_TYPE_CELL } from '@/services/definitions'
 
 import type { SetupContext, PropType } from 'vue'
-import type { ById, TBulkAction, IIndexable, IColumnHeader, ITableChkEmit, IChecked, IDataTableQuery, Filter  } from '@/services/definitions'
+import type { ById, TBulkAction, IIndexable, IColumnHeader, ITableChkEmit, IChecked, Filter, ICellUpdate  } from '@/services/definitions'
 
 
 export default defineComponent({
@@ -316,7 +323,8 @@ export default defineComponent({
         CmpCellListUoM,
         CmpTableActionBar,
         CmpTableRowActions,
-        CmpTableCellPicture
+        CmpTableCellPicture,
+        CmpTableEditableCellNormal
     },
     props: {
         subject:             {
@@ -393,6 +401,8 @@ export default defineComponent({
         }
     },
     emits: [
+        'cellUpdateIntent',                     // an editable cell (is a child component) emit an update event
+
         'detailsIntent',                        // details, rows action event
         'deleteIntent',                         // delete, rows action event
         'editIntent',                           // edit, rows action event
@@ -457,6 +467,10 @@ export default defineComponent({
         //endregion =============================================================================
 
         //region ======== EVENTS HANDLERS & WATCHERS ============================================
+
+        const h_passCellUpdateEmission = (data: ICellUpdate) => {
+            ctx.emit('cellUpdateIntent', data)
+        }
 
         const h_onSrchFocusEvt = ( evt: any ) => {
             if (evt.target.value.length < 4) hpr_inputToggleFocusClass(evt.target.parentElement.parentNode)
@@ -660,7 +674,8 @@ export default defineComponent({
          * @param column object describing the header properties
          */
         const hpr_getNavKey = ( column: Partial<IColumnHeader> ): string => {
-            return column.navKey !== undefined ? column.navKey : column.title!.toLowerCase()
+            return column.navKey ?? column.title!.toLowerCase()
+            // return column.navKey !== undefined ? column.navKey : column.title!.toLowerCase()
         }
 
         /***
@@ -708,7 +723,14 @@ export default defineComponent({
             isAnyCheckboxSelectedRef.value = evt.target!.checked
         }
 
-        /***
+        /**
+         * Intents to be used as shadow / empty function as substitution if no validation function is provided for an
+         * editable cell in the Partial<IColumnHeader> array of data
+         * @param _
+         */
+        const hlpr_empty = ( _: any ) => { return true }
+
+        /**
          * Check if any filter is active and returns true in case positive
          * E.g: A word on input search field, a checkbox or all checkbox selected,
          * or an item of select component
@@ -736,6 +758,7 @@ export default defineComponent({
             search,
             cpt_searchHasText,
 
+            hlpr_empty,
             hpr_getNavKey,
             hpr_chkHasValue,
             hpr_getRowValue,
@@ -756,6 +779,7 @@ export default defineComponent({
             h_searchChange,
             h_search,
             h_clearAllFilters,
+            h_passCellUpdateEmission,
 
             // ...useDebaunce(h_searchChange),
 
