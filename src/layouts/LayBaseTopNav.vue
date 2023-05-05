@@ -126,7 +126,7 @@
 <script lang="ts">
 import { useSt_Auth } from '@/stores/auth'
 import { defineComponent } from 'vue'
-import { mapActions } from 'pinia'
+import { mapActions, defineStore, getActivePinia } from 'pinia'
 import { CmpModal, CmpDropdown } from '../components'
 import { RoutePaths} from '@/services/definitions'
 import useCommon from '@/services/composables/useCommon'
@@ -179,7 +179,19 @@ export default defineComponent({
         //region ======== EVENTS HANDLERS & WATCHERS ============================================
 
         hLogOutIntent(): void {
-            this.setLoggedOut()
+
+            // resetting the entire store| https://github.com/vuejs/pinia/discussions/911
+            const activepinia = getActivePinia();
+
+            if (activepinia) {
+                Object.entries(activepinia.state.value).forEach(( [ storeName, state ] ) => {
+                    const storeDefinition = defineStore(storeName, state);
+                    const store = storeDefinition(activepinia);
+                    store.$reset();
+                });
+            }
+
+            // this.setLoggedOut()
             this.$router.push(RoutePaths.login)
         },
         hMenuToggle(): void {
