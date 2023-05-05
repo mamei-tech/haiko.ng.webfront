@@ -45,7 +45,8 @@
         "footer-description": "Mostrando del {start} al {end} de {total} total de entradas",
         "Description":        "Descripción",
         "Active":             "Estado",
-        "Store Type":         "Tipo"
+        "Store Type":         "Tipo",
+        "empty-table":        "No existen elementos para mostrar"
     },
     "others":        {
         "enable":           "Activo",
@@ -104,7 +105,7 @@
         "empty-stores":          "No se encontraron tiendas de acuerda con tipo establecido.",
         "no-item-type-selected": "El producto no puede ser creado, debe seleccionar un tipo de producto."
     },
-    "validation":    {
+    "validation": {
         "required":                          "El campo es requerido",
         "email":                             "El campo debe contener un email válido",
         "cellphone":                         "El campo de # de celular solo debe contener enteros",
@@ -120,6 +121,7 @@
         "only-alpha-spaces":                 "El campo solo debe contener caracteres y espacios, terminando solo en caracteres",
         "only-alpha-digits-spaces":          "El campo solo debe contener caracteres, números y espacios, comenzado solo en caracteres",
         "only-alpha-digits-underscore-dots": "El campo solo debe contener caracteres, guion bajo, puntos y números, sin espacios",
+        "only-alpha-digits-no-spaces":       "El campo debe comenzar con caracteres y puede contener números sin espacios",
         "upload-file-max-size":              "El archivo a utilizar debe tener un tamaño menor de {size} MB",
         "avatar-invalid-extension":          "La extensión de la imagen utilizada no esta permitida"
     },
