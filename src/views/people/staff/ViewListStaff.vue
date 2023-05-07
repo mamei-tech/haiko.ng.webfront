@@ -39,7 +39,6 @@ import { useToast } from 'vue-toastification'
 import { useSt_Staff } from '@/stores/staff'
 import { useSt_Nomenclatures } from '@/stores/nomenc'
 import { useSt_Pagination } from '@/stores/pagination'
-import { HStaffTable } from '@/services/definitions/data-datatables'
 import {
     ACTION_KIND_STR,
     BULK_ACTIONS,
@@ -47,9 +46,10 @@ import {
     ENTITY_NAMES,
     FMODE,
     OPS_KIND_STR,
+    HStaffTable,
+    DT_ACTIONBAR_MODE,
     RoutePathNames
 } from '@/services/definitions'
-import { DT_ACTIONBAR_MODE } from '@/services/definitions'
 import { CmpCard, CmpDataTable } from '@/components'
 import useDialogfy from '@/services/composables/useDialogfy'
 import useToastify from '@/services/composables/useToastify'

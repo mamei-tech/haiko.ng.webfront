@@ -57,7 +57,7 @@ import Multiselect from '@vueform/multiselect'
 export default defineComponent({
     components: { Multiselect },
     name:       'CmpMultiselectField',
-    props:      {
+    props: {
         name:          {
             type:        String,
             description: 'The name of the input',
@@ -88,9 +88,9 @@ export default defineComponent({
             description: 'The maximum number of options that can be selected when using multiple or tags mode. If -1 the number of options won\'t be limited.'
         },
         placeholder:   {
-            type:     String,
-            default:  '',
-            required: false
+            type:        String,
+            description: 'A placeholder to guide the user in the UI',
+            required:    false
         },
         closeOnSelect: {
             type:     Boolean,
@@ -112,11 +112,11 @@ export default defineComponent({
          * This may come in handy when a parent component needs to trigger something after this
          * select changes
          *
-         * @param e Event
+         * @param newSelectedValue ... wel this is self explanatory
          */
-        const h_OnChangeWrap = ( e: any ) => {
-            handleChange(e)
-            context.emit('changehapend', e)
+        const h_OnChangeWrap = ( newSelectedValue: any ) => {
+            handleChange(newSelectedValue)
+            context.emit('changehapend', newSelectedValue)
         }
 
         /**

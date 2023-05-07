@@ -33,6 +33,7 @@ import {
     FMODE,
     OPS_KIND_STR,
     RoutePathNames,
+    HRolesTable,
     DT_ACTION_BUTTON_MODE
 } from '@/services/definitions'
 import { useRouter } from 'vue-router'
@@ -41,7 +42,6 @@ import { useSt_Pagination } from '@/stores/pagination'
 import { useToast } from 'vue-toastification'
 import useToastify from '@/services/composables/useToastify'
 import useDialogfy from '@/services/composables/useDialogfy'
-import { HRolesTable } from '@/services/definitions/data-datatables'
 
 import type { IDtoRole, IDataTableQuery, TFormMode } from '@/services/definitions'
 

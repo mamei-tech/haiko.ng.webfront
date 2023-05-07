@@ -37,15 +37,15 @@ import { useRouter } from 'vue-router'
 import { useSt_UoM } from '@/stores/uom'
 import useToastify from '@/services/composables/useToastify'
 import useDialogfy from '@/services/composables/useDialogfy'
-import { HUoMCatTable } from '@/services/definitions/data-datatables'
 import {
     ACTION_KIND_STR,
     ENTITY_NAMES,
     DT_ACTIONBAR_MODE,
     FMODE,
     OPS_KIND_STR,
-    RoutePathNames, DT_ACTION_BUTTON_MODE
-
+    HUoMCatTable,
+    RoutePathNames,
+    DT_ACTION_BUTTON_MODE
 } from '@/services/definitions'
 import { CmpCard, CmpDataTable } from '@/components'
 

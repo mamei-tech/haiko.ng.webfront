@@ -1,6 +1,7 @@
 import { ALIGN_POSITION } from './types-common'
 import { RoutePaths, RoutePathNames } from './route-paths'
-import { HCatalogsTable, PAGE_SIZE } from './data-datatables'
+import { HStaffTable, HRolesTable, HUoMCatTable, HUoMTable, PAGE_SIZE } from './data-datatables'
+import { SelectUoMType } from './data-select-options'
 import { HTTP_HEADER_FORM_DATA, HTTP_HEADER_FORM_URLENCODED,RELPATH_DEFAULT_AVATAR_IMG, RELPATH_DEFAULT_PRODUCT_IMG, IMG_ORG_AVATAR_NAME, IMG_AVATAR_SMALL_THUMBNAIL, IMG_PRODUCT_NAME } from './data-strs'
 import { DT_ACTIONBAR_MODE, ENTITY_NAMES, DT_ACTION_BUTTON_MODE } from '@/services/definitions/enums-entities'
 import { HTTP_RESPONSES, OPS_KIND_STR, ACTION_KIND_STR, FMODE, BULK_ACTIONS, KEYS, PICTURE_TYPE_CELL, HTML_INPUT_TYPE } from '@/services/definitions/enums-common'
@@ -22,8 +23,15 @@ export {
     RoutePaths,
     RoutePathNames,
 
+    // static select data
+    SelectUoMType,
+
     // Data Definitions
-    HCatalogsTable,
+    HStaffTable,
+    HRolesTable,
+    HUoMCatTable,
+    HUoMTable,
+
     PAGE_SIZE,
 
     // Enums

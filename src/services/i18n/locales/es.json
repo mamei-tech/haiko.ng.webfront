@@ -34,7 +34,7 @@
             "ops":       "Operaciones"
         }
     },
-    "data":          {
+    "data": {
         "status":             "Estado",
         "_id":                "ID",
         "id":                 "@:data._id",
@@ -45,8 +45,10 @@
         "footer-description": "Mostrando del {start} al {end} de {total} total de entradas",
         "Description":        "Descripción",
         "Active":             "Estado",
-        "Store Type":         "Tipo",
-        "empty-table":        "No existen elementos para mostrar"
+        "empty-table":        "No existen elementos para mostrar",
+        "u-ratio-down":       "↓ u. de referencia",
+        "u-ratio-equal":      "unidad de referencia",
+        "u-ratio-up":         "↑ u. de referencia"
     },
     "others":        {
         "enable":           "Activo",
@@ -106,6 +108,7 @@
         "no-item-type-selected": "El producto no puede ser creado, debe seleccionar un tipo de producto."
     },
     "validation": {
+        "invalid":                           "El campo no contiene valores válidos. ",
         "required":                          "El campo es requerido",
         "email":                             "El campo debe contener un email válido",
         "cellphone":                         "El campo de # de celular solo debe contener enteros",
@@ -123,6 +126,7 @@
         "only-alpha-digits-underscore-dots": "El campo solo debe contener caracteres, guion bajo, puntos y números, sin espacios",
         "only-alpha-digits-no-spaces":       "El campo debe comenzar con caracteres y puede contener números sin espacios",
         "upload-file-max-size":              "El archivo a utilizar debe tener un tamaño menor de {size} MB",
+        "uom-ratio-gt-zero":                 "El ratio de conversión debe ser un número positivo mayor o igual que 1",
         "avatar-invalid-extension":          "La extensión de la imagen utilizada no esta permitida"
     },
     "form":          {
@@ -156,7 +160,8 @@
             "user":             "usuario",
             "pass":             "contraseña",
             "search":           "buscar",
-            "email":            "correo.del.staff{'@'}.dominio.que"
+            "email":            "correo.del.staff{'@'}.dominio.que",
+            "uom-type-select":  "ratio de conversión"
         }
     },
     "table-headers": {

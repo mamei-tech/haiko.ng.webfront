@@ -1,17 +1,15 @@
+import { VSchemaUoM } from '@/services/definitions/validations/validations-uom'
+import { SelectUoMType } from '@/services/definitions/data-select-options'
+import { HTML_INPUT_TYPE } from '@/services/definitions/enums-common'
+import { i18n } from '@/services/i18n'
+
 import type { IColumnHeader } from '@/services/definitions'
+
+
+const { t } = i18n.global
 
 // H means headers
 export const PAGE_SIZE = 10
-
-export const HCatalogsTable: Partial<IColumnHeader>[] = [
-    { title: '', chk: true, width: 2 },
-    { title: 'Id', navKey: '_id', hidden: true },
-    { title: 'Name', sorting: '' },
-    { title: 'Active', toCenter: true, navKey: 'isEnable', switch: true },
-    { title: 'Size(MB)', navKey: 'size', width: 12, sorting: '' },
-    { title: 'Items', toCenter: true, width: 10 },
-    { title: 'Actions', toRight: true, width: 40 }
-]
 
 export const HStaffTable: Partial<IColumnHeader>[] = [
     { title: '', chk: true, width: 2 },
@@ -53,9 +51,9 @@ export const HUoMCatTable: Partial <IColumnHeader>[] = [
 
 export const HUoMTable: Partial<IColumnHeader>[] = [
     { title: 'id', hidden: true },
-    { title: 'uom', navKey: 'uName' },
-    { title: 'uType', navKey: 'uType' },
-    { title: 'ratio', navKey: 'uRatio' },
+    { title: 'uom', navKey: 'uName', toLeft: true, width: 20, cellEditable: true, cellValidation: VSchemaUoM.uName, cellEditableInputType: HTML_INPUT_TYPE.TEXT },
+    { title: 'uType', navKey: 'uType', width: 10, cellEditableSelect: true, cellEditableSelectOptions: SelectUoMType, cellEditableSelectPlaceholder: t('form.placeholders.uom-type-select') },
+    { title: 'ratio', navKey: 'uRatio', width: 10, cellEditable: true, cellValidation:VSchemaUoM.uRatio, cellEditableInputType: HTML_INPUT_TYPE.NUMBER },
     { title: 'active', toCenter: true, navKey: 'isActive', switch: true },
     {
         title:   '',            // actions buttons

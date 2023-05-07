@@ -87,9 +87,17 @@ export interface IColumnHeader {
      */
     listOPillsUoM: boolean | undefined
     /**
-     * Tells if we want a normal / basic editable cell on click event
+     * Tells if we want a normal / basic editable cell on click event, built-in the datatable
+     * ❗ This property and cellEditableSelect should be mutual exclusive
      */
     cellEditable: boolean | undefined
+    /**
+     * Tells if we want a select editable cell on click event, built-in the datatable
+     * ❗ This property and cellEditable should be mutual exclusive
+     */
+    cellEditableSelect: boolean | undefined
+    cellEditableSelectOptions: IMultiselectBasic[] | undefined
+    cellEditableSelectPlaceholder: string | undefined
     /**
      * A function of /services/definition/validation/ schema, to be used as a callback for validating the editable cell data when it changes
      */
@@ -97,7 +105,7 @@ export interface IColumnHeader {
     /**
      * Tells to the component which kind of HTML input render
      */
-    cellEditableType: HTML_INPUT_TYPE
+    cellEditableInputType: HTML_INPUT_TYPE
 }
 
 /***
@@ -288,7 +296,7 @@ export interface IScrollInfo {
 export interface ICellUpdate {
     entityId: number,
     entityField: string
-    updatedValue: string | number
+    updatedValue: string | number | boolean
 }
 
 /**
@@ -298,6 +306,7 @@ export interface ICellUpdate {
 export interface IDataListBasicResponse {
     totalRecords: number                  // Total entity count on the entire system
 }
+
 
 /**
  * Basic multiselect interface data

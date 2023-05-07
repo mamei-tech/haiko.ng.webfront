@@ -26,16 +26,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, nextTick, ref } from 'vue'
+import { defineComponent, nextTick, ref, watch } from 'vue'
 import { KEYS } from '@/services/definitions'
 
 import type { SetupContext } from 'vue'
 import type { ICellUpdate } from '@/services/definitions'
 
 
-
 export default defineComponent({
-    name:  'CmpTableEditableCellNormal',
+    name:  'CmpTableEditableCell',
     props: {
         cellData: {
             type:        [ String, Number ],
@@ -133,6 +132,10 @@ export default defineComponent({
 
         //region ======== EVENTS HANDLERS & WATCHERS ==========================================
 
+        watch(() => [ props.cellData ], () => {
+            value.value = props.cellData
+        })
+
         /**
          * If not locked already, then we lock and enable the edition mode
          */
@@ -189,6 +192,3 @@ export default defineComponent({
     }
 })
 </script>
-
-<style lang="scss" scoped>
-</style>

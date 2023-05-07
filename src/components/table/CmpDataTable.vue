@@ -178,14 +178,16 @@
 
         <!-- TABLE BODY -->
         <tbody :class="tbodyClasses">
-        <tr v-for="(rowObj, index) in data" :key="index" class="d-md-table-row">
-            <template v-for="(header, index) in ls_columns" :key="index">
+        <tr v-for="(rowObj, rindex) in data" class="d-md-table-row" :key="rindex">
+            <template v-for="(header, hindex) in ls_columns" :key="hindex">
 
                 <!-- checkbox cell -->
                 <td v-if="header.chk === true" rowspan="1" colspan="1" :style="[{ width: header.width + '%' }]">
                     <CmpTableChkbox :identifier="rowObj['id']"
-                                       :checked="ls_selections.selected[rowObj['id']]"
-                                       v-on:checkIntent="h_ChkObject"
+                                    :checked="ls_selections.selected[rowObj['id']]"
+                                    v-on:checkIntent="h_ChkObject"
+
+                                    :key="hindex + '' + rindex"
                     />
                 </td>
 
@@ -201,6 +203,7 @@
                                    v-on:enableIntent="$emit('enableIntent', $event)"
                                    v-on:disableIntent="$emit('disableIntent', $event)"
                                    v-if="header.switchRole !== undefined && header.switchRole === 'main'"
+                                   :key="hindex + '' + rindex"
                     />
 
                     <!-- secondary role | when we need two switches in the data-grid -->
@@ -209,6 +212,7 @@
                                    v-on:enableIntent="$emit('enableIntentSecond', $event)"
                                    v-on:disableIntent="$emit('disableIntentSecond', $event)"
                                    v-else-if="header.switchRole !== undefined && header.switchRole === 'secondary'"
+                                   :key="hindex + '' + rindex"
                     />
 
                     <!-- default switch -->
@@ -217,9 +221,8 @@
                                    v-on:enableIntent="$emit('enableIntent', $event)"
                                    v-on:disableIntent="$emit('disableIntent', $event)"
                                    v-else
+                                   :key="hindex + '' + rindex"
                     />
-
-
                 </td>
 
                 <!-- picture mode -->
@@ -231,7 +234,9 @@
                     <CmpTableCellPicture
                             :type="PICTURE_TYPE_CELL.USER"
                             :statics="configStatic"
-                            :picture="hpr_getRowValue( rowObj, header )"/>
+                            :picture="hpr_getRowValue( rowObj, header )"
+                            :key="hindex + '' + rindex"
+                    />
                 </td>
 
                 <!-- list mode | UoM (listOPillsUoM)  version -->
@@ -240,22 +245,41 @@
                     rowspan="1" colspan="1"
                     :style="[{ width: header.width + '%' }]"
                 >
-                    <CmpCellListUoM :units="hpr_getRowValue( rowObj, header )" />
+                    <CmpCellListUoM :units="hpr_getRowValue( rowObj, header )"
+                                    :key="hindex + '' + rindex"
+                    />
                 </td>
 
-                <!-- normal mode -->
-                <CmpTableEditableCellNormal v-else-if="hpr_chkHasValue(rowObj, header) && !header.hidden && header.cellEditable"
-                                            :style="[{ width: header.width + '%' }]"
-                                            :class="[ { 'text-right': header.toRight }, { 'text-left': header.toLeft }, { 'text-center': header.toCenter } ]"
+                <!-- normal mode | follow 3 modes: 2 editables (text & select) and 1 non editable normal text cell  -->
+                <!-- normal mode | normal editable cell -->
+                <CmpTableEditableCell v-else-if="hpr_chkHasValue(rowObj, header) && !header.hidden && header.cellEditable"
+                        :style="[{ width: header.width + '%' }]"
+                        :class="[ { 'text-right': header.toRight }, { 'text-left': header.toLeft }, { 'text-center': header.toCenter } ]"
 
-                                            :cell-data="hpr_getRowValue( rowObj, header )"
-                                            :ref-field="hpr_getNavKey(header)"
-                                            :ref-id="rowObj.id ?? 0"
-                                            :validation="header.cellValidation ?? hlpr_empty"
-                                            :input-type="header.cellEditableType ?? 'text'"
+                        :cell-data="hpr_getRowValue( rowObj, header )"
+                        :ref-field="hpr_getNavKey(header)"
+                        :ref-id="rowObj.id ?? 0"
+                        :validation="header.cellValidation ?? hpr_empty"
+                        :input-type="header.cellEditableInputType ?? 'text'"
 
-                                            @fieldUpdateIntent="h_passCellUpdateEmission"
+                        @fieldUpdateIntent="h_passCellUpdateEmission"
+
+                        :key="hindex + '' + rindex"
                 />
+                <!-- normal mode | select editable cell -->
+                <CmpTableEditableCellSelect v-else-if="hpr_chkHasValue(rowObj, header) && !header.hidden && header.cellEditableSelect"
+                        :placeholder="header.cellEditableSelectPlaceholder ?? ''"
+                        :cell-data="hpr_getRowValue( rowObj, header )"
+                        :ref-field="hpr_getNavKey(header)"
+                        :ref-id="rowObj.id ?? 0"
+                        :validation="header.cellValidation ?? hpr_empty"
+                        :options="header.cellEditableSelectOptions ?? []"
+
+                        @fieldUpdateIntent="h_passCellUpdateEmission"
+
+                        :key="hindex + '' + rindex"
+                />
+                <!-- normal mode | non editable cell -->
                 <td v-else-if="hpr_chkHasValue(rowObj, header) && !header.hidden"
                     rowspan="1"
                     colspan="1"
@@ -275,8 +299,9 @@
                                     v-on:deleteIntent="$emit('deleteIntent', $event)"
                                     v-on:detailsIntent="$emit('detailsIntent', $event)"
                                     v-on:editIntent="$emit('editIntent', {...rowObj})"
-                />
 
+                                    :key="'a' + hindex + '' + rindex"
+                />
             </td>
         </tr>
         </tbody>
@@ -298,7 +323,8 @@ import CmpTableCellPicture from './CmpTableCellPicture.vue'
 import CmpCellListUoM from './CmpCellListUoM.vue'
 import CmpTableRowActions from './CmpTableRowActions.vue'
 import CmpTableActionBar from './CmpTableActionBar.vue'
-import CmpTableEditableCellNormal from './CmpTableEditableCellNormal.vue'
+import CmpTableEditableCell from './CmpTableEditableCell.vue'
+import CmpTableEditableCellSelect from '@/components/table/CmpTableEditableCellSelect.vue'
 import { CmpBaseButton } from '@/components'
 import { watch } from '@vue/runtime-core'
 import useCommon from '@/services/composables/useCommon'
@@ -324,7 +350,8 @@ export default defineComponent({
         CmpTableActionBar,
         CmpTableRowActions,
         CmpTableCellPicture,
-        CmpTableEditableCellNormal
+        CmpTableEditableCell,
+        CmpTableEditableCellSelect,
     },
     props: {
         subject:             {
@@ -728,7 +755,7 @@ export default defineComponent({
          * editable cell in the Partial<IColumnHeader> array of data
          * @param _
          */
-        const hlpr_empty = ( _: any ) => { return true }
+        const hpr_empty = ( _: any ) => { return true }
 
         /**
          * Check if any filter is active and returns true in case positive
@@ -758,7 +785,7 @@ export default defineComponent({
             search,
             cpt_searchHasText,
 
-            hlpr_empty,
+            hpr_empty,
             hpr_getNavKey,
             hpr_chkHasValue,
             hpr_getRowValue,

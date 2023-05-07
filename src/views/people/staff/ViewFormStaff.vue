@@ -333,7 +333,7 @@ export default defineComponent({
 
                 // so now what ?
                 if(!doWeNeedToStay) h_back()                                  // so we are going back to the data table
-                else resetForm({ values: mkStaff() })                   // so wee need to clean the entire form and stay in it
+                else resetForm({ values: mkStaff() })                    // so wee need to clean the entire form and stay in it
 
             }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.ADDITION))
         }
@@ -396,11 +396,11 @@ export default defineComponent({
          * Handles the form submission event through the vee-validate 'SubmissionHandler' so we can take advantage of all
          * the its validation logic but using with own logic inserted as callback
          *
-         * @param event The DOM event coming from our Vue UI custom component (CmpFormActionsButton in this case)
+         * @param evt The DOM event coming from our Vue UI custom component (CmpFormActionsButton in this case)
          * @param doWeNeedToStay This is a boolean data coming from our Vue UI custom component (CmpFormActionsButton in this case). Tell us where to go after the successfully creation of the entity
          */
-        const h_submit = ( event: Event, doWeNeedToStay: boolean ) => {
-            event.preventDefault()
+        const h_submit = ( evt: Event, doWeNeedToStay: boolean ) => {
+            evt.preventDefault()
 
             // handling the submission with vee-validate method
             handleSubmit(formData => {
@@ -419,7 +419,7 @@ export default defineComponent({
             router.push({ name: RoutePathNames.staff });
         }
 
-        const h_delete = async ( event: any ) => {
+        const h_delete = async ( evt: any ) => {
 
             if (fmode as TFormMode == FMODE.EDIT) {                                     // 'cause we can deleted something isn't created yet ... (remember we reuse this view for edition too, so we need to check which mode we currently are)
                 const isOk = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.STAFF, formDataFromServer!.firstName)
@@ -428,8 +428,8 @@ export default defineComponent({
         }
 
         // const h_keyboardKeyPress = (event: Event) => {
-        const h_keyboardKeyPress = (event: any) => {
-            if(event.key === KEYS.ESCAPE) h_back()                       // going back if SCAPE is pressed
+        const h_keyboardKeyPress = ( evt: any ) => {
+            if(evt.key === KEYS.ESCAPE) h_back()                       // going back if SCAPE is pressed
         }
 
         // TIP ❗❗ perhaps we can replace this with the v-model way (two-way data binding) as you do with the other

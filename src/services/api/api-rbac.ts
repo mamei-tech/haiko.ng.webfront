@@ -53,7 +53,7 @@ export class ApiRbac {
      * Create / insert a new role and its associated permission on the system
      *
      * @param newRoleData
-     * @returns Promise with the identifier of the just created store (the same as the owner)
+     * @returns Promise with the identifier of the just created entity
      */
     // public static insertRolePerms( newRoleData: IDtoRole ): AxiosPromise<number> {
     public static insertRolePerms( newRoleData: IDtoRole ) {

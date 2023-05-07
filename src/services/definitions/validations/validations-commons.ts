@@ -8,13 +8,15 @@ const { t } = i18n.global
 /** Just permit words with just letters and spaces. Not allows spaces at the end.
  * The value hast to end with letters.
  */
-export const regAlphaNSpaces: RegExp = /^([a-z|A-Z]+( ){0,1})+[a-z|A-Z]$/
-export const regOnlyAlphanumericAndSpaces  = /^([a-z|A-Z|0-9]+( ){0,1})+[a-z|A-Z|0-9]( )*$/
+export const regAlphaNSpaces: RegExp = /^([a-z|A-Z|À-ÿ]+( ){0,1})+[a-z|A-Z|À-ÿ]$/
+export const regOnlyAlphanumericAndSpaces  = /^([a-z|A-Z|À-ÿ|0-9]+( ){0,1})+[a-z|A-Z|À-ÿ|0-9]( )*$/
+export const regOnlyAlphanumericNoSpaces  = /^[a-zA-ZÀ-ÿ]+(\d*[a-zA-ZÀ-ÿ]*)*$/
+export const regDecimalCommaSeparator = /^\d+\.?\d*$/
 
 /**
  * Only match with characters, numbers, underscores and dots, No spaces. Good for using against with nicknames or system usernames
  */
-export const regAlphaDigitsUnderscoreNDots: RegExp = /^[a-zA-Z][a-zA-Z0-9._]*$/
+export const regAlphaDigitsUnderscoreNDots: RegExp = /^[a-zA-ZÀ-ÿ][a-zA-ZÀ-ÿ0-9._]*$/
 
 /**
  * Strong password validation regex. Requirements are:
@@ -24,7 +26,7 @@ export const regAlphaDigitsUnderscoreNDots: RegExp = /^[a-zA-Z][a-zA-Z0-9._]*$/
  * - at least three lowercase letters
  * - length 8 minimum, 20 tops
  */
-export const regStrongPassword: RegExp  = /^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&._*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{8,20}$/    // https://stackoverflow.com/questions/5142103/regex-to-validate-password-strength
+export const regStrongPassword: RegExp  = /^(?=.*[A-ZÀ-ÿ].*[A-ZÀ-ÿ])(?=.*[!@#$&._*])(?=.*[0-9].*[0-9])(?=.*[a-zÀ-ÿ].*[a-zÀ-ÿ].*[a-zÀ-ÿ]).{8,20}$/    // https://stackoverflow.com/questions/5142103/regex-to-validate-password-strength
 
 //region ======== COMMON VALIDATIONS FIELDS RULES =======================================
 

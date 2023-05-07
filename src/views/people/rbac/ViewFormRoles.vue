@@ -401,11 +401,11 @@ export default defineComponent({
          * Basically, filter the perms2mod record with the data it was actually changed and allocate in 2 groups
          * (remove & grant) the perms that has changed.
          *
-         * @param event
+         * @param evt
          * @param doWeNeedToStay This is a boolean data coming from our Vue UI custom component (CmpFormActionsButton in this case). Tell us where to go after the successfully creation of the entity
          */
-        const h_beforeSubmit = (event: Event, doWeNeedToStay: boolean) => {
-            event.preventDefault()
+        const h_beforeSubmit = (evt: Event, doWeNeedToStay: boolean) => {
+            evt.preventDefault()
 
             handleSubmit(formData => {
                 if (cpt_fMode.value == (FMODE.CREATE as TFormMode)) a_create(formData, meta.value.dirty, doWeNeedToStay)
@@ -414,8 +414,8 @@ export default defineComponent({
             }).call(this)
         }
 
-        const h_keyboardKeyPress = (event: any) => {
-            if(event.key === KEYS.ESCAPE) h_back()                       // going back if SCAPE is pressed
+        const h_keyboardKeyPress = ( evt: any ) => {
+            if (evt.key === KEYS.ESCAPE) h_back()                       // going back if SCAPE is pressed
         }
 
         const h_back = () => {
@@ -459,7 +459,7 @@ export default defineComponent({
             })
         }
 
-        const h_delete = async ( event: any ) => {
+        const h_delete = async ( evt: any ) => {
             if (fmode as TFormMode == FMODE.EDIT) {                                     // 'cause we can deleted something isn't created yet ... (remember we reuse this view for edition too, so we need to check which mode we currently are)
 
                 const roleName = st_rbac.getRoleByIdFromLocalStorage(+id)?.rName ?? ''

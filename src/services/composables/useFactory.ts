@@ -41,11 +41,31 @@ export default function useFactory() {
         }
     }
 
+    /**
+     * Factory method to create an empty UoM
+     * When this is used in form mode, the form need to manage a list of UoM, the workaround is to work with temporally Id
+     * for the list of UoM so we allow to pass the UoM identifier to this method.
+     *
+     * @param uomId UoM identifier*
+     * @param uomCatId UoM category Id.
+     */
+    const mkUoM = ( uomId: number, uomCatId: number ): IDtoUoM => {
+        return {
+            id:          uomId,
+            isActive:    true,
+            uName:       '',
+            uRatio:      1,
+            uType:       0,
+            uCategoryId: uomCatId,
+        }
+    }
+
     //#endregion ==========================================================================
 
     return {
         mkRole,
         mkStaff,
+        mkUoM,
         mkUoMCategory
     }
 }
