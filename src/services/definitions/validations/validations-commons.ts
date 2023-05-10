@@ -11,7 +11,7 @@ const { t } = i18n.global
 export const regAlphaNSpaces: RegExp = /^([a-z|A-Z|À-ÿ]+( ){0,1})+[a-z|A-Z|À-ÿ]$/
 export const regOnlyAlphanumericAndSpaces  = /^([a-z|A-Z|À-ÿ|0-9]+( ){0,1})+[a-z|A-Z|À-ÿ|0-9]( )*$/
 export const regOnlyAlphanumericNoSpaces  = /^[a-zA-ZÀ-ÿ]+(\d*[a-zA-ZÀ-ÿ]*)*$/
-export const regDecimalCommaSeparator = /^\d+\.?\d*$/
+export const regDecimalDotSeparator = /^\d+\.?\d*$/
 
 /**
  * Only match with characters, numbers, underscores and dots, No spaces. Good for using against with nicknames or system usernames

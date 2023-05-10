@@ -11,6 +11,6 @@ const { t } = i18n.global
 export const SelectUoMType: IMultiselectBasic[] =
     [
         { value: -1, label: t('data.u-ratio-down') },
-        { value: 0, label: t('data.u-ratio-equal') },
+        { value: 0, label: t('data.u-ratio-reference') },
         { value: 1, label: t('data.u-ratio-up') }
     ]

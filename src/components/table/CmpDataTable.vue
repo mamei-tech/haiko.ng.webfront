@@ -300,7 +300,7 @@
                                     v-on:detailsIntent="$emit('detailsIntent', $event)"
                                     v-on:editIntent="$emit('editIntent', {...rowObj})"
 
-                                    :key="'a' + hindex + '' + rindex"
+                                    :key="'a' + rindex"
                 />
             </td>
         </tr>

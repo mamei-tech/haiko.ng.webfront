@@ -28,4 +28,14 @@ export class ApiUoM {
     public static deleteCat( categoryId: number ): AxiosPromise<void> {
         return axios.delete(url + `/category/${ categoryId }`)
     }
+
+    /**
+     * Create / insert a new uom category and its associated units, in the backend system
+     *
+     * @param uomCategory
+     * @returns Promise with the identifier of the just created entity (the same as the owner)
+     */
+    public static insertUoMCat( uomCategory: IDtoUoMCategory ): AxiosPromise<number> {
+        return axios.post(url + `/category`, uomCategory)
+    }
 }

@@ -47,7 +47,7 @@
         "Active":             "Estado",
         "empty-table":        "No existen elementos para mostrar",
         "u-ratio-down":       "↓ u. de referencia",
-        "u-ratio-equal":      "unidad de referencia",
+        "u-ratio-reference":  "unidad de referencia",
         "u-ratio-up":         "↑ u. de referencia"
     },
     "others":        {
@@ -126,8 +126,13 @@
         "only-alpha-digits-underscore-dots": "El campo solo debe contener caracteres, guion bajo, puntos y números, sin espacios",
         "only-alpha-digits-no-spaces":       "El campo debe comenzar con caracteres y puede contener números sin espacios",
         "upload-file-max-size":              "El archivo a utilizar debe tener un tamaño menor de {size} MB",
-        "uom-ratio-gt-zero":                 "El ratio de conversión debe ser un número positivo mayor o igual que 1",
-        "avatar-invalid-extension":          "La extensión de la imagen utilizada no esta permitida"
+        "avatar-invalid-extension":          "La extensión de la imagen utilizada no esta permitida",
+        "uom-list-one-ref":                  "Solo debe existir una sola unidad de referencia",
+        "uom-list-ratio-ref":                "El ratio de conversión de la unidad de referencia debe ser 1",
+        "uom-list-ref-exist":                "Debe existir al menos una unidad de referencia",
+        "uom-list-min":                      "Al menos debe existir una unidad para la categoría",
+        "uom-list-active":                   "La unidad de referencia debe estar activa",
+        "uom-ratio-gt-zero":                 "El ratio de conversión debe ser un número positivo mayor o igual que 1"
     },
     "form":          {
         "section":       {
