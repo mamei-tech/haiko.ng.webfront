@@ -223,7 +223,7 @@ export default defineComponent({
             // ❗❗ we do this as a exploit, regarding to the fact possibly there is no more than 10 roles defined
             // in the system
             if (cpt_fMode.value === FMODE.EDIT as TFormMode) {
-                const role = st_rbac.entityPage.filter(r => r.id === roleId)[0]        // getting the role from store
+                const role = st_rbac.entityPage.filter(r => r.id === roleId)[0]        // getting the role from pinia store
 
                 // this is so the form does not appear as dirty
                 // https://vee-validate.logaretm.com/v4/guide/components/handling-forms/ | resetting the form

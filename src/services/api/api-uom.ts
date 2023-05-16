@@ -30,6 +30,15 @@ export class ApiUoM {
     }
 
     /**
+     * Make the request to update the UoM Category data and the permission association to the role
+     *
+     * @param payload
+     */
+    public static async updateUoMCat( payload: IDtoUoMCategory ): Promise<void> {
+        return axios.put(url, payload)
+    }
+
+    /**
      * Create / insert a new uom category and its associated units, in the backend system
      *
      * @param uomCategory

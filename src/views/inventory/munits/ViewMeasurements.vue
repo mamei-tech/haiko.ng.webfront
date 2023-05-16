@@ -14,10 +14,8 @@
                                   :has-actions="true"
 
                                   @navCreateIntent="h_navCreateUoMCatIntent"
-                                  @requestIntent=""
-
+                                  @editIntent="h_navEditUoMCatIntent"
                                   @deleteIntent="h_intentRowDelete"
-                                  @editIntent=""
 
                                   @enableIntent=""
                                   @disableIntent=""
@@ -45,15 +43,15 @@ import {
     OPS_KIND_STR,
     HUoMCatTable,
     RoutePathNames,
-    DT_ACTION_BUTTON_MODE
+    DT_ACTION_BUTTON_MODE,
 } from '@/services/definitions'
 import { CmpCard, CmpDataTable } from '@/components'
 
-import type { IColumnHeader, TFormMode } from '@/services/definitions'
+import type { IColumnHeader, TFormMode, IDtoUoMCategory } from '@/services/definitions'
 
 
 export default defineComponent({
-    name: 'ViewListClients',
+    name: 'ViewListUoMCat',
     components: { CmpCard, CmpDataTable },
     setup() {
 
@@ -61,14 +59,13 @@ export default defineComponent({
 
         const { t } = i18n.global
 
-        const toast = useToast()                                            // The toast lib interface
-        const st_uom = useSt_UoM()                                          // Pinia store for uom
+        const toast = useToast()                                                            // The toast lib interface
+        const st_uom = useSt_UoM()                                                          // Pinia store for uom
         const router = useRouter()
-
 
         const abar_mode: DT_ACTIONBAR_MODE = DT_ACTIONBAR_MODE.NOEJC                        // datatable action bar mode
         const abutton_mode: DT_ACTION_BUTTON_MODE = DT_ACTION_BUTTON_MODE.JEDINDEL          // datatable button mode
-        const columns = ref<Partial<IColumnHeader>[]>(HUoMCatTable)            // entity customized datatable header | As here the data for the filter is dynamically (side-effect) obtained, we need to use ref so we can fill the datas
+        const columns = ref<Partial<IColumnHeader>[]>(HUoMCatTable)                         // entity customized datatable header | As here the data for the filter is dynamically (side-effect) obtained, we need to use ref so we can fill the datas
 
         const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
         const { dfyConfirmation, dfyShowAlert } = useDialogfy()
@@ -86,7 +83,7 @@ export default defineComponent({
         onMounted(() => {
 
             // getting the uom categories list data for populating the datatable (side effect)
-            st_uom.reqStaffPages().catch(err => tfyCRUDFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.REQUEST))
+            st_uom.reqUoMCatPages().catch(err => tfyCRUDFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.REQUEST))
         })
 
         //endregion ===========================================================================
@@ -117,17 +114,14 @@ export default defineComponent({
         //#region ======= EVENTS HANDLERS =====================================================
 
         const h_intentRowDelete = async ( objectId: number ): Promise<void> => {
-
             // we don't allow to delete the default categories, so we proceed only for above the 6th uom category
-            if (objectId >= 6) {
+            if (objectId > 6) {
                 const entityReference = st_uom.getCatByIdFromLocalStorage(objectId)!.ucName
 
                 const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.UOMCATEGORY, entityReference, t('dialogs.uomcat-del-confirmation'))
                 if (wasConfirmed) a_reqDelete( objectId , entityReference)
             }
-
-            // telling the user
-            dfyShowAlert(t('dialogs.title-alert-not-allowed'),  t('dialogs.cant-delete-uomcat'))
+            else dfyShowAlert(t('dialogs.title-alert-not-allowed'),  t('dialogs.cant-delete-uomcat'))          // telling the user
         }
 
         const h_navCreateUoMCatIntent = (): void => {
@@ -136,6 +130,20 @@ export default defineComponent({
                 params: {
                     fmode: FMODE.CREATE as TFormMode
                     // id   : '', no need for passing ID on creation mode
+                }
+            })
+        }
+
+        /**
+         * Handler for the intent of edit a record from the table
+         * @param rowData data of the row
+         */
+        const h_navEditUoMCatIntent = ( rowData: IDtoUoMCategory ): void => {
+            router.push({
+                name:   RoutePathNames.muEdit,
+                params: {
+                    fmode: FMODE.EDIT as TFormMode,
+                    id:    rowData.id
                 }
             })
         }
@@ -150,6 +158,7 @@ export default defineComponent({
             columns,
 
             h_intentRowDelete,
+            h_navEditUoMCatIntent,
             h_navCreateUoMCatIntent
         }
     }

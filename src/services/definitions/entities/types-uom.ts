@@ -7,6 +7,10 @@ import type { IIndexable } from '@/services/definitions'
 export interface IDtoUoMCategory extends IIndexable {
     ucName: string,
     units: Array<IDtoUoM>
+    /**
+     * Collection of array numbers to be deleted when we want to update the UoM category
+     */
+    unitsToDelete: number[]
 }
 
 /**

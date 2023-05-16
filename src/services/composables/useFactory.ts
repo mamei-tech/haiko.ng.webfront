@@ -37,7 +37,8 @@ export default function useFactory() {
         return {
             id: 0,
             ucName: "",
-            units: new Array<IDtoUoM>()
+            units: new Array<IDtoUoM>(),
+            unitsToDelete: new Array<number>()
         }
     }
 

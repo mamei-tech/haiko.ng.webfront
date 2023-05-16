@@ -43,10 +43,17 @@ export const useSt_UoM = defineStore({
          * This doesn't make and API server request or call / sideEffect, this just mutate the store
          * @param catId UoM category identifier
          */
-        mutDeleteStaffList( catId: number ): void {
+        mutDeleteUoMList( catId: number ): void {
             this.entityPage = this.entityPage.filter(s => s.id !== catId)
         },
 
+        /**
+         * Update the local store with the edited UoM Cat data
+         * @param payload UoM Cat data to be updated
+         */
+        mutUpdateUoMList( payload: IDtoUoMCategory ): void {
+            this.entityPage = this.entityPage.map(row => row.id == payload.id ? payload : row)
+        },
 
         // --- server async calls actions ---
 
@@ -61,7 +68,9 @@ export const useSt_UoM = defineStore({
                 ApiUoM.insertUoMCat(payload)
                 .then((response:any) => {
 
+                    payload.id = response.data          // updating the payload with its identifier given by the backend server
                     this.entityPage.push(payload)       // updating the new data in the store so we don't need to request to the server
+
                     resolve(response.data)
 
                 })
@@ -70,9 +79,28 @@ export const useSt_UoM = defineStore({
         },
 
         /**
+         * Tries to update UoM Cat data in the backend server
+         *
+         * @param payload UoM Cat entity data to be updated
+         * @param doWeNeedToStay This value with come 'doWeNeedToStay' var from , It is use in the UI logic to say if we stay in the form for maybe create another entity.
+         */
+        async reqUoMCatUpdate (payload: IDtoUoMCategory, doWeNeedToStay: boolean = false) : Promise<void> {
+
+            return await new Promise<void>((resolve, reject) => {
+                ApiUoM.updateUoMCat(payload)
+                .then((response:any) => {
+
+                    this.mutUpdateUoMList(payload)                      // mutating the local store
+                    resolve(response.data)
+                })
+                .catch(error => {reject(error)})
+            })
+        },
+
+        /**
          * Tries to get a datatable page of UoM Categories entities from backend
          */
-        async reqStaffPages () : Promise<void> {
+        async reqUoMCatPages () : Promise<void> {
 
             const st_pagination = useSt_Pagination()                                       // pinia instance of pagination store | check the text on --> https://pinia.vuejs.org/cookbook/composing-stores.html#nested-stores
 
@@ -112,7 +140,7 @@ export const useSt_UoM = defineStore({
                 ApiUoM.deleteCat(payload).then(( response: any ) => {
 
                     // deleting (mutate / modify) the uom category from the local store
-                    this.mutDeleteStaffList(payload)
+                    this.mutDeleteUoMList(payload)
                     resolve()
 
                 }).catch(error => { reject(error) })

@@ -164,8 +164,25 @@ export default defineComponent({
         onMounted(async () => {
 
             if (cpt_fMode.value === FMODE.EDIT as TFormMode) {
-                // TODO fill up the form data with the data from store or from server, use the role setform method
+                const uomCat = st_uom.entityPage.filter(u => u.id === +id)[0]        // getting the uom cat from pinia store
 
+                // it is needed here 'cause we keep two collection of the list of uom
+                iniFormData.value = {
+                    ...uomCat,
+                    units: [ ...uomCat == undefined ? [] : uomCat.units ],
+                    unitsToDelete: []
+                }
+
+                // ❗❗❗ we have to use the spread operator here to prevent the array of units it's being copied by reference, and reflect the changes in the store
+
+                // this is so the form does not appear as dirty
+                // also, this will sync the 'units' && 'unitsToDelete' fields with 'iniFormData.value.units' and 'iniFormData.value.unitsToDelete' respectively.
+                // as javascript pass the values as reference
+                // https://vee-validate.logaretm.com/v4/guide/components/handling-forms/ | resetting the form
+                resetForm({
+                    values: { ...uomCat, units: iniFormData.value.units, unitsToDelete: iniFormData.value.unitsToDelete },
+                    errors: {}
+                })
             }
 
             // keyboard keys event handler, we need to clean this kind of event when the component are destroyed
@@ -195,7 +212,6 @@ export default defineComponent({
          * @param doWeNeedToStay Tell us where to go after the successfully creation of the entity
          */
         const a_create = ( newUoMCategory: IDtoUoMCategory, isFormDirty: boolean, doWeNeedToStay: boolean): void => {
-
             // little bit sanitization for the negative number Id of the uom, so the backed doesn't protest about the negative Id
             newUoMCategory.units = newUoMCategory.units.map(( uom ) => {
                 if (uom.id < 0) uom.id = 0
@@ -207,10 +223,26 @@ export default defineComponent({
                 tfyCRUDSuccess(ENTITY_NAMES.UOMCATEGORY, OPS_KIND_STR.ADDITION, newUoMCategory.ucName)
 
                 // so now what ?
-                if(!doWeNeedToStay) h_back()                             // so we are going back to the data table
-                else resetForm({ values: mkUoMCategory() })         // so wee need to clean the entire form and stay in it
+                if(!doWeNeedToStay) h_back()        // so we are going back to the data table
+                else cleanForm()                    // so wee need to clean the entire form and stay in it
 
             }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.UOMCATEGORY, OPS_KIND_STR.ADDITION))
+        }
+
+        const a_edit = ( updatedUoMCategory: IDtoUoMCategory, isFormDirty: boolean, doWeNeedToStay: boolean): void => {
+            // little bit sanitization for the negative number Id of the uom, so the backed doesn't protest about the negative Id
+            updatedUoMCategory.units = updatedUoMCategory.units.map(( uom ) => {
+                if (uom.id < 0) uom.id = 0
+                return uom
+            })
+
+            st_uom.reqUoMCatUpdate(updatedUoMCategory).then(() => {
+                tfyCRUDSuccess(ENTITY_NAMES.UOMCATEGORY, OPS_KIND_STR.UPDATE, updatedUoMCategory.ucName)
+
+                // so now what ?
+                if (!doWeNeedToStay) h_back()               // so we are going back to the data table
+
+            }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.UOMCATEGORY, OPS_KIND_STR.UPDATE))
         }
 
         //#endregion ==========================================================================
@@ -238,7 +270,6 @@ export default defineComponent({
          * @param data UoM data to be updated in the collection
          */
         const hpr_updateUoMInList = (data: ICellUpdate) => {
-            // console.warn(data)
 
             iniFormData.value.units = iniFormData.value.units.map(( row: IDtoUoM ) => {
                 if (row.id === data.entityId)
@@ -255,6 +286,10 @@ export default defineComponent({
          */
         const hpr_syncUoMList = () => {
             setFieldValue('units', iniFormData.value.units)
+
+            // if we are in edition mode and there are some UoM to delete, then we sync
+            if(cpt_fMode.value === FMODE.EDIT && iniFormData.value.unitsToDelete.length > 0 )
+                setFieldValue('unitsToDelete', iniFormData.value.unitsToDelete)
         }
 
         /**
@@ -291,6 +326,14 @@ export default defineComponent({
             return false
         }
 
+        /**
+         * Resetting the form
+         */
+        const cleanForm = (): void => {
+            resetForm({ values: mkUoMCategory() })
+            iniFormData.value = mkUoMCategory()
+        }
+
         //endregion ===========================================================================
 
         //region ======== EVENTS HANDLERS & WATCHERS ==========================================
@@ -311,7 +354,7 @@ export default defineComponent({
 
             handleSubmit(formData => {
                 if (cpt_fMode.value == (FMODE.CREATE as TFormMode)) a_create(formData, meta.value.dirty, doWeNeedToStay)
-                if (cpt_fMode.value == (FMODE.EDIT as TFormMode)) console.log('click edit')
+                if (cpt_fMode.value == (FMODE.EDIT as TFormMode)) a_edit(formData, meta.value.dirty, doWeNeedToStay)
                 // if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && !meta.value.dirty) h_back()
             }).call(this)
         }
@@ -348,7 +391,14 @@ export default defineComponent({
         }
 
         const h_intentRowDelete = ( rowId: number ) => {
-            iniFormData.value.units = iniFormData.value.units.filter(row => row.id !== rowId)
+            iniFormData.value.units = iniFormData.value.units.filter((row) => {
+                if(row.id !== rowId) return row
+                if(row.id === rowId && rowId > 0 && cpt_fMode.value === FMODE.EDIT) iniFormData.value.unitsToDelete.push(rowId)
+
+                // this las condition tries to handle the situation of the edit form mode, that we need to record a UoM
+                // that already exist in the database and the user want to deleted. So we write down the UoM's identifier
+            })
+
             hpr_syncUoMList()
         }
 
