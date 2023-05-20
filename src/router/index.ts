@@ -5,11 +5,12 @@ import { LayBasePage, LayBaseDashboard } from '@/layouts'
 import { RoutePaths, RoutePathNames } from '@/services/definitions'
 import { PeopleRoutes } from '@/router/people-routes'
 import { InventoryRoutes } from '@/router/inventory-routes'
+import { PurchaseRoutes } from '@/router/purchase-routes'
 
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
-    routes:  [
+    routes: [
         {
             path:      RoutePaths.login,
             name:      RoutePathNames.login,
@@ -23,6 +24,7 @@ const router = createRouter({
             meta:      { layout: LayBaseDashboard }
         },
         ...InventoryRoutes,
+        ...PurchaseRoutes,
         ...PeopleRoutes
     ]
 })

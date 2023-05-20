@@ -203,6 +203,18 @@
         "uomcatetgory": {
             "name":         "@:{'table-headers.category'} de unidades",
             "section-name": "Unidades"
+        },
+        "purchase": {
+            "name": "Compras",
+            "section-name": "Solicitudes de Compras"
+        },
+        "suppliers": {
+            "name": "Proveedores",
+            "section-name": "@:{'entities.suppliers.name'}"
+        },
+        "suppliers-cat": {
+            "name": "Categorías de Proveedores",
+            "section-name": "@:{'entities.suppliers-cat.name'}"
         }
     }
 }

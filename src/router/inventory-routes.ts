@@ -11,7 +11,7 @@ export const InventoryRoutes: Array<RouteRecordRaw> = [
     {
         path:      RoutePaths.muList,
         name:      RoutePathNames.munits,
-        component: () => import('../views/inventory/munits/ViewMeasurements.vue'),
+        component: () => import('../views/inventory/munits/ViewListMeasurements.vue'),
         meta:      { layout: LayBaseDashboard, reqAuth: true }
     },
     {

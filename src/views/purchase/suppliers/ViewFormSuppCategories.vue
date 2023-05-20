@@ -1,6 +1,6 @@
 <template>
     <transition appear name="page-fade">
-        <p>Concentrador </p>
+        <p>Formulario categoría de proveedores, salidas, otros filtra por el estado pendiente</p>
     </transition>
 </template>
 
@@ -8,7 +8,7 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-    name: 'ViewListClients',
+    name: 'ViewFormSuppCategories',
     components: {},
     setup() {
 

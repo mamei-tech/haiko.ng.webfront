@@ -21,7 +21,23 @@ export const RoutePaths = {
 
     muList:   '/mu/list',                   // uom = mu = units of measurement
     muEdit:   '/mu/:fmode/:id',             // uom = mu = units of measurement
-    muCreate: '/mu/:fmode'                  // uom = mu = units of measurement
+    muCreate: '/mu/:fmode',                 // uom = mu = units of measurement
+
+    //#endregion ==========================================================================
+
+    //#region ======= PURCHASE ============================================================
+
+    purchaseList:   '/purchase/list',
+    purchaseEdit:   '/purchase/:fmode/:id',
+    purchaseCreate: '/purchase/:fmode',
+
+    suppliersCatList:   '/suppliers/list',
+    suppliersCatEdit:   '/purchase/:fmode/:id',
+    suppliersCatCreate: '/purchase/:fmode',
+
+    suppliersList:   '/suppliers/categories/list',
+    suppliersEdit:   '/purchase/categories/:fmode/:id',
+    suppliersCreate: '/purchase/categories/:fmode'
 
     //#endregion ==========================================================================
 
@@ -51,7 +67,23 @@ export const RoutePathNames = {
 
     munits:   'units',                      // uom = mu = units of measurement
     muCreate: 'units-create',               // uom = mu = units of measurement
-    muEdit:   'units-edit'                  // uom = mu = units of measurement
+    muEdit:   'units-edit',                 // uom = mu = units of measurement
+
+    //#endregion ==========================================================================
+
+    //#region ======= PURCHASE ============================================================
+
+    purchase:       'purchase',
+    purchaseEdit:   'purchase-create',
+    purchaseCreate: 'purchase-edit',
+
+    suppliersCat:       'suppliers-cat',
+    suppliersCatEdit:   'suppliers-cat-edit',
+    suppliersCatCreate: 'suppliers-cat-create',
+
+    suppliers:       'suppliers',
+    suppliersEdit:   'suppliers-edit',
+    suppliersCreate: 'suppliers-create'
 
     //#endregion ==========================================================================
 

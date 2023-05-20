@@ -67,6 +67,23 @@ export default {
                     ]
                 },
                 {
+                    href: {path: RoutePaths.purchaseList},
+                    title: this.$t( 'routes.' + RoutePathNames.purchase ).toUpperCase(),
+                    icon: 'tim-icons icon-money-coins',
+                    child: [
+                        {
+                            href: { path: RoutePaths.suppliersCatList },
+                            title: this.$t( 'routes.' + RoutePathNames.suppliersCat ).toLowerCase(),
+                            icon: 'tim-icons icon-puzzle-10',
+                        },
+                        {
+                            href: { path: RoutePaths.suppliersList },
+                            title: this.$t( 'routes.' + RoutePathNames.suppliers ).toLowerCase(),
+                            icon: 'fa fa-address-card',
+                        },
+                    ]
+                },
+                {
                     href: {},
                     title: this.$t( 'nav.sb.ops' ).toUpperCase(),
                     icon: 'tim-icons icon-compass-05',
