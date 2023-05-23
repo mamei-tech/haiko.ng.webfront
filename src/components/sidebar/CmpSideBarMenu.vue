@@ -33,7 +33,7 @@ export default {
                     icon: 'tim-icons icon-chart-pie-36',
                 },
                 {
-                    href: {},
+                    // href: { path: '' },
                     title: this.$t( 'nav.sb.people' ).toUpperCase(),
                     icon: 'fa fa-users',
                     child: [
@@ -55,7 +55,7 @@ export default {
                     ]
                 },
                 {
-                    href: {},
+                    // href: { path: '' },
                     title: this.$t( 'nav.sb.inventory' ).toUpperCase(),
                     icon: 'tim-icons icon-components',
                     child: [
@@ -67,7 +67,7 @@ export default {
                     ]
                 },
                 {
-                    href: {path: RoutePaths.purchaseList},
+                    href: { path: RoutePaths.purchaseList },
                     title: this.$t( 'routes.' + RoutePathNames.purchase ).toUpperCase(),
                     icon: 'tim-icons icon-money-coins',
                     child: [
@@ -84,7 +84,7 @@ export default {
                     ]
                 },
                 {
-                    href: {},
+                    // href: { path: '' },
                     title: this.$t( 'nav.sb.ops' ).toUpperCase(),
                     icon: 'tim-icons icon-compass-05',
                     child: []
