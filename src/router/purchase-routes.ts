@@ -31,19 +31,19 @@ export const PurchaseRoutes: Array<RouteRecordRaw> = [
     {
         path:      RoutePaths.suppliersCatList,
         name:      RoutePathNames.suppliersCat,
-        component: () => import('../views/purchase/suppliers/ViewListSuppliers.vue'),
+        component: () => import('../views/purchase/suppliers/ViewListSuppCategories.vue'),
         meta:      { layout: LayBaseDashboard, reqAuth: true }
     },
     {
         path:      RoutePaths.suppliersCatEdit,
         name:      RoutePathNames.suppliersCatEdit,
-        component: () => import('../views/purchase/suppliers/ViewFormSuppliers.vue'),
+        component: () => import('../views/purchase/suppliers/ViewFormSuppCategories.vue'),
         meta:      { layout: LayBaseDashboard, reqAuth: true }
     },
     {
         path:      RoutePaths.suppliersCatCreate,
         name:      RoutePathNames.suppliersCatCreate,
-        component: () => import('../views/purchase/suppliers/ViewFormSuppliers.vue'),
+        component: () => import('../views/purchase/suppliers/ViewFormSuppCategories.vue'),
         meta:      { layout: LayBaseDashboard, reqAuth: true }
     },
 
@@ -51,19 +51,19 @@ export const PurchaseRoutes: Array<RouteRecordRaw> = [
     {
         path:      RoutePaths.suppliersList,
         name:      RoutePathNames.suppliers,
-        component: () => import('../views/purchase/suppliers/ViewListSuppCategories.vue'),
+        component: () => import('../views/purchase/suppliers/ViewListSuppliers.vue'),
         meta:      { layout: LayBaseDashboard, reqAuth: true }
     },
     {
         path:      RoutePaths.suppliersEdit,
         name:      RoutePathNames.suppliersEdit,
-        component: () => import('../views/purchase/suppliers/ViewFormSuppCategories.vue'),
+        component: () => import('../views/purchase/suppliers/ViewFormSuppliers.vue'),
         meta:      { layout: LayBaseDashboard, reqAuth: true }
     },
     {
         path:      RoutePaths.suppliersCreate,
         name:      RoutePathNames.suppliersCreate,
-        component: () => import('../views/purchase/suppliers/ViewFormSuppCategories.vue'),
+        component: () => import('../views/purchase/suppliers/ViewFormSuppliers.vue'),
         meta:      { layout: LayBaseDashboard, reqAuth: true }
     }
 

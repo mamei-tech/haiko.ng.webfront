@@ -31,13 +31,13 @@ export const RoutePaths = {
     purchaseEdit:   '/purchase/:fmode/:id',
     purchaseCreate: '/purchase/:fmode',
 
-    suppliersCatList:   '/suppliers/list',
-    suppliersCatEdit:   '/purchase/:fmode/:id',
-    suppliersCatCreate: '/purchase/:fmode',
+    suppliersCatList:   '/suppliers/categories/list',
+    suppliersCatEdit:   '/purchase/categories/:fmode/:id',
+    suppliersCatCreate: '/purchase/categories/:fmode',
 
-    suppliersList:   '/suppliers/categories/list',
-    suppliersEdit:   '/purchase/categories/:fmode/:id',
-    suppliersCreate: '/purchase/categories/:fmode'
+    suppliersList:   '/suppliers/list',
+    suppliersEdit:   '/purchase/:fmode/:id',
+    suppliersCreate: '/purchase/:fmode'
 
     //#endregion ==========================================================================
 
