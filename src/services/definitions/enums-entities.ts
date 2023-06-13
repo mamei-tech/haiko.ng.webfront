@@ -6,7 +6,7 @@
  */
 export enum DT_ACTIONBAR_MODE {
     DEFAULT = 0,
-    COMMON = 1,             // STAFF | ROLE | ...
+    COMMON = 1,             // STAFF | ROLE | ... edit, create, view
     NOEJC = 2,              // common no edit just create | no action 'details' action btn in the row, no action bar at all
 }
 
@@ -26,7 +26,6 @@ export enum DT_ACTION_BUTTON_MODE {
 /**
  * This helps to get entities names strings so one don't have to manually write it down on the code, just call this use it
  *
- * ! The values defined here must match one2one with the definition of EntityGenericNames type definition in the 'types-common.ts' file
  * ! The values defined here must match one2one with the business entity names we are working with
  */
 export enum ENTITY_NAMES {
@@ -34,5 +33,7 @@ export enum ENTITY_NAMES {
     STAFF = 'staff',
     ROLE = 'role',
     UOMCATEGORY = 'uomcatetgory',
-    UOM = 'unit'
+    UOM = 'unit',
+    SUPPLIER_CAT = 'supplier-cat',
+    SUPPLIER = 'supplier',
 }

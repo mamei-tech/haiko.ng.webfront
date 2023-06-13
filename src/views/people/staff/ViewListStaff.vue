@@ -96,7 +96,7 @@ export default defineComponent({
             // this is used to fetch staff roles data from the system so we can map the roleId to rolename in the datatable column
             st_nomenclatures.reqNomencRoles()
             .then(() => {
-                columns.value[6].multi = st_nomenclatures.getRolesForMultiselect
+                columns.value[6].fieldMulti = st_nomenclatures.getRolesForMultiselect
                 // the 6th column is 'role' / 'roleId' column. In this datatable this is a (column) 'multi' filter
                 // (see filters in the declaration section). So, rather define the 'multi' filter data statically in the
                 // data-datable.ts file, we weed to do it dynamically. Hence this here and no the conventionally

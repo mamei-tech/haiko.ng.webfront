@@ -39,10 +39,6 @@ export interface IColumnHeader {
      * Define a checkbox cell / header
      */
     chk: boolean | undefined
-    /**
-     * Defines a multiselect cell
-     */
-    multi?: Array<{ value: any, label: string }>
     title: string
     /**
      * To be uses as tips / hints / help right int the UI. Right now, we have not components making uses of that.
@@ -52,31 +48,39 @@ export interface IColumnHeader {
      * So v-for can navigate in the data array. if isn't present, lower-cased title be use then. It comes in handy when we have a user friendly title different from the real key
      */
     navKey: string | undefined
-    toLeft: boolean | undefined
-    toRight: boolean | undefined
-    toCenter: boolean | undefined
+    /**
+     * Sorting information of the header
+     */
+    sorting: SortDir | undefined
+    styleToLeft: boolean | undefined
+    styleToRight: boolean | undefined
+    styleToCenter: boolean | undefined
     /**
      * percent (%)
      */
-    width: number | undefined
+    styleWidth: number | undefined
+    /**
+     * Tells is the cell should be rendered as a color field
+     */
+    fieldColor: boolean | undefined
     /**
      * If we can use this cell as a switch for enable / disable actions
      */
-    switch: boolean | undefined
+    fieldSwitch: boolean | undefined
+    /**
+     * Defines a multiselect cell
+     */
+    fieldMulti?: Array<{ value: any, label: string }>
     /**
      * This type property defines the roles for witches. It may comes in handy when we need more than one
      * switches in the data-grid, this way we can make a distinction for emitting the events from
      * the data-grid
      */
-    switchRole: TSwitchRole | undefined
-    /**
-     * Sorting information of the header
-     */
-    sorting: SortDir | undefined
+    fieldSwitchRole: TSwitchRole | undefined
     /**
      * Comes in handy when we need to handle the cell as a picture cell
      */
-    picture: boolean | undefined
+    fieldPicture: boolean | undefined
     /**
      * - list of pills - | <UnitOfMeasurement version>
      * This will be used when the cells needs to render a list of 'pills' containing text. May implement other version to differentiate the render logic
@@ -101,7 +105,7 @@ export interface IColumnHeader {
     /**
      * A function of /services/definition/validation/ schema, to be used as a callback for validating the editable cell data when it changes
      */
-    cellValidation: Function
+    cellEditableValidation: Function
     /**
      * Tells to the component which kind of HTML input render
      */
@@ -143,15 +147,6 @@ export type TActionKind = 'delete' | 'create' | 'update' | 'activate' | 'deactiv
  * T = type
  */
 export type TFormMode = 'edit' | 'create' | 'details'
-
-/**
- * This mostly used in the dialog and toast (Dialogfy / Toastify) custom composable, as constraint type of actual business entities names
- * when those names will be pases as parameters of some kind
- *
- * ! The values defined here must match one2one with the definition of ENTITY_NAMES in the 'enums-entities.ts' file
- * ! The values defined here must match one2one with the business entity names we are working with
- */
-export type EntityGenericNames = 'staff' | 'role' | 'uomcatetgory' | 'uom'
 
 /***
  * Table Top Buttons Action Bar (BULK ACTION) clicked action

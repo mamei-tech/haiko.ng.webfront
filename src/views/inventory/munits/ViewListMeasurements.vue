@@ -16,9 +16,6 @@
                                   @navCreateIntent="h_navCreateUoMCatIntent"
                                   @editIntent="h_navEditUoMCatIntent"
                                   @deleteIntent="h_intentRowDelete"
-
-                                  @enableIntent=""
-                                  @disableIntent=""
                     >
                     </CmpDataTable>
                 </CmpCard>
@@ -121,7 +118,7 @@ export default defineComponent({
                 const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.UOMCATEGORY, entityReference, t('dialogs.uomcat-del-confirmation'))
                 if (wasConfirmed) a_reqDelete( objectId , entityReference)
             }
-            else dfyShowAlert(t('dialogs.title-alert-not-allowed'),  t('dialogs.cant-delete-uomcat'))          // telling the user
+            else dfyShowAlert(t('dialogs.title-alert-not-allowed'),  t('dialogs.cant-delete-default'))          // telling the user
         }
 
         const h_navCreateUoMCatIntent = (): void => {

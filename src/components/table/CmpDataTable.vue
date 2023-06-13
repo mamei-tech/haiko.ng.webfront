@@ -106,9 +106,9 @@
                     colspan="1"
                     rowspan="1"
                     :class="[
-                            { 'text-right': header.toRight },
-                            { 'text-left': header.toLeft },
-                            { 'text-center': header.toCenter }
+                            { 'text-right': header.styleToRight },
+                            { 'text-left': header.styleToLeft },
+                            { 'text-center': header.styleToCenter }
                         ]">
 
                     <!-- printing the header with i18n -->
@@ -135,10 +135,10 @@
         <!-- Another row if field filters are specified -->
         <tr v-if="filters.length > 0">
             <template v-for="(header, i) in ls_columns" :key="`filter-${header.title}`" class="text-center">
-                <th v-if="(header.chk || header.switch) && filters.includes(hpr_getNavKey(header))"
+                <th v-if="(header.chk || header.fieldSwitch) && filters.includes(hpr_getNavKey(header))"
                     colspan="1"
                     rowspan="1"
-                    :style="[{ width: header.width + '%' }]"
+                    :style="[{ width: header.styleWidth + '%' }]"
                 >
                     <div class="form-check text-center">
                         <label class="form-check-label">
@@ -153,15 +153,15 @@
                         </label>
                     </div>
                 </th>
-                <th v-else-if="filters.includes(hpr_getNavKey(header)) && header.multi"
+                <th v-else-if="filters.includes(hpr_getNavKey(header)) && header.fieldMulti"
                     colspan="1"
                     rowspan="1"
-                    :style="[{ width: header.width + '%' }]"
+                    :style="[{ width: header.styleWidth + '%' }]"
                 >
                     <div class="form-group input-group">
                         <multiselect
                                 v-model="dtFilters[hpr_getNavKey(header)]"
-                                :options="header.multi"
+                                :options="header.fieldMulti"
                                 @change="hpr_lastSelectedSelectElem($event)"
                                 :ref="
                                     el => {
@@ -182,7 +182,7 @@
             <template v-for="(header, hindex) in ls_columns" :key="hindex">
 
                 <!-- checkbox cell -->
-                <td v-if="header.chk === true" rowspan="1" colspan="1" :style="[{ width: header.width + '%' }]">
+                <td v-if="header.chk === true" rowspan="1" colspan="1" :style="[{ width: header.styleWidth + '%' }]">
                     <CmpTableChkbox :identifier="rowObj['id']"
                                     :checked="ls_selections.selected[rowObj['id']]"
                                     v-on:checkIntent="h_ChkObject"
@@ -192,17 +192,17 @@
                 </td>
 
                 <!-- switch / toggle mode for a cell -->
-                <td v-else-if="hpr_chkHasValue(rowObj, header) && !header.hidden && header.switch"
+                <td v-else-if="hpr_chkHasValue(rowObj, header) && !header.hidden && header.fieldSwitch"
                     rowspan="1"
                     colspan="1"
-                    :style="[{ width: header.width + '%' }]"
+                    :style="[{ width: header.styleWidth + '%' }]"
                 >
                     <!-- main role -->
                     <CmpCellSwitch :identifier="rowObj['id']"
                                    :is-enable="hpr_getRowValue(rowObj, header)"
                                    v-on:enableIntent="$emit('enableIntent', $event)"
                                    v-on:disableIntent="$emit('disableIntent', $event)"
-                                   v-if="header.switchRole !== undefined && header.switchRole === 'main'"
+                                   v-if="header.fieldSwitchRole !== undefined && header.fieldSwitchRole === 'main'"
                                    :key="hindex + '' + rindex"
                     />
 
@@ -211,7 +211,7 @@
                                    :is-enable="hpr_getRowValue(rowObj, header)"
                                    v-on:enableIntent="$emit('enableIntentSecond', $event)"
                                    v-on:disableIntent="$emit('disableIntentSecond', $event)"
-                                   v-else-if="header.switchRole !== undefined && header.switchRole === 'secondary'"
+                                   v-else-if="header.fieldSwitchRole !== undefined && header.fieldSwitchRole === 'secondary'"
                                    :key="hindex + '' + rindex"
                     />
 
@@ -226,10 +226,10 @@
                 </td>
 
                 <!-- picture mode -->
-                <td v-else-if="hpr_chkHasValue(rowObj, header) && !header.hidden && header.picture"
+                <td v-else-if="hpr_chkHasValue(rowObj, header) && !header.hidden && header.fieldPicture"
                     class="text-center"
                     rowspan="1" colspan="1"
-                    :style="[{ width: header.width + '%' }]"
+                    :style="[{ width: header.styleWidth + '%' }]"
                 >
                     <CmpTableCellPicture
                             :type="PICTURE_TYPE_CELL.USER"
@@ -239,11 +239,21 @@
                     />
                 </td>
 
+                <!-- color cell -->
+                <td v-else-if="hpr_chkHasValue(rowObj, header) && !header.hidden && header.fieldColor"
+                    rowspan="1"
+                    colspan="1"
+                    :class="[ { 'text-right': header.styleToRight }, { 'text-left': header.styleToLeft }, { 'text-center': header.styleToCenter } ]"
+                    :style="[{ width: header.styleWidth + '%' }, { color: hpr_getRowValue( rowObj, header ) + '!important' }]"
+                >
+                    {{ hpr_getRowValue( rowObj, header ) }}
+                </td>
+
                 <!-- list mode | UoM (listOPillsUoM)  version -->
                 <td v-else-if="hpr_chkHasValue(rowObj, header) && !header.hidden && header.listOPillsUoM"
                     class="text-left"
                     rowspan="1" colspan="1"
-                    :style="[{ width: header.width + '%' }]"
+                    :style="[{ width: header.styleWidth + '%' }]"
                 >
                     <CmpCellListUoM :units="hpr_getRowValue( rowObj, header )"
                                     :key="hindex + '' + rindex"
@@ -253,13 +263,13 @@
                 <!-- normal mode | follow 3 modes: 2 editables (text & select) and 1 non editable normal text cell  -->
                 <!-- normal mode | normal editable cell -->
                 <CmpTableEditableCell v-else-if="hpr_chkHasValue(rowObj, header) && !header.hidden && header.cellEditable"
-                        :style="[{ width: header.width + '%' }]"
-                        :class="[ { 'text-right': header.toRight }, { 'text-left': header.toLeft }, { 'text-center': header.toCenter } ]"
+                        :style="[{ width: header.styleWidth + '%' }]"
+                        :class="[ { 'text-right': header.styleToRight }, { 'text-left': header.styleToLeft }, { 'text-center': header.styleToCenter } ]"
 
                         :cell-data="hpr_getRowValue( rowObj, header )"
                         :ref-field="hpr_getNavKey(header)"
                         :ref-id="rowObj.id ?? 0"
-                        :validation="header.cellValidation ?? hpr_empty"
+                        :validation="header.cellEditableValidation ?? hpr_empty"
                         :input-type="header.cellEditableInputType ?? 'text'"
 
                         @fieldUpdateIntent="h_passCellUpdateEmission"
@@ -272,7 +282,7 @@
                         :cell-data="hpr_getRowValue( rowObj, header )"
                         :ref-field="hpr_getNavKey(header)"
                         :ref-id="rowObj.id ?? 0"
-                        :validation="header.cellValidation ?? hpr_empty"
+                        :validation="header.cellEditableValidation ?? hpr_empty"
                         :options="header.cellEditableSelectOptions ?? []"
 
                         @fieldUpdateIntent="h_passCellUpdateEmission"
@@ -283,8 +293,8 @@
                 <td v-else-if="hpr_chkHasValue(rowObj, header) && !header.hidden"
                     rowspan="1"
                     colspan="1"
-                    :class="[ { 'text-right': header.toRight }, { 'text-left': header.toLeft }, { 'text-center': header.toCenter } ]"
-                    :style="[{ width: header.width + '%' }]"
+                    :class="[ { 'text-right': header.styleToRight }, { 'text-left': header.styleToLeft }, { 'text-center': header.styleToCenter } ]"
+                    :style="[{ width: header.styleWidth + '%' }]"
                 >
                     {{ hpr_getRowValue( rowObj, header ) }}
                 </td>

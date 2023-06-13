@@ -3,8 +3,7 @@ import { i18n } from '@/services/i18n'
 import Swal from 'sweetalert2/dist/sweetalert2.min.js'
 
 import type { SweetAlertOptions, SweetAlertResult } from 'sweetalert2'
-import type { TActionKind, EntityGenericNames } from '@/services/definitions'
-import type { Function1 } from '@/services/definitions'
+import type { TActionKind, ENTITY_NAMES, Function1 } from '@/services/definitions'
 
 
 const { t } = i18n.global
@@ -78,8 +77,7 @@ export default function useDialogfy() {
      * @param isBulk Tells if the call is for a plural subject (more than one). Eg. in bulk actions
      * @returns true if ok clicked, false otherwise
      */
-    async function dfyConfirmation( action: TActionKind, subject: EntityGenericNames, ref: undefined | string = undefined, extraMsg:string = '', isBulk = false ): Promise<boolean> {
-
+    async function dfyConfirmation( action: TActionKind, subject: ENTITY_NAMES, ref: undefined | string = undefined, extraMsg:string = '', isBulk = false ): Promise<boolean> {
         let text = t('dialogs.confirmation', {
             action:  t(`crud-actions.${ action }`),
             plural:  isBulk ? t('others.this-ones') : '',                      // just for spanish by now

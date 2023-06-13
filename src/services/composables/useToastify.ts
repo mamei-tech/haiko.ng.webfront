@@ -3,9 +3,7 @@ import { POSITION } from 'vue-toastification'
 import { useErrors } from '@/services/helpers/errors-helpers'
 
 import type { PluginOptions, ToastInterface } from 'vue-toastification'
-import type { TOpsKind } from '@/services/definitions'
-import type { EntityGenericNames } from '@/services/definitions'
-
+import type { TOpsKind, ENTITY_NAMES } from '@/services/definitions'
 
 const { t } = i18n.global
 
@@ -109,7 +107,7 @@ export default function useToastify( toast: ToastInterface ) {
      * @param ops Type of API operation for the feedback
      * @param ref Subject Entity reference e.g identifier, name or something like that
      */
-    const tfyCRUDFail = ( error: any, subject: EntityGenericNames, ops: TOpsKind, ref: undefined | string = undefined ): void => {
+    const tfyCRUDFail = ( error: any, subject: ENTITY_NAMES, ops: TOpsKind, ref: undefined | string = undefined ): void => {
 
         let kind = _geTOpsKind(ops, true)
         let subjectRef = ref !== undefined && typeof ref === 'string' ? ref : ''
@@ -140,7 +138,7 @@ export default function useToastify( toast: ToastInterface ) {
      * @param ops Type of API operation for the feedback
      * @param ref Subject Entity reference e.g identifier, name or something like that
      */
-    const tfyCRUDSuccess = ( subject: EntityGenericNames, ops: TOpsKind, ref: undefined | string = undefined ): void => {
+    const tfyCRUDSuccess = ( subject: ENTITY_NAMES, ops: TOpsKind, ref: undefined | string = undefined ): void => {
 
         let kind = _geTOpsKind(ops)
         let tSubject = t('entities.' + subject + '.name')

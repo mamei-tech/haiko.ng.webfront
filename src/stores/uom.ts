@@ -52,7 +52,7 @@ export const useSt_UoM = defineStore({
          * @param payload UoM Cat data to be updated
          */
         mutUpdateUoMList( payload: IDtoUoMCategory ): void {
-            this.entityPage = this.entityPage.map(row => row.id == payload.id ? payload : row)
+            this.entityPage.push(payload)               // with Vue3 we can do it this way too
         },
 
         // --- server async calls actions ---
@@ -69,7 +69,7 @@ export const useSt_UoM = defineStore({
                 .then((response:any) => {
 
                     payload.id = response.data          // updating the payload with its identifier given by the backend server
-                    this.entityPage.push(payload)       // updating the new data in the store so we don't need to request to the server
+                    this.mutUpdateUoMList(payload)      // mutating / updating the local store so we don't need to request to the server
 
                     resolve(response.data)
 
@@ -90,7 +90,7 @@ export const useSt_UoM = defineStore({
                 ApiUoM.updateUoMCat(payload)
                 .then((response:any) => {
 
-                    this.mutUpdateUoMList(payload)                      // mutating the local store
+                    this.mutUpdateUoMList(payload)                      // mutating / updating the local store so we don't need to request to the server
                     resolve(response.data)
                 })
                 .catch(error => {reject(error)})

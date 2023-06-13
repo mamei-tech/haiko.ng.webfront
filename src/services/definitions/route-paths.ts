@@ -31,13 +31,13 @@ export const RoutePaths = {
     purchaseEdit:   '/purchase/:fmode/:id',
     purchaseCreate: '/purchase/:fmode',
 
-    suppliersCatList:   '/suppliers/categories/list',
-    suppliersCatEdit:   '/purchase/categories/:fmode/:id',
-    suppliersCatCreate: '/purchase/categories/:fmode',
+    supplierCatList:   '/supplier/category/list',
+    supplierCatEdit:   '/supplier/category/:fmode/:id',
+    supplierCatCreate: '/supplier/category/:fmode',
 
-    suppliersList:   '/suppliers/list',
-    suppliersEdit:   '/purchase/:fmode/:id',
-    suppliersCreate: '/purchase/:fmode'
+    supplierList:   '/supplier/list',
+    supplierEdit:   '/supplier/:fmode/:id',
+    supplierCreate: '/supplier/:fmode'
 
     //#endregion ==========================================================================
 
@@ -77,13 +77,13 @@ export const RoutePathNames = {
     purchaseEdit:   'purchase-create',
     purchaseCreate: 'purchase-edit',
 
-    suppliersCat:       'suppliers-cat',
-    suppliersCatEdit:   'suppliers-cat-edit',
-    suppliersCatCreate: 'suppliers-cat-create',
+    supplierCat:       'supplier-cat',
+    supplierCatEdit:   'supplier-cat-edit',
+    supplierCatCreate: 'supplier-cat-create',
 
-    suppliers:       'suppliers',
-    suppliersEdit:   'suppliers-edit',
-    suppliersCreate: 'suppliers-create'
+    supplier:       'supplier',
+    supplierEdit:   'supplier-edit',
+    supplierCreate: 'supplier-create'
 
     //#endregion ==========================================================================
 

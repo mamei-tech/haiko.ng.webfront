@@ -86,13 +86,14 @@
         "request-gerund":  "de solicitud"
     },
     "dialogs": {
-        "title-alert":             "Atención",
-        "title-alert-not-allowed": "No permitido",
-        "confirm":                 "Por favor, confirme",
-        "confirmation":            "¿ Está seguro que desea {action} {plural} {subject} ?",
-        "img-rm-alert":            "Ha eliminado la imagen de perfil. Si a continuación aplica los cambios, la imagen se eliminará de forma permanente",
-        "cant-delete-uomcat":      "No se pueden eliminar las categorías de unidades por defecto.",
-        "uomcat-del-confirmation": "Considere que esta acción también elimina todas las unidades asociadas a esta categoría."
+        "title-alert":               "Atención",
+        "title-alert-not-allowed":   "No permitido",
+        "confirm":                   "Por favor, confirme",
+        "confirmation":              "¿ Está seguro que desea {action} {plural} {subject} ?",
+        "img-rm-alert":              "Ha eliminado la imagen de perfil. Si a continuación aplica los cambios, la imagen se eliminará de forma permanente",
+        "cant-delete-default":       "No se pueden eliminar las entidades por defecto.",
+        "uomcat-del-confirmation":   "Considere que esta acción también elimina todas las unidades asociadas a esta categoría.",
+        "supp-cat-del-confirmation": "Considere que esta acción asignará a la categoría por defecto a todos los proveedores asociados a esta categoría."
     },
     "toasts":        {
         "auth-fail-4xx":         "Credenciales inválidas.",
@@ -182,6 +183,8 @@
         "ratio":       "Tasa de Conversión",
         "active":      "Activo?",
         "category":    "Categoría",
+        "count":       "Elementos",
+        "color":       "Color",
         "units":       "@:entities.uom.section-name",
         "description": "@:data.Description"
     },
@@ -196,7 +199,7 @@
             "section-name": "Roles"
         },
         "uom": {
-            "name":         "Unidad de Medida",
+            "name":         "Unidad de Medida {ref}",
             "section-name": "Unidades",
             "u-type":       "Tipo de unidad"
         },
@@ -205,15 +208,15 @@
             "section-name": "Unidades"
         },
         "purchase": {
-            "name": "Compras",
+            "name": "Compras {ref}",
             "section-name": "Solicitudes de Compras"
         },
-        "suppliers": {
-            "name": "Proveedores",
-            "section-name": "@:{'entities.suppliers.name'}"
+        "supplier": {
+            "name": "Proveedor {ref}",
+            "section-name": "@:{'entities.suppliers.name'}es"
         },
-        "suppliers-cat": {
-            "name": "Categorías de Proveedores",
+        "supplier-cat": {
+            "name": "Categorías de Proveedores {ref}",
             "section-name": "@:{'entities.suppliers-cat.name'}"
         }
     }

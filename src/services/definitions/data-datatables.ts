@@ -12,18 +12,18 @@ const { t } = i18n.global
 export const PAGE_SIZE = 10
 
 export const HStaffTable: Partial<IColumnHeader>[] = [
-    { title: '', chk: true, width: 2 },
+    { title: '', chk: true, styleWidth: 2 },
     { title: 'id', hidden: true },
-    { title: 'avatar', toCenter: true, navKey: 'avatarPath', picture: true, width: 8 },
+    { title: 'avatar', styleToCenter: true, navKey: 'avatarPath', fieldPicture: true, styleWidth: 8 },
     { title: 'name', sorting: '', navKey: 'firstName' },
-    { title: 'user', toCenter: true, sorting: '', navKey: 'username' },
+    { title: 'user', styleToCenter: true, sorting: '', navKey: 'username' },
     { title: 'contact', sorting: '', navKey: 'cell' },
-    { title: 'role', toCenter: true, navKey: 'roleId' },
-    { title: 'active', toCenter: true, sorting: '', navKey: 'isActive', switch: true },
+    { title: 'role', styleToCenter: true, navKey: 'roleId' },
+    { title: 'active', styleToCenter: true, sorting: '', navKey: 'isActive', fieldSwitch: true },
     {
-        title:   '',            // actions buttons
-        toRight: true,
-        width:   40
+        title:        '',            // actions buttons
+        styleToRight: true,
+        styleWidth:   40
     }
 ]
 
@@ -32,9 +32,9 @@ export const HRolesTable: Partial <IColumnHeader>[] = [
     { title: 'rname', navKey: 'rName' },
     { title: 'description' },
     {
-        title:   '',            // actions buttons
-        toRight: true,
-        width:   40
+        title:        '',            // actions buttons
+        styleToRight: true,
+        styleWidth: 40
     }
 ]
 
@@ -43,21 +43,33 @@ export const HUoMCatTable: Partial <IColumnHeader>[] = [
     { title: 'category', navKey: 'ucName' },
     { title: 'units', listOPillsUoM: true },
     {
-        title:   '',            // actions buttons
-        toRight: true,
-        width:   40
+        title:        '',            // actions buttons
+        styleToRight: true,
+        styleWidth: 40
     }
 ]
 
 export const HUoMTable: Partial<IColumnHeader>[] = [
     { title: 'id', hidden: true },
-    { title: 'uom', navKey: 'uName', toLeft: true, width: 20, cellEditable: true, cellValidation: VSchemaUoM.uName, cellEditableInputType: HTML_INPUT_TYPE.TEXT },
-    { title: 'uType', navKey: 'uType', width: 10, cellEditableSelect: true, cellEditableSelectOptions: SelectUoMType, cellEditableSelectPlaceholder: t('form.placeholders.uom-type-select') },
-    { title: 'ratio', navKey: 'uRatio', width: 10, cellEditable: true, cellValidation:VSchemaUoM.uRatio, cellEditableInputType: HTML_INPUT_TYPE.NUMBER },
-    { title: 'active', toCenter: true, navKey: 'isActive', switch: true },
+    { title: 'uom', navKey: 'uName', styleToLeft: true, styleWidth: 20, cellEditable: true, cellEditableValidation: VSchemaUoM.uName, cellEditableInputType: HTML_INPUT_TYPE.TEXT },
+    { title: 'uType', navKey: 'uType', styleWidth: 10, cellEditableSelect: true, cellEditableSelectOptions: SelectUoMType, cellEditableSelectPlaceholder: t('form.placeholders.uom-type-select') },
+    { title: 'ratio', navKey: 'uRatio', styleWidth: 10, cellEditable: true, cellEditableValidation: VSchemaUoM.uRatio, cellEditableInputType: HTML_INPUT_TYPE.NUMBER },
+    { title: 'active', styleToCenter: true, navKey: 'isActive', fieldSwitch: true },
     {
-        title:   '',            // actions buttons
-        toRight: true,
-        width:   40
+        title:        '',            // actions buttons
+        styleToRight: true,
+        styleWidth:   40
+    }
+]
+
+export const HSupplierCatTable: Partial <IColumnHeader>[] = [
+    { title: 'id', hidden: true },
+    { title: 'name', navKey: 'scName', sorting: '' },
+    { title: 'count', navKey: 'sCount', styleWidth: 30, sorting: '' },
+    { title: 'color', navKey: 'scColor', fieldColor: true },
+    {
+        title:        '',            // actions buttons
+        styleToRight: true,
+        styleWidth:   40
     }
 ]

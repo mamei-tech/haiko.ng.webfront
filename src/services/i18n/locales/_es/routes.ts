@@ -31,16 +31,14 @@ export default {
     //#endregion  ===========================================================================
 
     //#region ======== SUPPLIERS ============================================================
-    [ RoutePathNames.suppliers ]:       '@:{\'entities.suppliers.name\'}',
-    [ RoutePathNames.suppliersCreate ]: '@:crud-actions.create @:entities.suppliers.section-name',
-    [ RoutePathNames.suppliersEdit ]:   '@:crud-actions.edition @:entities.suppliers.section-name',
+    [ RoutePathNames.supplier ]:       '@:{\'entities.supplier.name\'}',
+    [ RoutePathNames.supplierCreate ]: '@:crud-actions.create @:entities.supplier.section-name',
+    [ RoutePathNames.supplierEdit ]:   '@:crud-actions.edition @:entities.supplier.section-name',
     //#endregion  ===========================================================================
 
     //#region ======== SUPPLIERS CATEGORIES =================================================
-    [ RoutePathNames.suppliersCat ]:       '@:{\'entities.suppliers-cat.name\'}',
-    [ RoutePathNames.suppliersCatCreate ]: '@:crud-actions.create @:entities.suppliers-cat.section-name',
-    [ RoutePathNames.suppliersCatEdit ]:   '@:crud-actions.edition @:entities.suppliers-cat.section-name'
+    [ RoutePathNames.supplierCat ]:       '@:{\'entities.supplier-cat.name\'}',
+    [ RoutePathNames.supplierCatCreate ]: '@:crud-actions.create @:entities.supplier-cat.section-name',
+    [ RoutePathNames.supplierCatEdit ]:   '@:crud-actions.edition @:entities.supplier-cat.section-name'
     //#endregion  ===========================================================================
-
-
 }

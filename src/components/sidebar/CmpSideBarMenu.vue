@@ -72,13 +72,13 @@ export default {
                     icon: 'tim-icons icon-money-coins',
                     child: [
                         {
-                            href: { path: RoutePaths.suppliersCatList },
-                            title: this.$t( 'routes.' + RoutePathNames.suppliersCat ).toLowerCase(),
+                            href: { path: RoutePaths.supplierCatList },
+                            title: this.$t( 'routes.' + RoutePathNames.supplierCat ).toLowerCase(),
                             icon: 'tim-icons icon-puzzle-10',
                         },
                         {
-                            href: { path: RoutePaths.suppliersList },
-                            title: this.$t( 'routes.' + RoutePathNames.suppliers ).toLowerCase(),
+                            href: { path: RoutePaths.supplierList },
+                            title: this.$t( 'routes.' + RoutePathNames.supplier ).toLowerCase(),
                             icon: 'fa fa-address-card',
                         },
                     ]

@@ -1,6 +1,6 @@
 import { ALIGN_POSITION } from './types-common'
 import { RoutePaths, RoutePathNames } from './route-paths'
-import { HStaffTable, HRolesTable, HUoMCatTable, HUoMTable, PAGE_SIZE } from './data-datatables'
+import { HStaffTable, HRolesTable, HUoMCatTable, HUoMTable, PAGE_SIZE, HSupplierCatTable } from './data-datatables'
 import { SelectUoMType } from './data-select-options'
 import { HTTP_HEADER_FORM_DATA, HTTP_HEADER_FORM_URLENCODED,RELPATH_DEFAULT_AVATAR_IMG, RELPATH_DEFAULT_PRODUCT_IMG, IMG_ORG_AVATAR_NAME, IMG_AVATAR_SMALL_THUMBNAIL, IMG_PRODUCT_NAME } from './data-strs'
 import { DT_ACTIONBAR_MODE, ENTITY_NAMES, DT_ACTION_BUTTON_MODE } from '@/services/definitions/enums-entities'
@@ -12,10 +12,11 @@ import { VSchemaAuth } from '@/services/definitions/validations/validations-auth
 import { VSchemaRole } from '@/services/definitions/validations/validations-rbac'
 
 import type { Problem, ErrorDictionary } from '@/services/definitions/types-errors'
-import type { TOpsKind, Function0, Function1, IColumnHeader, IDataTableQuery, ITableChkEmit, TBulkAction, ById, IIndexable, IChecked, Filter, IDataListBasicResponse, TFormMode, TActionKind, EntityGenericNames, IdsArray, IBulkData, IMultiselectBasic, IShell, IScrollInfo, IDataTablePage, ICellUpdate } from './types-common'
+import type { TOpsKind, Function0, Function1, IColumnHeader, IDataTableQuery, ITableChkEmit, TBulkAction, ById, IIndexable, IChecked, Filter, IDataListBasicResponse, TFormMode, TActionKind, IdsArray, IBulkData, IMultiselectBasic, IShell, IScrollInfo, IDataTablePage, ICellUpdate } from './types-common'
 import type { IStaffRow, IDtoStaff } from '@/services/definitions/entities/types-staff'
 import type { IRoleBasic, IDtoRole, IPermAssocId, IPermAssoc, IGroupPermsDict } from '@/services/definitions/entities/types-rbac'
 import type { IDtoUoM, IDtoUoMCategory } from '@/services/definitions/entities/types-uom'
+import type { ISupplierCatRow } from '@/services/definitions/entities/types-supplier'
 
 
 export {
@@ -29,8 +30,9 @@ export {
     // Data Definitions
     HStaffTable,
     HRolesTable,
-    HUoMCatTable,
     HUoMTable,
+    HUoMCatTable,
+    HSupplierCatTable,
 
     PAGE_SIZE,
 
@@ -65,7 +67,7 @@ export {
     Problem,
     ErrorDictionary,
     IDataTableQuery, ITableChkEmit, IColumnHeader, IIndexable, IChecked, IDataListBasicResponse, IBulkData, IMultiselectBasic, IShell, IScrollInfo, IDataTablePage, IGroupPermsDict, ICellUpdate,
-    ById, TBulkAction, Filter, TFormMode, TActionKind, EntityGenericNames, IdsArray,
+    ById, TBulkAction, Filter, TFormMode, TActionKind, IdsArray,
     ALIGN_POSITION,
 
     // Validations ... VSchema == validations schema
@@ -80,5 +82,8 @@ export {
     IRoleBasic, IDtoRole,  IPermAssocId, IPermAssoc,
 
     // uom
-    IDtoUoM, IDtoUoMCategory
+    IDtoUoM, IDtoUoMCategory,
+
+    // supplier
+    ISupplierCatRow
 }
