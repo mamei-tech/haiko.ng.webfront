@@ -1,4 +1,4 @@
-import type { IDtoUoMCategory } from '@/services/definitions'
+import type { IDtoSupplierCat, IDtoUoMCategory } from '@/services/definitions'
 import type { IDtoRole, IDtoStaff, IDtoUoM } from '@/services/definitions'
 
 
@@ -61,13 +61,24 @@ export default function useFactory() {
         }
     }
 
+    const mkSupplierCat = (): IDtoSupplierCat => {
+        return {
+            id: 0,
+            scColor: '#000000FF',
+            scName: '',
+            sCount: 0,
+            sDescription: ''
+        }
+    }
+
     //#endregion ==========================================================================
 
     return {
         mkRole,
         mkStaff,
         mkUoM,
-        mkUoMCategory
+        mkUoMCategory,
+        mkSupplierCat
     }
 }
 

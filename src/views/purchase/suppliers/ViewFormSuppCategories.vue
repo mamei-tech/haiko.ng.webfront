@@ -1,33 +1,260 @@
 <template>
     <transition appear name="page-fade">
-        <p>Formulario categoría de proveedores, salidas, otros filtra por el estado pendiente</p>
+        <div class="row">
+            <div class="col-12">
+
+                <CmpCard :hasFormBackBtn="true" v-on:doClick="h_back">
+
+                    <!-- FORM -->
+                    <form class="form-horizontal">
+
+                        <!-- id -->
+                        <div class="row">
+                            <div class="col-md-9">
+                                <CmpBasicInput
+                                        disabled
+                                        placeholder="###########"
+                                        name="id"
+                                        type="hidden"
+                                        v-model="iniFormData.id"
+                                />
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-xm-12 col-md-6">
+
+                                <!-- supplier category name -->
+                                <div class="row">
+                                    <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                                        {{ $t("form.fields-common.firstname") }}
+                                    </label>
+                                    <div class="col-md-9">
+                                        <CmpBasicInput
+                                                :placeholder="$t('form.placeholders.supplier-cat-name')"
+                                                name="scName"
+                                                type="text"
+                                                v-model="iniFormData.sDescription"
+                                        />
+                                    </div>
+                                </div>
+
+                                <!-- supplier category description -->
+                                <div class="row">
+                                    <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                                        {{ $t( "data.description" ) }}
+                                    </label>
+                                    <div class="col-md-9">
+                                        <CmpBasicInput
+                                                placeholder="..."
+                                                name="sDescription"
+                                                type="text"
+                                                v-model="iniFormData.sDescription"
+                                        />
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-xm-12 col-md-6">
+
+                                <!-- supplier category color -->
+                                <div class="row">
+                                    <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                                        {{ $t("data.color") }}
+                                    </label>
+                                    <div class="col-md-9">
+                                        <CmpBasicInput
+                                                :placeholder="$t('data.description')"
+                                                name="scColor"
+                                                type="color"
+                                                v-model="iniFormData.scColor"
+                                        />
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </form>
+
+                    <!-- FORM ACTION BUTTONS -->
+                    <template v-slot:footer>
+                        <CmpFormActionsButton
+                                :show-delete="cpt_fMode === 'edit'"
+                                v-on:saveIntent="h_beforeSubmit"
+                                v-on:deleteIntent="h_delete"
+                                v-on:cancelIntent="h_cancel"
+                        />
+                    </template>
+                </CmpCard>
+
+            </div>
+        </div>
     </transition>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent, onBeforeUnmount, onMounted, reactive } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useForm } from 'vee-validate'
+import { useToast } from 'vue-toastification'
+import useFactory from '@/services/composables/useFactory'
+import useToastify from '@/services/composables/useToastify'
+import { ENTITY_NAMES, FMODE, KEYS, OPS_KIND_STR, RoutePathNames } from '@/services/definitions'
+import { VSchemaSupplierCat } from '@/services/definitions/validations/validations-suppliers'
+import { CmpCard, CmpFormActionsButton, CmpBasicInput, CmpCollapseItem, CmpBasicCheckbox, CmpBaseButton } from '@/components'
+
+import type { ComputedRef } from 'vue'
+import type { IDtoSupplierCat, TFormMode } from '@/services/definitions'
+import { ApiSupplier } from '@/services/api/api-supplier'
+
+
 
 export default defineComponent({
     name: 'ViewFormSuppCategories',
-    components: {},
+    components: {
+        CmpCard,
+        CmpBasicInput,
+        CmpBaseButton,
+        CmpCollapseItem,
+        CmpBasicCheckbox,
+        CmpFormActionsButton
+    },
     setup() {
 
-        //#region ======= DECLARATIONS & LOCAL STATE ==========================================
+        //region ======= DECLARATIONS & LOCAL STATE ===========================================
+
+        const route = useRoute()
+        const router = useRouter()
+
+        const { fmode, id } = route.params                                      // remember, fmode (form mode) property denotes the mode this form view was called | checkout the type TFormMode in types definitions
+
+        const toast = useToast()
+        const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
+        const { mkSupplierCat } = useFactory()
+
+        const iniFormData = reactive<IDtoSupplierCat>(mkSupplierCat())          // initial form data
+
+        //endregion ===========================================================================
+
+        //region ======= HOOKS ================================================================
+
+        /**
+         * Vue hook before component is mounted in the DOM
+         * If this view is called as edit mode rather than creation mode, we need to call the backend API
+         * asking for the resource so we can populate the datatable
+         *
+         * Manually setting the needed values is way cleaner than the other way around. This is needed mainly because api call is asynchronous.
+         */
+        onMounted(async () => {
+
+            // keyboard keys event handler, we need to clean this kind of event when the component are destroyed
+            window.addEventListener('keydown', h_keyboardKeyPress)
+        })
+
+        /**
+         * Vue hook before component is unmounted from the DOM
+         */
+        onBeforeUnmount(() => {
+            // cleaning the event manually added before to the document. Wee need to keep the things as clean as posible
+            window.removeEventListener('keydown', h_keyboardKeyPress)
+        })
         //#endregion ==========================================================================
 
-        //#region ======= FETCHING DATA ACTIONS ===============================================
+        //#region ======= FETCHING DATA & ACTIONS =============================================
+
+        /**
+         * Store action for the creating (request) the new entity on the backend system.
+         * doWeNeedToStay => This value is related to the * type of save button in the CmpFormActionsButton:
+         * APPLY or SAVE (and exit) normally
+         *
+         * @param newSupplierCat payload with the data for the request
+         * @param doWeNeedToStay Tell us where to go after the successfully creation of the entity
+         */
+        const a_create = ( newSupplierCat: IDtoSupplierCat, doWeNeedToStay: boolean) => {
+             ApiSupplier.insertSupplierCat(newSupplierCat).then(() => {
+
+                tfyCRUDSuccess(ENTITY_NAMES.SUPPLIER_CAT, OPS_KIND_STR.ADDITION, newSupplierCat.scName)
+
+                // so now what ?
+                if(!doWeNeedToStay) h_back()                                  // so we are going back to the data table
+                else resetForm({ values: mkSupplierCat() })              // so wee need to clean the entire form and stay in it
+
+            }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.SUPPLIER_CAT, OPS_KIND_STR.ADDITION))
+        }
+
         //#endregion ==========================================================================
 
-        //#region ======= ACTIONS =============================================================
+        //region ======= COMPUTATIONS & GETTERS ===============================================
+
+        // compute the form mode: creation mode or edition mode
+        const cpt_fMode: ComputedRef<string | string[]> = computed(() => fmode)
+
+        // getting the vee validate method to manipulate the form related actions from the view
+        const { handleSubmit, meta, setValues, setFieldValue, resetForm } = useForm<IDtoSupplierCat>({
+            validationSchema: VSchemaSupplierCat,
+            initialValues:    iniFormData,
+            initialErrors:    undefined
+        })
+
         //#endregion ==========================================================================
 
-        //#region ======= COMPUTATIONS & GETTERS ==============================================
+        //region ======= HELPERS ==============================================================
         //#endregion ==========================================================================
 
-        //#region ======= EVENTS HANDLERS =====================================================
+        //region ======== EVENTS HANDLERS & WATCHERS ==========================================
+
+        /**
+         * Handles the form submission event through the vee-validate 'SubmissionHandler' so we can take advantage of all
+         * the its validation logic but using with own logic inserted as callback
+         *
+         * @param evt The DOM event coming from our Vue UI custom component (CmpFormActionsButton in this case)
+         * @param doWeNeedToStay This is a boolean data coming from our Vue UI custom component (CmpFormActionsButton in this case). Tell us where to go after the successfully creation of the entity
+         */
+        const h_beforeSubmit = ( evt: Event, doWeNeedToStay: boolean ) => {
+            evt.preventDefault()
+
+            // handling the submission with vee-validate method
+            handleSubmit(formData => {
+                if (cpt_fMode.value == (FMODE.CREATE as TFormMode)) a_create(formData, doWeNeedToStay)
+                if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && meta.value.dirty) console.warn('edit', formData)
+                if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && !meta.value.dirty) h_back()               // was no changes (no dirty) with the data, so going back normally
+            }).call(this)
+        }
+
+        const h_back = () => {
+            // router.back()
+            router.push({ name: RoutePathNames.supplierCat })
+        }
+
+        const h_cancel = () => {
+            router.push({ name: RoutePathNames.supplierCat })
+        }
+
+        const h_delete = async ( evt: any ) => {
+            console.error('delete')
+        }
+
+        const h_keyboardKeyPress = ( evt: any ) => {
+            if (evt.key === KEYS.ESCAPE) h_back()                       // going back if SCAPE is pressed
+        }
+
+
         //#endregion ==========================================================================
 
-        return {}
+        return {
+            iniFormData,
+
+            cpt_fMode,
+
+            h_back,
+            h_cancel,
+            h_delete,
+            h_beforeSubmit,
+            h_keyboardKeyPress
+        }
     }
 
 })

@@ -2,7 +2,7 @@ import axios from './api'
 import config from './config'
 
 import type { AxiosPromise } from 'axios'
-import type { IDataTableQuery, IDataTablePage, IDtoRole } from '@/services/definitions'
+import type { IDataTableQuery, IDataTablePage, IDtoSupplierCat } from '@/services/definitions'
 import type { ISupplierCatRow } from '@/services/definitions'
 
 
@@ -34,6 +34,17 @@ export class ApiSupplier {
         }
 
         return axios.get(url + '/category/page', { params: payload })
+    }
+
+    /**
+     * Create / insert a new Supplier Category on the system
+     *
+     * @param newSupplierCat
+     * @returns Promise with the identifier of the just created entity
+     */
+    // public static insertRolePerms( newRoleData: IDtoRole ): AxiosPromise<number> {
+    public static insertSupplierCat( newSupplierCat: IDtoSupplierCat ): AxiosPromise<void>  {
+        return axios.post(url + '/category', newSupplierCat)
     }
 
     /**

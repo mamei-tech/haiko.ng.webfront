@@ -16,7 +16,7 @@ import type { TOpsKind, Function0, Function1, IColumnHeader, IDataTableQuery, IT
 import type { IStaffRow, IDtoStaff } from '@/services/definitions/entities/types-staff'
 import type { IRoleBasic, IDtoRole, IPermAssocId, IPermAssoc, IGroupPermsDict } from '@/services/definitions/entities/types-rbac'
 import type { IDtoUoM, IDtoUoMCategory } from '@/services/definitions/entities/types-uom'
-import type { ISupplierCatRow } from '@/services/definitions/entities/types-supplier'
+import type { ISupplierCatRow, IDtoSupplierCat } from '@/services/definitions/entities/types-supplier'
 
 
 export {
@@ -85,5 +85,5 @@ export {
     IDtoUoM, IDtoUoMCategory,
 
     // supplier
-    ISupplierCatRow
+    ISupplierCatRow, IDtoSupplierCat
 }

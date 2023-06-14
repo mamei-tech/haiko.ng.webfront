@@ -38,7 +38,7 @@ export default {
 
     //#region ======== SUPPLIERS CATEGORIES =================================================
     [ RoutePathNames.supplierCat ]:       '@:{\'entities.supplier-cat.name\'}',
-    [ RoutePathNames.supplierCatCreate ]: '@:crud-actions.create @:entities.supplier-cat.section-name',
-    [ RoutePathNames.supplierCatEdit ]:   '@:crud-actions.edition @:entities.supplier-cat.section-name'
+    [ RoutePathNames.supplierCatCreate ]: '@:crud-actions.create @:entities.supplier-cat.name',
+    [ RoutePathNames.supplierCatEdit ]:   '@:crud-actions.edition @:entities.supplier-cat.name'
     //#endregion  ===========================================================================
 }

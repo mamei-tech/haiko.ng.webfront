@@ -38,17 +38,18 @@
         "status":             "Estado",
         "_id":                "ID",
         "id":                 "@:data._id",
-        "Name":               "Nombre",
+        "name":               "nombre",
         "isEnable":           "@:data.status",
         "Items":              "Elementos",
         "Actions":            "Acciones",
         "footer-description": "Mostrando del {start} al {end} de {total} total de entradas",
-        "Description":        "Descripción",
+        "description":        "Descripción",
         "Active":             "Estado",
         "empty-table":        "No existen elementos para mostrar",
         "u-ratio-down":       "↓ u. de referencia",
         "u-ratio-reference":  "unidad de referencia",
-        "u-ratio-up":         "↑ u. de referencia"
+        "u-ratio-up":         "↑ u. de referencia",
+        "color":              "Color"
     },
     "others":        {
         "enable":           "Activo",
@@ -123,6 +124,7 @@
         "password-complexity":               "Al menos 2 letras mayúsculas, 1 caracter espacial {'(!@#$&._*)'} , números y letras, de 8 y 20 caracteres",
         "password-confirmation":             "El campo no coincide con la contraseña definida",
         "only-alpha-spaces":                 "El campo solo debe contener caracteres y espacios, terminando solo en caracteres",
+        "only-html-color":                   "El campo debe contener un valor de color HTML válido (ej. #cc1919)",
         "only-alpha-digits-spaces":          "El campo solo debe contener caracteres, números y espacios, comenzado solo en caracteres",
         "only-alpha-digits-underscore-dots": "El campo solo debe contener caracteres, guion bajo, puntos y números, sin espacios",
         "only-alpha-digits-no-spaces":       "El campo debe comenzar con caracteres y puede contener números sin espacios",
@@ -157,17 +159,18 @@
         },
         "placeholders":  {
             "username":         "nickname__78",
-            "staff-firstname":  "escriba el nombre del empleado",
+            "staff-firstname":  "escriba el @:data.name del empleado",
             "staff-lastname":   "escriba los apellidos del empleado",
-            "role-rname":       "nombre del rol",
+            "role-rname":       "@:data.name del rol",
             "role-description": "describe aspectos relevantes del rol",
             "reset-filters":    "Restablecer filtros",
-            "uom-cat-ucname":   "nombre de la nueva categoría para unidades medida",
+            "uom-cat-ucname":   "@:data.name de la nueva categoría para unidades medida",
             "user":             "usuario",
             "pass":             "contraseña",
             "search":           "buscar",
             "email":            "correo.del.staff{'@'}.dominio.que",
-            "uom-type-select":  "ratio de conversión"
+            "uom-type-select":  "ratio de conversión",
+            "supplier-cat-name": "@:data.name para la categoría de proveedores"
         }
     },
     "table-headers": {
@@ -186,7 +189,7 @@
         "count":       "Elementos",
         "color":       "Color",
         "units":       "@:entities.uom.section-name",
-        "description": "@:data.Description"
+        "description": "@:data.description"
     },
     "entities":      {
         "default": "entidades",

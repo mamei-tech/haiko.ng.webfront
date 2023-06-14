@@ -9,9 +9,10 @@ const { t } = i18n.global
  * The value hast to end with letters.
  */
 export const regAlphaNSpaces: RegExp = /^([a-z|A-Z|À-ÿ]+( ){0,1})+[a-z|A-Z|À-ÿ]$/
-export const regOnlyAlphanumericAndSpaces  = /^([a-z|A-Z|À-ÿ|0-9]+( ){0,1})+[a-z|A-Z|À-ÿ|0-9]( )*$/
-export const regOnlyAlphanumericNoSpaces  = /^[a-zA-ZÀ-ÿ]+(\d*[a-zA-ZÀ-ÿ]*)*$/
-export const regDecimalDotSeparator = /^\d+\.?\d*$/
+export const regOnlyAlphanumericAndSpaces: RegExp  = /^([a-z|A-Z|À-ÿ|0-9]+( ){0,1})+[a-z|A-Z|À-ÿ|0-9]( )*$/
+export const regOnlyAlphanumericNoSpaces: RegExp  = /^[a-zA-ZÀ-ÿ]+(\d*[a-zA-ZÀ-ÿ]*)*$/
+export const regDecimalDotSeparator: RegExp = /^\d+\.?\d*$/
+export const regHTMLColorNoAlpha: RegExp = /^#(?:[0-9a-fA-F]{3}){1,2}$/
 
 /**
  * Only match with characters, numbers, underscores and dots, No spaces. Good for using against with nicknames or system usernames
@@ -76,6 +77,42 @@ export const VSchemaCommon = {
      */
     justARequiredField: ( value: string ): boolean | string => {
         if (!required(value)) return t('validation.required')
+        return true
+    },
+
+    /**
+     * Common Name validation when no space is needed
+     * allowed: regAlphaDigitsUnderscoreNDots       Underscore and dots allowed
+     *
+     * @param value str to be validated
+     * @param minLength minimum string length allowed
+     * @param maxLength maximum string length allowed
+     * @param isThisRequired tell if the field value need to be present mandatory
+     */
+    nameNoSpaceValidation: ( value: string, minLength = 4, maxLength = 20, isThisRequired: boolean = true  ): boolean | string => {
+        if (isThisRequired && !required(value)) return t('validation.required')
+        if (!regex(value, { regex: regAlphaDigitsUnderscoreNDots })) return t('validation.only-alpha-digits-underscore-dots')
+        if (!min(value, { length: minLength })) return t('validation.min-length', { length: minLength })
+        if (!max(value, { length: maxLength })) return t('validation.max-length', { length: maxLength })
+
+        return true
+    },
+
+    /**
+     * A common description field validation
+     * allowed: regOnlyAlphanumericAndSpaces
+     *
+     * @param value str to be validated
+     * @param minLength minimum string length allowed
+     * @param maxLength maximum string length allowed
+     * @param isThisRequired tell if the field value need to be present mandatory
+     */
+    description: ( value: string, minLength = 4, maxLength = 80, isThisRequired: boolean = true ): boolean | string => {
+        if (isThisRequired && !required(value)) return t('validation.required')
+        if (!regex(value, { regex: regOnlyAlphanumericAndSpaces })) return t('validation.only-alpha-digits-spaces')
+        if (!min(value, { length: minLength })) return t('validation.min-length', { length: minLength })
+        if (!max(value, { length: maxLength })) return t('validation.max-length', { length: maxLength })
+
         return true
     },
 }

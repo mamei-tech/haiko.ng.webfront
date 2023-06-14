@@ -49,7 +49,7 @@
                                 <!-- description -->
                                 <div class="row">
                                     <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                                        {{ $t("data.Description") }}
+                                        {{ $t("data.description") }}
                                     </label>
                                     <div class="col-md-9">
                                         <CmpBasicInput

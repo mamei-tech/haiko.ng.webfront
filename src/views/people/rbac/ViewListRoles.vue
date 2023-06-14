@@ -13,6 +13,7 @@
                                   :data="st_rbac.entityPage"
                                   :has-actions="true"
 
+                                  @navCreateIntent=""
                                   @deleteIntent="h_intentRowDelete"
                                   @editIntent="h_navRowEdit"
                     >

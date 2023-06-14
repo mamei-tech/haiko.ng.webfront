@@ -9,3 +9,10 @@ export interface ISupplierCatRow extends IIndexable {
     sCount: number,
     scColor: string,
 }
+
+/**
+ * Unit of Measurement Dto
+ */
+export interface IDtoSupplierCat extends ISupplierCatRow {
+    sDescription: string,
+}
