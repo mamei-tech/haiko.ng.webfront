@@ -209,7 +209,7 @@
                     <template v-slot:footer>
                         <CmpFormActionsButton
                                 :show-delete="cpt_fMode === 'edit'"
-                                v-on:saveIntent="h_submit"
+                                v-on:saveIntent="h_beforeSubmit"
                                 v-on:deleteIntent="h_delete"
                                 v-on:cancelIntent="h_cancel"
                         />
@@ -399,7 +399,7 @@ export default defineComponent({
          * @param evt The DOM event coming from our Vue UI custom component (CmpFormActionsButton in this case)
          * @param doWeNeedToStay This is a boolean data coming from our Vue UI custom component (CmpFormActionsButton in this case). Tell us where to go after the successfully creation of the entity
          */
-        const h_submit = ( evt: Event, doWeNeedToStay: boolean ) => {
+        const h_beforeSubmit = ( evt: Event, doWeNeedToStay: boolean ) => {
             evt.preventDefault()
 
             // handling the submission with vee-validate method
@@ -460,7 +460,7 @@ export default defineComponent({
             cpt_fMode,
             st_nomenclatures,
 
-            h_submit,
+            h_beforeSubmit,
             h_back,
             h_cancel,
             h_delete,

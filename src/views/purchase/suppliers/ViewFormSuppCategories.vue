@@ -102,14 +102,15 @@ import { useForm } from 'vee-validate'
 import { useToast } from 'vue-toastification'
 import useFactory from '@/services/composables/useFactory'
 import useToastify from '@/services/composables/useToastify'
-import { ENTITY_NAMES, FMODE, KEYS, OPS_KIND_STR, RoutePathNames } from '@/services/definitions'
+import useDialogfy from '@/services/composables/useDialogfy'
+import { ApiSupplier } from '@/services/api/api-supplier'
+import { ACTION_KIND_STR, ENTITY_NAMES, FMODE, KEYS, OPS_KIND_STR, RoutePathNames } from '@/services/definitions'
 import { VSchemaSupplierCat } from '@/services/definitions/validations/validations-suppliers'
 import { CmpCard, CmpFormActionsButton, CmpBasicInput, CmpCollapseItem, CmpBasicCheckbox, CmpBaseButton } from '@/components'
 
 import type { ComputedRef } from 'vue'
 import type { IDtoSupplierCat, TFormMode } from '@/services/definitions'
-import { ApiSupplier } from '@/services/api/api-supplier'
-
+import { i18n } from '@/services/i18n'
 
 
 export default defineComponent({
@@ -126,6 +127,7 @@ export default defineComponent({
 
         //region ======= DECLARATIONS & LOCAL STATE ===========================================
 
+        const { t } = i18n.global
         const route = useRoute()
         const router = useRouter()
 
@@ -133,9 +135,11 @@ export default defineComponent({
 
         const toast = useToast()
         const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
+        const { dfyConfirmation, dfyShowAlert } = useDialogfy()
         const { mkSupplierCat } = useFactory()
 
         const iniFormData = reactive<IDtoSupplierCat>(mkSupplierCat())          // initial form data
+        let formDataFromServer: IDtoSupplierCat | undefined = undefined         // aux variable to save entity data requested from the server
 
         //endregion ===========================================================================
 
@@ -149,6 +153,16 @@ export default defineComponent({
          * Manually setting the needed values is way cleaner than the other way around. This is needed mainly because api call is asynchronous.
          */
         onMounted(async () => {
+
+            if (cpt_fMode.value === FMODE.EDIT as TFormMode) {
+                formDataFromServer = await ApiSupplier.getStaffById(+id)
+
+                // setValues(formDataFromServer)
+                resetForm( {
+                    errors: {},
+                    values: { ...formDataFromServer }
+                })
+            }
 
             // keyboard keys event handler, we need to clean this kind of event when the component are destroyed
             window.addEventListener('keydown', h_keyboardKeyPress)
@@ -164,6 +178,23 @@ export default defineComponent({
         //#endregion ==========================================================================
 
         //#region ======= FETCHING DATA & ACTIONS =============================================
+
+        /**
+         * Action for edit the supplier category
+         * @param editedSupplierCat object containing the edited information
+         * @param doWeNeedToStay This value, in this context, tells if the clicked button was the 'Applied' or the 'Save'
+         */
+        const a_edit = ( editedSupplierCat: IDtoSupplierCat, doWeNeedToStay: boolean ): void => {
+
+            ApiSupplier.reqUpdateSupplierCategory(editedSupplierCat)
+            .then(() => {
+                tfyCRUDSuccess(ENTITY_NAMES.SUPPLIER_CAT, OPS_KIND_STR.UPDATE, editedSupplierCat.scName)
+
+                // so now what ?
+                if(!doWeNeedToStay) h_back()                                  // so we are going back to the data table
+
+            }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.SUPPLIER_CAT, OPS_KIND_STR.UPDATE))
+        }
 
         /**
          * Store action for the creating (request) the new entity on the backend system.
@@ -183,6 +214,21 @@ export default defineComponent({
                 else resetForm({ values: mkSupplierCat() })              // so wee need to clean the entire form and stay in it
 
             }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.SUPPLIER_CAT, OPS_KIND_STR.ADDITION))
+        }
+
+        /**
+         * Request the deletion of a supplier category to the backend
+         * @param catId Supplier category identifier
+         * @param ref Subject Entity reference e.g identifier, name or something like that
+         */
+        const a_reqDelete = async (catId: number, ref: undefined | string = undefined ): Promise<void> => {
+
+            ApiSupplier.reqDeleteSuppCat(catId)
+            .then(( response: any ) => {
+                tfyCRUDSuccess(ENTITY_NAMES.SUPPLIER_CAT, OPS_KIND_STR.DELETION)
+                h_back()
+            })
+            .catch(error => tfyCRUDFail(error, ENTITY_NAMES.SUPPLIER_CAT, OPS_KIND_STR.DELETION))
         }
 
         //#endregion ==========================================================================
@@ -219,7 +265,7 @@ export default defineComponent({
             // handling the submission with vee-validate method
             handleSubmit(formData => {
                 if (cpt_fMode.value == (FMODE.CREATE as TFormMode)) a_create(formData, doWeNeedToStay)
-                if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && meta.value.dirty) console.warn('edit', formData)
+                if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && meta.value.dirty) a_edit(formData, doWeNeedToStay)
                 if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && !meta.value.dirty) h_back()               // was no changes (no dirty) with the data, so going back normally
             }).call(this)
         }
@@ -234,7 +280,12 @@ export default defineComponent({
         }
 
         const h_delete = async ( evt: any ) => {
-            console.error('delete')
+
+            if (fmode as TFormMode != FMODE.EDIT) return
+            if (+id == 1) dfyShowAlert(t('dialogs.title-alert-not-allowed'),  t('dialogs.cant-delete-default'))
+
+            const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.SUPPLIER_CAT, '', t('dialogs.supp-cat-del-confirmation'))
+            if (wasConfirmed) a_reqDelete(+id)
         }
 
         const h_keyboardKeyPress = ( evt: any ) => {

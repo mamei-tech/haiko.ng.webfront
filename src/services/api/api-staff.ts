@@ -48,7 +48,7 @@ export class ApiStaff {
      * @param staff object with the edited data
      * @returns ??
      */
-    public static update( staff: IDtoStaff ): AxiosPromise<number> {
+    public static update( staff: IDtoStaff ): AxiosPromise<void> {
 
         return axios.put(url, toFormData(staff), {
             headers: { 'Content-Type': HTTP_HEADER_FORM_DATA }

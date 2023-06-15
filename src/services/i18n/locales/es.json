@@ -219,7 +219,7 @@
             "section-name": "@:{'entities.suppliers.name'}es"
         },
         "supplier-cat": {
-            "name": "Categorías de Proveedores {ref}",
+            "name": "Categorías de Proveedor {ref}",
             "section-name": "@:{'entities.suppliers-cat.name'}"
         }
     }

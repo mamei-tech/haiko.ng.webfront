@@ -64,7 +64,7 @@ export default function useFactory() {
     const mkSupplierCat = (): IDtoSupplierCat => {
         return {
             id: 0,
-            scColor: '#000000FF',
+            scColor: '#000000',
             scName: '',
             sCount: 0,
             sDescription: ''

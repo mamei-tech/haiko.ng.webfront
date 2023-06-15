@@ -1,13 +1,15 @@
 import axios from './api'
 import config from './config'
+import useFactory from '@/services/composables/useFactory'
+import { HTTP_RESPONSES } from '@/services/definitions'
 
 import type { AxiosPromise } from 'axios'
-import type { IDataTableQuery, IDataTablePage, IDtoSupplierCat } from '@/services/definitions'
-import type { ISupplierCatRow } from '@/services/definitions'
+import type { ISupplierCatRow, IDataTableQuery, IDataTablePage, IDtoSupplierCat } from '@/services/definitions'
 
 
 const version = config.server.current_version
 const url = `v${ version }/mngmt/cmsupplier`
+const { mkSupplierCat } = useFactory()
 
 /**
  * REST API class for backend interaction logic related with Nomenclatures at manager level
@@ -55,10 +57,40 @@ export class ApiSupplier {
         return axios.delete(url + `/category/${ categoryId }`)
     }
 
+    /**
+     * Get formulary data information from server, pertaining to a SupplierCategory given its identifier
+     * @param categoryId SupplierCategory identifier
+     */
+    public static reqSupplierCatById (categoryId: number): AxiosPromise<IDtoSupplierCat> {
+        return axios.get(url + `/category/${ categoryId }`)
+    }
+
+    /**
+     * Make the request to update the Supplier Category data
+     *
+     * @param payload
+     */
+    public static reqUpdateSupplierCategory( payload: IDtoSupplierCat ): AxiosPromise<void> {
+        return axios.put(url + '/category', payload)
+    }
+
     //endregion ===========================================================================
 
     //#region ======= DATA READY METHODS ==================================================
-    //endregion ===========================================================================
 
+    /**
+     * Tries to get formulary data information, pertaining to a SupplierCategory given its identifier.
+     * ❗ If information from server could not be obtained, an empty Entity will be returned then
+     *
+     * @param id SupplierCategory identifier
+     */
+    public static async getStaffById( id: number ): Promise<IDtoSupplierCat> {
+        const response = await ApiSupplier.reqSupplierCatById(+id)
+
+        if (response.status === HTTP_RESPONSES.OK) return response.data as IDtoSupplierCat
+        return mkSupplierCat()
+    }
+
+    //endregion ===========================================================================
 
 }

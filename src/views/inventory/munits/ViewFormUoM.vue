@@ -164,7 +164,7 @@ export default defineComponent({
         onMounted(async () => {
 
             if (cpt_fMode.value === FMODE.EDIT as TFormMode) {
-                const uomCat = st_uom.entityPage.filter(u => u.id === +id)[0]        // getting the uom cat from pinia store
+                const uomCat = st_uom.entityPage.filter(uc => uc.id === +id)[0]        // getting the uom cat from pinia store
 
                 // it is needed here 'cause we keep two collection of the list of uom
                 iniFormData.value = {
