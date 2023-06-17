@@ -75,8 +75,8 @@
                         <CmpFormActionsButton
                                 :show-delete="cpt_fMode === 'edit'"
                                 v-on:saveIntent="h_beforeSubmit"
-                                v-on:deleteIntent=""
-                                v-on:cancelIntent=""
+                                v-on:deleteIntent="h_delete"
+                                v-on:cancelIntent="h_back"
                         />
                     </template>
                 </CmpCard>
@@ -103,12 +103,13 @@ import {
     FMODE,
     KEYS, OPS_KIND_STR,
     RoutePathNames, DT_ACTION_BUTTON_MODE,
-    HUoMTable
+    HUoMTable, ACTION_KIND_STR
 } from '@/services/definitions'
 import { i18n } from '@/services/i18n'
 
 import type { ComputedRef } from 'vue'
 import type { IDtoUoMCategory, IDtoUoM, TFormMode, ICellUpdate } from '@/services/definitions'
+import { ApiSupplier } from '@/services/api/api-supplier'
 
 
 export default defineComponent({
@@ -137,7 +138,7 @@ export default defineComponent({
         const toast = useToast()                                                            // the toast lib interface
         const st_uom = useSt_UoM()                                                          // Pinia store for uom
         const { tfyCRUDSuccess, tfyError, tfyCRUDFail } = useToastify(toast)
-        const { dfyConfirmation } = useDialogfy()
+        const { dfyConfirmation, dfyShowAlert } = useDialogfy()
 
         const { fmode, id } = route.params                                                  // remember, fmode (form mode) property denotes the mode this form view was called | checkout the type TFormMode in types definitions
         const { mkUoMCategory, mkUoM } = useFactory()
@@ -243,6 +244,22 @@ export default defineComponent({
                 if (!doWeNeedToStay) h_back()               // so we are going back to the data table
 
             }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.UOMCATEGORY, OPS_KIND_STR.UPDATE))
+        }
+
+        /**
+         * Request the deletion (from server) of an entity according with the given identifier
+         *
+         * @param id UoM category identifier
+         * @param ref Subject Entity reference e.g identifier, name or something like that
+         */
+        const a_reqDelete = async ( id: number, ref: undefined | string = undefined ): Promise<void> => {
+
+            st_uom.reqUoMCatDeletion(id)
+            .then(() => {
+                tfyCRUDSuccess(ENTITY_NAMES.UOMCATEGORY, OPS_KIND_STR.DELETION, ref)
+                h_back()
+            })
+            .catch(err => tfyCRUDFail(err, ENTITY_NAMES.UOMCATEGORY, OPS_KIND_STR.DELETION, ref))
         }
 
         //#endregion ==========================================================================
@@ -407,6 +424,16 @@ export default defineComponent({
             router.push({ name: RoutePathNames.munits });
         }
 
+        const h_delete = async ( evt: any ) => {
+            // we don't allow to delete the default categories, so we proceed only for above the 6th uom category
+            if (+id > 6) {
+
+                const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.UOMCATEGORY, '', t('dialogs.uomcat-del-confirmation'))
+                if (wasConfirmed) a_reqDelete(+id, '')
+            }
+            else dfyShowAlert(t('dialogs.title-alert-not-allowed'),  t('dialogs.cant-delete-default'))          // telling the user
+        }
+
         //endregion ===========================================================================
 
         return {
@@ -418,6 +445,7 @@ export default defineComponent({
             iniFormData,
 
             h_back,
+            h_delete,
             h_updateCell,
             h_beforeSubmit,
             h_intentUoMCreate,

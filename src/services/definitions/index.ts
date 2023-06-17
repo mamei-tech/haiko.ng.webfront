@@ -1,6 +1,6 @@
 import { ALIGN_POSITION } from './types-common'
 import { RoutePaths, RoutePathNames } from './route-paths'
-import { HStaffTable, HRolesTable, HUoMCatTable, HUoMTable, PAGE_SIZE, HSupplierCatTable } from './data-datatables'
+import { HStaffTable, HRolesTable, HUoMCatTable, HUoMTable, PAGE_SIZE, HSupplierCatTable, HSupplierTable } from './data-datatables'
 import { SelectUoMType } from './data-select-options'
 import { HTTP_HEADER_FORM_DATA, HTTP_HEADER_FORM_URLENCODED,RELPATH_DEFAULT_AVATAR_IMG, RELPATH_DEFAULT_PRODUCT_IMG, IMG_ORG_AVATAR_NAME, IMG_AVATAR_SMALL_THUMBNAIL, IMG_PRODUCT_NAME } from './data-strs'
 import { DT_ACTIONBAR_MODE, ENTITY_NAMES, DT_ACTION_BUTTON_MODE } from '@/services/definitions/enums-entities'
@@ -16,7 +16,7 @@ import type { TOpsKind, Function0, Function1, IColumnHeader, IDataTableQuery, IT
 import type { IStaffRow, IDtoStaff } from '@/services/definitions/entities/types-staff'
 import type { IRoleBasic, IDtoRole, IPermAssocId, IPermAssoc, IGroupPermsDict } from '@/services/definitions/entities/types-rbac'
 import type { IDtoUoM, IDtoUoMCategory } from '@/services/definitions/entities/types-uom'
-import type { ISupplierCatRow, IDtoSupplierCat } from '@/services/definitions/entities/types-supplier'
+import type { ISupplierCatRow, IDtoSupplierCat, ISupplierRow, ISuppCatBasic } from '@/services/definitions/entities/types-supplier'
 
 
 export {
@@ -33,6 +33,7 @@ export {
     HUoMTable,
     HUoMCatTable,
     HSupplierCatTable,
+    HSupplierTable,
 
     PAGE_SIZE,
 
@@ -85,5 +86,5 @@ export {
     IDtoUoM, IDtoUoMCategory,
 
     // supplier
-    ISupplierCatRow, IDtoSupplierCat
+    ISupplierCatRow, IDtoSupplierCat, ISupplierRow, ISuppCatBasic
 }

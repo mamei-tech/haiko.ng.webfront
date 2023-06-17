@@ -9,6 +9,9 @@ import type { IColumnHeader } from '@/services/definitions'
 const { t } = i18n.global
 
 // H means headers
+// this struct defines (tells) to the CmpDataTable how it should render and process the table headers and the cells
+// for a specific data
+
 export const PAGE_SIZE = 10
 
 export const HStaffTable: Partial<IColumnHeader>[] = [
@@ -67,6 +70,21 @@ export const HSupplierCatTable: Partial <IColumnHeader>[] = [
     { title: 'name', navKey: 'scName', sorting: '' },
     { title: 'count', navKey: 'sCount', styleWidth: 30, sorting: '' },
     { title: 'color', navKey: 'scColor', fieldColor: true },
+    {
+        title:        '',            // actions buttons
+        styleToRight: true,
+        styleWidth:   40
+    }
+]
+
+export const HSupplierTable: Partial <IColumnHeader>[] = [
+    { title: 'id', hidden: true },
+    { title: 'name', navKey: 'sName', sorting: '' },
+    { title: 'contact', navKey: 'contactName', sorting: '' },
+    { title: 'phone', navKey: 'sPhone', sorting: '' },
+    { title: 'active', styleToCenter: true, navKey: 'isActive', fieldSwitch: true },
+    { title: 'category', styleToCenter: true, navKey: 'sCategoryID' },
+    { title: 'products', navKey: 'pCount', styleToCenter: true },
     {
         title:        '',            // actions buttons
         styleToRight: true,

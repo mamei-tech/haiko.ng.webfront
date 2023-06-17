@@ -174,7 +174,7 @@
         }
     },
     "table-headers": {
-        "name":        "@:data.Name",
+        "name":        "@:data.name",
         "avatar":      "Avatar",
         "id":          "Id",
         "user":        "Usuario",
@@ -189,7 +189,9 @@
         "count":       "Elementos",
         "color":       "Color",
         "units":       "@:entities.uom.section-name",
-        "description": "@:data.description"
+        "description": "@:data.description",
+        "phone":       "Teléfono",
+        "products":    "Productos"
     },
     "entities":      {
         "default": "entidades",

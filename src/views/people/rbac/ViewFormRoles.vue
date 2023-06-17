@@ -111,7 +111,7 @@
                                 :show-delete="cpt_fMode === 'edit'"
                                 v-on:saveIntent="h_beforeSubmit"
                                 v-on:deleteIntent="h_delete"
-                                v-on:cancelIntent="h_cancel"
+                                v-on:cancelIntent="h_back"
                         />
                     </template>
                 </CmpCard>
@@ -423,10 +423,6 @@ export default defineComponent({
             router.push({ name: RoutePathNames.roles });
         }
 
-        const h_cancel = () => {
-            router.push({ name: RoutePathNames.roles });
-        }
-
         /**
          * Update the the register of permission to be modified on the server. This is the method that
          * handles the callback when the the 'statusChanged' event of CmpBasicCheckbox if fired.
@@ -480,7 +476,6 @@ export default defineComponent({
             perms2mod,
 
             h_back,
-            h_cancel,
             h_delete,
             h_permMod,
             h_beforeSubmit,

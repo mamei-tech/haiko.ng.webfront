@@ -120,7 +120,7 @@ export default defineComponent({
 
         function a_reqQuery( queryData: IDataTableQuery | undefined = undefined ) {
             // getting the suppliers categories list data for populating the datatable (side effect)
-            ApiSupplier.getPage(st_pagination.getQueryData)
+            ApiSupplier.getPageSuppCat(st_pagination.getQueryData)
             .then(( response: any ) => {
 
                 ls_suppliersCategories.value.entityPage = response.data.entityList

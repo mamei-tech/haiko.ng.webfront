@@ -5,7 +5,7 @@ import { defineStore } from 'pinia'
 import { toDicIds } from '@/services/helpers/help-conversion'
 import { ApiNomenclaturesMng } from '@/services/api/api-nomenclatures-manager'
 
-import type { ById, IIndexable, IMultiselectBasic, IRoleBasic } from '@/services/definitions'
+import type { ById, IMultiselectBasic, IRoleBasic, ISuppCatBasic } from '@/services/definitions'
 
 
 // https://pinia.vuejs.org/core-concepts/#setup-stores
@@ -15,7 +15,8 @@ export const useSt_Nomenclatures = defineStore({
     id: 'nomenc',
 
     state: (): IStaffState => ({
-        roles: [] as IRoleBasic[]
+        roles: [] as IRoleBasic[],
+        suppCat: [] as ISuppCatBasic[]
     }),
 
     /**
@@ -32,6 +33,17 @@ export const useSt_Nomenclatures = defineStore({
         getRolesForMultiselect: ( state ): IMultiselectBasic[] => {
             return state.roles.map((roleData: IRoleBasic) => {
                 return { value: roleData.id, label: roleData.rName }
+            })
+        },
+
+        /**
+         * Get the supplier categories form the state in a multiselect component format ({value: ___, label: ___})
+         *
+         * @param state Nomenclatures Supplier Categories state
+         */
+        getSuppCatForMultiselect: ( state ): IMultiselectBasic[] => {
+            return state.suppCat.map((suppCatData: ISuppCatBasic) => {
+                return { value: suppCatData.id, label: suppCatData.scName }
             })
         },
 
@@ -69,13 +81,31 @@ export const useSt_Nomenclatures = defineStore({
 
         },
 
+        /**
+         * tries to get the supplier categories from the backend
+         * to make the actual request
+         */
+        async reqNomencSuppCat () : Promise<void> {
+
+            return await new Promise<void>((resolve, reject) => {
+                ApiNomenclaturesMng.getSuppCat()
+                .then((response:any) => {
+
+                    this.suppCat = response.data
+                    resolve()
+
+                }).catch(error => { reject(error) })
+            })
+
+        },
     }
 })
 
 //region ======== STATE INTERFACE =======================================================
 
 interface IStaffState {
-    roles: Array<IRoleBasic>
+    roles: Array<IRoleBasic>,
+    suppCat: Array<ISuppCatBasic>
 }
 
 //endregion =============================================================================

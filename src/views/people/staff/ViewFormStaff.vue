@@ -211,7 +211,7 @@
                                 :show-delete="cpt_fMode === 'edit'"
                                 v-on:saveIntent="h_beforeSubmit"
                                 v-on:deleteIntent="h_delete"
-                                v-on:cancelIntent="h_cancel"
+                                v-on:cancelIntent="h_back"
                         />
                     </template>
                 </CmpCard>
@@ -415,10 +415,6 @@ export default defineComponent({
             router.push({ name: RoutePathNames.staff });
         }
 
-        const h_cancel = () => {
-            router.push({ name: RoutePathNames.staff });
-        }
-
         const h_delete = async ( evt: any ) => {
 
             if (fmode as TFormMode == FMODE.EDIT) {                                     // 'cause we can deleted something isn't created yet ... (remember we reuse this view for edition too, so we need to check which mode we currently are)
@@ -462,7 +458,6 @@ export default defineComponent({
 
             h_beforeSubmit,
             h_back,
-            h_cancel,
             h_delete,
             h_keyboardKeyPress,
             h_toggleCollapsable,
