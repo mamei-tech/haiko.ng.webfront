@@ -81,7 +81,8 @@ export default function useDialogfy() {
         let text = t('dialogs.confirmation', {
             action:  t(`crud-actions.${ action }`),
             plural:  isBulk ? t('others.this-ones') : '',                      // just for spanish by now
-            subject: t(`entities.${ subject }.name`, {ref: ref})})
+            subject: t(`entities.${ subject }.name`, {ref: ref})
+        })
 
         if (extraMsg !== '')
             text = text + '. ' + extraMsg

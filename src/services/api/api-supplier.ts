@@ -100,6 +100,14 @@ export class ApiSupplier {
         return axios.put(url + '/category', payload)
     }
 
+    /**
+     * Invoke an api call to toggle the status of the entities with the given identifiers
+     * @param ids entities identifiers
+     */
+    public static bulkToggle( ids: Array<number> ): AxiosPromise<void> {
+        return axios.post(url + '/toggle', ids)
+    }
+
     //endregion ===========================================================================
 
     //#region ======= DATA READY METHODS ==================================================

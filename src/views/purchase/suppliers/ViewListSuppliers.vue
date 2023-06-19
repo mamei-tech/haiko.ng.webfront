@@ -4,7 +4,7 @@
             <div class="col-12">
                 <CmpCard>
                     <CmpDataTable table-type="hover"
-                                  :subject="$t('entities.supplier-cat.name')"
+                                  :subject="$t('entities.supplier.name')"
 
                                   :action-bar-mode="abar_mode"
                                   :action-btn-mode="abutton_mode"
@@ -20,8 +20,10 @@
                                   @editIntent="h_navEditSuppIntent"
                                   @deleteIntent="h_intentRowDelete"
 
-                                  @enableIntent=""
-                                  @disableIntent=""
+                                  @bulkActionIntent="h_intentBulkAction"
+
+                                  @enableIntent="h_intentToggleEnable"
+                                  @disableIntent="h_intentToggleDisable"
                     >
                     </CmpDataTable>
                 </CmpCard>
@@ -42,7 +44,7 @@ import { CmpCard, CmpDataTable } from '@/components'
 import { useSt_Pagination } from '@/stores/pagination'
 import { useSt_Nomenclatures } from '@/stores/nomenc'
 import {
-    ACTION_KIND_STR,
+    ACTION_KIND_STR, BULK_ACTIONS,
     DT_ACTION_BUTTON_MODE,
     DT_ACTIONBAR_MODE, ENTITY_NAMES,
     FMODE,
@@ -50,7 +52,7 @@ import {
     RoutePathNames
 } from '@/services/definitions'
 
-import type { IDataTableQuery, IColumnHeader, ISupplierCatRow, TFormMode, ISupplierRow } from '@/services/definitions'
+import type { IBulkData, TOpsKind, IDataTableQuery, IColumnHeader, ISupplierCatRow, TFormMode, ISupplierRow } from '@/services/definitions'
 
 
 //region ======== STATE INTERFACE =======================================================
@@ -79,7 +81,7 @@ export default defineComponent({
 
         const ls_suppliers = ref<ISupplierState>({entityPage: [] as ISupplierRow[]})        // local store
 
-        const abar_mode: DT_ACTIONBAR_MODE = DT_ACTIONBAR_MODE.NOEJC                        // datatable action bar mode
+        const abar_mode: DT_ACTIONBAR_MODE = DT_ACTIONBAR_MODE.TOGSTATUS                    // datatable action bar mode
         const abutton_mode: DT_ACTION_BUTTON_MODE = DT_ACTION_BUTTON_MODE.JEDINDEL          // datatable button mode
         const columns = ref<Partial<IColumnHeader>[]>(HSupplierTable)                       // entity customized datatab
         const filters = [ 'sCategoryID', 'isActive' ]                                       // datatable filters  !!! you must use the real field names (nav keys in the HStaffTable object)
@@ -135,10 +137,6 @@ export default defineComponent({
             .catch(error => tfyCRUDFail(error, ENTITY_NAMES.SUPPLIER_CAT, OPS_KIND_STR.DELETION, ref))
         }
 
-        //#endregion ==========================================================================
-
-        //#region ======= ACTIONS =============================================================
-
         function a_reqQuery( queryData: IDataTableQuery | undefined = undefined ) {
             // getting the suppliers categories list data for populating the datatable (side effect)
             ApiSupplier.getPageSupp(st_pagination.getQueryData)
@@ -155,6 +153,21 @@ export default defineComponent({
 
                 tfyCRUDFail(error, ENTITY_NAMES.SUPPLIER, OPS_KIND_STR.REQUEST)
             })
+        }
+
+        function a_reqSwitchState( ids: Array<number>, ops: TOpsKind ) {
+            let entityReference: undefined | string = undefined
+
+            // the 'single' case,  used when this is called for switch status toggle intent
+            if (ids.length === 1)
+                entityReference = ls_suppliers.value.entityPage.find(suppCat => suppCat.id === ids[0])?.sName ?? ''
+
+            ApiSupplier.bulkToggle(ids)
+            .then(() => {
+                tfyCRUDSuccess(ENTITY_NAMES.SUPPLIER, ops, entityReference)
+                ls_suppliers.value.entityPage.forEach(s => ids.includes(s.id) ? s.isActive = !s.isActive : null)            // updating local store
+            })
+            .catch(err => tfyCRUDFail(err, ENTITY_NAMES.SUPPLIER, ops))
         }
 
         //#endregion ==========================================================================
@@ -199,6 +212,42 @@ export default defineComponent({
             if (wasConfirmed) a_reqDelete(objectId, entityReference)
         }
 
+        const h_intentToggleEnable = ( id: number ) => {
+            a_reqSwitchState([id], OPS_KIND_STR.ENABLE)
+        }
+
+        const h_intentToggleDisable = ( id: number ) => {
+            a_reqSwitchState([id], OPS_KIND_STR.DISABLE)
+        }
+
+        const h_intentBulkAction = async ( bulkData: IBulkData ) => {
+
+            // This is a somewhat hacky way of cast string to int in typescript. It has to do with type coercion, and
+            // it is a pain to deal with in JS. I use this way because is visually placement and beautiful, in some way;
+            // for a more readable form, use v => parseInt (v)
+            const dataIds = bulkData.ids.map(v => +v)
+
+            if (bulkData.actionType === BULK_ACTIONS.ENALBE) {
+                const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.ACTIVATE, ENTITY_NAMES.SUPPLIER, '', '', true)
+                if (wasConfirmed) {
+                    // need to enable all selected disabled suppliers. Filter the staff to find whether Id from the suppliers in the local store
+                    // actually is in the given Id list ... and also check the suppliers isn't active already in the local store
+                    // I think this checks should be done to be resilient about imprecision may appears between the component id collection and the store or local store id collection (single source of truth)
+                    let ids = ls_suppliers.value.entityPage.filter(s => dataIds.indexOf(s.id) !== -1 && !s.isActive).map(s => s.id)
+                    if (ids.length > 0) a_reqSwitchState(ids, OPS_KIND_STR.ENABLE)
+                }
+            }
+            else if (bulkData.actionType === BULK_ACTIONS.DISABLE) {
+                const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DEACTIVATE, ENTITY_NAMES.SUPPLIER, '', '', true)
+                if (wasConfirmed) {
+                    // disable case, same as enable but with the disable state ... and also check the Staff isn't disabled already in the local store
+                    // I think this checks should be done to be resilient about imprecision may appears between the component id collection and the s
+                    let ids = ls_suppliers.value.entityPage.filter(s => dataIds.indexOf(s.id) !== -1 && s.isActive).map(s => s.id)
+                    if (ids.length > 0) a_reqSwitchState(ids, OPS_KIND_STR.DISABLE)
+                }
+            }
+        }
+
         //#endregion ==========================================================================
 
         return {
@@ -211,8 +260,12 @@ export default defineComponent({
 
             h_reqQuery,
             h_intentRowDelete,
+            h_intentBulkAction,
             h_navEditSuppIntent,
             h_navCreateSuppCatIntent,
+
+            h_intentToggleEnable,
+            h_intentToggleDisable
         }
     }
 

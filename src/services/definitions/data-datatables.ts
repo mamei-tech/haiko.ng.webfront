@@ -78,6 +78,7 @@ export const HSupplierCatTable: Partial <IColumnHeader>[] = [
 ]
 
 export const HSupplierTable: Partial <IColumnHeader>[] = [
+    { title: '', chk: true, styleWidth: 2 },
     { title: 'id', hidden: true },
     { title: 'name', navKey: 'sName', sorting: '' },
     { title: 'contact', navKey: 'contactName', sorting: '' },

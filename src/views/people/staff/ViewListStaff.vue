@@ -202,6 +202,7 @@ export default defineComponent({
             // it is a pain to deal with in JS. I use this way because is visually placement and beautiful, in some way;
             // for a more readable form, use v => parseInt (v)
             const dataIds = bulkData.ids.map(v => +v)
+
             if (bulkData.actionType === BULK_ACTIONS.REMOVE) {
                 const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.STAFF)
                 if (wasConfirmed) a_reqDelete(dataIds)
@@ -211,14 +212,16 @@ export default defineComponent({
                 if (wasConfirmed) {
                     // need to enable all selected disabled stores. Filter the staff to find whether Id from the staff in the local store
                     // actually is in the given Id list ... and also check the Staff isn't active already in the local store
+                    // I think this checks should be done to be resilient about imprecision may appears between the component id collection and the store or local store id collection (single source of truth)
                     let ids = st_staff.entityPage.filter(s => dataIds.indexOf(s.id) !== -1 && !s.isActive).map(s => s.id)
                     if (ids.length > 0) a_reqSwitchState(ids, OPS_KIND_STR.ENABLE)
                 }
             }
-            else {
+            else if (bulkData.actionType === BULK_ACTIONS.DISABLE) {
                 const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DEACTIVATE, ENTITY_NAMES.STAFF, '', '', true)
                 if (wasConfirmed) {
                     // disable case, same as enable but with the disable state ... and also check the Staff isn't disabled already in the local store
+                    // I think this checks should be done to be resilient about imprecision may appears between the component id collection and the store or local store id collection (single source of truth)
                     let ids = st_staff.entityPage.filter(s => dataIds.indexOf(s.id) !== -1 &&  s.isActive).map(s => s.id)
                     if (ids.length > 0) a_reqSwitchState(ids, OPS_KIND_STR.DISABLE)
                 }

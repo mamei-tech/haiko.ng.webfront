@@ -60,6 +60,43 @@
             </div>
         </template>
 
+        <!-- JUST TOGGLE STATUS -->
+        <template v-else-if="mode === DT_ACTIONBAR_MODE.TOGSTATUS">
+            <div class="col-11 p-0">
+                <transition name="slide-fade">
+                    <div v-show="chkCount > 1" >
+                        <CmpBaseButton
+                                icon
+                                class="mr-1"
+                                buttonType="success"
+                                :title="$t('btn.tip-enable-sel', {subject:  pSubject})"
+                                @doClick="$emit('enableChkCollIntent')">
+                            <i class="tim-icons icon-check-2"></i>
+                        </CmpBaseButton>
+                        <CmpBaseButton
+                                icon
+                                class="ml-1 mr-1"
+                                buttonType="warning"
+                                :title="$t('btn.tip-disable-sel', {subject:  pSubject})"
+                                @doClick="$emit('disableChkCollIntent')">
+                            <i class="tim-icons icon-simple-remove"></i>
+                        </CmpBaseButton>
+                    </div>
+                </transition>
+            </div>
+
+            <!-- ALWAYS SHOWED -->
+            <div class="col-1 p-0" style="text-align: end">
+                <CmpBaseButton
+                        icon
+                        buttonType="primary"
+                        :title="$t('btn.tip-create-new')"
+                        @doClick="$emit('navCreateIntent')">
+                    <i class="tim-icons icon-simple-add"></i>
+                </CmpBaseButton>
+            </div>
+        </template>
+
         <!-- Action bar with only the create btn -->
         <template v-else-if="mode === DT_ACTIONBAR_MODE.NOEJC">
             <div class="col-11 p-0">
