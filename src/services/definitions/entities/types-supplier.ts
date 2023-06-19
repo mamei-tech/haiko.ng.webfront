@@ -25,7 +25,7 @@ export interface ISupplierRow extends IIndexable {
     contactName: string,
     sPhone: string,
     isActive: boolean,
-    sCategoryID: number
+    sCategoryID: number | string
     pCount: number
 }
 

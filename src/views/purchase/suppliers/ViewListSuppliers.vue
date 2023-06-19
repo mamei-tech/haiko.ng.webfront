@@ -39,6 +39,7 @@ import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 import useToastify from '@/services/composables/useToastify'
 import useDialogfy from '@/services/composables/useDialogfy'
+import { IsEmptyObj, isNumber } from '@/services/helpers/help-defaults'
 import { ApiSupplier } from '@/services/api/api-supplier'
 import { CmpCard, CmpDataTable } from '@/components'
 import { useSt_Pagination } from '@/stores/pagination'
@@ -102,12 +103,13 @@ export default defineComponent({
         onMounted(() => {
             a_reqQuery()
 
+
             // getting supplier categories definitions from the system (side effect)
             // this is used to fetch supplier category basic data from the system so we can map the cat identifier to cat name in the datatable column
             st_nomenclatures.reqNomencSuppCat()
             .then(() => {
-                columns.value[5].fieldMulti = st_nomenclatures.getSuppCatForMultiselect
-                // the 5th column is 'category' / 'sCategoryID' column. In this datatable this is a (column) 'multi' filter
+                columns.value[6].fieldMulti = st_nomenclatures.getSuppCatForMultiselect
+                // the 6th column is 'category' / 'sCategoryID' column. In this datatable this is a (column) 'multi' filter
                 // (see filters in the declaration section). So, rather define the 'multi' filter data statically in the
                 // data-datable.ts file, we weed to do it dynamically. Hence this here and no the conventionally
                 // definition in data-datable.ts.
@@ -145,6 +147,8 @@ export default defineComponent({
                 ls_suppliers.value.entityPage = response.data.entityList
                 st_pagination.mutUpdateOnRequest(response.data.totalRecords, response.data.entityList.length, st_pagination.Offset)
 
+                mapCat2Names()                                      // mapping id to names
+
             }).catch(error => {
                 if (error.response.status === 404) {
                     ls_suppliers.value.entityPage = []
@@ -179,7 +183,7 @@ export default defineComponent({
 
         const h_navCreateSuppCatIntent = (): void => {
             router.push({
-                name:   RoutePathNames.supplierCatCreate,
+                name:   RoutePathNames.supplierCreate,
                 params: {
                     fmode: FMODE.CREATE as TFormMode
                     // id   : '', no need for passing ID on creation mode
@@ -246,6 +250,27 @@ export default defineComponent({
                     if (ids.length > 0) a_reqSwitchState(ids, OPS_KIND_STR.DISABLE)
                 }
             }
+        }
+
+        //#endregion ==========================================================================
+
+        //#region ======= AUX =================================================================
+
+        /**
+         * Maps the supplier categories id present in one of the fields of the lis of datatable records (suppliers)
+         * to the actual suppliers categories name (user friendliness)
+         */
+        const mapCat2Names = () => {
+            if (IsEmptyObj(st_nomenclatures.getSuppCatByIdMap)) return        // If there are no roles yet, retrieve the entities as it is
+
+            ls_suppliers.value.entityPage = ls_suppliers.value.entityPage.map((row: ISupplierRow) => {
+
+                // there is a chance that this line run, and the roleId field was already mapped to the role name making it a string value so we can used as index anymore, so we have to check first
+                if(isNumber(row.sCategoryID))
+                    row.sCategoryID = st_nomenclatures.getSuppCatByIdMap[+row.sCategoryID].scName
+
+                return row
+            })
         }
 
         //#endregion ==========================================================================

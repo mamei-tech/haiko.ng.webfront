@@ -52,7 +52,14 @@ export const useSt_Nomenclatures = defineStore({
          *
          * @param state Nomenclatures ROLES state
          */
-        getRolesByIdMap: ( state ): ById<IRoleBasic> => toDicIds(state.roles)
+        getRolesByIdMap: ( state ): ById<IRoleBasic> => toDicIds(state.roles),
+
+        /**
+         * Map the roles to a dictionary where the SuppCatId is the key of the role value
+         *
+         * @param state Nomenclatures SUPPLIER CATEGORIES state
+         */
+        getSuppCatByIdMap: ( state ): ById<ISuppCatBasic> => toDicIds(state.suppCat)
     },
     actions: {
 

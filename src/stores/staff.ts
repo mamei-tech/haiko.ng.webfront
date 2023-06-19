@@ -26,7 +26,7 @@ export const useSt_Staff = defineStore({
         /**
          * Retrieve the staff list page data for the datatable. If the nomenclature store has bean called already
          * Then this method tries to map the roleID of each staff row to the role name according to the nomenclature
-         * store state
+         * store state, so the staff list representation in the table has the role names instead the roles Id (user friendliness)
          *
          * @param state Staff store state
          */
