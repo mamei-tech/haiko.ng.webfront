@@ -17,7 +17,7 @@
                                 :show-delete="cpt_fMode === 'edit'"
                                 v-on:saveIntent="h_beforeSubmit"
                                 v-on:deleteIntent="h_delete"
-                                v-on:cancelIntent="h_cancel"
+                                v-on:cancelIntent="h_back"
                         />
                     </template>
                 </CmpCard>
@@ -113,11 +113,6 @@ export default defineComponent({
             // router.push({ name: RoutePathNames.roles });
         }
 
-        const h_cancel = () => {
-            // fill below
-            // router.push({ name: RoutePathNames.roles });
-        }
-
         const h_delete = async ( evt: any ) => {
             console.error('delete')
         }
@@ -126,14 +121,12 @@ export default defineComponent({
             if (evt.key === KEYS.ESCAPE) h_back()                       // going back if SCAPE is pressed
         }
 
-
         //#endregion ==========================================================================
 
         return {
             cpt_fMode,
 
             h_back,
-            h_cancel,
             h_delete,
             h_beforeSubmit,
             h_keyboardKeyPress
