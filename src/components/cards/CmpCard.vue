@@ -9,12 +9,25 @@
         <!-- CARD HEADER -->
         <div class="card-header" v-if="$slots.header || title || hasFormBackBtn" :class="headerClasses">
             <slot name="header">
-                <button v-if="hasFormBackBtn"
-                        :title="$t('btn.tip-back')"
-                        class="btn btn-icon btn-primary"
-                        @click.prevent="h_Click">
-                    <i class="tim-icons icon-minimal-left"></i>
-                </button>
+                <div class="row">
+
+                    <!-- card header left -->
+                    <div class="col-6">
+                        <button v-if="hasFormBackBtn"
+                                :title="$t('btn.tip-back')"
+                                class="btn btn-icon btn-primary"
+                                @click.prevent="h_Click">
+                            <i class="tim-icons icon-minimal-left"></i>
+                        </button>
+                    </div>
+
+                    <!-- card header right | card action bar -->
+                    <div class="col-6">
+                        <slot name="card-actionbar"></slot>
+                    </div>
+
+                </div>
+
                 <h4 class="card-title">{{title}}</h4>
                 <p class="card-category" v-if="subTitle">{{subTitle}}</p>
             </slot>

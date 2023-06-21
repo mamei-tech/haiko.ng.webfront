@@ -79,7 +79,7 @@ export default {
                         {
                             href: { path: RoutePaths.supplierList },
                             title: this.$t( 'routes.' + RoutePathNames.supplier ).toLowerCase(),
-                            icon: 'fa fa-address-card',
+                            icon: 'tim-icons icon-delivery-fast',
                         },
                     ]
                 },

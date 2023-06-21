@@ -49,7 +49,9 @@
         "u-ratio-down":       "↓ u. de referencia",
         "u-ratio-reference":  "unidad de referencia",
         "u-ratio-up":         "↑ u. de referencia",
-        "color":              "Color"
+        "color":              "Color",
+        "company": "Empresa",
+        "individual": "Individuo"
     },
     "others":        {
         "enable":           "Activo",
@@ -142,6 +144,10 @@
             "staff-information": "Información del Staff"
         },
         "fields-common": {
+            "country":          "País",
+            "country-state":    "Prov/Est",
+            "website":          "Web",
+            "address":          "Dirección",
             "change-password":  "Cambiar password",
             "set-password":     "Definir password",
             "password":         "Contraseña",
@@ -149,28 +155,40 @@
             "username":         "Nombre de usuario",
             "firstname":        "Nombre",
             "lastname":         "Apellidos",
-            "cell":             "Celular",
-            "email":            "E-mail"
+            "cell":             "Cel",
+            "email":            "E-mail",
+            "phone":            "Teléfono"
         },
         "fields":        {
             "staff": {
                 "system-role": "Rol"
+            },
+            "suppliers": {
+                "sContactNotes": "Notas de Contacto",
+                "isCompany":     "@:data.company / @:data.individual"
             }
         },
         "placeholders":  {
-            "username":         "nickname__78",
-            "staff-firstname":  "escriba el @:data.name del empleado",
-            "staff-lastname":   "escriba los apellidos del empleado",
-            "role-rname":       "@:data.name del rol",
-            "role-description": "describe aspectos relevantes del rol",
-            "reset-filters":    "Restablecer filtros",
-            "uom-cat-ucname":   "@:data.name de la nueva categoría para unidades medida",
-            "user":             "usuario",
-            "pass":             "contraseña",
-            "search":           "buscar",
-            "email":            "correo.del.staff{'@'}.dominio.que",
-            "uom-type-select":  "ratio de conversión",
-            "supplier-cat-name": "@:data.name para la categoría de proveedores"
+            "website":                "www.elsitiowebaqui.com",
+            "username":               "nickname__78",
+            "select":                 " - selección - ",
+            "address":                "Prado #34 Apt 2, e/ Gervasio y Escobar, Centro Habana",
+            "zip":                    "######",
+            "staff-firstname":        "escriba el @:data.name del empleado",
+            "staff-lastname":         "escriba los apellidos del empleado",
+            "role-rname":             "@:data.name del rol",
+            "role-description":       "describe aspectos relevantes del rol",
+            "reset-filters":          "Restablecer filtros",
+            "uom-cat-ucname":         "@:data.name de la nueva categoría para unidades medida",
+            "user":                   "usuario",
+            "pass":                   "contraseña",
+            "search":                 "buscar",
+            "email":                  "correo.{'@'}.dominio.que",
+            "uom-type-select":        "ratio de conversión",
+            "supplier-cat-name":      "@:data.name para la categoría de proveedores",
+            "supplier-contact":       "Nombre de contacto con el proveedor",
+            "supplier-contact-notes": "Notas acerca del nombre del contacto",
+            "supplier-category":      " - @:table-headers.category - "
         }
     },
     "table-headers": {
@@ -218,7 +236,7 @@
         },
         "supplier": {
             "name": "Proveedor {ref}",
-            "section-name": "@:{'entities.suppliers.name'}es"
+            "section-name": "@:{'entities.supplier.name'}"
         },
         "supplier-cat": {
             "name": "Categorías de Proveedor {ref}",

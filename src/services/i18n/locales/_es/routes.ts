@@ -32,8 +32,8 @@ export default {
 
     //#region ======== SUPPLIERS ============================================================
     [ RoutePathNames.supplier ]:       '@:{\'entities.supplier.name\'}',
-    [ RoutePathNames.supplierCreate ]: '@:crud-actions.create @:entities.supplier.section-name',
-    [ RoutePathNames.supplierEdit ]:   '@:crud-actions.edition @:entities.supplier.section-name',
+    [ RoutePathNames.supplierCreate ]: '@:crud-actions.create @:entities.supplier.name',
+    [ RoutePathNames.supplierEdit ]:   '@:crud-actions.edition @:entities.supplier.name',
     //#endregion  ===========================================================================
 
     //#region ======== SUPPLIERS CATEGORIES =================================================
