@@ -34,7 +34,6 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue'
-import { i18n } from '@/services/i18n'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 import useToastify from '@/services/composables/useToastify'
@@ -71,8 +70,6 @@ export default defineComponent({
     setup() {
 
         //#region ======= DECLARATIONS & LOCAL STATE ==========================================
-
-        const { t } = i18n.global
 
         const router = useRouter()
         const toast = useToast()                                                            // The toast lib interface
