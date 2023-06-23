@@ -14,6 +14,8 @@ import CmpButtonBackTop from '@/components/buttons/CmpButtonBackTop.vue'
 import CmpCollapseItem from '@/components/collapsable/CmpCollapseItem.vue'
 import CmpMultiselectField from '@/components/inputs/CmpMultiselectField.vue'
 import CmpFormActionsButton from '@/components/buttons/CmpFormActionsButton.vue'
+import CmpTab from '@/components/tabs/CmpTab.vue'
+import CmpTabContent from '@/components/tabs/CmpTabContent.vue'
 
 
 export {
@@ -31,6 +33,10 @@ export {
 
     // cards
     CmpCard,
+
+    // tabs
+    CmpTab,
+    CmpTabContent,
 
     // sidebar
     CmpSideBarMenu,
