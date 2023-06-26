@@ -48,6 +48,7 @@
 
         <!-- CARD FOOTER -->
         <div class="card-footer" :class="footerClasses" v-if="$slots.footer">
+            <hr v-if="showFooterLine" />
             <slot name="footer"></slot>
         </div>
 
@@ -76,6 +77,10 @@
                 default: false,
                 description: "For a card form, that sow a go-back navigation button"
             },
+            showFooterLine: {
+                type: Boolean,
+                default: false
+            },
 
             // CLASSES PROPS
             headerClasses: {
@@ -92,7 +97,9 @@
             },
         },
         methods: {
+
             h_Click (evt: Event) {this.$emit('doClick', evt)
+
             }
         },
         emits: ['doClick']

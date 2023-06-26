@@ -84,6 +84,18 @@
         }
     }
 
+    &.nav-pills-default{
+        .nav-item {
+            .nav-link.active{
+                &,
+                &:focus,
+                &:hover{
+                    @include diagonal-gradient($default, $default-states);
+                }
+            }
+        }
+    }
+
     &.nav-pills-primary{
         .nav-item {
             .nav-link.active{

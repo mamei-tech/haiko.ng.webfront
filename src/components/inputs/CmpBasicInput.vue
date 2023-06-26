@@ -22,16 +22,15 @@
 
         <!-- INPUT -->
         <!--:v-model.value="value"-->
-        <input
-            class="form-control"
-            :name="name"
-            :value="inputValue"
-            :placeholder="placeholder"
-            :type="type"
-            v-bind="$attrs"
-            @focus="onInputFocused"
-            @input="handleChange"
-            @blur="onInputBlur"
+        <input class="form-control"
+               :name="name"
+               :value="inputValue"
+               :placeholder="placeholder"
+               :type="type"
+               v-bind="$attrs"
+               @focus="onInputFocused"
+               @input="handleChange"
+               @blur="onInputBlur"
         />
 
         <!-- ADDON RIGHT -->
