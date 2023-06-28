@@ -33,8 +33,11 @@ export enum ENTITY_NAMES {
     DEFAULT = 'default',
     STAFF = 'staff',
     ROLE = 'role',
+    COUNTRY = 'country',
     UOMCATEGORY = 'uomcatetgory',
     UOM = 'unit',
     SUPPLIER_CAT = 'supplier-cat',
     SUPPLIER = 'supplier',
+    PURCHASE = 'purchase',
+    PRODUCT = 'product'
 }

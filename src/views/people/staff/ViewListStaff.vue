@@ -94,16 +94,16 @@ export default defineComponent({
 
             // getting roles definitions from the system (side effect)
             // this is used to fetch staff roles data from the system so we can map the roleId to rolename in the datatable column
-            st_nomenclatures.reqNomencRoles()
+            st_nomenclatures.reqNmcRoles()
             .then(() => {
-                columns.value[6].fieldMulti = st_nomenclatures.getRolesForMultiselect
+                columns.value[6].fieldMulti = st_nomenclatures.getRoles4Multiselect
                 // the 6th column is 'role' / 'roleId' column. In this datatable this is a (column) 'multi' filter
                 // (see filters in the declaration section). So, rather define the 'multi' filter data statically in the
                 // data-datable.ts file, we weed to do it dynamically. Hence this here and no the conventionally
                 // definition in data-datable.ts.
                 // ...
                 // Regarding the use of '.then()' for the callback, we jus could use async in the hook and later awaited
-                // (await) the reqNomencRoles() call ... but I like the old fashion way
+                // (await) the getRoles4Multiselect() call ... but I like the old fashion way
             })
             .catch(err => tfyCRUDFail(err, ENTITY_NAMES.ROLE, OPS_KIND_STR.REQUEST))
 

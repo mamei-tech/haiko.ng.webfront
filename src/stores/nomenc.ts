@@ -5,7 +5,14 @@ import { defineStore } from 'pinia'
 import { toDicIds } from '@/services/helpers/help-conversion'
 import { ApiNomenclaturesMng } from '@/services/api/api-nomenclatures-manager'
 
-import type { ById, IMultiselectBasic, IRoleBasic, ISuppCatBasic } from '@/services/definitions'
+import type {
+    ById,
+    ICountryBasic,
+    ICountryStatesBasic,
+    IMultiselectBasic,
+    IRoleBasic,
+    ISuppCatBasic
+} from '@/services/definitions'
 
 
 // https://pinia.vuejs.org/core-concepts/#setup-stores
@@ -15,8 +22,10 @@ export const useSt_Nomenclatures = defineStore({
     id: 'nomenc',
 
     state: (): IStaffState => ({
-        roles: [] as IRoleBasic[],
-        suppCat: [] as ISuppCatBasic[]
+        roles:     [] as IRoleBasic[],
+        suppCat:   [] as ISuppCatBasic[],
+        countries: [] as ICountryBasic[],
+        states:    [] as ICountryStatesBasic[]
     }),
 
     /**
@@ -26,24 +35,46 @@ export const useSt_Nomenclatures = defineStore({
     getters: {
 
         /**
-         * Get the roles form the state in a multiselect component format ({value: ___, label: ___})
+         * Get the roles from the state in a multiselect component format ({value: ___, label: ___})
          *
          * @param state Nomenclatures ROLES state
          */
-        getRolesForMultiselect: ( state ): IMultiselectBasic[] => {
+        getRoles4Multiselect: ( state ): IMultiselectBasic[] => {
             return state.roles.map((roleData: IRoleBasic) => {
                 return { value: roleData.id, label: roleData.rName }
             })
         },
 
         /**
-         * Get the supplier categories form the state in a multiselect component format ({value: ___, label: ___})
+         * Get the supplier categories from the state in a multiselect component format ({value: ___, label: ___})
          *
          * @param state Nomenclatures Supplier Categories state
          */
-        getSuppCatForMultiselect: ( state ): IMultiselectBasic[] => {
+        getSuppCat4Multiselect: ( state ): IMultiselectBasic[] => {
             return state.suppCat.map((suppCatData: ISuppCatBasic) => {
                 return { value: suppCatData.id, label: suppCatData.scName }
+            })
+        },
+
+        /**
+         * Get the country from the state in a multiselect component format ({value: ___, label: ___})
+         *
+         * @param state Nomenclatures COUNTRIES state
+         */
+        getCountry4Multiselect: ( state ): IMultiselectBasic[] => {
+            return state.countries.map((countryData: ICountryBasic) => {
+                return { value: countryData.id, label: countryData.cName }
+            })
+        },
+
+        /**
+         * Get the country provinces / states in a multiselect component format ({value: ___, label: ___})
+         *
+         * @param state Nomenclatures COUNTRIES state
+         */
+        getCountryStates4Multiselect: ( state ): IMultiselectBasic[] => {
+            return state.states.map((stateData: ICountryStatesBasic) => {
+                return { value: stateData.id, label: stateData.sName }
             })
         },
 
@@ -72,9 +103,8 @@ export const useSt_Nomenclatures = defineStore({
 
         /**
          * tries to get the defines system users roles from the backend
-         * to make the actual request
          */
-        async reqNomencRoles () : Promise<void> {
+        async reqNmcRoles () : Promise<void> {
 
             return await new Promise<void>((resolve, reject) => {
                 ApiNomenclaturesMng.getRoles()
@@ -90,9 +120,8 @@ export const useSt_Nomenclatures = defineStore({
 
         /**
          * tries to get the supplier categories from the backend
-         * to make the actual request
          */
-        async reqNomencSuppCat () : Promise<void> {
+        async reqNmcSuppCat () : Promise<void> {
 
             return await new Promise<void>((resolve, reject) => {
                 ApiNomenclaturesMng.getSuppCat()
@@ -105,14 +134,49 @@ export const useSt_Nomenclatures = defineStore({
             })
 
         },
+
+        /**
+         * tries to get the countries from the backend
+         */
+        async reqNmcCountries () : Promise<void> {
+
+            return await new Promise<void>((resolve, reject) => {
+                ApiNomenclaturesMng.getCountries()
+                .then((response:any) => {
+
+                    this.countries = response.data
+                    resolve()
+
+                }).catch(error => { reject(error) })
+            })
+        },
+
+        /**
+         * tries to get the countries from the backend
+         * @param countryId Identifier of the country we want to look for
+         */
+        async reqNmcCountriesStates (countryId: number) : Promise<void> {
+
+            return await new Promise<void>((resolve, reject) => {
+                ApiNomenclaturesMng.getCountryStates(countryId)
+                .then((response:any) => {
+
+                    this.states = response.data
+                    resolve()
+
+                }).catch(error => { reject(error) })
+            })
+        },
     }
 })
 
 //region ======== STATE INTERFACE =======================================================
 
 interface IStaffState {
-    roles: Array<IRoleBasic>,
-    suppCat: Array<ISuppCatBasic>
+    roles:      Array<IRoleBasic>,
+    suppCat:    Array<ISuppCatBasic>,
+    countries:  Array<ICountryBasic>,
+    states:     Array<ICountryStatesBasic>                // states belonging to a determined / defined countries
 }
 
 //endregion =============================================================================

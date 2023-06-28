@@ -100,19 +100,18 @@ export default defineComponent({
         onMounted(() => {
             a_reqQuery()
 
-
             // getting supplier categories definitions from the system (side effect)
             // this is used to fetch supplier category basic data from the system so we can map the cat identifier to cat name in the datatable column
-            st_nomenclatures.reqNomencSuppCat()
+            st_nomenclatures.reqNmcSuppCat()
             .then(() => {
-                columns.value[6].fieldMulti = st_nomenclatures.getSuppCatForMultiselect
+                columns.value[6].fieldMulti = st_nomenclatures.getSuppCat4Multiselect
                 // the 6th column is 'category' / 'sCategoryID' column. In this datatable this is a (column) 'multi' filter
                 // (see filters in the declaration section). So, rather define the 'multi' filter data statically in the
                 // data-datable.ts file, we weed to do it dynamically. Hence this here and no the conventionally
                 // definition in data-datable.ts.
                 // ...
                 // Regarding the use of '.then()' for the callback, we jus could use async in the hook and later awaited
-                // (await) the reqNomencRoles() call ... but I like the old fashion way
+                // (await) the getSuppCat4Multiselect() call ... but I like the old fashion way
             })
             .catch(err => tfyCRUDFail(err, ENTITY_NAMES.ROLE, OPS_KIND_STR.REQUEST))
         })
@@ -290,9 +289,9 @@ export default defineComponent({
             h_intentToggleDisable
         }
     }
-
 })
 </script>
 
 <style scoped>
 </style>
+
