@@ -17,6 +17,7 @@
         <!-- at the time it provides support for Field forms -->
         <multiselect :options="options"
                      :placeholder="placeholder"
+                     :searchable="searchable"
                      :closeOnSelect="closeOnSelect"
                      :mode="mode"
                      :max="max"
@@ -96,6 +97,12 @@ export default defineComponent({
             type:     Boolean,
             default:  false,
             required: false
+        },
+        searchable:    {
+            description: 'Tells if the component must handle user input to filter available options',
+            type:        Boolean,
+            default:     false,
+            required:    false
         }
     },
     emits:      [ 'changehapend' ],
