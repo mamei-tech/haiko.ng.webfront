@@ -110,6 +110,10 @@ export interface IColumnHeader {
      * Tells to the component which kind of HTML input render
      */
     cellEditableInputType: HTML_INPUT_TYPE
+    /**
+     * Tell if we want to force the render of an empty cell on the table, when there is no data to render
+     */
+    forceEmptyRender: boolean
 }
 
 /***

@@ -290,7 +290,7 @@
                         :key="hindex + '' + rindex"
                 />
                 <!-- normal mode | non editable cell -->
-                <td v-else-if="hpr_chkHasValue(rowObj, header) && !header.hidden"
+                <td v-else-if="hpr_chkHasValue(rowObj, header, header.forceEmptyRender) && !header.hidden"
                     rowspan="1"
                     colspan="1"
                     :class="[ { 'text-right': header.styleToRight }, { 'text-left': header.styleToLeft }, { 'text-center': header.styleToCenter } ]"
@@ -719,11 +719,13 @@ export default defineComponent({
          * Check if the row object has a value corresponding to a specific header
          * @param obj row object
          * @param column object describing the header properties
+         * @param forceEmptyRender
          */
-        const hpr_chkHasValue = ( obj: any, column: IColumnHeader ): boolean => {
+        const hpr_chkHasValue = ( obj: any, column: IColumnHeader, forceEmptyRender: boolean | undefined = undefined ): boolean => {
             const key = hpr_getNavKey(column)
 
-            return obj[ key ] !== undefined
+            if (!forceEmptyRender) return obj[ key ] !== undefined
+            return true
         }
 
         /***
@@ -741,7 +743,7 @@ export default defineComponent({
          */
         const hpr_getRowValue = ( obj: any, column: IColumnHeader ): string | number => {
             const key = hpr_getNavKey(column)
-            return obj[ key ]
+            return obj[ key ] === undefined ? '' : obj[ key ]
         }
 
         /**
