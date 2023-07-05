@@ -82,13 +82,15 @@ export const HSupplierTable: Partial <IColumnHeader>[] = [
     { title: 'id', hidden: true },
     { title: 'name', navKey: 'sName', sorting: '' },
     { title: 'contact', navKey: 'contactName', sorting: '', forceEmptyRender: true },
-    { title: 'phone', navKey: 'sPhone', sorting: '', forceEmptyRender: true },
-    { title: 'active', styleToCenter: true, navKey: 'isActive', fieldSwitch: true },
+    { title: 'cell', navKey: 'cell', sorting: '', forceEmptyRender: true, styleWidth: 10 },
+    { title: 'phone', navKey: 'sPhone', sorting: '', forceEmptyRender: true, styleWidth: 10 },
+    { title: 'active', styleToCenter: true, navKey: 'isActive', fieldSwitch: true, styleWidth: 5 },
     { title: 'category', styleToCenter: true, navKey: 'sCategoryID' },
-    { title: 'products', navKey: 'pCount', styleToCenter: true },
+    { title: 'products', navKey: 'pCount',  sorting: '', styleToCenter: true, styleWidth: 8 },
+    { title: 'countryCode', hidden: true },
     {
         title:        '',            // actions buttons
         styleToRight: true,
-        styleWidth:   40
+        styleWidth:   5
     }
 ]

@@ -29,7 +29,7 @@ export class ApiNomenclaturesMng {
      *
      * @param countryId Identifier of the country we want to look for
      */
-    public static getCountryStates( countryId: number ): AxiosPromise<ICountryStatesBasic[]> {
+    public static getCountryStates( countryId: string ): AxiosPromise<ICountryStatesBasic[]> {
         return axios.get(url + `/countries/states/${ countryId }`)
     }
 

@@ -155,7 +155,7 @@ export const useSt_Nomenclatures = defineStore({
          * tries to get the countries from the backend
          * @param countryId Identifier of the country we want to look for
          */
-        async reqNmcCountriesStates (countryId: number) : Promise<void> {
+        async reqNmcCountriesStates (countryId: string) : Promise<void> {
 
             return await new Promise<void>((resolve, reject) => {
                 ApiNomenclaturesMng.getCountryStates(countryId)

@@ -7,22 +7,19 @@
 
                     <!-- FORM -->
                     <form class="form">
+
+                        <!-- id -->
+                        <CmpBasicInput
+                                disabled
+                                placeholder="###########"
+                                name="id"
+                                type="hidden"
+                                v-model="iniFormData.id"
+                        />
+
                         <div class="row">
 
                             <div class="col-xm-12 col-md-6">
-                                <!-- id -->
-                                <div class="row">
-                                    <div class="col-md-9">
-                                        <CmpBasicInput
-                                                disabled
-                                                placeholder="###########"
-                                                name="id"
-                                                type="hidden"
-                                                v-model="iniFormData.id"
-                                        />
-                                    </div>
-                                </div>
-
                                 <!-- role name -->
                                 <div class="row">
                                     <label class="text-sm-left text-md-right col-md-3 col-form-label">
@@ -40,12 +37,6 @@
                             </div>
 
                             <div class="col-xm-12 col-md-6">
-
-                                <!-- ust for padding 'cause the hidden id field -->
-                                <div class="row">
-                                    <div class="form-group"></div>
-                                </div>
-
                                 <!-- description -->
                                 <div class="row">
                                     <label class="text-sm-left text-md-right col-md-3 col-form-label">
@@ -60,7 +51,6 @@
                                         />
                                     </div>
                                 </div>
-
                             </div>
 
                             <div class="col-xm-12 col-md-6">

@@ -85,7 +85,7 @@ export default defineComponent({
         const filters = [ 'sCategoryID', 'isActive' ]                                       // datatable filters  !!! you must use the real field names (nav keys in the HStaffTable object)
 
         const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
-        const { dfyConfirmation, dfyShowAlert } = useDialogfy()
+        const { dfyConfirmation } = useDialogfy()
 
         //#endregion ==========================================================================
 
@@ -104,7 +104,7 @@ export default defineComponent({
             // this is used to fetch supplier category basic data from the system so we can map the cat identifier to cat name in the datatable column
             st_nomenclatures.reqNmcSuppCat()
             .then(() => {
-                columns.value[6].fieldMulti = st_nomenclatures.getSuppCat4Multiselect
+                columns.value[7].fieldMulti = st_nomenclatures.getSuppCat4Multiselect
                 // the 6th column is 'category' / 'sCategoryID' column. In this datatable this is a (column) 'multi' filter
                 // (see filters in the declaration section). So, rather define the 'multi' filter data statically in the
                 // data-datable.ts file, we weed to do it dynamically. Hence this here and no the conventionally
@@ -191,8 +191,16 @@ export default defineComponent({
          * Handler for the intent of edit a record from the table
          * @param rowData data of the row
          */
-        const h_navEditSuppIntent = ( rowData: ISupplierCatRow ): void => {
-            router.push({
+        const h_navEditSuppIntent = async ( rowData: ISupplierRow ): Promise<void> => {
+
+            // in edition mode the country & state Multiselect components present in ViewFormSuppliers need to have the data before the component can render the entity selected option according with the entity data
+            // so we call the data before tell the router to show de edit. An alternative to this could be having reactive vars in the form template to tell when to render (render after the data of the Multiselect option is present) and get the data in the OnMount hook in the form.
+            // ... so, getting needed data in edition form
+            st_nomenclatures.reqNmcCountries().catch(err => tfyCRUDFail(err, ENTITY_NAMES.COUNTRY, OPS_KIND_STR.REQUEST))
+            if (rowData.countryCode)
+                await st_nomenclatures.reqNmcCountriesStates(rowData.countryCode)
+
+            await router.push({
                 name:   RoutePathNames.supplierEdit,
                 params: {
                     fmode: FMODE.EDIT as TFormMode,

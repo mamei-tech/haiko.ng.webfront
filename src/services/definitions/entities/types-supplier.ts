@@ -22,11 +22,35 @@ export interface IDtoSupplierCat extends ISupplierCatRow {
  */
 export interface ISupplierRow extends IIndexable {
     sName: string,
-    contactName: string,
-    sPhone: string,
+    contactName: string | undefined,
+    sPhone: string | undefined,
+    cell: string,
     isActive: boolean,
     sCategoryID: number | string
     pCount: number
+    countryCode: string | undefined,
+}
+
+/**
+ * Supplier DTO
+ */
+export interface IDtoSupplier extends ISupplierRow {
+    sName: string,
+    sContactNotes: string | undefined,
+    sInternalNotes: string | undefined,
+    sCategoryID: number | string,
+
+    sEmail: string | undefined,
+    sWebSite: string | undefined,
+    sAddress: string | undefined,
+    stateCode: string | undefined,
+    zip?: number,
+
+    isCompany: boolean,
+
+    purchasesCountPend: number,
+    purchasesCountTotal: number,
+    purchasesCountValue: number
 }
 
 /**

@@ -3,38 +3,41 @@
         "scrollInfo": "Debe proporcionar las props de infoParent y elem"
     },
     "btn":           {
-        "val-yes":            "si",
-        "val-no":             "no",
-        "val-login":          "entrar",
-        "val-edit":           "Editar",
-        "val-del":            "Eliminar",
-        "val-save":           "Guardar",
-        "val-apply":          "Aplicar",
-        "val-cancel":         "Cancelar",
-        "val-details":        "Detalles",
-        "tip-back":           "Ir atrás",
-        "tip-create-new":     "Crear nuevo",
-        "tip-add-time-range": "Adicionar rango de tiempo",
-        "tip-enable-sel":     "Habilitar selección de {subject}",
-        "tip-disable-sel":    "Deshabilitar selección de {subject}",
-        "tip-remove-sel":     "Eliminar selección de {subject}",
-        "tip-remove-entity":  "Eliminar la entidad",
-        "tip-cancel":         "Descartar cambios",
-        "tip-save":           "Guardar cambios",
-        "tip-save-stay":      "Guardar cambios y continuar en el formulario",
-        "tip-back-top":       "Subir",
-        "tip-rm-picture":     "Eliminar imagen",
-        "tip-grant-all":      "Otorgar todos los permisos",
-        "tip-revoke-all":     "Revocar todos los permisos"
+        "val-yes":                 "si",
+        "val-no":                  "no",
+        "val-login":               "entrar",
+        "val-edit":                "Editar",
+        "val-del":                 "Eliminar",
+        "val-save":                "Guardar",
+        "val-apply":               "Aplicar",
+        "val-cancel":              "Cancelar",
+        "val-details":             "Detalles",
+        "tip-back":                "Ir atrás",
+        "tip-create-new":          "Crear nuevo",
+        "tip-add-time-range":      "Adicionar rango de tiempo",
+        "tip-enable-sel":          "Habilitar selección de {subject}",
+        "tip-disable-sel":         "Deshabilitar selección de {subject}",
+        "tip-remove-sel":          "Eliminar selección de {subject}",
+        "tip-remove-entity":       "Eliminar la entidad",
+        "tip-cancel":              "Descartar cambios",
+        "tip-save":                "Guardar cambios",
+        "tip-save-stay":           "Guardar cambios y continuar en el formulario",
+        "tip-back-top":            "Subir",
+        "tip-rm-picture":          "Eliminar imagen",
+        "tip-grant-all":           "Otorgar todos los permisos",
+        "tip-revoke-all":          "Revocar todos los permisos",
+        "tip-action-clone":        "Clonar {subject}",
+        "tip-action-gen-vcard":    "Genera un fichero VCard para descargar con la información de contacto",
+        "tip-action-gen-vcard-qr": "Genera un QR con la información de contacto"
     },
-    "nav": {
+    "nav":           {
         "sb": {
             "people":    "Personas",
             "inventory": "Inventario",
             "ops":       "Operaciones"
         }
     },
-    "data": {
+    "data":          {
         "status":             "Estado",
         "_id":                "ID",
         "id":                 "@:data._id",
@@ -50,8 +53,8 @@
         "u-ratio-reference":  "unidad de referencia",
         "u-ratio-up":         "↑ u. de referencia",
         "color":              "Color",
-        "company": "Empresa",
-        "individual": "Individuo"
+        "company":            "Empresa",
+        "individual":         "Individuo"
     },
     "others":        {
         "enable":           "Activo",
@@ -88,7 +91,7 @@
         "request-pas":     "solicitado",
         "request-gerund":  "de solicitud"
     },
-    "dialogs": {
+    "dialogs":       {
         "title-alert":               "Atención",
         "title-alert-not-allowed":   "No permitido",
         "confirm":                   "Por favor, confirme",
@@ -111,7 +114,7 @@
         "empty-stores":          "No se encontraron tiendas de acuerda con tipo establecido.",
         "no-item-type-selected": "El producto no puede ser creado, debe seleccionar un tipo de producto."
     },
-    "validation": {
+    "validation":    {
         "invalid":                           "El campo no contiene valores válidos. ",
         "required":                          "El campo es requerido",
         "email":                             "El campo debe contener un email válido",
@@ -137,35 +140,51 @@
         "uom-list-ref-exist":                "Debe existir al menos una unidad de referencia",
         "uom-list-min":                      "Al menos debe existir una unidad para la categoría",
         "uom-list-active":                   "La unidad de referencia debe estar activa",
-        "uom-ratio-gt-zero":                 "El ratio de conversión debe ser un número positivo mayor o igual que 1"
+        "uom-ratio-gt-zero":                 "El ratio de conversión debe ser un número positivo mayor o igual que 1",
+        "same-phone":                        "Los dos números de teléfono no deben ser iguales",
+        "country-code-present":              "Si se selecciona el país, entonces la selección de la provincia es obligatoria"
     },
     "form":          {
         "section":       {
             "staff-information": "Información del Staff"
         },
         "fields-common": {
-            "country":          "País",
-            "country-state":    "Prov/Est",
-            "website":          "Web",
-            "address":          "Dirección",
-            "change-password":  "Cambiar password",
-            "set-password":     "Definir password",
-            "password":         "Contraseña",
-            "password-confirm": "Confirmación",
-            "username":         "Nombre de usuario",
-            "firstname":        "Nombre",
-            "lastname":         "Apellidos",
-            "cell":             "Cel",
-            "email":            "E-mail",
-            "phone":            "Teléfono"
+            "country":           "País",
+            "country-state":     "Prov/Est",
+            "website":           "Web",
+            "address":           "Dirección",
+            "change-password":   "Cambiar password",
+            "set-password":      "Definir password",
+            "password":          "Contraseña",
+            "password-confirm":  "Confirmación",
+            "username":          "Nombre de usuario",
+            "firstname":         "Nombre",
+            "lastname":          "Apellidos",
+            "cell":              "Cell",
+            "email":             "E-mail",
+            "phone":             "Teléfono",
+            "info":              "Información",
+            "notes":             "Notas",
+            "view-check":        "Ver",
+            "month-pass-min":    "m. pasado",
+            "month-current-min": "m. corriente",
+            "year-pass-min":     "a. pasado",
+            "year-current-min":  "a. actual"
         },
         "fields":        {
-            "staff": {
+            "staff":     {
                 "system-role": "Rol"
             },
             "suppliers": {
-                "sContactNotes": "Notas de Contacto",
-                "isCompany":     "@:data.company / @:data.individual"
+                "sContactNotes":              "Notas de Contacto",
+                "sInternalNotes":             "Notas Internas",
+                "isCompany":                  "@:data.company / @:data.individual",
+                "tab-purchases":              "@:entities.purchase.name",
+                "tab-contact-plus":           "+ Info d' Contacto",
+                "stat-products":              "@:table-headers.products",
+                "stat-purchases-pend":        "Compras pendientes",
+                "stat-purchases-count":       "Total de compras",
+                "stat-purchases-count-value": "Valor total de compras"
             }
         },
         "placeholders":  {
@@ -185,8 +204,9 @@
             "search":                 "buscar",
             "email":                  "correo.{'@'}.dominio.que",
             "uom-type-select":        "ratio de conversión",
+            "suppliers-company-name": "ej. La Primordial",
             "supplier-cat-name":      "@:data.name para la categoría de proveedores",
-            "supplier-contact":       "Nombre de contacto con el proveedor",
+            "supplier-contact":       "Nombre de contacto con el proveedor, ej. Pepe Bouza",
             "supplier-contact-notes": "Notas acerca del nombre del contacto",
             "supplier-category":      " - @:table-headers.category - "
         }
@@ -209,19 +229,20 @@
         "units":       "@:entities.uom.section-name",
         "description": "@:data.description",
         "phone":       "Teléfono",
+        "cell":        "Celular",
         "products":    "Productos"
     },
     "entities":      {
-        "default": "entidades",
-        "staff":   {
+        "default":      "entidades",
+        "staff":        {
             "name":         "Staff {ref}",
             "section-name": "@:entities.staff.name"
         },
-        "role":    {
+        "role":         {
             "name":         "Rol {ref}",
             "section-name": "Roles"
         },
-        "uom": {
+        "uom":          {
             "name":         "Unidad de Medida {ref}",
             "section-name": "Unidades",
             "u-type":       "Tipo de unidad"
@@ -230,16 +251,16 @@
             "name":         "@:{'table-headers.category'} de unidades",
             "section-name": "Unidades"
         },
-        "purchase": {
-            "name": "Compras {ref}",
+        "purchase":     {
+            "name":         "Compras {ref}",
             "section-name": "Solicitudes de Compras"
         },
-        "supplier": {
-            "name": "Proveedor {ref}",
+        "supplier":     {
+            "name":         "Proveedor {ref}",
             "section-name": "@:{'entities.supplier.name'}"
         },
         "supplier-cat": {
-            "name": "Categorías de Proveedor {ref}",
+            "name":         "Categorías de Proveedor {ref}",
             "section-name": "@:{'entities.suppliers-cat.name'}"
         }
     }

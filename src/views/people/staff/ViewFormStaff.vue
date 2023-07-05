@@ -299,7 +299,8 @@ export default defineComponent({
                 // component) we need a reactive for the edition mode (when de data comes from server), so this.
                 // Perhaps we can try the v-model way
 
-                iniFormData.avatarPath = formDataFromServer.avatarPath
+                // iniFormData.avatarPath = formDataFromServer.avatarPath
+                Object.assign(iniFormData, formDataFromServer)                          // shallow (primitive values only) copy of form data
             }
 
             // keyboard keys event handler, we need to clean this kind of event when the component are destroyed

@@ -1,5 +1,4 @@
-import type { IDtoSupplierCat, IDtoUoMCategory } from '@/services/definitions'
-import type { IDtoRole, IDtoStaff, IDtoUoM } from '@/services/definitions'
+import type { IDtoRole, IDtoStaff, IDtoUoM, IDtoSupplier, IDtoSupplierCat, IDtoUoMCategory } from '@/services/definitions'
 
 
 export default function useFactory() {
@@ -71,13 +70,44 @@ export default function useFactory() {
         }
     }
 
+    const mkSupplier = (): IDtoSupplier => {
+        return {
+            id: 0,
+            sName: '',
+            contactName: undefined,
+            sContactNotes: undefined,
+            sInternalNotes: undefined,
+            sCategoryID: '',
+
+            sEmail: undefined,
+            sPhone: undefined,
+            cell: '',
+            sWebSite: undefined,
+            sAddress: undefined,
+            countryCode: undefined,
+            stateCode: undefined,
+            zip: undefined,
+
+            isCompany: false,
+            isActive: true,
+
+            pCount: 0,
+            purchasesCountPend: 0,
+            purchasesCountTotal: 0,
+            purchasesCountValue: 0
+        }
+    }
+
     //#endregion ==========================================================================
 
     return {
         mkRole,
         mkStaff,
+
         mkUoM,
         mkUoMCategory,
+
+        mkSupplier,
         mkSupplierCat
     }
 }

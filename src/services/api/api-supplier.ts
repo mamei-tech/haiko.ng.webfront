@@ -4,12 +4,12 @@ import useFactory from '@/services/composables/useFactory'
 import { HTTP_RESPONSES } from '@/services/definitions'
 
 import type { AxiosPromise } from 'axios'
-import type { ISupplierCatRow, IDataTableQuery, IDataTablePage, IDtoSupplierCat, ISupplierRow } from '@/services/definitions'
+import type { ISupplierCatRow, IDataTableQuery, IDataTablePage, IDtoSupplierCat, ISupplierRow, IDtoSupplier } from '@/services/definitions'
 
 
 const version = config.server.current_version
 const url = `v${ version }/mngmt/cmsupplier`
-const { mkSupplierCat } = useFactory()
+const { mkSupplierCat, mkSupplier } = useFactory()
 
 /**
  * REST API class for backend interaction logic related with Nomenclatures at manager level
@@ -68,6 +68,16 @@ export class ApiSupplier {
     }
 
     /**
+     * Create / insert a new Supplier on the system
+     *
+     * @param newSupplier
+     * @returns Promise with the identifier of the just created entity
+     */
+    public static insertSupplier( newSupplier: IDtoSupplier ): AxiosPromise<number>  {
+        return axios.post(url, newSupplier)
+    }
+
+    /**
      * Invoke an api call to delete a Supplier Category from the server
      * @param categoryId Supplier Category identifier to be deleted
      */
@@ -92,12 +102,30 @@ export class ApiSupplier {
     }
 
     /**
+     * Get formulary data information from server, pertaining to a Supplier given its identifier.
+     * This is mostly used in form population
+     * @param supplierId Supplier identifier to look for
+     */
+    public static reqSupplierById (supplierId: number): AxiosPromise<IDtoSupplier> {
+        return axios.get(url + `/${ supplierId }`)
+    }
+
+    /**
      * Make the request to update the Supplier Category data
      *
      * @param payload
      */
     public static reqUpdateSupplierCategory( payload: IDtoSupplierCat ): AxiosPromise<void> {
         return axios.put(url + '/category', payload)
+    }
+
+    /**
+     * Make the request to update the Supplier data
+     *
+     * @param payload entity data used to update the entity
+     */
+    public static reqUpdateSupplier( payload: IDtoSupplier ): AxiosPromise<void> {
+        return axios.put(url, payload)
     }
 
     /**
@@ -113,12 +141,26 @@ export class ApiSupplier {
     //#region ======= DATA READY METHODS ==================================================
 
     /**
-     * Tries to get formulary data information, pertaining to a SupplierCategory given its identifier.
+     * Tries to get formulary data information, pertaining to a Supplier given its identifier.
      * ❗ If information from server could not be obtained, an empty Entity will be returned then
+     * This is mostly used in form population
      *
      * @param id SupplierCategory identifier
      */
-    public static async getStaffById( id: number ): Promise<IDtoSupplierCat> {
+    public static async getSuppById( id: number ): Promise<IDtoSupplier> {
+        const response = await ApiSupplier.reqSupplierById(+id)
+
+        if (response.status === HTTP_RESPONSES.OK) return response.data as IDtoSupplier
+        return mkSupplier()
+    }
+
+    /**
+     * Tries to get formulary data information, pertaining to a SupplierCategory given its identifier.
+     * ❗ If information from server could not be obtained, an empty Entity will be returned then
+     * This is mostly used in form population
+     * @param id SupplierCategory identifier
+     */
+    public static async getSuppCatById( id: number ): Promise<IDtoSupplierCat> {
         const response = await ApiSupplier.reqSupplierCatById(+id)
 
         if (response.status === HTTP_RESPONSES.OK) return response.data as IDtoSupplierCat

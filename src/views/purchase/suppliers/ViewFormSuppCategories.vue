@@ -9,17 +9,13 @@
                     <form class="form-horizontal">
 
                         <!-- id -->
-                        <div class="row">
-                            <div class="col-md-9">
-                                <CmpBasicInput
-                                        disabled
-                                        placeholder="###########"
-                                        name="id"
-                                        type="hidden"
-                                        v-model="iniFormData.id"
-                                />
-                            </div>
-                        </div>
+                        <CmpBasicInput
+                                disabled
+                                placeholder="###########"
+                                name="id"
+                                type="hidden"
+                                v-model="iniFormData.id"
+                        />
 
                         <div class="row">
 
@@ -155,7 +151,9 @@ export default defineComponent({
         onMounted(async () => {
 
             if (cpt_fMode.value === FMODE.EDIT as TFormMode) {
-                formDataFromServer = await ApiSupplier.getStaffById(+id)
+                formDataFromServer = await ApiSupplier.getSuppCatById(+id)
+
+                Object.assign(iniFormData, formDataFromServer)                          // shallow (primitive values only) copy of form data
 
                 // setValues(formDataFromServer)
                 resetForm( {
