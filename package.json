@@ -17,6 +17,7 @@
     "perfect-scrollbar": "^1.5.5",
     "pinia": "^2.0.16",
     "pinia-plugin-persistedstate": "^2.2.0",
+    "qrcode-generator": "^1.4.4",
     "query-string": "^7.1.1",
     "sass": "^1.54.3",
     "sass-loader": "^13.0.2",

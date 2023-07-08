@@ -12,7 +12,7 @@ import { VSchemaAuth } from '@/services/definitions/validations/validations-auth
 import { VSchemaRole } from '@/services/definitions/validations/validations-rbac'
 
 import type { Problem, ErrorDictionary } from '@/services/definitions/types-errors'
-import type { TOpsKind, Function0, Function1, IColumnHeader, IDataTableQuery, ITableChkEmit, TBulkAction, ById, IIndexable, IChecked, Filter, IDataListBasicResponse, TFormMode, TActionKind, IdsArray, IBulkData, IMultiselectBasic, IShell, IScrollInfo, IDataTablePage, ICellUpdate } from './types-common'
+import type { TOpsKind, Function0, Function1, IColumnHeader, IDataTableQuery, ITableChkEmit, TBulkAction, ById, IIndexable, IChecked, Filter, IDataListBasicResponse, TFormMode, TActionKind, IdsArray, IBulkData, IMultiselectBasic, IShell, IScrollInfo, IDataTablePage, ICellUpdate, IvCard } from './types-common'
 import type { IStaffRow, IDtoStaff } from '@/services/definitions/entities/types-staff'
 import type { IRoleBasic, IDtoRole, IPermAssocId, IPermAssoc, IGroupPermsDict } from '@/services/definitions/entities/types-rbac'
 import type { IDtoUoM, IDtoUoMCategory } from '@/services/definitions/entities/types-uom'
@@ -68,7 +68,7 @@ export {
     // Common Types
     Problem,
     ErrorDictionary,
-    IDataTableQuery, ITableChkEmit, IColumnHeader, IIndexable, IChecked, IDataListBasicResponse, IBulkData, IMultiselectBasic, IShell, IScrollInfo, IDataTablePage, IGroupPermsDict, ICellUpdate,
+    IDataTableQuery, ITableChkEmit, IColumnHeader, IIndexable, IChecked, IDataListBasicResponse, IBulkData, IMultiselectBasic, IShell, IScrollInfo, IDataTablePage, IGroupPermsDict, ICellUpdate, IvCard,
     ById, TBulkAction, Filter, TFormMode, TActionKind, IdsArray,
     ALIGN_POSITION,
 

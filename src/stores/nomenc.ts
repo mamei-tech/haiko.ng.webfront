@@ -7,6 +7,7 @@ import { ApiNomenclaturesMng } from '@/services/api/api-nomenclatures-manager'
 
 import type {
     ById,
+    Function1,
     ICountryBasic,
     ICountryStatesBasic,
     IMultiselectBasic,
@@ -76,6 +77,17 @@ export const useSt_Nomenclatures = defineStore({
             return state.states.map((stateData: ICountryStatesBasic) => {
                 return { value: stateData.id, label: stateData.sName }
             })
+        },
+
+        /**
+         * Retrieve a state / province name according with the given state code (e.g 'LH' -> 'La Habana')
+         * reference: https://pinia.vuejs.org/core-concepts/getters.html#passing-arguments-to-getters
+         */
+        getStatesByCode: ( state ): Function1<string, string> => {
+            return ( code: string ): string => {
+                const s = state.states.find(( cState: ICountryStatesBasic ) => cState.id.toString() === code)
+                return s?.sName ?? ''
+            }
         },
 
         /**

@@ -314,3 +314,50 @@ export interface IMultiselectBasic {
     value: number|string,
     label: string
 }
+
+
+/**
+ * vCard v4 interface so the necesary props are defined
+ * reference -> https://github.com/joonhocho/vcard-generator
+ */
+export interface IvCard {
+    name: Partial<IvCardName>,
+    nickname?: string | undefined,
+    work: Partial<IvCardWork>
+    emails: Array<{ type: string | undefined, text: string }> | undefined
+    phones: Array<{ type: string | undefined, text: string }> | undefined
+    addresses: Array<Partial<IvCardAddress>>
+    note: { text: string } | undefined                                                      // ! in supplier case use INTERNAL NOTES
+}
+
+/**
+ * Just used in IvCard interface definition
+ */
+interface IvCardName {
+    familyName: string,
+    givenName: string,
+    middleName: string | undefined,
+    prefix: string | undefined,
+    suffix: string | undefined
+}
+
+/**
+ * Just used in IvCard interface definition
+ */
+interface IvCardWork {
+    organization: string,
+    title: string | undefined,
+    role: string | undefined                                                            // ! in supplier (for ROLE) case use CONTACT NOTES |
+}
+
+/**
+ * Just used in IvCard interface definition
+ */
+interface IvCardAddress {
+    type: string | undefined,
+    street: string,
+    locality: string | undefined,
+    region: string | undefined,                                                         // ! in supplier case use STATECODE |
+    code: number | undefined,                                                           // ! in supplier case use ZIP |
+    country: string | undefined                                                         // ! in supplier case use COUNTRY CODE |
+}

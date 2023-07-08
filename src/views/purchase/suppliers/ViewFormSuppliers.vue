@@ -6,7 +6,7 @@
                 <CmpCard :hasFormBackBtn="true" v-on:doClick="h_back">
 
                     <!-- card / form action bard -->
-                    <template v-slot:card-actionbar>
+                    <template v-if="cpt_fMode === 'edit' " v-slot:card-actionbar>
                         <button :title="$t('btn.tip-action-clone', {subject: $t('entities.supplier.name') } )"
                                 style="float: right"
                                 class="btn btn-icon btn-default ml-1"
@@ -177,7 +177,7 @@
                                         </CmpMultiselectField>
                                     </div>
                                 </div>
-                                <!-- normal mode -->
+                                <!-- normal mode (form crete mode) -->
                                 <div class="row" v-else>
                                     <label class="text-sm-left text-md-right col-md-3 col-form-label">
                                         {{ $t('form.fields-common.country') }}
@@ -217,8 +217,7 @@
                                                              name="stateCode"
                                                              class="mb-2"
                                                              closeOnSelect
-                                                             ref="ref_selectStates"
-                                        >
+                                                             ref="ref_selectStates">
 
                                             <!--option coming from slot child component ('slots props') [option] -->
                                             <template #customOption="{option}">
@@ -231,7 +230,6 @@
                                                     {{ value.label }}
                                                 </div>
                                             </template>
-
                                         </CmpMultiselectField>
                                     </div>
                                 </div>
@@ -540,6 +538,33 @@
                     </template>
                 </CmpCard>
 
+                <!-- MODALS -->
+                <!-- modal contact vCard -->
+                <CmpModal v-model:show="isModalShowing"
+                          class="modal-black"
+                          id="searchModal"
+                          :centered="false"
+                          :show-close="true"
+                          @close="h_modalVcardClosing()"
+                          headerClasses="justify-content-center">
+
+                    <template v-slot:header>
+                        <h4 class="title title-up">{{ $t( 'modals.vcard' ) }}</h4>
+                    </template>
+
+                    <template v-slot:default>
+                        <div class="row">
+                            <div class="col-12" style="text-align: center;">
+                                {{ $t( 'modals.vcard-info' ) }}
+                            </div>
+                            <div class="col-12 mt-2" style="display: flex; justify-content: center;">
+                                <img :src="qrimage" alt="vcard-contact-image" class="mb-3">
+                            </div>
+                        </div>
+
+                    </template>
+                </CmpModal>
+
             </div>
         </div>
     </transition>
@@ -555,7 +580,8 @@ import { useSt_Nomenclatures } from '@/stores/nomenc'
 import { ApiSupplier } from '@/services/api/api-supplier'
 import useFactory from '@/services/composables/useFactory'
 import useToastify from '@/services/composables/useToastify'
-import { CmpCard, CmpCardStats, CmpFormActionsButton, CmpBasicInput, CmpMultiselectField, CmpVeeCheckbox, CmpTab, CmpTabContent, CmpTextInput } from '@/components'
+import useQrCodes from '@/services/composables/useQrCodes'
+import { CmpCard, CmpCardStats, CmpFormActionsButton, CmpBasicInput, CmpMultiselectField, CmpVeeCheckbox, CmpTab, CmpTabContent, CmpTextInput, CmpModal } from '@/components'
 import { ENTITY_NAMES, FMODE, KEYS, OPS_KIND_STR, RoutePathNames } from '@/services/definitions'
 import { VSchemaSupplier } from '@/services/definitions/validations/validations-suppliers'
 
@@ -569,6 +595,7 @@ export default defineComponent({
     components: {
         Field,
         CmpCard,
+        CmpModal,
         CmpCardStats,
         CmpTextInput,
         CmpBasicInput,
@@ -592,11 +619,17 @@ export default defineComponent({
         const { fmode, id } = route.params                                      // remember, fmode (form mode) property denotes the mode this form view was called | checkout the type TFormMode in types definitions
 
         const { mkSupplier } = useFactory()
+        const { mkVCardQrImg } = useQrCodes()
 
         // html references
         const ref_selectStates = ref<InstanceType<typeof Multiselect>>()        // reference to country province / states select field
 
-        // -- form data
+        // helpers
+        const qrimage = ref()
+        const isModalShowing = ref(false)
+        const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
+
+        // form data
         const activeTabId = ref<number>(1)
         const iniFormData = reactive<IDtoSupplier>(mkSupplier())                // initial form data
         const tabs = [                                                   // form tabs data array
@@ -633,8 +666,6 @@ export default defineComponent({
             }
         ])
         let formDataFromServer: IDtoSupplier | undefined = undefined            // aux variable to save entity data requested from the server
-
-        const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
 
         //endregion ===========================================================================
 
@@ -803,8 +834,32 @@ export default defineComponent({
          * Generate a VCard QR with the supplier info, son the image can be scanned
          */
         const h_formBtnAction_QR = () => {
-            // TODO implement this
-            console.error('action btn << qr >>')
+            isModalShowing.value = true
+            let names = iniFormData.contactName?.split(' ') ?? []               // stripping the contact name
+
+            qrimage.value = mkVCardQrImg({
+                name:      {
+                    givenName:  names[ 0 ] ?? '',
+                    familyName: `${ names[ 1 ] ?? '' } ${ names[ 2 ] ?? '' }`
+                },
+                work:      { role: iniFormData.sContactNotes, title: '', organization: iniFormData.sName ?? '' },
+                emails:    [ { type: t('data.work'), text: iniFormData.sEmail ?? '' } ],
+                phones:    [
+                    { type: t('table-headers.cell'), text: iniFormData.cell ?? undefined },
+                    { type: t('table-headers.land-phone'), text: iniFormData.sPhone ?? '' }
+                ],
+                addresses: [
+                    {
+                        type:     t('data.work'),
+                        street:   iniFormData.sAddress,
+                        code:     iniFormData.zip ?? undefined,
+                        country:  iniFormData.countryCode,
+                        region:   iniFormData.stateCode ?? undefined,
+                        locality: st_nomenclatures.getStatesByCode(!iniFormData.stateCode ? '' : iniFormData.stateCode)
+                    }
+                ],
+                note:      iniFormData.sInternalNotes ? { text: iniFormData.sInternalNotes } : undefined
+            })
         }
 
         /**
@@ -812,7 +867,7 @@ export default defineComponent({
          */
         const h_formBtnAction_DownloadVCard = () => {
             // TODO implement this
-            console.error('action btn << vcard >>')
+            console.error('action btn << vcard file >>')
         }
 
         const h_tabChange = ( tabId: number ) => {
@@ -890,9 +945,15 @@ export default defineComponent({
             await st_nomenclatures.reqNmcCountriesStates(countryId)
         }
 
-        //#endregion ==========================================================================
+        const h_modalVcardClosing = () => {
+            isModalShowing.value = false
+            qrimage.value = undefined
+        }
 
         return {
+            qrimage,
+            isModalShowing,
+
             tabs,
             iniFormData,
             activeTabId,
@@ -909,6 +970,7 @@ export default defineComponent({
             h_beforeSubmit,
             h_countryChange,
             h_keyboardKeyPress,
+            h_modalVcardClosing,
 
             h_statGoCheck,
             h_staticsRestore,
@@ -920,6 +982,8 @@ export default defineComponent({
 
             ENTITY_NAMES
         }
+
+        //#endregion ==========================================================================
     }
 
 })

@@ -2,6 +2,10 @@
     "alerts":        {
         "scrollInfo": "Debe proporcionar las props de infoParent y elem"
     },
+    "modals":        {
+        "vcard":      "vCard",
+        "vcard-info": "escanea para guardar el contacto"
+    },
     "btn":           {
         "val-yes":                 "si",
         "val-no":                  "no",
@@ -54,7 +58,8 @@
         "u-ratio-up":         "↑ u. de referencia",
         "color":              "Color",
         "company":            "Empresa",
-        "individual":         "Individuo"
+        "individual":         "Individuo",
+        "work":               "trabajo"
     },
     "others":        {
         "enable":           "Activo",
@@ -229,6 +234,7 @@
         "units":       "@:entities.uom.section-name",
         "description": "@:data.description",
         "phone":       "Teléfono",
+        "land-phone":  "Fijo",
         "cell":        "Celular",
         "products":    "Productos"
     },
