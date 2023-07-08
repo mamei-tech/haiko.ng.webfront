@@ -532,7 +532,7 @@
                         <CmpFormActionsButton
                                 :show-delete="cpt_fMode === 'edit'"
                                 v-on:saveIntent="h_beforeSubmit"
-                                v-on:deleteIntent="h_delete"
+                                v-on:deleteIntent="h_intentDelete"
                                 v-on:cancelIntent="h_back"
                         />
                     </template>
@@ -581,8 +581,9 @@ import { ApiSupplier } from '@/services/api/api-supplier'
 import useFactory from '@/services/composables/useFactory'
 import useToastify from '@/services/composables/useToastify'
 import useQrCodes from '@/services/composables/useQrCodes'
+import useDialogfy from '@/services/composables/useDialogfy'
 import { CmpCard, CmpCardStats, CmpFormActionsButton, CmpBasicInput, CmpMultiselectField, CmpVeeCheckbox, CmpTab, CmpTabContent, CmpTextInput, CmpModal } from '@/components'
-import { ENTITY_NAMES, FMODE, KEYS, OPS_KIND_STR, RoutePathNames } from '@/services/definitions'
+import { ACTION_KIND_STR, ENTITY_NAMES, FMODE, KEYS, OPS_KIND_STR, RoutePathNames } from '@/services/definitions'
 import { VSchemaSupplier } from '@/services/definitions/validations/validations-suppliers'
 
 import type Multiselect from '@vueform/multiselect'
@@ -620,6 +621,8 @@ export default defineComponent({
 
         const { mkSupplier } = useFactory()
         const { mkVCardQrImg } = useQrCodes()
+        const { dfyConfirmation } = useDialogfy()
+        const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
 
         // html references
         const ref_selectStates = ref<InstanceType<typeof Multiselect>>()        // reference to country province / states select field
@@ -627,7 +630,6 @@ export default defineComponent({
         // helpers
         const qrimage = ref()
         const isModalShowing = ref(false)
-        const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
 
         // form data
         const activeTabId = ref<number>(1)
@@ -736,7 +738,7 @@ export default defineComponent({
                     hpr_clearStateSelect()                                                  // cleaning select field
                 }
 
-            }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.SUPPLIER_CAT, OPS_KIND_STR.ADDITION))
+            }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.SUPPLIER, OPS_KIND_STR.ADDITION))
         }
 
         /**
@@ -754,6 +756,20 @@ export default defineComponent({
                 if(!doWeNeedToStay) h_back()                                  // so we are going back to the data table
 
             }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.SUPPLIER_CAT, OPS_KIND_STR.UPDATE))
+        }
+
+        /**
+         * Request the deletion of a supplier to the backend
+         * @param suppId Supplier identifier
+         * @param ref Subject Entity reference e.g identifier, name or something like that
+         */
+        const a_delete = async (suppId: number, ref: undefined | string = undefined ): Promise<void> => {
+            ApiSupplier.reqDeleteSupp(suppId)
+            .then(( response: any ) => {
+                tfyCRUDSuccess(ENTITY_NAMES.SUPPLIER, OPS_KIND_STR.DELETION, ref)
+                h_back()
+            })
+            .catch(error => tfyCRUDFail(error, ENTITY_NAMES.SUPPLIER, OPS_KIND_STR.DELETION, ref))
         }
 
         //#endregion ==========================================================================
@@ -814,8 +830,11 @@ export default defineComponent({
             router.push({ name: RoutePathNames.supplier })
         }
 
-        const h_delete = async ( evt: any ) => {
-            console.error('delete')
+        const h_intentDelete = async ( evt: any ) => {
+            if (cpt_fMode.value !== FMODE.EDIT as TFormMode) return
+
+            const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.SUPPLIER, iniFormData.sName)
+            if (wasConfirmed) await a_delete(iniFormData.id, iniFormData.sName)
         }
 
         const h_keyboardKeyPress = ( evt: any ) => {
@@ -965,8 +984,8 @@ export default defineComponent({
             st_nomenclatures,
 
             h_back,
-            h_delete,
             h_tabChange,
+            h_intentDelete,
             h_beforeSubmit,
             h_countryChange,
             h_keyboardKeyPress,

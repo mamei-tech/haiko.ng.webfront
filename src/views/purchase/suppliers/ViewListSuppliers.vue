@@ -121,8 +121,8 @@ export default defineComponent({
         //#region ======= FETCHING DATA ACTIONS ===============================================
 
         /**
-         * Request the deletion of a supplier category to the backend
-         * @param suppId Supplier category identifier
+         * Request the deletion of a supplier to the backend
+         * @param suppId Supplier identifier
          * @param ref Subject Entity reference e.g identifier, name or something like that
          */
         const a_reqDelete = async (suppId: number, ref: undefined | string = undefined ): Promise<void> => {
@@ -130,9 +130,9 @@ export default defineComponent({
             .then(( response: any ) => {
                 // so everything was good, we need to update the local store
                 ls_suppliers.value.entityPage = ls_suppliers.value.entityPage.filter(supp => supp.id !== suppId)
-                tfyCRUDSuccess(ENTITY_NAMES.SUPPLIER_CAT, OPS_KIND_STR.DELETION, ref)
+                tfyCRUDSuccess(ENTITY_NAMES.SUPPLIER, OPS_KIND_STR.DELETION, ref)
             })
-            .catch(error => tfyCRUDFail(error, ENTITY_NAMES.SUPPLIER_CAT, OPS_KIND_STR.DELETION, ref))
+            .catch(error => tfyCRUDFail(error, ENTITY_NAMES.SUPPLIER, OPS_KIND_STR.DELETION, ref))
         }
 
         function a_reqQuery( queryData: IDataTableQuery | undefined = undefined ) {
