@@ -3,18 +3,19 @@
         <div class="row">
             <div class="col-12">
 
-                <CmpCard :hasFormBackBtn="true" v-on:doClick="h_back">
+                <CmpCard :hasFormBackBtn="true" v-on:doClick="h_back" :title=" isCloning ? $t('form.fields-common.cloning-state') : undefined">
 
                     <!-- card / form action bard -->
-                    <template v-if="cpt_fMode === 'edit' " v-slot:card-actionbar>
+                    <template v-if="cpt_fMode === 'edit'" v-slot:card-actionbar>
                         <button :title="$t('btn.tip-action-clone', {subject: $t('entities.supplier.name') } )"
                                 style="float: right"
                                 class="btn btn-icon btn-default ml-1"
+                                :class="!isCloning ? 'btn-default' : 'btn-danger'"
                                 @click.prevent="h_formBtnAction_Clone">
                             <i class="fa fa-clone"></i>
                         </button>
 
-                        <button :title="$t('btn.tip-action-gen-vcard')"
+                        <button :title="$t('btn.tip-action-gen-vcard-file')"
                                 style="float: right"
                                 class="btn btn-icon btn-default ml-1 mr-1"
                                 @click.prevent="h_formBtnAction_QR">
@@ -530,7 +531,7 @@
                     <!-- FORM ACTION BUTTONS -->
                     <template v-slot:footer>
                         <CmpFormActionsButton
-                                :show-delete="cpt_fMode === 'edit'"
+                                :show-delete="cpt_fMode === 'edit' && !isCloning"
                                 v-on:saveIntent="h_beforeSubmit"
                                 v-on:deleteIntent="h_intentDelete"
                                 v-on:cancelIntent="h_back"
@@ -627,20 +628,21 @@ export default defineComponent({
         // html references
         const ref_selectStates = ref<InstanceType<typeof Multiselect>>()        // reference to country province / states select field
 
-        // helpers
+        // helpers & flags
         const qrimage = ref()
+        const isCloning = ref(false)                                     // tells is we are in a cloning process so we call the creat endpoint instead the edition endpoint
         const isModalShowing = ref(false)
 
         // form data
         const activeTabId = ref<number>(1)
         const iniFormData = reactive<IDtoSupplier>(mkSupplier())                // initial form data
-        const tabs = [                                                   // form tabs data array
+        const tabs = [                                                          // form tabs data array
             { id: 1, title: t('form.fields-common.info') },
             { id: 2, title: t('form.fields.suppliers.tab-contact-plus') },
             { id: 3, title: t('form.fields.suppliers.tab-purchases') },
             { id: 4, title: t('form.fields-common.notes') }
         ]
-        const statsDataCards = reactive([                           // form supplier statistics data / information
+        const statsDataCards = reactive([                                 // form supplier statistics data / information
             {
                 title:    iniFormData.pCount,
                 subTitle: t('form.fields.suppliers.stat-products'),
@@ -820,8 +822,9 @@ export default defineComponent({
             // handling the submission with vee-validate method
             handleSubmit(formData => {
                 if (cpt_fMode.value == (FMODE.CREATE as TFormMode)) a_create(formData, doWeNeedToStay)
-                if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && meta.value.dirty) a_edit(formData, doWeNeedToStay)
-                if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && !meta.value.dirty) h_back()               // was no changes (no dirty) with the data, so going back normally
+                if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && isCloning && meta.value.dirty) a_create(formData, doWeNeedToStay)       // cloning mode
+                if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && !isCloning && meta.value.dirty) a_edit(formData, doWeNeedToStay)
+                if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && !meta.value.dirty) h_back()                                             // was no changes (no dirty) with the data, so going back normally
             }).call(this)
         }
 
@@ -842,11 +845,36 @@ export default defineComponent({
         }
 
         /**
-         * Clone in the database the current Supplier
+         * Clone the (cloneable, 'cause some field must be unique) form data to prepare the form to insert a new supplier
+         * instead of edit a existing one
          */
         const h_formBtnAction_Clone = () => {
-            // TODO implement this
-            console.error('action btn << clone >>')
+
+            // disabling the clone, so we need to restore
+            if (isCloning.value == true) {
+                isCloning.value = false
+
+                // restoring the form with the original data
+                resetForm({
+                    errors: {},
+                    values: { ...formDataFromServer ?? mkSupplier() }
+                })
+
+                return
+            }
+
+            // enabling the clone, so we need to clone
+
+            // -- resetting the identity identifier
+            iniFormData.id = 0
+            setFieldValue('id', 0)
+            isCloning.value = true
+
+            // -- resetting the fields that must be uniques
+            setFieldValue('sName', '')
+            setFieldValue('sEmail', undefined)
+            setFieldValue('cell', '')
+            setFieldValue('sPhone', undefined)
         }
 
         /**
@@ -971,6 +999,7 @@ export default defineComponent({
 
         return {
             qrimage,
+            isCloning,
             isModalShowing,
 
             tabs,

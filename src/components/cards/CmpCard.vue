@@ -28,7 +28,7 @@
 
                 </div>
 
-                <h4 class="card-title">{{title}}</h4>
+                <h4 class="card-title mt-2">{{title}}</h4>
                 <p class="card-category" v-if="subTitle">{{subTitle}}</p>
             </slot>
         </div>
