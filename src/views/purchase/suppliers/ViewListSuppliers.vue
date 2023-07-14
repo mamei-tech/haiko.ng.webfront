@@ -52,7 +52,7 @@ import {
     RoutePathNames
 } from '@/services/definitions'
 
-import type { IBulkData, TOpsKind, IDataTableQuery, IColumnHeader, ISupplierCatRow, TFormMode, ISupplierRow } from '@/services/definitions'
+import type { IBulkData, TOpsKind, IDataTableQuery, IColumnHeader, TFormMode, ISupplierRow } from '@/services/definitions'
 
 
 //region ======== STATE INTERFACE =======================================================
@@ -136,7 +136,7 @@ export default defineComponent({
         }
 
         function a_reqQuery( queryData: IDataTableQuery | undefined = undefined ) {
-            // getting the suppliers categories list data for populating the datatable (side effect)
+            // getting the suppliers list data for populating the datatable (side effect)
             ApiSupplier.getPageSupp(st_pagination.getQueryData)
             .then(( response: any ) => {
 

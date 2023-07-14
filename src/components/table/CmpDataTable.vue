@@ -163,11 +163,7 @@
                                 v-model="dtFilters[hpr_getNavKey(header)]"
                                 :options="header.fieldMulti"
                                 @change="hpr_lastSelectedSelectElem($event)"
-                                :ref="
-                                    el => {
-                                        if (el) selectFilterListRef [i] = el;
-                                    }
-                                "
+                                :ref=" el => { if (el) selectFilterListRef [i] = el; }"
                         />
                     </div>
                 </th>
