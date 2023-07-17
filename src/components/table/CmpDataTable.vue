@@ -135,7 +135,7 @@
         <!-- Another row if field filters are specified -->
         <tr v-if="filters.length > 0">
             <template v-for="(header, i) in ls_columns" :key="`filter-${header.title}`" class="text-center">
-                <th v-if="(header.chk || header.fieldSwitch) && filters.includes(hpr_getNavKey(header))"
+                <th v-if="(header.chk || header.fieldSwitch || (header.iconField &&  header.iconMapValues?.length === 2 )) && filters.includes(hpr_getNavKey(header))"
                     colspan="1"
                     rowspan="1"
                     :style="[{ width: header.styleWidth + '%' }]"
@@ -243,6 +243,16 @@
                     :style="[{ width: header.styleWidth + '%' }, { color: hpr_getRowValue( rowObj, header ) + '!important' }]"
                 >
                     {{ hpr_getRowValue( rowObj, header ) }}
+                </td>
+
+                <!-- icon cell -->
+                <td v-else-if="hpr_chkHasValue(rowObj, header) && !header.hidden && header.iconField"
+                    rowspan="1"
+                    colspan="1"
+                    :class="[ { 'text-right': header.styleToRight }, { 'text-left': header.styleToLeft }, { 'text-center': header.styleToCenter } ]"
+                    :style="[{ width: header.styleWidth + '%' }]"
+                >
+                    <i :class="h_renderIconCell( rowObj, header )"></i>
                 </td>
 
                 <!-- list mode | UoM (listOPillsUoM)  version -->
@@ -639,6 +649,26 @@ export default defineComponent({
             ctx.emit('requestIntent', st_pagination.getQueryData)
         }
 
+        /**
+         * For the IconCells, this tries to render the correct icon according with the
+         * cell value, if the proper that was given in the 'iconMapValues' (IColumnHeader object) header field
+         *
+         * @param obj entity data used as a row
+         * @param column IColumnHeader object
+         */
+        const h_renderIconCell = ( obj: any, column: IColumnHeader ): string => {
+
+            if(column.iconMapValues?.length === undefined) return ''
+
+            const cellVal = hpr_getRowValue(obj, column)
+
+            for (let i = 0; i < column.iconMapValues?.length; i++)
+                if(cellVal === column.iconMapValues[i].val)
+                    return column.iconMapValues[i].icon
+
+            return ''
+        }
+
         //endregion =============================================================================
 
         //region ======== WATCHERS ==============================================================
@@ -815,6 +845,7 @@ export default defineComponent({
             h_search,
             h_clearAllFilters,
             h_passCellUpdateEmission,
+            h_renderIconCell,
 
             // ...useDebaunce(h_searchChange),
 

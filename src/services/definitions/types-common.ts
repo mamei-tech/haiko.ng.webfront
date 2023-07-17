@@ -114,6 +114,14 @@ export interface IColumnHeader {
      * Tell if we want to force the render of an empty cell on the table, when there is no data to render
      */
     forceEmptyRender: boolean
+    /**
+     * Tell if we need to render the cell as an icon cell
+     */
+    iconField: boolean | undefined
+    /**
+     * Helps to know how to map actual cells values from entities to the desired icon for a specific row case
+     */
+    iconMapValues: Array<{ val: number | string | boolean, icon: string }> | undefined
 }
 
 /***
