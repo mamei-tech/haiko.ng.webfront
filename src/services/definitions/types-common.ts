@@ -116,6 +116,7 @@ export interface IColumnHeader {
     forceEmptyRender: boolean
     /**
      * Tell if we need to render the cell as an icon cell
+     * ❗ The icon field is a kind of a switcher, but with more options
      */
     iconField: boolean | undefined
     /**

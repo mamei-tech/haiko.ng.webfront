@@ -133,27 +133,25 @@
         </tr>
 
         <!-- Another row if field filters are specified -->
-        <tr v-if="filters.length > 0">
+        <tr v-if="headerFilters.length > 0">
             <template v-for="(header, i) in ls_columns" :key="`filter-${header.title}`" class="text-center">
-                <th v-if="(header.chk || header.fieldSwitch || (header.iconField &&  header.iconMapValues?.length === 2 )) && filters.includes(hpr_getNavKey(header))"
+                <th v-if="(header.chk || header.fieldSwitch || (header.iconField &&  header.iconMapValues?.length === 2 )) && headerFilters.includes(hpr_getNavKey(header))"
                     colspan="1"
                     rowspan="1"
-                    :style="[{ width: header.styleWidth + '%' }]"
-                >
+                    :style="[{ width: header.styleWidth + '%' }]">
                     <div class="form-check text-center">
                         <label class="form-check-label">
                             <input class="form-check-input"
                                    type="checkbox"
-                                   v-on:editIntent="$emit('editIntent', $event)"
                                    :checked="dtFilters[hpr_getNavKey(header)]"
                                    v-model="dtFilters[hpr_getNavKey(header)]"
-                                   @click="hpr_isCheckBoxSelected($event)"
+                                   @click="hpr_setCheckBoxDirty($event)"
                             />
                             <span class="form-check-sign"></span>
                         </label>
                     </div>
                 </th>
-                <th v-else-if="filters.includes(hpr_getNavKey(header)) && header.fieldMulti"
+                <th v-else-if="headerFilters.includes(hpr_getNavKey(header)) && header.fieldMulti"
                     colspan="1"
                     rowspan="1"
                     :style="[{ width: header.styleWidth + '%' }]"
@@ -436,9 +434,9 @@ export default defineComponent({
             }
         },
 
-        filters: {
+        headerFilters: {
             type:        Array,
-            description: 'Array of fields to filter by',
+            description: 'Array of fields to filter by. This just for filters we want to render in the table column headers',
             required:    false,
             default:     []
         }
@@ -483,9 +481,9 @@ export default defineComponent({
          */
         const abutton_mode = toRaw(props.actionBtnMode)                                                     // Returns the raw, original object of a reactive or readonly proxy. This is an escape hatch that can be used to temporarily read without incurring proxy access/tracking overhead or write without triggering changes.
 
-        const search = ref('')
         const { cap } = useCommon()
-        const dtFilters = reactive<any>({})
+        const search = ref('')
+        const dtFilters = ref<any>({})
 
         const st_pagination = useSt_Pagination()                            // Pinia instance of pagination store// Store the datatable filters
 
@@ -615,13 +613,16 @@ export default defineComponent({
          * the query filter data struct. This struct of data will be used as query to make the
          * request to the backend with the filters and the lookup / search terms. Finally
          * the event is emitted
+         *
+         * ❗ the 'filter' value identify a column header, because take the same values as the columns navigation key (navkey)
          */
         function h_search() {
             const dataFilter: Filter = {}
-            Object.keys(dtFilters).forEach(k => {
-                if (dtFilters[ k ]) {
-                    dataFilter[ `Filters[${ cap(k) }]` ] = dtFilters[ k ]
-                }
+
+            Object.keys(dtFilters.value).forEach(filter => {
+                if (dtFilters.value[ filter ]) dataFilter[ `Filters[${ cap(filter) }]` ] = dtFilters.value[ filter ]
+                else if (isAnyCheckboxSelectedRef.value && (hpr_getColumnHeaderByNavKey(filter)?.fieldSwitch || hpr_getColumnHeaderByNavKey(filter)?.iconField))
+                    dataFilter[ `Filters[${ cap(filter) }]` ] = dtFilters.value[ filter ]
             })
 
             st_pagination.Filters = { ...dataFilter }
@@ -634,19 +635,19 @@ export default defineComponent({
          */
         const h_clearAllFilters = () => {
             search.value = ''
-            st_pagination.Search = ''
             isAnyCheckboxSelectedRef.value = false
+
+            st_pagination.Search = ''
             hpr_cleanCheckBoxes()
 
-            for (let filter in dtFilters) {
-                if (dtFilters[ filter ]) dtFilters[ filter ] = false
-            }
+            // clearing the filters entirely
+            dtFilters.value = {}
 
-            for (let elemSelect of selectFilterListRef.value) {
+            // clearing the select field
+            for (let elemSelect of selectFilterListRef.value)
                 if (elemSelect !== undefined) elemSelect.remove([ 0 ])
-            }
 
-            ctx.emit('requestIntent', st_pagination.getQueryData)
+            // ctx.emit('requestIntent', st_pagination.getQueryData)        // becase the reset of *dtFilters* the watcher will be trigger a request, so I think this isn't needed
         }
 
         /**
@@ -673,7 +674,6 @@ export default defineComponent({
 
         //region ======== WATCHERS ==============================================================
 
-        // TODO we need some comment here
         watch(
                 () => dtFilters,
                 () => h_search(),
@@ -683,6 +683,16 @@ export default defineComponent({
         //endregion =============================================================================
 
         //region ======== HELPERS ===============================================================
+
+        /**
+         * Tries to get an existed column header according with the given navigation key (navkey).
+         * Check 'IColumnHeader' definition.
+         *
+         * @param cNavKey column header navigation key to look for
+         */
+        const hpr_getColumnHeaderByNavKey = ( cNavKey: string ) => {
+            return ls_columns.value.find(header => header.navKey == cNavKey)
+        }
 
         /***
          * Try to empty the selection reactive var to make unchecked all the checked rows in the table
@@ -781,11 +791,12 @@ export default defineComponent({
         }
 
         /***
-         * Check if a item was selected in checkbox component filter
+         * Set if a checkbox item as  selected / touched / dirty by the user or the program
          * @param evt
          */
-        const hpr_isCheckBoxSelected = ( evt: any ) => {
-            isAnyCheckboxSelectedRef.value = evt.target!.checked
+        const hpr_setCheckBoxDirty = ( evt: any ) => {
+            // isAnyCheckboxSelectedRef.value = evt.target!.checked
+            if (!isAnyCheckboxSelectedRef.value) isAnyCheckboxSelectedRef.value = true
         }
 
         /**
@@ -850,7 +861,7 @@ export default defineComponent({
             // ...useDebaunce(h_searchChange),
 
             hpr_lastSelectedSelectElem,
-            hpr_isCheckBoxSelected,
+            hpr_setCheckBoxDirty,
             cpt_tableClass,
 
             cap,
