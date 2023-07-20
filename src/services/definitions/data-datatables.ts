@@ -94,3 +94,32 @@ export const HSupplierTable: Partial <IColumnHeader>[] = [
         styleWidth:   5
     }
 ]
+
+export const HProductTable: Partial<IColumnHeader>[] = [
+    { title: 'id', hidden: true },
+    { title: 'sellCode', hidden: true },
+    { title: 'sku', hidden: true },
+    { title: 'name', navKey: 'pName', sorting: '', styleWidth: 20 },
+    { title: 'active', styleToCenter: true, navKey: 'isActive', fieldSwitch: true, styleWidth: 5, sorting: '' },
+    { title:           'track-inventory',
+        styleToCenter: true,
+        navKey:        'doWeTrackInventory',
+        styleWidth:    5,
+        iconField:     true,
+        sorting: '',
+        iconMapValues: [
+            { icon: 'tim-icons icon-components', val: true },
+            { icon: '', val: false }
+        ]
+    },
+    { title: 'category', styleToCenter: true, navKey: 'pCategoryID', styleWidth: 10 },
+    { title: 'price', navKey: 'sellPrice', styleToRight: true, styleWidth: 6, sorting: '' },
+    { title: 'cost', styleToCenter: true, styleWidth: 6 },
+    { title: 'stock', navKey: 'pTotalStock', styleToRight: true, styleWidth: 4, forceEmptyRender: true, sorting: '' },
+    { title: 'unit', navKey: 'pUoM', styleToLeft: true, styleWidth: 1 },
+    {
+        title:        '',            // actions buttons
+        styleToRight: true,
+        styleWidth:   5
+    }
+]

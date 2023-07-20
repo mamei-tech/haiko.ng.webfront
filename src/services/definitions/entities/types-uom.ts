@@ -23,3 +23,14 @@ export interface IDtoUoM extends IIndexable {
     uRatio: number,
     isActive: boolean
 }
+
+/**
+ * Define the very basic data of a Unit of Measurement (UoM)
+ */
+export interface IUoMBasic extends IIndexable {
+
+    /**
+     * UoM denomination / name
+     */
+    uName: string
+}

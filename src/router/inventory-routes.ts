@@ -25,6 +25,29 @@ export const InventoryRoutes: Array<RouteRecordRaw> = [
         name:      RoutePathNames.muCreate,
         component: () => import('../views/inventory/munits/ViewFormUoM.vue'),
         meta:      { layout: LayBaseDashboard, reqAuth: true }
+    },
+
+    //#endregion ==========================================================================
+
+    //#region ======= PRODUCTS ============================================================
+
+    {
+        path:      RoutePaths.prodList,
+        name:      RoutePathNames.product,
+        component: () => import('../views/inventory/products/ViewListProducts.vue'),
+        meta:      { layout: LayBaseDashboard, reqAuth: true }
+    },
+    {
+        path:      RoutePaths.prodEdit,
+        name:      RoutePathNames.prodEdit,
+        component: () => import('../views/inventory/products/ViewFormProducts.vue'),
+        meta:      { layout: LayBaseDashboard, reqAuth: true }
+    },
+    {
+        path:      RoutePaths.prodCreate,
+        name:      RoutePathNames.prodCreate,
+        component: () => import('../views/inventory/products/ViewFormProducts.vue'),
+        meta:      { layout: LayBaseDashboard, reqAuth: true }
     }
 
     //#endregion ==========================================================================

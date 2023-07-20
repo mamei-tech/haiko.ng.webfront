@@ -64,6 +64,11 @@ export default {
                             title: this.$t( 'routes.' + RoutePathNames.munits ).toLowerCase(),
                             icon: 'tim-icons icon-support-17',
                         },
+                        {
+                            href: { path: RoutePaths.prodList },
+                            title: this.$t( 'routes.' + RoutePathNames.product ).toLowerCase(),
+                            icon: 'tim-icons icon-app',
+                        },
                     ]
                 },
                 {

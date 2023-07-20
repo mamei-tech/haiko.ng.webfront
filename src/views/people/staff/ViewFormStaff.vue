@@ -2,7 +2,6 @@
     <transition appear name="page-fade">
         <div class="row">
             <div class="col-12">
-
                 <CmpCard :hasFormBackBtn="true" v-on:doClick="h_back">
 
                     <!-- FORM -->
@@ -215,7 +214,6 @@
                         />
                     </template>
                 </CmpCard>
-
             </div>
         </div>
     </transition>
@@ -244,7 +242,6 @@ import type { IDtoStaff, TFormMode } from '@/services/definitions'
 
 export default defineComponent({
     name: 'ViewFormStaff',
-
     components: {
         Field,
         CmpCard,
@@ -254,7 +251,6 @@ export default defineComponent({
         CmpMultiselectField,
         CmpFormActionsButton
     },
-
     setup() {
 
         //region ======= DECLARATIONS & LOCAL STATE ===========================================

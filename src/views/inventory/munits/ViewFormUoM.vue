@@ -109,12 +109,10 @@ import { i18n } from '@/services/i18n'
 
 import type { ComputedRef } from 'vue'
 import type { IDtoUoMCategory, IDtoUoM, TFormMode, ICellUpdate } from '@/services/definitions'
-import { ApiSupplier } from '@/services/api/api-supplier'
 
 
 export default defineComponent({
     name: 'ViewFormUoM',
-
     components: {
         CmpCard,
         CmpDataTable,
@@ -122,7 +120,6 @@ export default defineComponent({
         CmpBaseButton,
         CmpFormActionsButton
     },
-
     setup() {
 
         //region ======= DECLARATIONS & LOCAL STATE ===========================================

@@ -1,6 +1,4 @@
 // Store for nomenclatures data from the backend
-//
-
 import { defineStore } from 'pinia'
 import { toDicIds } from '@/services/helpers/help-conversion'
 import { ApiNomenclaturesMng } from '@/services/api/api-nomenclatures-manager'
@@ -12,7 +10,8 @@ import type {
     ICountryStatesBasic,
     IMultiselectBasic,
     IRoleBasic,
-    ISuppCatBasic
+    ISuppCatBasic,
+    IProdCatBasic, IUoMBasic
 } from '@/services/definitions'
 
 
@@ -23,8 +22,10 @@ export const useSt_Nomenclatures = defineStore({
     id: 'nomenc',
 
     state: (): IStaffState => ({
+        uom:       [] as IUoMBasic[],
         roles:     [] as IRoleBasic[],
         suppCat:   [] as ISuppCatBasic[],
+        prodCat:   [] as IProdCatBasic[],
         countries: [] as ICountryBasic[],
         states:    [] as ICountryStatesBasic[]
     }),
@@ -54,6 +55,17 @@ export const useSt_Nomenclatures = defineStore({
         getSuppCat4Multiselect: ( state ): IMultiselectBasic[] => {
             return state.suppCat.map((suppCatData: ISuppCatBasic) => {
                 return { value: suppCatData.id, label: suppCatData.scName }
+            })
+        },
+
+        /**
+         * Get the product categories from the state in a multiselect component format ({value: ___, label: ___})
+         *
+         * @param state Nomenclatures Supplier Categories state
+         */
+        getProdCat4Multiselect: ( state ): IMultiselectBasic[] => {
+            return state.prodCat.map((prodCatData: IProdCatBasic) => {
+                return { value: prodCatData.id, label: prodCatData.pCatName }
             })
         },
 
@@ -98,11 +110,25 @@ export const useSt_Nomenclatures = defineStore({
         getRolesByIdMap: ( state ): ById<IRoleBasic> => toDicIds(state.roles),
 
         /**
-         * Map the roles to a dictionary where the SuppCatId is the key of the role value
+         * Map the suppliers category to a dictionary where the sCategoryID is the key of the category values
          *
          * @param state Nomenclatures SUPPLIER CATEGORIES state
          */
-        getSuppCatByIdMap: ( state ): ById<ISuppCatBasic> => toDicIds(state.suppCat)
+        getSuppCatByIdMap: ( state ): ById<ISuppCatBasic> => toDicIds(state.suppCat),
+
+        /**
+         * Map the product category to a dictionary where the pCategoryID is the key of the category value
+         *
+         * @param state Nomenclatures SUPPLIER CATEGORIES state
+         */
+        getProdCatByIdMap: ( state ): ById<IProdCatBasic> => toDicIds(state.prodCat),
+
+        /**
+         * Map the unit of measurement (UoM) to a dictionary where the uomId is the key of the uom value
+         *
+         * @param state Nomenclatures UoM state
+         */
+        getUoMByIdMap: ( state ): ById<IUoMBasic> => toDicIds(state.uom),
     },
     actions: {
 
@@ -148,6 +174,39 @@ export const useSt_Nomenclatures = defineStore({
         },
 
         /**
+         * tries to get the product categories from the backend
+         */
+        async reqNmcProdCat () : Promise<void> {
+
+            return await new Promise<void>((resolve, reject) => {
+                ApiNomenclaturesMng.getProdCat()
+                .then((response:any) => {
+
+                    this.prodCat = response.data
+                    resolve()
+
+                }).catch(error => { reject(error) })
+            })
+
+        },
+
+        /**
+         * tries to get the uom from the backend
+         */
+        async reqNmcUoM () : Promise<void> {
+
+            return await new Promise<void>((resolve, reject) => {
+                ApiNomenclaturesMng.getUoM()
+                .then((response:any) => {
+
+                    this.uom = response.data
+                    resolve()
+
+                }).catch(error => { reject(error) })
+            })
+        },
+
+        /**
          * tries to get the countries from the backend
          */
         async reqNmcCountries () : Promise<void> {
@@ -185,8 +244,10 @@ export const useSt_Nomenclatures = defineStore({
 //region ======== STATE INTERFACE =======================================================
 
 interface IStaffState {
+    uom:        Array<IUoMBasic>,
     roles:      Array<IRoleBasic>,
     suppCat:    Array<ISuppCatBasic>,
+    prodCat:    Array<IProdCatBasic>,
     countries:  Array<ICountryBasic>,
     states:     Array<ICountryStatesBasic>                // states belonging to a determined / defined countries
 }

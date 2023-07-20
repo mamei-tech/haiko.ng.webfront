@@ -12,7 +12,7 @@
                                   :columns="columns"
                                   :data="ls_suppliers.entityPage"
                                   :has-actions="true"
-                                  :filters="filters"
+                                  :headerFilters="headerFilters"
 
                                   @requestIntent="h_reqQuery"
 
@@ -77,12 +77,12 @@ export default defineComponent({
         const st_pagination = useSt_Pagination()
         const st_nomenclatures = useSt_Nomenclatures()                                      // Pinia store for nomenclatures// pinia instance of pagination store | check the text on --> https://pinia.vuejs.org/cookbook/composing-stores.html#nested-stores
 
-        const ls_suppliers = ref<ISupplierState>({entityPage: [] as ISupplierRow[]})        // local store
+        const ls_suppliers = ref<ISupplierState>({entityPage: [] as ISupplierRow[]})  // local store
 
         const abar_mode: DT_ACTIONBAR_MODE = DT_ACTIONBAR_MODE.TOGSTATUS                    // datatable action bar mode
         const abutton_mode: DT_ACTION_BUTTON_MODE = DT_ACTION_BUTTON_MODE.JEDINDEL          // datatable button mode
         const columns = ref<Partial<IColumnHeader>[]>(HSupplierTable)                       // entity customized datatab
-        const filters = [ 'sCategoryID', 'isActive' ]                                       // datatable filters  !!! you must use the real field names (nav keys in the HStaffTable object)
+        const headerFilters = [ 'sCategoryID', 'isActive' ]                                 // datatable filters  !!! you must use the real field names (nav keys in the HStaffTable object)
 
         const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
         const { dfyConfirmation } = useDialogfy()
@@ -98,8 +98,6 @@ export default defineComponent({
          * Manually setting the needed values is way cleaner than the other way around. This is needed mainly because api call is asynchronous.
          */
         onMounted(() => {
-            a_reqQuery()
-
             // getting supplier categories definitions from the system (side effect)
             // this is used to fetch supplier category basic data from the system so we can map the cat identifier to cat name in the datatable column
             st_nomenclatures.reqNmcSuppCat()
@@ -113,7 +111,9 @@ export default defineComponent({
                 // Regarding the use of '.then()' for the callback, we jus could use async in the hook and later awaited
                 // (await) the getSuppCat4Multiselect() call ... but I like the old fashion way
             })
-            .catch(err => tfyCRUDFail(err, ENTITY_NAMES.ROLE, OPS_KIND_STR.REQUEST))
+            .catch(err => tfyCRUDFail(err, ENTITY_NAMES.SUPPLIER, OPS_KIND_STR.REQUEST))
+
+            a_reqQuery()
         })
 
         //endregion ===========================================================================
@@ -265,11 +265,11 @@ export default defineComponent({
          * to the actual suppliers categories name (user friendliness)
          */
         const mapCat2Names = () => {
-            if (IsEmptyObj(st_nomenclatures.getSuppCatByIdMap)) return        // If there are no roles yet, retrieve the entities as it is
+            if (IsEmptyObj(st_nomenclatures.getSuppCatByIdMap)) return        // If there are no supplier categories yet, retrieve the entities as it is
 
             ls_suppliers.value.entityPage = ls_suppliers.value.entityPage.map((row: ISupplierRow) => {
 
-                // there is a chance that this line run, and the roleId field was already mapped to the role name making it a string value so we can used as index anymore, so we have to check first
+                // there is a chance that this line run, and the sCategoryID field was already mapped to the role name making it a string value so we can used as index anymore, so we have to check first
                 if(isNumber(row.sCategoryID))
                     row.sCategoryID = st_nomenclatures.getSuppCatByIdMap[+row.sCategoryID].scName
 
@@ -285,7 +285,7 @@ export default defineComponent({
             abar_mode,
             abutton_mode,
             columns,
-            filters,
+            headerFilters,
 
             h_reqQuery,
             h_intentRowDelete,

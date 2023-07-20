@@ -12,7 +12,7 @@
                                   :columns="columns"
                                   :data="st_staff.getStaffList"
                                   :has-actions="true"
-                                  :filters="filters"
+                                  :headerFilters="headerFilters"
 
                                   @navCreateIntent="h_navCreateStaff"
                                   @requestIntent="h_reqQuery"
@@ -71,7 +71,7 @@ export default defineComponent({
         const abar_mode: DT_ACTIONBAR_MODE = DT_ACTIONBAR_MODE.COMMON                       // datatable action bar mode
         const abutton_mode: DT_ACTION_BUTTON_MODE = DT_ACTION_BUTTON_MODE.JEDINDEL          // datatable button mode
         const columns = ref<Partial<IColumnHeader>[]>(HStaffTable)                          // entity customized datatable header | As here the data for the filter is dynamically (side-effect) obtained, we need to use ref so we can fill the data
-        const filters = [ 'roleId', 'isActive' ]                                            // datatable filters  !!! you must use the real field names (nav keys in the HStaffTable object)
+        const headerFilters = [ 'roleId', 'isActive' ]                                      // datatable filters  !!! you must use the real field names (nav keys in the HStaffTable object)
 
         const router = useRouter()
         const toast = useToast()                                            // The toast lib interface
@@ -243,7 +243,7 @@ export default defineComponent({
             abutton_mode,
 
             columns,
-            filters,
+            headerFilters,
             st_staff,
             st_pagination,
 

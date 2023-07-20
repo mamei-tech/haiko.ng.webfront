@@ -23,6 +23,10 @@ export const RoutePaths = {
     muEdit:   '/mu/:fmode/:id',             // uom = mu = units of measurement
     muCreate: '/mu/:fmode',                 // uom = mu = units of measurement
 
+    prodList:   '/product/list',
+    prodEdit:   '/product/:fmode/:id',
+    prodCreate: '/product/:fmode',
+
     //#endregion ==========================================================================
 
     //#region ======= PURCHASE ============================================================
@@ -69,6 +73,10 @@ export const RoutePathNames = {
     muCreate: 'units-create',               // uom = mu = units of measurement
     muEdit:   'units-edit',                 // uom = mu = units of measurement
 
+    product:    'product',
+    prodCreate: 'product-create',
+    prodEdit:   'product-edit',
+
     //#endregion ==========================================================================
 
     //#region ======= PURCHASE ============================================================
@@ -88,6 +96,5 @@ export const RoutePathNames = {
     //#endregion ==========================================================================
 
     //#region ======= OPERATIONS ==========================================================
-
     //#endregion ==========================================================================
 }

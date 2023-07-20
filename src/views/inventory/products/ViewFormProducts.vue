@@ -1,6 +1,6 @@
 <template>
     <transition appear name="page-fade">
-        <p>Listado suministros y materiales para las fichas de costos</p>
+        <p>Formulario de productos</p>
     </transition>
 </template>
 
@@ -8,7 +8,7 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-    name: 'ViewListClients',
+    name: 'ViewFormProducts',
     components: {},
     setup() {
 

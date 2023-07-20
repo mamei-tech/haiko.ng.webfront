@@ -2,7 +2,7 @@ import axios from './api'
 import config from './config'
 
 import type { AxiosPromise } from 'axios'
-import type { ICountryBasic, ICountryStatesBasic, IRoleBasic, ISuppCatBasic } from '@/services/definitions'
+import type { ICountryBasic, ICountryStatesBasic, IRoleBasic, ISuppCatBasic, IProdCatBasic, IUoMBasic } from '@/services/definitions'
 
 
 const version = config.server.current_version
@@ -49,5 +49,23 @@ export class ApiNomenclaturesMng {
      */
     public static getSuppCat(): AxiosPromise<ISuppCatBasic[]> {
         return axios.get(url + '/supplierscat')
+    }
+
+    /**
+     * Get a list of product categories defined on the system
+     * !! The retrieve categories list just have name and id, which makes it different from other methods
+     * retrieving system Products Category data. Check IProdCatBasic
+     */
+    public static getProdCat(): AxiosPromise<IProdCatBasic[]> {
+        return axios.get(url + '/productcat')
+    }
+
+    /**
+     * Get a list of units of measurement (UoM) defined on the system
+     * !! The retrieve  list just have name and id, which makes it different from other methods
+     * retrieving system UoM data. Check IUoMBasic
+     */
+    public static getUoM(): AxiosPromise<IUoMBasic[]> {
+        return axios.get(url + '/uom')
     }
 }
