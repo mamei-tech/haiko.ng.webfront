@@ -92,8 +92,8 @@ export default function useToastify( toast: ToastInterface ) {
      */
     const tfyBasicRqError = ( error: any, msg: string = '' ): void => {
 
-        if (msg === '') _mkError(error.response.data.title)
-        else _mkError(msg + '. ' + error.response.data.title)
+        if (msg === '') _mkError(error.response.data.title ?? '')
+        else _mkError(msg + '. ' + error.response.data.title ?? '')
 
         // console.error('response_code ', error.response.status)
         // TODO we could use 'error.response.data.type' code to generate a i18n error information and forget about the 'error.response.data.title' that has no translation

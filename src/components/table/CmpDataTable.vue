@@ -45,7 +45,7 @@
                             <i class="tim-icons icon-refresh-01"></i>
                         </button>
                     </div>
-                    <span class="input-group-prepend" @click="h_search">
+                    <span class="input-group-prepend" @click="h_doRequest">
                         <div class="input-group-text">
                             <i :class="cpt_searchHasText ? 'multiselect-clear multiselect-clear-icon' : 'tim-icons icon-zoom-split'"
                                @click="h_cleanInputSearch()"
@@ -605,18 +605,20 @@ export default defineComponent({
         const h_cleanInputSearch = () => {
             st_pagination.Search = ''
             search.value = ''
-            ctx.emit('requestIntent', st_pagination.getQueryData)
         }
 
         /**
-         * When the user inputs data to lookup for, in the search input this methods updates
+         * Process the filters present in the UI to make a request to populate the table with tha data, according to
+         * the filters and the input search field (the search field value is handled by h_searchChange method)
+         *
+         * When the user inputs data to lookup for in the search input, this methods updates
          * the query filter data struct. This struct of data will be used as query to make the
          * request to the backend with the filters and the lookup / search terms. Finally
          * the event is emitted
          *
          * ❗ the 'filter' value identify a column header, because take the same values as the columns navigation key (navkey)
          */
-        function h_search() {
+        function h_doRequest() {
             const dataFilter: Filter = {}
 
             Object.keys(dtFilters.value).forEach(filter => {
@@ -676,7 +678,7 @@ export default defineComponent({
 
         watch(
                 () => dtFilters,
-                () => h_search(),
+                () => h_doRequest(),
                 { deep: true }
         )
 
@@ -853,7 +855,7 @@ export default defineComponent({
             h_computePaginationData,
             h_changeSort,
             h_searchChange,
-            h_search,
+            h_doRequest,
             h_clearAllFilters,
             h_passCellUpdateEmission,
             h_renderIconCell,
