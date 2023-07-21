@@ -107,7 +107,7 @@ export default function useToastify( toast: ToastInterface ) {
      * @param ops Type of API operation for the feedback
      * @param ref Subject Entity reference e.g identifier, name or something like that
      */
-    const tfyCRUDFail = ( error: any, subject: ENTITY_NAMES, ops: TOpsKind, ref: undefined | string = undefined ): void => {
+    const tfyCRUDFail = ( error: any, subject: ENTITY_NAMES | string, ops: TOpsKind, ref: undefined | string = undefined ): void => {
 
         let kind = _geTOpsKind(ops, true)
         let subjectRef = ref !== undefined && typeof ref === 'string' ? ref : ''
@@ -138,7 +138,7 @@ export default function useToastify( toast: ToastInterface ) {
      * @param ops Type of API operation for the feedback
      * @param ref Subject Entity reference e.g identifier, name or something like that
      */
-    const tfyCRUDSuccess = ( subject: ENTITY_NAMES, ops: TOpsKind, ref: undefined | string = undefined ): void => {
+    const tfyCRUDSuccess = ( subject: ENTITY_NAMES | string, ops: TOpsKind, ref: undefined | string = undefined ): void => {
 
         let kind = _geTOpsKind(ops)
         let tSubject = t('entities.' + subject + '.name')
