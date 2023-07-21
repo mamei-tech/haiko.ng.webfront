@@ -822,8 +822,8 @@ export default defineComponent({
             // handling the submission with vee-validate method
             handleSubmit(formData => {
                 if (cpt_fMode.value == (FMODE.CREATE as TFormMode)) a_create(formData, doWeNeedToStay)
-                if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && isCloning && meta.value.dirty) a_create(formData, doWeNeedToStay)       // cloning mode
-                if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && !isCloning && meta.value.dirty) a_edit(formData, doWeNeedToStay)
+                if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && isCloning.value && meta.value.dirty) a_create(formData, doWeNeedToStay)       // cloning mode
+                if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && !isCloning.value && meta.value.dirty) a_edit(formData, doWeNeedToStay)
                 if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && !meta.value.dirty) h_back()                                             // was no changes (no dirty) with the data, so going back normally
             }).call(this)
         }
@@ -1033,7 +1033,6 @@ export default defineComponent({
 
         //#endregion ==========================================================================
     }
-
 })
 </script>
 
