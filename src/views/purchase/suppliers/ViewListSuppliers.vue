@@ -34,6 +34,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue'
+import { i18n } from '@/services/i18n'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 import useToastify from '@/services/composables/useToastify'
@@ -71,6 +72,8 @@ export default defineComponent({
 
         //#region ======= DECLARATIONS & LOCAL STATE ==========================================
 
+        const { t } = i18n.global
+
         const router = useRouter()
         const toast = useToast()                                                            // The toast lib interface
 
@@ -85,7 +88,7 @@ export default defineComponent({
         const headerFilters = [ 'sCategoryID', 'isActive' ]                                 // datatable filters  !!! you must use the real field names (nav keys in the HStaffTable object)
 
         const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
-        const { dfyConfirmation } = useDialogfy()
+        const { dfyConfirmation, dfyShowAlert } = useDialogfy()
 
         //#endregion ==========================================================================
 
@@ -214,6 +217,11 @@ export default defineComponent({
         }
 
         const h_intentRowDelete = async ( objectId: number ): Promise<void> => {
+            if (objectId == 1) {
+                dfyShowAlert(t('dialogs.title-alert-not-allowed'),  t('dialogs.cant-delete-default'))
+                return
+            }
+
             const entityReference = ls_suppliers.value.entityPage.find(suppCat => suppCat.id === objectId)?.sName ?? ''
 
             const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.SUPPLIER, entityReference)

@@ -622,7 +622,7 @@ export default defineComponent({
 
         const { mkSupplier } = useFactory()
         const { mkVCardQrImg } = useQrCodes()
-        const { dfyConfirmation } = useDialogfy()
+        const { dfyConfirmation, dfyShowAlert } = useDialogfy()
         const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
 
         // html references
@@ -749,6 +749,11 @@ export default defineComponent({
          * @param doWeNeedToStay This value, in this context, tells if the clicked button was the 'Applied' or the 'Save'
          */
         const a_edit = ( editedSupplierCat: IDtoSupplier, doWeNeedToStay: boolean ): void => {
+            // default entity cannot be changed
+            if (editedSupplierCat.id == 1) {
+                dfyShowAlert(t('dialogs.title-alert-not-allowed'),  t('dialogs.cant-mod-default'))
+                return
+            }
 
             ApiSupplier.reqUpdateSupplier(editedSupplierCat)
             .then(() => {
@@ -834,6 +839,13 @@ export default defineComponent({
         }
 
         const h_intentDelete = async ( evt: any ) => {
+
+            // default entity cannot be changed
+            if (+id == 1) {
+                dfyShowAlert(t('dialogs.title-alert-not-allowed'),  t('dialogs.cant-mod-default'))
+                return
+            }
+
             if (cpt_fMode.value !== FMODE.EDIT as TFormMode) return
 
             const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.SUPPLIER, iniFormData.sName)

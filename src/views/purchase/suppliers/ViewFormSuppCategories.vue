@@ -184,14 +184,23 @@ export default defineComponent({
          */
         const a_edit = ( editedSupplierCat: IDtoSupplierCat, doWeNeedToStay: boolean ): void => {
 
+            // default entity cannot be changed
+            if (editedSupplierCat.id == 1) {
+                dfyShowAlert(t('dialogs.title-alert-not-allowed'),  t('dialogs.cant-mod-default'))
+                return
+            }
+
+            // then ...
+            const subject = t('entities.supplier-cat.name')
+
             ApiSupplier.reqUpdateSupplierCategory(editedSupplierCat)
             .then(() => {
-                tfyCRUDSuccess(ENTITY_NAMES.SUPPLIER_CAT, OPS_KIND_STR.UPDATE, editedSupplierCat.scName)
+                tfyCRUDSuccess(subject, OPS_KIND_STR.UPDATE, editedSupplierCat.scName)
 
                 // so now what ?
                 if(!doWeNeedToStay) h_back()                                  // so we are going back to the data table
 
-            }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.SUPPLIER_CAT, OPS_KIND_STR.UPDATE))
+            }).catch(err => tfyCRUDFail(err, subject, OPS_KIND_STR.UPDATE))
         }
 
         /**
@@ -274,6 +283,12 @@ export default defineComponent({
         }
 
         const h_delete = async ( evt: any ) => {
+
+            // default entity cannot be changed
+            if (+id == 1) {
+                dfyShowAlert(t('dialogs.title-alert-not-allowed'),  t('dialogs.cant-delete-default'))
+                return
+            }
 
             if (fmode as TFormMode != FMODE.EDIT) return
             if (+id == 1) dfyShowAlert(t('dialogs.title-alert-not-allowed'),  t('dialogs.cant-delete-default'))
