@@ -7,10 +7,12 @@
                 :subject="this.$props.subject"
                 :mode="abar_mode"
                 :chkCount="Object.keys(ls_selections.selected).length"
+                :extendedFilters="ls_extFilters"
                 v-on:navCreateIntent="$emit('navCreateIntent')"
                 v-on:enableChkCollIntent="h_EnableChkCollection"
                 v-on:disableChkCollIntent="h_DisableChkCollection"
                 v-on:removeChkCollIntent="h_RemoveChkCollection"
+                v-on:extFilClick="h_extFilter"
         />
     </template>
 
@@ -135,7 +137,8 @@
         <!-- Another row if field filters are specified -->
         <tr v-if="headerFilters.length > 0">
             <template v-for="(header, i) in ls_columns" :key="`filter-${header.title}`" class="text-center">
-                <th v-if="(header.chk || header.fieldSwitch || (header.iconField &&  header.iconMapValues?.length === 2 )) && headerFilters.includes(hpr_getNavKey(header))"
+                <!-- filter cases: checkbox || a fieldSwitch || a iconField with only 2 options -->
+                <th v-if="(header.chk || header.fieldSwitch || (header.iconField && header.iconMapValues?.length === 2 )) && headerFilters.includes(hpr_getNavKey(header))"
                     colspan="1"
                     rowspan="1"
                     :style="[{ width: header.styleWidth + '%' }]">
@@ -329,6 +332,7 @@
 <script lang="ts">
 import config from '@/services/api/config'
 import { onBeforeUpdate, computed, defineComponent, toRaw, reactive, ref } from 'vue'
+import { watch } from '@vue/runtime-core'
 import CmpTablePagination from './CmpTablePagination.vue'
 import CmpCellSwitch from './CmpCellSwitch.vue'
 import CmpTableEmpty from './CmpTableEmpty.vue'
@@ -336,18 +340,17 @@ import CmpTableChkbox from './CmpTableChkbox.vue'
 import CmpTableCellPicture from './CmpTableCellPicture.vue'
 import CmpCellListUoM from './CmpCellListUoM.vue'
 import CmpTableRowActions from './CmpTableRowActions.vue'
-import CmpTableActionBar from './CmpTableActionBar.vue'
 import CmpTableEditableCell from './CmpTableEditableCell.vue'
 import CmpTableEditableCellSelect from './CmpTableEditableCellSelect.vue'
+import CmpTableActionBar from './CmpTableActionBar.vue'
 import { CmpBaseButton } from '@/components'
-import { watch } from '@vue/runtime-core'
 import useCommon from '@/services/composables/useCommon'
 import Multiselect from '@vueform/multiselect'
 import { useSt_Pagination } from '@/stores/pagination'
 import { PICTURE_TYPE_CELL } from '@/services/definitions'
 
 import type { SetupContext, PropType } from 'vue'
-import type { ById, TBulkAction, IIndexable, IColumnHeader, ITableChkEmit, IChecked, Filter, ICellUpdate  } from '@/services/definitions'
+import type { ById, TBulkAction, IIndexable, IColumnHeader, ITableChkEmit, IChecked, Filter, ICellUpdate, IExtFilterGroup  } from '@/services/definitions'
 
 
 export default defineComponent({
@@ -371,14 +374,14 @@ export default defineComponent({
         subject:             {
             type:        String,
             description: 'This should be the translation (❗means the translated string) value string for a specific entity of the business. This value could be used for contextualization in components tips & titles and others translations strings.',
-            required:    false,
+            required:    false
         },
-        actionBarMode:          {
+        actionBarMode:       {
             type:        Number,
             description: 'Tells in which mode should the action bar most be rendered',
-            required:    true,
+            required:    true
         },
-        actionBtnMode:          {
+        actionBtnMode:       {
             type:        Number,
             description: 'Tells in which mode should rendered the rows\' action buttons',
             required:    true
@@ -434,9 +437,15 @@ export default defineComponent({
             }
         },
 
-        headerFilters: {
+        headerFilters:   {
             type:        Array,
             description: 'Array of fields to filter by. This just for filters we want to render in the table column headers',
+            required:    false,
+            default:     []
+        },
+        extendedFilters: {
+            type:        Object as PropType<IExtFilterGroup[]>,
+            description: 'Helps to defined a extended collections of filters. Can come in handy when we need other filter criteria that we don\'t want to put in the table columns headers',
             required:    false,
             default:     []
         }
@@ -468,6 +477,8 @@ export default defineComponent({
         const ls_selections = reactive<{ selected: ById<IChecked> }>({ selected: {} })            // ls =  local state
         const ls_rootChkBoxState = ref<boolean>(false)
         const ls_columns = ref<Array<Partial<IColumnHeader>>>([ ...props.columns ])
+        const ls_extFilters = ref<Array<IExtFilterGroup>>([...props.extendedFilters])
+
         const hpr_lastSelectedSelectElemRef = ref<number>(0)                                      // Receive the value of item selected in select component
         const isAnyCheckboxSelectedRef = ref<boolean>(false)                                      // True if at least, one checkbox component filter was selected
         const selectFilterListRef = <any> ref([])                                                 // reference to any select component filter
@@ -475,17 +486,17 @@ export default defineComponent({
         /**
          * Datatable action *bar* mode
          */
-        const abar_mode = toRaw(props.actionBarMode)                                                      // Returns the raw, original object of a reactive or readonly proxy. This is an escape hatch that can be used to temporarily read without incurring proxy access/tracking overhead or write without triggering changes.
+        const abar_mode = toRaw(props.actionBarMode)                                                    // Returns the raw, original object of a reactive or readonly proxy. This is an escape hatch that can be used to temporarily read without incurring proxy access/tracking overhead or write without triggering changes.
         /**
          * Datatable action *button* mode
          */
-        const abutton_mode = toRaw(props.actionBtnMode)                                                     // Returns the raw, original object of a reactive or readonly proxy. This is an escape hatch that can be used to temporarily read without incurring proxy access/tracking overhead or write without triggering changes.
+        const abutton_mode = toRaw(props.actionBtnMode)                                                 // Returns the raw, original object of a reactive or readonly proxy. This is an escape hatch that can be used to temporarily read without incurring proxy access/tracking overhead or write without triggering changes.
 
         const { cap } = useCommon()
         const search = ref('')
         const dtFilters = ref<any>({})
 
-        const st_pagination = useSt_Pagination()                            // Pinia instance of pagination store// Store the datatable filters
+        const st_pagination = useSt_Pagination()                                                        // Pinia instance of pagination store// Store the datatable filters
 
         //endregion =============================================================================
 
@@ -505,9 +516,36 @@ export default defineComponent({
         const cpt_tableClass = computed((): string => props.tableType && `table-${ props.tableType }`)
         const cpt_searchHasText = computed(() => search.value.length > 0)
 
+        /**
+         * Tells is we have any of the extended filters active in the UI
+         */
+        const cpt_isAnyExtFActive = computed(() => {
+
+            for (let i = 0; i < ls_extFilters.value.length; i++)
+                if (ls_extFilters.value[i].filters.some(filter => filter.isActive === true)) return true
+
+            return false
+        })
+
         //endregion =============================================================================
 
         //region ======== EVENTS HANDLERS & WATCHERS ============================================
+
+        /**
+         * This method process the changes made in the UI regarding the extended filters
+         *
+         * @param fGroupIndex index of the filter group
+         * @param fIndex index of the actual filter
+         */
+        const h_extFilter = (fGroupIndex: number, fIndex: number) => {
+            // toggling the filters status
+            ls_extFilters.value[fGroupIndex].filters[fIndex].isActive = !ls_extFilters.value[fGroupIndex].filters[fIndex].isActive
+
+            // if the  extended filter status was set to true (so the filter is active), we add it to the active filters collection, we remove it otherwise.
+            ls_extFilters.value[fGroupIndex].filters[fIndex].isActive
+                ? dtFilters.value[ls_extFilters.value[fGroupIndex].filters[fIndex].entityField] = ls_extFilters.value[fGroupIndex].filters[fIndex].value
+                : delete dtFilters.value[ls_extFilters.value[fGroupIndex].filters[fIndex].entityField]
+        }
 
         const h_passCellUpdateEmission = (data: ICellUpdate) => {
             ctx.emit('cellUpdateIntent', data)
@@ -641,6 +679,7 @@ export default defineComponent({
 
             st_pagination.Search = ''
             hpr_cleanCheckBoxes()
+            hpr_cleanExtFilters()
 
             // clearing the filters entirely
             dtFilters.value = {}
@@ -649,7 +688,7 @@ export default defineComponent({
             for (let elemSelect of selectFilterListRef.value)
                 if (elemSelect !== undefined) elemSelect.remove([ 0 ])
 
-            // ctx.emit('requestIntent', st_pagination.getQueryData)        // becase the reset of *dtFilters* the watcher will be trigger a request, so I think this isn't needed
+            // ctx.emit('requestIntent', st_pagination.getQueryData)        // becase the reset of *dtFilters* the watcher will be trigger a request, so I think this isn't needed, in case of active this line, the request will be made twice and we don't want that
         }
 
         /**
@@ -702,6 +741,21 @@ export default defineComponent({
         const hpr_cleanCheckBoxes = () => {
             ls_rootChkBoxState.value = false
             ls_selections.selected = hpr_updateChckAllToSelection(false)
+        }
+
+        /**
+         * Tries to reset the *isActive* status of all the defined extended filters, se the UI not shows any of them active
+         */
+        const hpr_cleanExtFilters = () => {
+
+            ls_extFilters.value = ls_extFilters.value.map(fg => {
+                fg.filters = fg.filters.map(filter => {
+                    filter.isActive = false
+                    return filter
+                })
+
+                return fg           // filter group
+            })
         }
 
         /**
@@ -774,7 +828,7 @@ export default defineComponent({
             return obj[ 'id' ] !== undefined
         }
 
-        /***
+        /**
          * Get the actual row object property value base on the navigation key from the column object
          * @param obj row object
          * @param column object describing the header properties
@@ -815,7 +869,7 @@ export default defineComponent({
          */
         const cpt_isAnyFilerActive = computed(() => {
             let chkBoxSelected = Object.keys(ls_selections.selected).length
-            return search.value.length > 0 || chkBoxSelected > 0 || hpr_lastSelectedSelectElemRef.value > 0 || isAnyCheckboxSelectedRef.value
+            return search.value.length > 0 || chkBoxSelected > 0 || hpr_lastSelectedSelectElemRef.value > 0 || isAnyCheckboxSelectedRef.value || cpt_isAnyExtFActive.value
         })
 
         //endregion =============================================================================
@@ -825,9 +879,10 @@ export default defineComponent({
             abar_mode,
             abutton_mode,
 
+            ls_columns,
             ls_selections,
             ls_rootChkBoxState,
-            ls_columns,
+            ls_extFilters,
             dtFilters,
             selectFilterListRef,
             hpr_lastSelectedSelectElemRef,
@@ -856,6 +911,7 @@ export default defineComponent({
             h_changeSort,
             h_searchChange,
             h_doRequest,
+            h_extFilter,
             h_clearAllFilters,
             h_passCellUpdateEmission,
             h_renderIconCell,

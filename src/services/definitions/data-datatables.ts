@@ -96,6 +96,7 @@ export const HSupplierTable: Partial <IColumnHeader>[] = [
 ]
 
 export const HProductTable: Partial<IColumnHeader>[] = [
+    { title: '', chk: true, styleWidth: 2 },
     { title: 'id', hidden: true },
     { title: 'sellCode', hidden: true },
     { title: 'sku', hidden: true },

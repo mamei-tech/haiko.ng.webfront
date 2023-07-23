@@ -1,3 +1,7 @@
+.drop-icon-primary {
+    color: $primary;
+}
+
 .dropdown-menu {
     border: 0;
     box-shadow: 0px 10px 50px 0px rgba(0, 0, 0, 0.2);
@@ -283,7 +287,7 @@
     &.dropdown-toggle[data-toggle="dropdown"]{
         padding:10px;
         margin: 0;
-        margin-bottom: 5px;
+        //margin-bottom: 5px;
 
         &:after{
           content: "";

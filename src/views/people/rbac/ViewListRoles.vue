@@ -57,7 +57,7 @@ export default defineComponent({
         const st_rbac = useSt_Rbac()                                                        // Pinia store for rbac / roles
         const st_pagination = useSt_Pagination()                                            // Pinia instance of pagination store
 
-        const abar_mode: DT_ACTIONBAR_MODE = DT_ACTIONBAR_MODE.NOEJC                        // datatable action bar mode
+        const abar_mode: DT_ACTIONBAR_MODE = DT_ACTIONBAR_MODE.JC                        // datatable action bar mode
         const abutton_mode: DT_ACTION_BUTTON_MODE = DT_ACTION_BUTTON_MODE.JEDINDEL          // datatable button mode
         const columns = HRolesTable                                                         // entity customized datatable header
 

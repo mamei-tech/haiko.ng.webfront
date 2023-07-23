@@ -34,13 +34,12 @@
                             <i class="tim-icons icon-zoom-split"></i>
                         </button>
                     </div>
-                    <CmpModal
-                            v-model:show="searchModalVisible"
-                            class="modal-search"
-                            id="searchModal"
-                            :centered="false"
-                            :show-close="true"
-                    >
+                    <CmpModal v-model:show="searchModalVisible"
+                              class="modal-search"
+                              id="searchModal"
+                              :centered="false"
+                              :show-close="true">
+
                         <template v-slot:header>
                             <input v-model="searchQuery"
                                    type="text"

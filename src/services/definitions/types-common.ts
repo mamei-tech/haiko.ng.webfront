@@ -29,6 +29,26 @@ export interface Function1<T1, T2 = void> {
     ( param1: T1 ): T2
 }
 
+/**
+ * Define data we need the filers holds
+ */
+export interface IExtFilter {
+    label: string,
+    entityField: string,                // should be the name of the entity field
+    isActive: boolean                   // tells if the filters is active on the UI
+    value: number | string | boolean    // hold the value that should be used to filtering (query) the data on the server
+}
+
+/**
+ * Database extended filters group. If we need to define more (extended) filters for a datatable than we can define in the columns headers,
+ * this is the solution.
+ */
+export interface IExtFilterGroup {
+    label: string,
+    filters: IExtFilter[]
+}
+
+
 /***
  * Interface to describe object for datatable headers abstraction.
  * This create a flexible configuration for describing how to handle the headers and cell representation.

@@ -125,7 +125,7 @@ export default defineComponent({
         //region ======= DECLARATIONS & LOCAL STATE ===========================================
 
         const { t } = i18n.global
-        const abar_mode: DT_ACTIONBAR_MODE = DT_ACTIONBAR_MODE.NOEJC                        // datatable action bar mode
+        const abar_mode: DT_ACTIONBAR_MODE = DT_ACTIONBAR_MODE.JC                        // datatable action bar mode
         const abutton_mode: DT_ACTION_BUTTON_MODE = DT_ACTION_BUTTON_MODE.JDEL              // datatable button mode
         const columns = HUoMTable                                                           // entity customized datatable header
 

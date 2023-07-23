@@ -5,10 +5,9 @@
  * DT == data table
  */
 export enum DT_ACTIONBAR_MODE {
-    DEFAULT = 0,
-    COMMON = 1,             // STAFF | ROLE | ... edit, create, view
-    NOEJC = 2,              // common no edit just create | no action 'details' action btn in the row, no action bar at all
-    TOGSTATUS = 3           // Just the buttons to toggles entities status, nothing more
+    JC = 0,                         // just create, no other button
+    COMMON = 1,                     // STAFF | ROLE | ... edit, create, view
+    TOGSTATUS = 2,                  // Just the buttons to toggles entities status, nothing more
 }
 
 /**

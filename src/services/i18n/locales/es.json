@@ -192,6 +192,10 @@
                 "stat-purchases-pend":        "Compras pendientes",
                 "stat-purchases-count":       "Total de compras",
                 "stat-purchases-count-value": "Valor total de compras"
+            },
+            "product": {
+                "cbe-sold":      "Pueden ser vendidos",
+                "cbe-purchased": "Pueden ser comprados"
             }
         },
         "placeholders":  {
@@ -204,6 +208,7 @@
             "staff-lastname":         "escriba los apellidos del empleado",
             "role-rname":             "@:data.name del rol",
             "role-description":       "describe aspectos relevantes del rol",
+            "filters":                "Filtros",
             "reset-filters":          "Restablecer filtros",
             "uom-cat-ucname":         "@:data.name de la nueva categoría para unidades medida",
             "user":                   "usuario",
@@ -245,13 +250,13 @@
         "stock":           "A mano",
         "unit":            "u.m"
     },
-    "entities":      {
+    "entities": {
         "default":      "entidades",
         "staff":        {
             "name":         "Staff {ref}",
             "section-name": "@:entities.staff.name"
         },
-        "product":         {
+        "product":      {
             "name":         "Producto {ref}",
             "section-name": "@:table-headers.products"
         },

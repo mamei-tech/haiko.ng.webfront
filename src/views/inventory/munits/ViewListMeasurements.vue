@@ -60,7 +60,7 @@ export default defineComponent({
         const st_uom = useSt_UoM()                                                          // Pinia store for uom
         const router = useRouter()
 
-        const abar_mode: DT_ACTIONBAR_MODE = DT_ACTIONBAR_MODE.NOEJC                        // datatable action bar mode
+        const abar_mode: DT_ACTIONBAR_MODE = DT_ACTIONBAR_MODE.JC                        // datatable action bar mode
         const abutton_mode: DT_ACTION_BUTTON_MODE = DT_ACTION_BUTTON_MODE.JEDINDEL          // datatable button mode
         const columns = ref<Partial<IColumnHeader>[]>(HUoMCatTable)                         // entity customized datatable header | As here the data for the filter is dynamically (side-effect) obtained, we need to use ref so we can fill the datas
 
