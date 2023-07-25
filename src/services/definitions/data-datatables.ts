@@ -117,7 +117,7 @@ export const HProductTable: Partial<IColumnHeader>[] = [
     { title: 'price', navKey: 'sellPrice', styleToRight: true, styleWidth: 6, sorting: '' },
     { title: 'cost', styleToCenter: true, styleWidth: 6 },
     { title: 'stock', navKey: 'pTotalStock', styleToRight: true, styleWidth: 4, forceEmptyRender: true, sorting: '' },
-    { title: 'unit', navKey: 'pUoM', styleToLeft: true, styleWidth: 1 },
+    { title: 'unit', navKey: 'pUoMID', styleToLeft: true, styleWidth: 1 },
     {
         title:        '',            // actions buttons
         styleToRight: true,

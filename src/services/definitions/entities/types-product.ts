@@ -12,10 +12,26 @@ export interface IProductRow extends IIndexable {
     sellPrice: string
     cost: string | undefined
     pTotalStock: number | undefined
-    pUoM: number | string
+    pUoMID: number | string
 
     sku: string | undefined
     sellCode: string
+}
+
+/**
+ * Main product data transfer object
+ */
+export interface IDtoProduct extends IProductRow {
+    notePurchase: string | undefined
+    noteSell: string | undefined
+    picPath: string | undefined
+
+    CanBePurchased: boolean
+    CanBeSold: boolean
+
+    pCategoryID: number
+    pSupplierID: number
+
 }
 
 /**
