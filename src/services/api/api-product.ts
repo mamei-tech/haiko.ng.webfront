@@ -2,7 +2,7 @@ import axios from './api'
 import config from './config'
 
 import type { AxiosPromise } from 'axios'
-import type { IDataTableQuery, IDtoStaff, IDataTablePage, IStaffRow } from '@/services/definitions'
+import type { IDataTableQuery, IDataTablePage, IStaffRow } from '@/services/definitions'
 
 
 const version = config.server.current_version
@@ -30,6 +30,14 @@ export class ApiProduct {
         }
 
         return axios.get(url + '/page', { params: payload })
+    }
+
+    /**
+     * Invoke an api call to toggle the status of the entities with the given identifiers
+     * @param ids entities identifiers
+     */
+    public static bulkToggle( ids: Array<number> ): AxiosPromise<void> {
+        return axios.post(url + '/toggle', ids)
     }
 
     //endregion ===========================================================================

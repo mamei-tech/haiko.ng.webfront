@@ -13,6 +13,7 @@
                                   :data="ls_products.entityPage"
                                   :has-actions="true"
                                   :headerFilters="headerFilters"
+                                  :extendedFilters="extFilters"
 
                                   @requestIntent="h_reqQuery"
 
@@ -34,23 +35,27 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue'
+import { i18n } from '@/services/i18n'
 import { CmpCard, CmpDataTable } from '@/components'
 import { ApiProduct } from '@/services/api/api-product'
 import { useToast } from 'vue-toastification'
 import useToastify from '@/services/composables/useToastify'
+import useDialogfy from '@/services/composables/useDialogfy'
 import useCommon from '@/services/composables/useCommon'
 import { useSt_Nomenclatures } from '@/stores/nomenc'
 import { useSt_Pagination } from '@/stores/pagination'
 import { IsEmptyObj, isNumber } from '@/services/helpers/help-defaults'
 import {
+    ACTION_KIND_STR,
+    BULK_ACTIONS,
     DT_ACTION_BUTTON_MODE,
     DT_ACTIONBAR_MODE,
     ENTITY_NAMES,
     HProductTable,
-    OPS_KIND_STR
+    OPS_KIND_STR,
 } from '@/services/definitions'
 
-import type { IDataTableQuery, IColumnHeader, IProductRow, ISupplierRow } from '@/services/definitions'
+import type { IDataTableQuery, IColumnHeader, IProductRow, IExtFilterGroup, IBulkData,  TOpsKind } from '@/services/definitions'
 
 
 //region ======== STATE INTERFACE =======================================================
@@ -68,6 +73,8 @@ export default defineComponent({
 
         //#region ======= DECLARATIONS & LOCAL STATE ==========================================
 
+        const { t } = i18n.global
+
         const toast = useToast()
 
         const st_pagination = useSt_Pagination()
@@ -76,11 +83,22 @@ export default defineComponent({
         const ls_products = ref<IProductState>({ entityPage: [] as IProductRow[] })
 
         const abutton_mode: DT_ACTION_BUTTON_MODE = DT_ACTION_BUTTON_MODE.JEDINDEL          // datatable button mode
-        const abar_mode: DT_ACTIONBAR_MODE = DT_ACTIONBAR_MODE.TOGSTATUS                    // datatable action bar mode
+        const abar_mode: DT_ACTIONBAR_MODE = DT_ACTIONBAR_MODE.COMMON                       // datatable action bar mode
         const columns = ref<Partial<IColumnHeader>[]>(HProductTable)                        // entity customized data-table
         const headerFilters = [ 'pCategoryID', 'isActive', 'doWeTrackInventory' ]           // datatable filters  !!! you must use the real field names (nav keys in the HStaffTable object)
+        const extFilters: IExtFilterGroup[] =
+                [
+                    {
+                        label:   '',
+                        filters: [
+                            { label: t('form.fields.product.cbe-sold'), entityField: 'CanBeSold', isActive: false, value: true },
+                            { label: t('form.fields.product.cbe-purchased'), entityField: 'CanBePurchased', isActive: false, value: true },
+                        ]
+                    },
+                ]
 
         const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
+        const { dfyConfirmation, dfyShowAlert } = useDialogfy()
         const { toUIMoney } = useCommon()
 
         //#endregion ==========================================================================
@@ -139,6 +157,21 @@ export default defineComponent({
             })
         }
 
+        const a_reqSwitchState = ( ids: Array<number>, ops: TOpsKind ) => {
+            let entityReference: undefined | string = undefined
+
+            // the 'single' case,  used when this is called for switch status toggle intent
+            if (ids.length === 1)
+                entityReference = ls_products.value.entityPage.find(p => p.id === ids[0])!.pName
+
+            ApiProduct.bulkToggle(ids)
+            .then(() => {
+                tfyCRUDSuccess(ENTITY_NAMES.PRODUCT, ops, entityReference)
+                ls_products.value.entityPage.forEach(p => ids.includes(p.id) ? p.isActive = !p.isActive : null)            // updating local store
+            })
+            .catch(err => tfyCRUDFail(err, ENTITY_NAMES.PRODUCT, ops))
+        }
+
         //#endregion ==========================================================================
 
         //#region ======= ACTIONS =============================================================
@@ -161,14 +194,33 @@ export default defineComponent({
         const h_intentRowDelete = () => {
             console.warn("implement this")
         }
-        const h_intentBulkAction = () => {
-            console.warn("implement this")
+        const h_intentBulkAction = async ( bulkData: IBulkData ) => {
+
+            if (bulkData.actionType === BULK_ACTIONS.ENALBE) {
+                const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.ACTIVATE, ENTITY_NAMES.PRODUCT, '', '', true)
+                if (wasConfirmed) {
+                    // need to enable all selected disabled stores. Filter the Product to find whether Id from the Product in the local store
+                    // actually is in the given Id list ... and also check the Product isn't active already in the local store
+                    // I think this checks should be done to be resilient about imprecision may appears between the component id collection
+                    let ids = ls_products.value.entityPage.filter(p => bulkData.ids.indexOf(p.id.toString()) !== -1 && !p.isActive).map(p => p.id)
+                    if(ids.length > 0) a_reqSwitchState(ids, OPS_KIND_STR.ENABLE)
+                }
+            }
+            else if (bulkData.actionType === BULK_ACTIONS.DISABLE) {
+                const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DEACTIVATE, ENTITY_NAMES.PRODUCT, '', '', true)
+                if (wasConfirmed) {
+                    // disable case, same as enable but with the disable state ... and also check the Product isn't disabled already in the local store
+                    // I think this checks should be done to be resilient about imprecision may appears between the component id collection and the store or local store id collection (single source of truth)
+                    let ids = ls_products.value.entityPage.filter(p => bulkData.ids.indexOf(p.id.toString()) !== -1 && p.isActive).map(p => p.id)
+                    if (ids.length > 0) a_reqSwitchState(ids, OPS_KIND_STR.DISABLE)
+                }
+            }
         }
-        const h_intentToggleEnable = () => {
-            console.warn("implement this")
+        const h_intentToggleEnable = ( id: number ) => {
+            a_reqSwitchState([id], OPS_KIND_STR.ENABLE)
         }
-        const h_intentToggleDisable = () => {
-            console.warn("implement this")
+        const h_intentToggleDisable = ( id: number ) => {
+            a_reqSwitchState([id], OPS_KIND_STR.DISABLE)
         }
 
         //#endregion ==========================================================================
@@ -208,9 +260,10 @@ export default defineComponent({
             ls_products,
 
             columns,
-            headerFilters,
             abar_mode,
             abutton_mode,
+            headerFilters,
+            extFilters,
 
             h_reqQuery,
             h_navCreateSuppCatIntent,

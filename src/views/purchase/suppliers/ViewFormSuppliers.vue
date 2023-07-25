@@ -5,7 +5,7 @@
 
                 <CmpCard :hasFormBackBtn="true" v-on:doClick="h_back" :title=" isCloning ? $t('form.fields-common.cloning-state') : undefined">
 
-                    <!-- card / form action bard -->
+                    <!-- card / form action bar -->
                     <template v-if="cpt_fMode === 'edit'" v-slot:card-actionbar>
                         <button :title="$t('btn.tip-action-clone', {subject: $t('entities.supplier.name') } )"
                                 style="float: right"
