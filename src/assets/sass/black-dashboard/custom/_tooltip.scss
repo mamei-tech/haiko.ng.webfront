@@ -4,26 +4,28 @@
 }
 
 .c-tooltip .caption {
-    font-size: $font-size-lg;
+    font-size: $font-size-base;
     visibility: hidden;
     width: 280px;
-    background-color: $gray-700;
-    color: #fff;
+    background: linear-gradient(to bottom, $black 0%, $black-states 100%);
+    border: 1px solid $default;
+    color: rgba(255, 255, 255, 0.7);
     text-align: center;
-    border-radius: 5px;
-    padding: 8px 8px;
+    border-radius: 2px;
+    padding: 6px 6px;
     position: absolute;
     z-index: 1;
     box-shadow: 0 5px 10px #1e1e2e;
 }
 
-.c-tooltip .caption::after {
-    content: "";
+// in this project this are causing to show an useless odd square ('cause the border property I think), I'm commenting this by now
+/*.c-tooltip .caption::after {
+    content: "?";
     position: absolute;
     border-width: 5px;
     border-style: solid;
     align-content: center;
-}
+}*/
 
 .c-tooltip:hover .caption {
     visibility: visible;
