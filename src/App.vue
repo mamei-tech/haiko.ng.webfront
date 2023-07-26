@@ -22,7 +22,7 @@ export default defineComponent({
 
 <style lang="scss">
 @import "assets/sass/black-dashboard";
-@import "assets/css/fontawesome5.css";
+@import "assets/css/font-awesome.css";
 @import "assets/css/nucleo-icons.css";
 
 // from node_modules libs
