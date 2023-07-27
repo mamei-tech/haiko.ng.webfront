@@ -59,7 +59,9 @@
         "color":              "Color",
         "company":            "Empresa",
         "individual":         "Individuo",
-        "work":               "trabajo"
+        "work":               "trabajo",
+        "generals":           "Generales",
+        "data":               "Datos"
     },
     "others":        {
         "enable":           "Activo",
@@ -194,11 +196,27 @@
                 "stat-purchases-count-value": "Valor total de compras"
             },
             "product": {
-                "cbe-sold":      "Pueden ser vendidos",
-                "cbe-purchased": "Pueden ser comprados"
+                "cbe-sold":        "Puede ser vendido",
+                "cbe-purchased":   "Puede ser comprado",
+                "name":            "@:form.fields-common.firstname del @:entities.product.name",
+                "sell-code":       "Código d Venta",
+                "track-inventory": "Llevar Inventario",
+                "note-transfer":   "Nota para movimientos internos",
+                "note-purchase":   "Nota de Compra",
+                "note-sell":       "Nota de Venta",
+                "sell-price":      "Precio de venta",
+                "sell-tax":        "Impuesto",
+                "uom":             "Unidad de Medida",
+                "uom-purchase":    "U.M en Compras",
+                "tool-tips":       {
+                    "track-inventory": "Si esta marcado significa que es un producto almacenale y se gestionará inventario para el mismo.",
+                    "sell-tax":        "Impuesto cargado al cliente en el momento de la venta.",
+                    "uom":             "Unidad de medida por defecto utilizada para todas las operaciones de stock",
+                    "uom-purchase":    "Unidad de medida por defecto utilizada para las compras y los proveedores. Debe pertenecer a la misma categoría que la UM seleccionada para las operaciones de stock."
+                }
             }
         },
-        "placeholders":  {
+        "placeholders": {
             "website":                "www.elsitiowebaqui.com",
             "username":               "nickname__78",
             "select":                 " - selección - ",
@@ -220,35 +238,37 @@
             "supplier-cat-name":      "@:data.name para la categoría de proveedores",
             "supplier-contact":       "Nombre de contacto con el proveedor, ej. Pepe Bouza",
             "supplier-contact-notes": "Notas acerca del nombre del contacto",
-            "supplier-category":      " - @:table-headers.category - "
+            "supplier-category":      " - @:table-headers.category - ",
+            "product-uom":            " - @:entities.uom.name - ",
+            "product-name":           "... helado de chocolate ??"
         }
     },
     "table-headers": {
-        "name":            "@:data.name",
-        "avatar":          "Avatar",
-        "id":              "Id",
-        "user":            "Usuario",
-        "contact":         "Contacto",
-        "role":            "Rol",
-        "rname":           "@:table-headers.role",
-        "uom":             "@:{'entities.uom.name'}",
-        "uType":           "@:{'entities.uom.u-type'}",
-        "ratio":           "Tasa de Conversión",
-        "active":          "Activo?",
-        "category":        "Categoría",
-        "count":           "Elementos",
-        "color":           "Color",
-        "units":           "@:entities.uom.section-name",
-        "description":     "@:data.description",
-        "phone":           "Teléfono",
-        "land-phone":      "Fijo",
-        "cell":            "Celular",
-        "products":        "Productos",
-        "track-inventory": "Inventario",
-        "price":           "Precio (CUP)",
-        "cost":            "Costo",
-        "stock":           "A mano",
-        "unit":            "u.m"
+        "name":        "@:data.name",
+        "avatar":      "Avatar",
+        "id":          "Id",
+        "user":        "Usuario",
+        "contact":     "Contacto",
+        "role":        "Rol",
+        "rname":       "@:table-headers.role",
+        "uom":         "@:{'entities.uom.name'}",
+        "uType":       "@:{'entities.uom.u-type'}",
+        "ratio":       "Tasa de Conversión",
+        "active":      "Activo?",
+        "category":    "Categoría",
+        "count":       "Elementos",
+        "color":       "Color",
+        "units":       "@:entities.uom.section-name",
+        "description": "@:data.description",
+        "phone":       "Teléfono",
+        "land-phone":  "Fijo",
+        "cell":        "Celular",
+        "products":    "Productos",
+        "inventory":   "Inventario",
+        "price":       "Precio (CUP)",
+        "cost":        "Costo",
+        "stock":       "A mano",
+        "unit":        "u.m"
     },
     "entities": {
         "default":      "entidades",

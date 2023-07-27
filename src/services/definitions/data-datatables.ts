@@ -102,7 +102,7 @@ export const HProductTable: Partial<IColumnHeader>[] = [
     { title: 'sku', hidden: true },
     { title: 'name', navKey: 'pName', sorting: '', styleWidth: 20 },
     { title: 'active', styleToCenter: true, navKey: 'isActive', fieldSwitch: true, styleWidth: 5, sorting: '' },
-    { title:           'track-inventory',
+    { title:           'inventory',
         styleToCenter: true,
         navKey:        'doWeTrackInventory',
         styleWidth:    5,

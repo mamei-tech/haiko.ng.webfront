@@ -38,5 +38,6 @@ export enum ENTITY_NAMES {
     SUPPLIER_CAT = 'supplier-cat',
     SUPPLIER = 'supplier',
     PURCHASE = 'purchase',
-    PRODUCT = 'product'
+    PRODUCT = 'product',
+    PRODUCT_CAT = 'product-cat'
 }

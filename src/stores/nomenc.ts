@@ -59,6 +59,17 @@ export const useSt_Nomenclatures = defineStore({
         },
 
         /**
+         * Get the uom from the state in a multiselect component format ({value: ___, label: ___})
+         *
+         * @param state UoM state
+         */
+        getUoM4Multiselect: ( state ): IMultiselectBasic[] => {
+            return state.uom.map((uom: IUoMBasic) => {
+                return { value: uom.id, label: uom.uName }
+            })
+        },
+
+        /**
          * Get the product categories from the state in a multiselect component format ({value: ___, label: ___})
          *
          * @param state Nomenclatures Supplier Categories state

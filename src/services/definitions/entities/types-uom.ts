@@ -33,4 +33,9 @@ export interface IUoMBasic extends IIndexable {
      * UoM denomination / name
      */
     uName: string
+
+    /**
+     * UoM category name. In other word: the group that the UoM belongs to
+     */
+    ucName: string
 }

@@ -119,7 +119,7 @@
                                 </div>
 
                                 <!-- country & state -->
-                                <!-- in edition mode we need to ensure that we have the data of all option for the select, so the Multiselect render the entity selected option properly -->
+                                <!-- in edition mode we need to ensure that we have the data of all option for the select before render it, so the Multiselect render the entity selected option properly -->
                                 <!-- to assist this logic and make it more simple, make the fetch of the data before calling the router to render this entire view. CHECK h_navEditSuppIntent in ViewFormSuppliers.vue file -->
                                 <div class="row" v-if="(cpt_fMode === 'edit' && iniFormData.countryCode !== undefined)">
                                     <label class="text-sm-left text-md-right col-md-3 col-form-label">
@@ -324,7 +324,7 @@
                                     </div>
                                 </div>
 
-                                <!-- isActive / status -->
+                                <!-- isActive / type -->
                                 <div class="row">
                                     <label class="text-sm-left text-md-right col-md-3 col-form-label">
                                         {{ $t('data.status') }}
@@ -587,7 +587,6 @@ import { CmpCard, CmpCardStats, CmpFormActionsButton, CmpBasicInput, CmpMultisel
 import { ACTION_KIND_STR, ENTITY_NAMES, FMODE, KEYS, OPS_KIND_STR, RoutePathNames } from '@/services/definitions'
 import { VSchemaSupplier } from '@/services/definitions/validations/validations-suppliers'
 
-import type Multiselect from '@vueform/multiselect'
 import type { ComputedRef } from 'vue'
 import type { IDtoSupplier, TFormMode } from '@/services/definitions'
 
@@ -626,7 +625,7 @@ export default defineComponent({
         const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
 
         // html references
-        const ref_selectStates = ref<InstanceType<typeof Multiselect>>()        // reference to country province / states select field
+        const ref_selectStates = ref<InstanceType<typeof CmpMultiselectField>>()        // reference to country province / states select field
 
         // helpers & flags
         const qrimage = ref()
@@ -805,7 +804,7 @@ export default defineComponent({
             st_nomenclatures.states = []
 
             if (!ref_selectStates.value) return
-            //@ts-ignore
+
             ref_selectStates.value.clearSelection()
         }
 

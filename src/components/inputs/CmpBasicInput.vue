@@ -16,7 +16,7 @@
         <!-- ADDON LEFT -->
         <slot name="aleft">
             <span v-if="aleftIcon" class="input-group-prepend">
-                <div class="input-group-text"><i :class="aleftIcon"></i></div>
+                <div class="input-group-text"><i :class="aleftIcon"/></div>
             </span>
         </slot>
 
