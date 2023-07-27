@@ -8,7 +8,7 @@ import CmpDropdown from '@/components/CmpDropdown.vue'
 import CmpDataTable from '@/components/table/CmpDataTable.vue'
 import CmpTextInput from '@/components/inputs/CmpTextInput.vue'
 import CmpBasicInput from '@/components/inputs/CmpBasicInput.vue'
-import CmpAvatarInput from '@/components/inputs/CmpAvatarInput.vue'
+import CmpImageInput from '@/components/inputs/CmpImageInput.vue'
 import CmpSideBarMenu from '@/components/sidebar/CmpSideBarMenu.vue'
 import CmpTableCellPicture from '@/components/table/CmpDataTable.vue'
 import CmpVeeCheckbox from '@/components/inputs/CmpVeeCheckbox.vue'
@@ -29,7 +29,7 @@ export {
     // inputs
     CmpTextInput,
     CmpBasicInput,
-    CmpAvatarInput,
+    CmpImageInput,
     CmpVeeCheckbox,
     CmpBasicCheckbox,
     CmpMultiselectField,

@@ -1,7 +1,7 @@
 <template>
 
     <!-- btn to remove the image -->
-    <!--<div v-if="(previewImg !== null && previewImg !== undefined) || cmp_avatar !== RELPATH_DEFAULT_AVATAR_IMG">-->
+    <!--<div v-if="(previewImg !== null && previewImg !== undefined) || cmp_image !== RELPATH_DEFAULT_AVATAR_IMG">-->
     <div class="rm-btn-avatar-container" v-if="shallWeShowRmBtn">
         <button type="button" class="btn btn-round btn-icon btn-fab btn-default"
                 v-on:click="h_removeImage"
@@ -14,15 +14,16 @@
     <!-- profile image container -->
     <div class="form-group avatar-profile-container">
 
-        <img v-if="previewImg === undefined" class="avatar-profile" :src="cmp_avatar" alt="profile avatar">
-        <img v-else class="avatar-profile" :src="previewImg" alt="profile avatar">
+        <img v-if="previewImg === undefined" class="avatar-profile" :src="cmp_image" alt="profile avatar" :style="!avatarMode ? 'border-radius: 0% !important;' : ''">
+        <img v-else class="avatar-profile" :src="previewImg" alt="profile avatar" :style="!avatarMode ? 'border-radius: 0% !important;' : ''">
 
         <!-- INPUT -->
         <!--:v-model.value="value"-->
         <input class="form-control" ref="ref_fileInput" :name="name" type="file" @change="h_fileSelection"/>
 
         <div class="avatar-profile-overlay"
-             :class="errorMessage === '' ? 'avatar-profile-overlay-normal' : 'avatar-profile-overlay-fix'">
+             :class="errorMessage === '' ? 'avatar-profile-overlay-normal' : 'avatar-profile-overlay-fix'"
+             :style="!avatarMode ? 'border-radius: 0% !important;' : ''">
             <a href="#" class="a-edit-btn-icon"><i class="tim-icons icon-camera-18"/></a>
         </div>
 
@@ -39,13 +40,13 @@
 // https://www.vuescript.com/file-uploader-agent/
 import { computed, defineComponent, ref } from 'vue'
 import { i18n } from '@/services/i18n'
-import { IMG_ORG_AVATAR_NAME, RELPATH_DEFAULT_AVATAR_IMG } from '@/services/definitions'
+import { IMG_ORG_AVATAR_NAME, RELPATH_DEFAULT_AVATAR_IMG, RELPATH_DEFAULT_PRODUCT_IMG } from '@/services/definitions'
 
 import type { SetupContext } from 'vue'
 
 
 export default defineComponent({
-    name: "CmpAvatarInput",
+    name: "CmpImageInput",
     props: {
         name:    {
             type:        String,
@@ -62,10 +63,15 @@ export default defineComponent({
             required:    true,
             description: 'Server root URL for the statics files folder'
         },
-        avatar:  {
+        image:  {
             type:        String,
             required:    true,
-            description: 'The URL of the avatar profile image'
+            description: 'The URL of the image profile image'
+        },
+        avatarMode: {
+            type:        Boolean,
+            default:     false,
+            description: 'Define that the component should behave and appears as a Profile Avatar image input'
         }
     },
     setup(props, ctx: SetupContext) {
@@ -85,12 +91,13 @@ export default defineComponent({
 
         //region ======== COMPUTATIONS & GETTERS ==================================================
 
-        const cmp_avatar = computed(() => {
+        const cmp_image = computed(() => {
 
-            if (props.avatar === '' || props.avatar == undefined) return RELPATH_DEFAULT_AVATAR_IMG
+            if (props.image === '' || props.image == undefined)
+                return props.avatarMode ? RELPATH_DEFAULT_AVATAR_IMG : RELPATH_DEFAULT_PRODUCT_IMG
 
             shallWeShowRmBtn.value = true
-            return props.statics?.concat(props.avatar, IMG_ORG_AVATAR_NAME)
+            return props.statics?.concat(props.image, IMG_ORG_AVATAR_NAME)
 
             // something like
             // http://localhost:7000/statics/media/staff/avatars/1953288944/profile_avatar.jpg
@@ -120,7 +127,7 @@ export default defineComponent({
         const h_removeImage = async () => {
 
             ref_fileInput.value.files = undefined;
-            previewImg.value = RELPATH_DEFAULT_AVATAR_IMG
+            previewImg.value = props.avatarMode ? RELPATH_DEFAULT_AVATAR_IMG : RELPATH_DEFAULT_PRODUCT_IMG
 
             shallWeShowRmBtn.value = false                                      // hiding the remove img btn
             ctx.emit('removePicture')
@@ -156,7 +163,7 @@ export default defineComponent({
 
         return {
             props,
-            cmp_avatar,
+            cmp_image,
             ref_fileInput,
             errorMessage,
             previewImg,

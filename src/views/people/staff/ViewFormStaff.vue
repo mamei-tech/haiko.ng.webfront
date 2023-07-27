@@ -190,10 +190,11 @@
                             <div class="col-xs-12 col-md-6">
                                 <div class="row justify-content-center avatar-div-component-holder">
 
-                                    <CmpAvatarInput
+                                    <CmpImageInput
                                             name="avatarImg"
+                                            :avatar-mode="true"
                                             :statics="configStatic"
-                                            :avatar="iniFormData.avatarPath"
+                                            :image="iniFormData.avatarPath"
                                             :max-size="5"
                                             v-on:fileSelected="h_avatarChange"
                                             v-on:removePicture="h_removePicture"
@@ -233,7 +234,7 @@ import useDialogfy from '@/services/composables/useDialogfy'
 import { computed, onMounted, ref, defineComponent, reactive } from 'vue'
 import { Field, useForm } from 'vee-validate'
 import { useRoute, useRouter } from 'vue-router'
-import { CmpCard, CmpFormActionsButton, CmpBasicInput, CmpVeeCheckbox, CmpMultiselectField, CmpAvatarInput } from '@/components'
+import { CmpCard, CmpFormActionsButton, CmpBasicInput, CmpVeeCheckbox, CmpMultiselectField, CmpImageInput } from '@/components'
 import { FMODE, RoutePathNames, VSchemaStaffCreate, VSchemaStaffEdit, ENTITY_NAMES, OPS_KIND_STR, ACTION_KIND_STR, KEYS } from '@/services/definitions'
 
 import type { ComputedRef } from 'vue'
@@ -246,7 +247,7 @@ export default defineComponent({
         Field,
         CmpCard,
         CmpBasicInput,
-        CmpAvatarInput,
+        CmpImageInput,
         CmpVeeCheckbox,
         CmpMultiselectField,
         CmpFormActionsButton
@@ -291,7 +292,7 @@ export default defineComponent({
                 // -----
                 // ❗❗ This here is a patch, I'm not proud of this workaround but I'm having troubles to get the current
                 // state of the form data (avatarPath from server specifically), and as we fallow the 'emit events'
-                // approach to update the form data from the CmpAvatarInput component (i'm not using v-model for that
+                // approach to update the form data from the CmpImageInput component (i'm not using v-model for that
                 // component) we need a reactive for the edition mode (when de data comes from server), so this.
                 // Perhaps we can try the v-model way
 
