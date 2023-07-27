@@ -138,6 +138,12 @@ export default defineComponent({
             if (selectRef.value !== null) selectRef.value.clear()
         }
 
+        const setSelectedValue = ( option: { value: string | number, label: string } ) => {
+            //@ts-ignore
+            if (selectRef.value !== null) selectRef.value.select(option)
+        }
+
+
         return {
             selectRef,
             inputValue,
@@ -145,6 +151,7 @@ export default defineComponent({
             meta,
 
             clearSelection,
+            setSelectedValue,
 
             // handleChange,
             h_OnChangeWrap
