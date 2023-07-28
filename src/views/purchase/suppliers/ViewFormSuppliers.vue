@@ -372,7 +372,7 @@
                             <!-- tabs content -->
                             <div class="tab-content col-md-10">
 
-                                <!-- supplier statistics -->
+                                <!-- TAB data statistics -->
                                 <CmpTabContent :key="1" :id="tabs[0].title" :activeTabId="activeTabId" :tabId="1">
                                     <div class="row">
 
@@ -394,92 +394,43 @@
                                         <!--    <a href="#" class="btn btn-primary">Go somewhere</a>-->
                                         <!--</CmpCard>-->
 
-                                        <div class="col-lg-3 col-md-6" :key="statsDataCards[0].title">
-                                            <CmpCardStats :title="statsDataCards[0].title.toString()"
-                                                          :subTitle="statsDataCards[0].subTitle"
-                                                          :type="statsDataCards[0].type"
-                                                          :icon="statsDataCards[0].icon">
+                                        <div class="col-lg-3 col-md-12" v-for="(card, i) in statsDataCards" :key="`card_${card.id}`">
+                                            <CmpCardStats :title="card.title"
+                                                          :subTitle="card.subTitle"
+                                                          :type="card.type"
+                                                          :icon="card.icon"
+                                                          :with-restore="card.id === 3 || card.id === 4"
+                                                          v-on:doRestore="card.id === 3 || card.id === 4 ? h_staticsRestore(card.id) : undefined">
+
                                                 <template v-slot:footer>
-                                                    <!--<div v-html="info.footer"></div>-->
-                                                    <div>
-                                                        <a href="#" @click.prevent="h_statGoCheck(ENTITY_NAMES.PRODUCT)">
+
+                                                    <!-- jump cases -->
+                                                    <div v-if="card.id === 1 || card.id === 2 || card.id === 5 || card.id === 6">
+                                                        <a href="#" @click.prevent="h_statGoCheck(card.id)">
 
                                                             <i class="tim-icons icon-zoom-split"></i>
                                                             {{ $t( 'form.fields-common.view-check' ) }}
                                                         </a>
                                                     </div>
-                                                </template>
-                                            </CmpCardStats>
-                                        </div>
 
-                                        <div class="col-lg-3 col-md-6" :key="statsDataCards[1].title">
-                                            <CmpCardStats :title="statsDataCards[1].title.toString()"
-                                                          :subTitle="statsDataCards[1].subTitle"
-                                                          :type="statsDataCards[1].type"
-                                                          :icon="statsDataCards[1].icon">
-                                                <template v-slot:footer>
-                                                    <div>
-                                                        <a href="#" @click.prevent="h_statGoCheck(ENTITY_NAMES.PURCHASE)">
-                                                            <i class="tim-icons icon-zoom-split"></i>
-                                                            {{ $t( 'form.fields-common.view-check' ) }}
-                                                        </a>
-                                                    </div>
-                                                </template>
-                                            </CmpCardStats>
-                                        </div>
-
-                                        <div class="col-lg-3 col-md-6" :key="statsDataCards[2].title">
-                                            <CmpCardStats :title="statsDataCards[2].title.toString()"
-                                                          :subTitle="statsDataCards[2].subTitle"
-                                                          :type="statsDataCards[2].type"
-                                                          :icon="statsDataCards[2].icon"
-                                                          :withRestore="true"
-                                                          v-on:doRestore="h_staticsRestore('tcount')">
-                                                <template v-slot:footer>
-                                                    <div>
-                                                        <a href="#" @click.prevent="h_changeStatsParams('tcount', 'pm')">
+                                                    <!-- change params cases -->
+                                                    <div v-else-if="card.id === 3 || card.id === 4">
+                                                        <a href="#" @click.prevent="h_changeStatsParams(card.id, 'pm')">
                                                             <i class="tim-icons icon-calendar-60"></i>
                                                             {{ $t( 'form.fields-common.month-pass-min' ) }}
                                                         </a>
 
-                                                        <a href="#" @click.prevent="h_changeStatsParams('tcount', 'py')" class="ml-3">
+                                                        <a href="#" @click.prevent="h_changeStatsParams(card.id, 'py')" class="ml-3">
                                                             <i class="tim-icons icon-chart-bar-32"></i>
                                                             {{ $t( 'form.fields-common.year-pass-min' ) }}
                                                         </a>
 
-                                                        <a href="#" @click.prevent="h_changeStatsParams('tcount', 'cy')" class="ml-3">
+                                                        <a href="#" @click.prevent="h_changeStatsParams(card.id, 'cy')" class="ml-3">
                                                             <i class="tim-icons icon-chart-bar-32"></i>
                                                             {{ $t( 'form.fields-common.year-current-min' ) }}
                                                         </a>
                                                     </div>
-                                                </template>
-                                            </CmpCardStats>
-                                        </div>
 
-                                        <div class="col-lg-3 col-md-6" :key="statsDataCards[3].title">
-                                            <CmpCardStats :title="statsDataCards[3].title.toString()"
-                                                          :subTitle="statsDataCards[3].subTitle"
-                                                          :type="statsDataCards[3].type"
-                                                          :icon="statsDataCards[3].icon"
-                                                          :withRestore="true"
-                                                          v-on:doRestore="h_staticsRestore('tvalue')">
-                                                <template v-slot:footer>
-                                                    <div>
-                                                        <a href="#" @click.prevent="h_changeStatsParams('tvalue', 'pm')">
-                                                            <i class="tim-icons icon-calendar-60"></i>
-                                                            {{ $t( 'form.fields-common.month-pass-min' ) }}
-                                                        </a>
-
-                                                        <a href="#" @click.prevent="h_changeStatsParams('tvalue', 'py')" class="ml-3">
-                                                            <i class="tim-icons icon-chart-bar-32"></i>
-                                                            {{ $t( 'form.fields-common.year-pass-min' ) }}
-                                                        </a>
-
-                                                        <a href="#" @click.prevent="h_changeStatsParams('tvalue', 'cy')" class="ml-3">
-                                                            <i class="tim-icons icon-chart-bar-32"></i>
-                                                            {{ $t( 'form.fields-common.year-current-min' ) }}
-                                                        </a>
-                                                    </div>
                                                 </template>
                                             </CmpCardStats>
                                         </div>
@@ -487,7 +438,7 @@
                                     </div>
                                 </CmpTabContent>
 
-                                <!-- -->
+                                <!-- TAB data ... -->
                                 <CmpTabContent :key="2" :tabId="2" :id="tabs[1].title" :activeTabId="activeTabId">
                                     <div>
                                         TODO<br><br>
@@ -496,7 +447,7 @@
                                     </div>
                                 </CmpTabContent>
 
-                                <!-- -->
+                                <!-- TAB data ... -->
                                 <CmpTabContent :key="3" :tabId="3" :id="tabs[2].title" :activeTabId="activeTabId">
                                     <div>
                                         <div>
@@ -506,7 +457,7 @@
                                     </div>
                                 </CmpTabContent>
 
-                                <!-- -->
+                                <!-- TAB data ... -->
                                 <CmpTabContent :key="4" :tabId="4" :id="tabs[3].title" :activeTabId="activeTabId">
                                     <!-- notes -->
                                     <div class="row">
@@ -612,12 +563,12 @@ export default defineComponent({
 
         const { t } = i18n.global
 
-        const toast = useToast()                                                // The toast lib interface
+        const toast = useToast()                                                        // The toast lib interface
         const route = useRoute()
         const router = useRouter()
 
-        const st_nomenclatures = useSt_Nomenclatures()                          // pinia store for nomenclatures
-        const { fmode, id } = route.params                                      // remember, fmode (form mode) property denotes the mode this form view was called | checkout the type TFormMode in types definitions
+        const st_nomenclatures = useSt_Nomenclatures()                                  // pinia store for nomenclatures
+        const { fmode, id } = route.params                                              // remember, fmode (form mode) property denotes the mode this form view was called | checkout the type TFormMode in types definitions
 
         const { mkSupplier } = useFactory()
         const { mkVCardQrImg } = useQrCodes()
@@ -629,42 +580,46 @@ export default defineComponent({
 
         // helpers & flags
         const qrimage = ref()
-        const isCloning = ref(false)                                     // tells is we are in a cloning process so we call the creat endpoint instead the edition endpoint
+        const isCloning = ref(false)                                              // tells is we are in a cloning process so we call the creat endpoint instead the edition endpoint
         const isModalShowing = ref(false)
 
         // form data
         const activeTabId = ref<number>(1)
-        const iniFormData = reactive<IDtoSupplier>(mkSupplier())                // initial form data
+        const iniFormData = reactive<IDtoSupplier>(mkSupplier())                        // initial form data
         const tabs = [                                                          // form tabs data array
             { id: 1, title: t('form.fields-common.info') },
             { id: 2, title: t('form.fields.suppliers.tab-contact-plus') },
             { id: 3, title: t('form.fields.suppliers.tab-purchases') },
             { id: 4, title: t('form.fields-common.notes') }
         ]
-        const statsDataCards = reactive([                                 // form supplier statistics data / information
+        const statsDataCards = reactive([                                         // form supplier statistics data / information
             {
-                title:    iniFormData.pCount,
+                id:       1,
+                title:    iniFormData.pCount.toString(),
                 subTitle: t('form.fields.suppliers.stat-products'),
-                type:     'info',
+                type:     iniFormData.pCount <= 0 ? 'warning' : 'success',
                 icon:     'tim-icons icon-components'
-                // footer:   '<i class="tim-icons icon-zoom-split"></i></i> Update Now'
+                // footer:   `<i class="tim-icons icon-zoom-split"></i></i> Update Now`
             },
             {
-                title:    iniFormData.purchasesCountPend,
+                id:       2,
+                title:    iniFormData.purchasesCountPend.toString(),
                 subTitle: t('form.fields.suppliers.stat-purchases-pend'),
-                type:     'danger',
+                type:     iniFormData.purchasesCountPend <= 0 ? 'warning' : 'success',
                 icon:     'tim-icons icon-watch-time'
             },
             {
-                title:    iniFormData.purchasesCountTotal,
+                id:       3,
+                title:    iniFormData.purchasesCountTotal.toString(),
                 subTitle: t('form.fields.suppliers.stat-purchases-count'),
-                type:     'info',
+                type:     iniFormData.purchasesCountTotal <= 0 ? 'danger' : 'info',
                 icon:     'tim-icons icon-cart'
             },
             {
-                title:    '$' + iniFormData.purchasesCountValue,
+                id:       4,
+                title:    `$ ${ iniFormData.purchasesCountValue }`,
                 subTitle: t('form.fields.suppliers.stat-purchases-count-value'),
-                type:     'warning',
+                type:     iniFormData.purchasesCountValue <= 0 ? 'danger' : 'info',
                 icon:     'tim-icons icon-money-coins'
             }
         ])
@@ -686,7 +641,7 @@ export default defineComponent({
             // create mode
             if (cpt_fMode.value === FMODE.CREATE as TFormMode)
                 await st_nomenclatures.reqNmcCountries().catch(err => tfyCRUDFail(err, ENTITY_NAMES.COUNTRY, OPS_KIND_STR.REQUEST))
-                // this isn't needed in edition mode, see h_navEditSuppIntent in ViewFormSuppliers.vue file
+                // this isn't needed in edition mode, see h_navEditSuppIntent in ViewListSuppliers.vue file
 
             // edition edition
             if (cpt_fMode.value === FMODE.EDIT as TFormMode) {
@@ -934,59 +889,49 @@ export default defineComponent({
 
         /**
          * Go to an entity list (depends on the statistics card of the event) filtered by the current supplier
+         * @param cardId card identifier
          */
-        const h_statGoCheck = ( entity: ENTITY_NAMES ) => {
+        const h_statGoCheck = ( cardId: number ) => {
             // TODO implement this
-            console.error('Not implemented', 'go check ' + entity + ' filtered by suppliers')
-        }
-
-        /**
-         * Restore a modified statistics card
-         *
-         * @param statics which one (to restore)
-         */
-        const h_staticsRestore = ( statics: string ): void => {
-            // TODO implement this
-
-            if (statics === 'tcount') console.error('Not implemented', 'PurchaseCount')
-            if (statics === 'tvalue') console.error('Not implemented', 'PurchaseValue')
+            console.error('Not implemented', 'go check card' + cardId + ' filtered by suppliers')
         }
 
         /**
          * This will try to request the same statistics to the server but with different
          * params
          *
-         * @param subject
+         * @param cardId card identifier
          * @param param
          */
-        const h_changeStatsParams = ( subject: string, param: string ): void => {
+        const h_changeStatsParams = ( cardId: number, param: string ): void => {
             // TODO implement this
 
             // meaning:
             // pm = past month | py = past year | cy = current year
 
-            if (subject === 'tcount') switch (param) {
+            switch (param) {
                 case 'pm':
-                    console.error('implement _h_changeStatsParams_', subject, param)
+                    console.error('implement _h_changeStatsParams_', cardId, param)
                     break
                 case 'py':
-                    console.error('implement _h_changeStatsParams_', subject, param)
+                    console.error('implement _h_changeStatsParams_', cardId, param)
                     break
                 case 'cy':
-                    console.error('implement _h_changeStatsParams_', subject, param)
+                    console.error('implement _h_changeStatsParams_', cardId, param)
                     break
             }
-            if (subject === 'tvalue') switch (param) {
-                case 'pm':
-                    console.error('implement _h_changeStatsParams_', subject, param)
-                    break
-                case 'py':
-                    console.error('implement _h_changeStatsParams_', subject, param)
-                    break
-                case 'cy':
-                    console.error('implement _h_changeStatsParams_', subject, param)
-                    break
-            }
+        }
+
+        /**
+         * Restore a modified statistics card
+         *
+         * @param carId card identifier
+         */
+        const h_staticsRestore = ( carId: number ): void => {
+            // TODO implement this
+
+            console.error('Not implemented', carId)
+
         }
 
         /**
@@ -1007,6 +952,8 @@ export default defineComponent({
             isModalShowing.value = false
             qrimage.value = undefined
         }
+
+        //#endregion ==========================================================================
 
         return {
             qrimage,
@@ -1041,8 +988,6 @@ export default defineComponent({
 
             ENTITY_NAMES
         }
-
-        //#endregion ==========================================================================
     }
 })
 </script>

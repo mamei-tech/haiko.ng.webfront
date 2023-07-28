@@ -4,7 +4,7 @@
             <div class="col-12">
                 <CmpCard>
                     <CmpDataTable table-type="hover"
-                                  :subject="$t('entities.supplier.name')"
+                                  :subject="$t('entities.product.name')"
 
                                   :action-bar-mode="abar_mode"
                                   :action-btn-mode="abutton_mode"
@@ -36,6 +36,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue'
 import { i18n } from '@/services/i18n'
+import { useRouter } from 'vue-router'
 import { CmpCard, CmpDataTable } from '@/components'
 import { ApiProduct } from '@/services/api/api-product'
 import { useToast } from 'vue-toastification'
@@ -50,12 +51,13 @@ import {
     BULK_ACTIONS,
     DT_ACTION_BUTTON_MODE,
     DT_ACTIONBAR_MODE,
-    ENTITY_NAMES,
+    ENTITY_NAMES, FMODE,
     HProductTable,
-    OPS_KIND_STR,
+    OPS_KIND_STR, RoutePathNames
 } from '@/services/definitions'
 
-import type { IDataTableQuery, IColumnHeader, IProductRow, IExtFilterGroup, IBulkData,  TOpsKind } from '@/services/definitions'
+import type { IDataTableQuery, IColumnHeader, IProductRow, IExtFilterGroup, IBulkData,  TOpsKind, TFormMode } from '@/services/definitions'
+
 
 
 //region ======== STATE INTERFACE =======================================================
@@ -75,6 +77,7 @@ export default defineComponent({
 
         const { t } = i18n.global
 
+        const router = useRouter()
         const toast = useToast()
 
         const st_pagination = useSt_Pagination()
@@ -125,7 +128,7 @@ export default defineComponent({
                 // Regarding the use of '.then()' for the callback, we jus could use async in the hook and later awaited
                 // (await) the getSuppCat4Multiselect() call ... but I like the old fashion way
             })
-            .catch(err => tfyCRUDFail(err, ENTITY_NAMES.PRODUCT, OPS_KIND_STR.REQUEST))
+            .catch(err => tfyCRUDFail(err, ENTITY_NAMES.PRODUCT_CAT, OPS_KIND_STR.REQUEST))
 
             st_nomenclatures.reqNmcUoM()
 
@@ -148,12 +151,11 @@ export default defineComponent({
                 mappingProperties()                                      // mapping categories id to names
 
             }).catch(error => {
-                if (error.response.status === 404) {
+                if (error.response?.status === 404) {
                     ls_products.value.entityPage = []
                     st_pagination.mutSetEmptyPage(st_pagination.Offset)
                 }
-
-                tfyCRUDFail(error, ENTITY_NAMES.SUPPLIER, OPS_KIND_STR.REQUEST)
+                tfyCRUDFail(error, ENTITY_NAMES.PRODUCT, OPS_KIND_STR.REQUEST)
             })
         }
 
@@ -186,7 +188,13 @@ export default defineComponent({
             a_reqQuery()
         }
         const h_navCreateSuppCatIntent = () => {
-            console.warn("implement this")
+            router.push({
+                name:   RoutePathNames.prodCreate,
+                params: {
+                    fmode: FMODE.CREATE as TFormMode
+                    // id   : '', no need for passing ID on creation mode
+                }
+            })
         }
         const h_navEditSuppIntent = () => {
             console.warn("implement this")
@@ -241,14 +249,14 @@ export default defineComponent({
                 // there is a chance that this line run, and the pCategoryID field was already mapped to the role name making it a string value so we can used as index anymore, so we have to check first
                 if(isNumber(prodRow.pCategoryID)) prodRow.pCategoryID = st_nomenclatures.getProdCatByIdMap[+prodRow.pCategoryID].pCatName
 
-                // there is a chance that this line run, and the pUoM field was already mapped to the role name making it a string value so we can used as index anymore, so we have to check first
-                if(isNumber(prodRow.pUoM)) prodRow.pUoM = st_nomenclatures.getUoMByIdMap[+prodRow.pUoM].uName
+                // there is a chance that this line run, and the pUoMID field was already mapped to the role name making it a string value so we can used as index anymore, so we have to check first
+                if(isNumber(prodRow.pUoMID)) prodRow.pUoMID = st_nomenclatures.getUoMByIdMap[+prodRow.pUoMID].uName
 
                 // so the 0 value doesnt mess with the user in the UI making them confuse, we remove the 0 values
-                if (prodRow.pTotalStock == 0) prodRow.pTotalStock = undefined
+                if (prodRow.pTotalStock == 0) prodRow.pTotalStock = 0
 
                 // money ui conversion
-                prodRow.sellPrice = '$ ' + toUIMoney(prodRow.sellPrice) as string
+                prodRow.sellPrice = '$ ' + toUIMoney(prodRow?.sellPrice ?? '0') as string
 
                 return prodRow
             })

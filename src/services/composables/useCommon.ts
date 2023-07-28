@@ -33,7 +33,7 @@ export default function useCommon () {
      * @param rawMoneyValue integer representation of the number (raw value)
      * @param rounding ❗ if this was true, the method will round up the decimal places instead of trunk it
      */
-    const toUIMoney = ( rawMoneyValue: string, rounding: boolean = false ) => {
+    const toUIMoney = ( rawMoneyValue: string | number, rounding: boolean = false ) => {
         if (rawMoneyValue === '0') return '0.00'
         if (rounding) {
             // Math.round(((rawMoneyValue/100000) + Number.EPSILON) * 100) / 100

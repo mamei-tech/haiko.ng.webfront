@@ -45,8 +45,6 @@
                         <div class="row">
                             <div class="col-12">
                                 <CmpDataTable table-type="hover"
-                                              :subject="$t('entities.role.name')"
-
                                               :action-bar-mode="abar_mode"
                                               :action-btn-mode="abutton_mode"
 
@@ -125,7 +123,7 @@ export default defineComponent({
         //region ======= DECLARATIONS & LOCAL STATE ===========================================
 
         const { t } = i18n.global
-        const abar_mode: DT_ACTIONBAR_MODE = DT_ACTIONBAR_MODE.JC                        // datatable action bar mode
+        const abar_mode: DT_ACTIONBAR_MODE = DT_ACTIONBAR_MODE.JC                           // datatable action bar mode
         const abutton_mode: DT_ACTION_BUTTON_MODE = DT_ACTION_BUTTON_MODE.JDEL              // datatable button mode
         const columns = HUoMTable                                                           // entity customized datatable header
 
@@ -301,7 +299,7 @@ export default defineComponent({
         const hpr_syncUoMList = () => {
             setFieldValue('units', iniFormData.value.units)
 
-            // if we are in edition mode and there are some UoM to delete, then we sync
+            // if we are in edition mode and there are some UoM to delete, then we sync it too
             if(cpt_fMode.value === FMODE.EDIT && iniFormData.value.unitsToDelete.length > 0 )
                 setFieldValue('unitsToDelete', iniFormData.value.unitsToDelete)
         }
@@ -378,7 +376,8 @@ export default defineComponent({
         }
 
         /**
-         * Locally, add a empty UoM in the collection so the UI can reactive. This method allows to add new UoM to the
+         * Locally, add a empty UoM in the collection so the UI can react / reflect the changes.
+         * This method allows to add new UoM to the
          * UoM Category
          */
         const h_intentUoMCreate = async () => {
