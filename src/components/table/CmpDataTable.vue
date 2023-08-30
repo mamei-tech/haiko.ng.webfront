@@ -326,7 +326,7 @@
     <CmpTableEmpty v-else />
 
     <!-- PAGINATION -->
-    <CmpTablePagination v-if="data.length > 0" v-on:next="h_computePaginationData" />
+    <CmpTablePagination v-if="data.length > 0 && hasPagination" v-on:next="h_computePaginationData" />
 </template>
 
 <script lang="ts">
@@ -410,6 +410,11 @@ export default defineComponent({
             type:        Boolean,
             default:     true,
             description: 'If the table has the page size (limit) selector items'
+        },
+        hasPagination: {
+            type:        Boolean,
+            default:     true,
+            description: 'Tells if the table have to render the pagination component'
         },
         hasSearch:           {
             type:        Boolean,
