@@ -276,12 +276,12 @@ export default defineComponent({
         //region ======= HELPERS ==============================================================
 
         /**
-         * Update the collection of the UoM from the initial form value located in the ref var 'iniFormData.value.units'
+         * Update the collection of the UoM object from the initial form value located in the ref var 'iniFormData.value.units'
          * then sync the same UoM collection with the actual current form data managed by vee-validate lib
          *
          * @param data UoM data to be updated in the collection
          */
-        const hpr_updateUoMInList = (data: ICellUpdate) => {
+        const hpr_updateUoMInList = ( data: ICellUpdate ) => {
 
             iniFormData.value.units = iniFormData.value.units.map(( row: IDtoUoM ) => {
                 if (row.id === data.entityId)
