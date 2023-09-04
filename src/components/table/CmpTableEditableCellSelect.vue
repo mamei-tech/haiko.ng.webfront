@@ -11,6 +11,7 @@
         <!-- input -->
         <multiselect :options="options"
                      :placeholder="placeholder"
+                     :searchable="searchable"
                      :closeOnSelect="true"
                      :mode="'single'"
                      @change="h_OnChangeWrap"
@@ -56,6 +57,12 @@ export default defineComponent({
             description: 'A placeholder to guide the user in the UI',
             required: false
         },
+        searchable:    {
+            description: 'Tells if the component must handle user input to filter available options',
+            type:        Boolean,
+            default:     false,
+            required:    false
+        }
     },
     emits: [
         'fieldUpdateIntent',            // to notice the entity field value (cell data) has updated / changed

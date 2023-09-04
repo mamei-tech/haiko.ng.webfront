@@ -283,6 +283,7 @@
 
                         :key="hindex + '' + rindex"
                 />
+
                 <!-- normal mode | select editable cell -->
                 <CmpTableEditableCellSelect v-else-if="hpr_chkHasValue(rowObj, header) && !header.hidden && header.cellEditableSelect"
                         :placeholder="header.cellEditableSelectPlaceholder ?? ''"
@@ -291,11 +292,13 @@
                         :ref-id="rowObj.id ?? 0"
                         :validation="header.cellEditableValidation ?? hpr_empty"
                         :options="header.cellEditableSelectOptions ?? []"
+                        :searchable="header.cellEditableSelectSearchable ?? false"
 
                         @fieldUpdateIntent="h_passCellUpdateEmission"
 
                         :key="hindex + '' + rindex"
                 />
+
                 <!-- normal mode | non editable cell -->
                 <td v-else-if="hpr_chkHasValue(rowObj, header, header.forceEmptyRender) && !header.hidden"
                     rowspan="1"
@@ -305,6 +308,7 @@
                 >
                     {{ hpr_getRowValue( rowObj, header ) }}
                 </td>
+
             </template>
 
             <!-- ACTIONS BUTTONS TD -->

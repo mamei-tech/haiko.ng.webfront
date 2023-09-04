@@ -122,6 +122,7 @@ export interface IColumnHeader {
     cellEditableSelect: boolean | undefined
     cellEditableSelectOptions: IMultiselectBasic[] | undefined
     cellEditableSelectPlaceholder: string | undefined
+    cellEditableSelectSearchable: boolean | undefined
     /**
      * A function of /services/definition/validation/ schema, to be used as a callback for validating the editable cell data when it changes
      */
