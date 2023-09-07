@@ -16,6 +16,8 @@
                :value="value"
                :type="inputType"
 
+               :class="[ { 'text-right': alignTexRight }, { 'text-left': alignTexRight }]"
+
                @blur.prevent="h_blur"
                @keydown.enter.prevent="h_keydown"
         />
@@ -61,7 +63,17 @@ export default defineComponent({
             description: '',
             required:    false,
             default: 'text',
-        }
+        },
+        alignTexRight: {
+            type: Boolean,
+            description: 'Tell if we want to align text to RIGHT when the edit input is active (edition mode) on the cell',
+            default: false,
+        },
+        alignTexLeft: {
+            type: Boolean,
+            description: 'Tell if we want to align text to LEFT when the edit input is active (edition mode) on the cell',
+            default: false,
+        },
     },
     emits: [
         'fieldUpdateIntent',            // to notice the entity field value (cell data) has updated / changed

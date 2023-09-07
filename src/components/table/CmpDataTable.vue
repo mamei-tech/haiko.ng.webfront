@@ -154,7 +154,7 @@
                         </label>
                     </div>
                 </th>
-                <th v-else-if="headerFilters.includes(hpr_getNavKey(header)) && header.fieldMulti"
+                <th v-else-if="headerFilters.includes(hpr_getNavKey(header)) && header.filterSelectOptions"
                     colspan="1"
                     rowspan="1"
                     :style="[{ width: header.styleWidth + '%' }]"
@@ -162,7 +162,7 @@
                     <div class="form-group input-group">
                         <multiselect
                                 v-model="dtFilters[hpr_getNavKey(header)]"
-                                :options="header.fieldMulti"
+                                :options="header.filterSelectOptions"
                                 @change="hpr_lastSelectedSelectElem($event)"
                                 :ref=" el => { if (el) selectFilterListRef [i] = el; }"
                         />
@@ -278,6 +278,9 @@
                         :ref-id="rowObj.id ?? 0"
                         :validation="header.cellEditableValidation ?? hpr_empty"
                         :input-type="header.cellEditableInputType ?? 'text'"
+
+                        :align-tex-left="header.styleToLeft"
+                        :align-tex-right="header.styleToRight"
 
                         @fieldUpdateIntent="h_passCellUpdateEmission"
 

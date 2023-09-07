@@ -88,9 +88,9 @@ export interface IColumnHeader {
      */
     fieldSwitch: boolean | undefined
     /**
-     * Defines a multiselect cell
+     * Defines a select / multiselect cell
      */
-    fieldMulti?: Array<{ value: any, label: string }>
+    filterSelectOptions: IMultiselectBasic[] | undefined
     /**
      * This type property defines the roles for witches. It may comes in handy when we need more than one
      * switches in the data-grid, this way we can make a distinction for emitting the events from
