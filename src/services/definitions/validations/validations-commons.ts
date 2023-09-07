@@ -15,6 +15,8 @@ export const regOnlyAlphanumericNoSpaces: RegExp = /^[a-zA-ZÀ-ÿ]+(\d*[a-zA-ZÀ
 export const regWebSiteURL: RegExp = /^(?:https?:\/\/)?(?:www\.)?[a-zA-Z0-9-]+(?:\.[a-zA-Z]+)+$/
 export const regDecimalDotSeparator: RegExp = /^\d+\.?\d*$/
 export const regHTMLColorNoAlpha: RegExp = /^#(?:[0-9a-fA-F]{3}){1,2}$/
+export const regNumeric: RegExp = /^(\d)*(\.){0,1}(\d){1,2}$/           // integers and decimals (dot separator) with just two spaces eg. 100.25 or 100
+
 
 /**
  * Only match with characters, numbers, underscores and dots, No spaces. Good for using against with nicknames or system usernames
