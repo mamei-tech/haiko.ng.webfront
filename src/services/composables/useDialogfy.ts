@@ -27,11 +27,12 @@ export default function useDialogfy() {
         } as SweetAlertOptions)
     }
 
-    const dfyShowAlert = ( title: string, txt: string ): void => {
+
+    const dfyShowAlert = ( title: string, txt: string, icon = 'warning' as 'success' | 'warning' | 'info' | 'question' | 'error' ): void => {
         Swal.fire({
             titleText: title,
             text:      txt,
-            icon:      'warning'
+            icon:      icon
         } as SweetAlertOptions)
     }
 
