@@ -53,7 +53,7 @@
         <div class="col-12 text-center">
 
             <!-- delete -->
-            <!-- TODO check this title -->
+            <!-- TODO check this title, think it need i18n -->
             <CmpBaseButton v-if="showDelete"
                            round
                            @click.prevent="$emit('deleteIntent', $event)"
@@ -63,6 +63,7 @@
                 <i class="tim-icons icon-trash-simple" style="padding-bottom: 2px; padding-right: 4px;" />
             </CmpBaseButton>
 
+            <!-- TODO check this title, think it need i18n -->
             <CmpBaseButton v-if="showCancel"
                            round
                            @click.prevent="$emit('cancelIntent', $event)"
@@ -72,7 +73,7 @@
                 <i class="tim-icons icon-simple-remove" style="padding-bottom: 2px; padding-right: 4px;" />
             </CmpBaseButton>
 
-            <!-- TODO check this title -->
+            <!-- TODO check this title, think it need i18n -->
             <button @click.prevent="$emit('saveIntent', $event, false)"
                     class="btn btn-primary btn-round ml-sm-2"
                     title="Save the catalog">

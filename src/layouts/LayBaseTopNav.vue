@@ -134,7 +134,7 @@ import type { TFormMode } from '@/services/definitions'
 
 
 interface INavData {
-    // TODO Pass this state data to the general store / state manager code. See data below.
+    // TODO Pass this state data to the general store / state manager code. See data below. Maybe u want to put this in a store for holding all tha data related to the UI and the navigations allowed data (RBAC structure to be defined in the front) according to the user rol requested from backend on/after login
     showMenu: boolean
     activeNotifications: boolean
 

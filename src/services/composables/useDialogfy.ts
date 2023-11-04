@@ -36,38 +36,6 @@ export default function useDialogfy() {
         } as SweetAlertOptions)
     }
 
-    /***
-     * Dialog for confirm a deletion, showing the confirm and decline buttons.
-     * @param subject Subject or type of entity of the deletion operation.
-     * @param target Target to be deleted.
-     * @param callback Function callback to be call if the dialog was confirm
-     * @param ref Subject Entity reference e.g identifier, name or something like that
-     * @Deprecated Just a sample method. Don't use it.
-     */
-    const dfyDeleteConfirmations = (
-
-        // TIP This was from another project, I think we are not using this
-
-        subject: string,
-        target: string,
-        callback: Function1<string>,
-        ref: undefined | string = undefined
-    ): void => {
-        let text = 'Are you sure you want to delete this catalog ?'
-
-        if (ref !== undefined && typeof ref === 'string')
-            text = `Are you sure you want to the delete the ${ ref } ?`
-
-        Swal.fire({
-            icon          : 'warning',
-            titleText     : `${ subject } Deletion`,
-            text          : text,
-            showDenyButton: true
-        } as SweetAlertOptions).then(( result: SweetAlertResult ) => {
-            if (result.isConfirmed) callback(target)
-        })
-    }
-
     /**
      * Create a dialog from which to confirm an action
      * over the given target
@@ -102,7 +70,6 @@ export default function useDialogfy() {
 
         dfyShowAlert,
         dfyBasicOKBtn,
-        dfyDeleteConfirmations,
         dfyConfirmation
 
     }
