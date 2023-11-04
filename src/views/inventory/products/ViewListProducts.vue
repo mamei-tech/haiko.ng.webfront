@@ -119,14 +119,14 @@ export default defineComponent({
             // this is used to fetch supplier category basic data from the system so we can map the cat identifier to cat name in the datatable column
             st_nomenclatures.reqNmcProdCat()
             .then(() => {
-                columns.value[6].fieldMulti = st_nomenclatures.getProdCat4Multiselect
-                // the 6th column is 'category' / 'sCategoryID' column. In this datatable this is a (column) 'multi' filter
-                // (see filters in the declaration section). So, rather define the 'multi' filter data statically in the
+                columns.value[5].filterSelectOptions = st_nomenclatures.getProdCat4Select
+                // the 5th column is 'category' / 'sCategoryID' column. In this datatable this is a (column header) filter
+                // (see filters in the declaration section). So, rather define the 'select options' filter data statically in the
                 // data-datable.ts file, we weed to do it dynamically. Hence this here and no the conventionally
                 // definition in data-datable.ts.
                 // ...
                 // Regarding the use of '.then()' for the callback, we jus could use async in the hook and later awaited
-                // (await) the getSuppCat4Multiselect() call ... but I like the old fashion way
+                // (await) the getSuppCat4Select() call ... but I like the old fashion way
             })
             .catch(err => tfyCRUDFail(err, ENTITY_NAMES.PRODUCT_CAT, OPS_KIND_STR.REQUEST))
 

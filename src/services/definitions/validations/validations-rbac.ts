@@ -9,7 +9,7 @@ const { t } = i18n.global
  */
 export const VSchemaRole = {
     rName:       ( value: string ): boolean | string => {return VSchemaCommon.nameNoSpaceValidation(value)},
-    description: ( value: string ): boolean | string => {return VSchemaCommon.description(value)}
+    description: ( value: string ): boolean | string => {return VSchemaCommon.notes(value)}
 }
 
 //region ======== COMMON VALIDATIONS FIELDS RULES =======================================

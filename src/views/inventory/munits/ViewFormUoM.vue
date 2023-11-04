@@ -215,7 +215,7 @@ export default defineComponent({
             })
 
             // making the request
-            st_uom.reqInsertStaff(newUoMCategory).then(() => {
+            st_uom.reqInsertUoMCat(newUoMCategory).then(() => {
                 tfyCRUDSuccess(ENTITY_NAMES.UOMCATEGORY, OPS_KIND_STR.ADDITION, newUoMCategory.ucName)
 
                 // so now what ?

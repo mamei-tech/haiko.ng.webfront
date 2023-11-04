@@ -2,8 +2,8 @@ import { i18n } from '@/services/i18n'
 import { max, min, regex, required, integer, length } from '@vee-validate/rules'
 import {
     regHTMLColorNoAlpha,
-    regOnlyAlphanumericAndSpacesWithDots,
-    VSchemaCommon, regWebSiteURL, regOnlyAlphanumericAndSpaces
+    regOnlyAlphanumNSpacesWithDots,
+    VSchemaCommon, regWebSiteURL, regOnlyAlphanumAndSpaces
 } from '@/services/definitions/validations/validations-commons'
 
 const { t } = i18n.global
@@ -11,7 +11,7 @@ const { t } = i18n.global
 
 export const VSchemaSupplierCat = {
     scName:       ( value: string ): boolean | string => {return VSchemaCommon.nameNoSpaceValidation(value)},
-    sDescription: ( value: string ): boolean | string => {return VSchemaCommon.description(value)},
+    sDescription: ( value: string ): boolean | string => {return VSchemaCommon.notes(value)},
     scColor:      ( value: string ): boolean | string => {
         if (!required(value)) return t('validation.required')
         if (!regex(value, { regex: regHTMLColorNoAlpha })) return t('validation.only-html-color')
@@ -25,19 +25,19 @@ export const VSchemaSupplier = {
         if (!required(value)) return t('validation.required')
         if (!min(value, { length: 4 })) return t('validation.min-length', { length: 4 })
         if (!max(value, { length: 30 })) return t('validation.max-length', { length: 30 })
-        if (!regex(value, { regex: regOnlyAlphanumericAndSpacesWithDots })) return t('validation.only-html-color')
+        if (!regex(value, { regex: regOnlyAlphanumNSpacesWithDots })) return t('validation.only-html-color')
 
         return true
     },
     contactName:    ( value: string ): boolean | string => {
         if (!min(value, { length: 4 })) return t('validation.min-length', { length: 4 })
         if (!max(value, { length: 80 })) return t('validation.max-length', { length: 80 })
-        if (!regex(value, { regex: regOnlyAlphanumericAndSpaces })) return t('validation.only-html-color')
+        if (!regex(value, { regex: regOnlyAlphanumAndSpaces })) return t('validation.only-html-color')
 
         return true
     },
-    sContactNotes:  ( value: string ): boolean | string => {return VSchemaCommon.description(value, 4, 120, false)},
-    sInternalNotes: ( value: string ): boolean | string => {return VSchemaCommon.description(value, 4, 300, false)},
+    sContactNotes:  ( value: string ): boolean | string => {return VSchemaCommon.notes(value, 4, 120, false)},
+    sInternalNotes: ( value: string ): boolean | string => {return VSchemaCommon.notes(value, 4, 300, false)},
     sCategoryID:    ( value: string ): boolean | string => {
         if (!required(value)) return t('validation.required')
         if (!integer(value)) return t('validation.only-integers')

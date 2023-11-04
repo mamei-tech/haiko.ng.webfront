@@ -88,7 +88,7 @@ export default defineComponent({
         const wasByKeyDown = ref<boolean>(false)        // a flags that intents to tell BLUR event not to trigger when KEYDOWN trigger, so we don't propagate the 'fieldUpdateIntent' emission twice
         const errorMessage = ref<string>('')            // reactive property holder for validation error message
 
-        const ref_input = ref()                               // input fiel reference
+        const ref_input = ref()                               // input field reference
         const value = ref<string | number>(props.cellData)
 
         //endregion ===========================================================================

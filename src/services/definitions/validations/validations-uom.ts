@@ -11,7 +11,7 @@ const { t } = i18n.global
 export const VSchemaUoM = {
     uName:  ( value: string ): boolean | string => {
         if (!required(value)) return t('validation.required')
-        if (!min(value, { length: 1 })) return t('validation.min-length', { length: 1 })
+        if (!min(value, { length: 3 })) return t('validation.min-length', { length: 3 })
         if (!max(value, { length: 30 })) return t('validation.max-length', { length: 30 })
         if (!regex(value, { regex: regOnlyAlphanumericNoSpaces })) return t('validation.only-alpha-digits-no-spaces')
 

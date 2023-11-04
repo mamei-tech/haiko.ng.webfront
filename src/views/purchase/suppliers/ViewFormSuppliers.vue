@@ -127,7 +127,7 @@
                                     </label>
                                     <div class="col-md-4">
                                         <CmpMultiselectField :placeholder="$t('form.placeholders.select')"
-                                                             :options="st_nomenclatures.getCountry4Multiselect"
+                                                             :options="st_nomenclatures.getCountry4Select"
                                                              :searchable="true"
                                                              closeOnSelect
                                                              name="countryCode"
@@ -155,7 +155,7 @@
                                     </label>
                                     <div class="col-md-4">
                                         <CmpMultiselectField :placeholder="$t('form.placeholders.select')"
-                                                             :options="st_nomenclatures.getCountryStates4Multiselect"
+                                                             :options="st_nomenclatures.getCountryStates4Select"
                                                              :searchable="true"
                                                              name="stateCode"
                                                              class="mb-2"
@@ -185,7 +185,7 @@
                                     </label>
                                     <div class="col-md-4">
                                         <CmpMultiselectField :placeholder="$t('form.placeholders.select')"
-                                                             :options="st_nomenclatures.getCountry4Multiselect"
+                                                             :options="st_nomenclatures.getCountry4Select"
                                                              :searchable="true"
                                                              closeOnSelect
                                                              name="countryCode"
@@ -213,7 +213,7 @@
                                     </label>
                                     <div class="col-md-4">
                                         <CmpMultiselectField :placeholder="$t('form.placeholders.select')"
-                                                             :options="st_nomenclatures.getCountryStates4Multiselect"
+                                                             :options="st_nomenclatures.getCountryStates4Select"
                                                              :searchable="true"
                                                              name="stateCode"
                                                              class="mb-2"
@@ -303,7 +303,7 @@
                                     </label>
                                     <div class="col-md-9">
                                         <CmpMultiselectField :placeholder="$t('form.placeholders.supplier-category').toLowerCase()"
-                                                             :options="st_nomenclatures.getSuppCat4Multiselect"
+                                                             :options="st_nomenclatures.getSuppCat4Select"
                                                              name="sCategoryID"
                                                              class="mb-2"
                                                              closeOnSelect>
@@ -623,7 +623,7 @@ export default defineComponent({
                 icon:     'tim-icons icon-money-coins'
             }
         ])
-        let formDataFromServer: IDtoSupplier | undefined = undefined            // aux variable to save entity data requested from the server
+        let formDataFromServer: IDtoSupplier | undefined = undefined                    // aux variable to save entity data requested from the server
 
         //endregion ===========================================================================
 
@@ -680,11 +680,11 @@ export default defineComponent({
          * @param doWeNeedToStay Tell us where to go after the successfully creation of the entity
          */
         const a_create = ( newSupplier: IDtoSupplier, doWeNeedToStay: boolean ) => {
+
+            // some value sanitation to ensure it will pass backend validations
+            if (newSupplier.zip == 0) newSupplier.zip = undefined
+
             ApiSupplier.insertSupplier(newSupplier).then(() => {
-
-                // some value sanitation to ensure pass backend validations
-                if (newSupplier.zip == 0) newSupplier.zip = undefined
-
                 tfyCRUDSuccess(ENTITY_NAMES.SUPPLIER, OPS_KIND_STR.ADDITION, newSupplier.sName)
 
                 // so now what ?

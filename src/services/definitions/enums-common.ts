@@ -102,3 +102,14 @@ export enum HTML_INPUT_TYPE {
     URL = 'url',
     WEEK = 'week',
 }
+
+/***
+ * Dialog Icon STR
+ */
+export enum DIALOG_ICON {
+    W = 'warning',
+    S = 'success',
+    I = 'info',
+    Q = 'question',
+    E = 'error'
+}

@@ -62,10 +62,36 @@ export class ApiNomenclaturesMng {
 
     /**
      * Get a list of units of measurement (UoM) defined on the system
-     * !! The retrieve  list just have name and id, which makes it different from other methods
+     * !! The retrieve list just have name and id, which makes it different from other methods
      * retrieving system UoM data. Check IUoMBasic
      */
     public static getUoM(): AxiosPromise<IUoMBasic[]> {
         return axios.get(url + '/uom')
+    }
+
+    /**
+     * Get a list of Staff defined on the system
+     * - The retrieve list just will have minimum data (name) Check IStaffBasic
+     */
+    public static getStaff(): AxiosPromise<IUoMBasic[]> {
+        return axios.get(url + '/staffs')
+    }
+
+    /**
+     * Get a list of Suppliers defined on the system
+     * - The retrieve list just will have minimum data (sName) Check ISupplierBasic
+     * - M == minimum / basic information
+     */
+    public static getSuppliersM(): AxiosPromise<IUoMBasic[]> {
+        return axios.get(url + '/suppliers')
+    }
+
+    /**
+     * Get a list of Currencies defined on the system
+     * - The retrieve list just will have minimum data (cDenomination) Check ICurrencyBasic
+     * - M == minimum / basic information
+     */
+    public static getCurrenciesM(): AxiosPromise<IUoMBasic[]> {
+        return axios.get(url + '/currencies')
     }
 }

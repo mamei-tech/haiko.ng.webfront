@@ -9,12 +9,13 @@
     <!--https://stackoverflow.com/questions/68803137/vue-3-passing-array-warning-extraneous-non-props-attributes-were-passed-to-comp-->
     <td v-show="isEditionMode" rowspan="1" colspan="1" v-bind="$attrs">
         <!-- input -->
-        <multiselect :options="options"
-                     :placeholder="placeholder"
-                     :searchable="searchable"
-                     :closeOnSelect="true"
-                     :mode="'single'"
-                     @change="h_OnChangeWrap"
+        <multiselect
+                :options="options"
+                :placeholder="placeholder"
+                :searchable="searchable"
+                :closeOnSelect="true"
+                :mode="'single'"
+                @change="h_OnChangeWrap"
         />
 
     </td>
@@ -83,7 +84,6 @@ export default defineComponent({
         //endregion ===========================================================================
 
         //#region ======= FETCHING DATA & ACTIONS =============================================
-
         //endregion ===========================================================================
 
         //region ======= COMPUTATIONS & GETTERS ===============================================

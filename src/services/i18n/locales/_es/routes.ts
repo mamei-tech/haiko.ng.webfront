@@ -47,5 +47,4 @@ export default {
     [ RoutePathNames.prodCreate ]: '@:crud-actions.create @:entities.product.name',
     [ RoutePathNames.prodEdit ]:   '@:crud-actions.edition @:entities.product.name'
     //#endregion  ===========================================================================
-
 }

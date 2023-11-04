@@ -1,5 +1,5 @@
 import { i18n } from '@/services/i18n'
-import { regex, required, min, max, email, integer } from '@vee-validate/rules'
+import { regex, required, min, max, email, integer, min_value, max_value } from '@vee-validate/rules'
 
 // https://github.com/logaretm/vee-validate/issues/2297
 
@@ -9,8 +9,9 @@ const { t } = i18n.global
  * The value hast to end with letters.
  */
 export const regAlphaNSpaces: RegExp = /^([a-z|A-Z|À-ÿ]+( ){0,1})+[a-z|A-Z|À-ÿ]$/
-export const regOnlyAlphanumericAndSpaces: RegExp = /^([a-z|A-Z|À-ÿ|0-9]+( ){0,1})+[a-z|A-Z|À-ÿ|0-9]( )*$/
-export const regOnlyAlphanumericAndSpacesWithDots: RegExp = /^([a-z|A-Z|À-ÿ|0-9|\.]+( ){0,1})+[a-z|A-Z|À-ÿ|0-9|\.]( )*$/
+export const regOnlyAlphanumAndSpaces: RegExp = /^([a-z|A-Z|À-ÿ|0-9]+( ){0,1})+[a-z|A-Z|À-ÿ|0-9]$/
+export const regOnlyAlphanumNSpacesWithDots: RegExp = /^([a-z|A-Z|À-ÿ|0-9|\.]+( ){0,1})+[a-z|A-Z|À-ÿ|0-9|\.]$/
+export const regOnlyAlphanumNSpacesWithDotsNHyphen: RegExp = /^([a-zA-ZÀ-ÿ0-9\._-]+( )?)+[a-zA-ZÀ-ÿ0-9_-](?!.*\.$)$/         // can takes dots but it can't finish with dots.
 export const regOnlyAlphanumericNoSpaces: RegExp = /^[a-zA-ZÀ-ÿ]+(\d*[a-zA-ZÀ-ÿ]*)*$/
 export const regWebSiteURL: RegExp = /^(?:https?:\/\/)?(?:www\.)?[a-zA-Z0-9-]+(?:\.[a-zA-Z]+)+$/
 export const regDecimalDotSeparator: RegExp = /^\d+\.?\d*$/
@@ -21,7 +22,7 @@ export const regNumeric: RegExp = /^(\d)*(\.){0,1}(\d){1,2}$/           // integ
 /**
  * Only match with characters, numbers, underscores and dots, No spaces. Good for using against with nicknames or system usernames
  */
-export const regAlphaDigitsUnderscoreNDots: RegExp = /^[a-zA-ZÀ-ÿ][a-zA-ZÀ-ÿ0-9._]*$/
+export const regAlphaUnderscoreNDots: RegExp = /^[a-zA-ZÀ-ÿ][a-zA-ZÀ-ÿ0-9\._]*$/
 
 /**
  * Strong password validation regex. Requirements are:
@@ -39,7 +40,7 @@ export const VSchemaCommon = {
 
     username: ( value: string ): boolean | string => {
         if (!required(value)) return t('validation.required')
-        if (!regex(value, { regex: regAlphaDigitsUnderscoreNDots })) return t('validation.only-alpha-digits-underscore-dots')
+        if (!regex(value, { regex: regAlphaUnderscoreNDots })) return t('validation.only-alpha-digits-underscore-dots')
         if (!min(value, { length: 4 })) return t('validation.min-length', { length: 4 })
         if (!max(value, { length: 26 })) return t('validation.max-length', { length: 30 })
 
@@ -88,7 +89,7 @@ export const VSchemaCommon = {
 
     /**
      * Common Name validation when no space is needed
-     * allowed: regAlphaDigitsUnderscoreNDots       Underscore and dots allowed
+     * allowed: regAlphaUnderscoreNDots       Underscore and dots allowed
      *
      * @param value str to be validated
      * @param minLength minimum string length allowed
@@ -97,7 +98,7 @@ export const VSchemaCommon = {
      */
     nameNoSpaceValidation: ( value: string, minLength = 4, maxLength = 20, isThisRequired: boolean = true ): boolean | string => {
         if (isThisRequired && !required(value)) return t('validation.required')
-        if (!regex(value, { regex: regAlphaDigitsUnderscoreNDots })) return t('validation.only-alpha-digits-underscore-dots')
+        if (!regex(value, { regex: regAlphaUnderscoreNDots })) return t('validation.only-alpha-digits-underscore-dots')
         if (!min(value, { length: minLength })) return t('validation.min-length', { length: minLength })
         if (!max(value, { length: maxLength })) return t('validation.max-length', { length: maxLength })
 
@@ -105,19 +106,45 @@ export const VSchemaCommon = {
     },
 
     /**
-     * A common description field validation
-     * allowed: regOnlyAlphanumericAndSpaces
+     * A common description or note field validation
+     * allowed: regOnlyAlphanumAndSpaces
      *
      * @param value str to be validated
      * @param minLength minimum string length allowed
      * @param maxLength maximum string length allowed
      * @param isThisRequired tell if the field value need to be present mandatory
      */
-    description: ( value: string, minLength = 4, maxLength = 80, isThisRequired: boolean = true ): boolean | string => {
+    notes: ( value: string, minLength = 4, maxLength = 80, isThisRequired: boolean = true ): boolean | string => {
         if (isThisRequired && !required(value)) return t('validation.required')
-        if (!regex(value, { regex: regOnlyAlphanumericAndSpacesWithDots })) return t('validation.only-alpha-digits-spaces')
+
+        // FIXME this here, creates some sort of regex performance malfunction, seems related to the size of the string when increase, commenting this for now
+        // if (!regex(value, { regex: regOnlyAlphanumNSpacesWithDots })) return t('validation.only-alpha-digits-spaces')
+
         if (!min(value, { length: minLength })) return t('validation.min-length', { length: minLength })
         if (!max(value, { length: maxLength })) return t('validation.max-length', { length: maxLength })
+
+        return true
+    },
+
+    /**
+     * This is a custom numerical validation function
+     *
+     * @param value target value to b validated
+     * @param minVal allowed minimum value
+     * @param maxVal allowed maximum value
+     * @param int tells if we must validate it as integer (true) o as a decimal number
+     * @param isThisRequired tells if the field / property is required
+     */
+    numerical:  ( value: string, minVal = 0, maxVal = 500000000, int: boolean = false, isThisRequired: boolean = true ): boolean | string => {
+        if (isThisRequired && !required(value)) return t('validation.required')
+
+        if (int)
+            if (!regex(value, { regex: regNumeric })) return t('validation.only-positive-numbers')     // eg. 100.25 or 100
+        else
+            if (!integer(value)) return t('validation.only-integers')
+
+        if (!min_value(value, { min: minVal })) return t('validation.min-value', { value: minVal })
+        if (!max_value(value, { max: maxVal })) return t('validation.max-value', { value: maxVal })
 
         return true
     }

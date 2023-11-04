@@ -105,7 +105,7 @@
                                     </label>
                                     <div class="col-md-9">
                                         <CmpMultiselectField placeholder="- rol - "
-                                                             :options="st_nomenclatures.getRoles4Multiselect"
+                                                             :options="st_nomenclatures.getRoles4Select"
                                                              name="roleId"
                                                              class="mb-2"
                                                              closeOnSelect>

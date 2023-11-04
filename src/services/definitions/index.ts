@@ -1,10 +1,10 @@
 import { ALIGN_POSITION } from './types-common'
 import { RoutePaths, RoutePathNames } from './route-paths'
-import { HStaffTable, HRolesTable, HUoMCatTable, HUoMTable, PAGE_SIZE, HSupplierCatTable, HSupplierTable, HProductTable } from './data-datatables'
-import { SelectUoMType } from './data-select-options'
+import { HStaffTable, HRolesTable, HUoMCatTable, HUoMTable, PAGE_SIZE, HSupplierCatTable, HSupplierTable, HProductTable, HProductSupplierLine } from './data-datatables'
+import { SelectDataUoMType } from './data-select-options'
 import { HTTP_HEADER_FORM_DATA, HTTP_HEADER_FORM_URLENCODED,RELPATH_DEFAULT_AVATAR_IMG, RELPATH_DEFAULT_PRODUCT_IMG, IMG_ORG_AVATAR_NAME, IMG_AVATAR_SMALL_THUMBNAIL, IMG_PRODUCT_NAME } from './data-strs'
 import { DT_ACTIONBAR_MODE, ENTITY_NAMES, DT_ACTION_BUTTON_MODE } from '@/services/definitions/enums-entities'
-import { HTTP_RESPONSES, OPS_KIND_STR, ACTION_KIND_STR, FMODE, BULK_ACTIONS, KEYS, PICTURE_TYPE_CELL, HTML_INPUT_TYPE } from '@/services/definitions/enums-common'
+import { HTTP_RESPONSES, OPS_KIND_STR, ACTION_KIND_STR, FMODE, BULK_ACTIONS, KEYS, PICTURE_TYPE_CELL, HTML_INPUT_TYPE, DIALOG_ICON } from '@/services/definitions/enums-common'
 
 import { VSchemaStaffCreate, VSchemaStaffEdit } from '@/services/definitions/validations/validations-people'
 import { VSchemaCommon } from '@/services/definitions/validations/validations-commons'
@@ -13,12 +13,13 @@ import { VSchemaRole } from '@/services/definitions/validations/validations-rbac
 
 import type { Problem, ErrorDictionary } from '@/services/definitions/types-errors'
 import type { TOpsKind, Function0, Function1, IColumnHeader, IDataTableQuery, ITableChkEmit, TBulkAction, ById, IIndexable, IChecked, Filter, IDataListBasicResponse, TFormMode, TActionKind, IdsArray, IBulkData, IMultiselectBasic, IShell, IScrollInfo, IDataTablePage, ICellUpdate, IvCard, IExtFilter, IExtFilterGroup } from './types-common'
-import type { IStaffRow, IDtoStaff } from '@/services/definitions/entities/types-staff'
+import type { IStaffRow, IDtoStaff, IStaffBasic } from '@/services/definitions/entities/types-staff'
 import type { IRoleBasic, IDtoRole, IPermAssocId, IPermAssoc, IGroupPermsDict } from '@/services/definitions/entities/types-rbac'
 import type { IDtoUoM, IDtoUoMCategory, IUoMBasic } from '@/services/definitions/entities/types-uom'
-import type { ISupplierCatRow, IDtoSupplierCat, ISupplierRow, ISuppCatBasic, IDtoSupplier } from '@/services/definitions/entities/types-supplier'
+import type { ISupplierCatRow, IDtoSupplierCat, ISupplierRow, ISuppCatBasic, IDtoSupplier, ISupplierBasic } from '@/services/definitions/entities/types-supplier'
 import type { ICountryBasic, ICountryStatesBasic } from '@/services/definitions/entities/types-location'
-import type { IProductRow, IProdCatBasic } from '@/services/definitions/entities/types-product'
+import type { IProductRow, IProdCatBasic, IDtoProduct, IDtoProductSupplierL } from '@/services/definitions/entities/types-product'
+import type { ICurrencyBasic } from '@/services/definitions/entities/types-currency'
 
 
 export {
@@ -27,16 +28,17 @@ export {
     RoutePathNames,
 
     // static select data
-    SelectUoMType,
+    SelectDataUoMType,
 
     // Data Definitions
-    HStaffTable,
-    HRolesTable,
     HUoMTable,
+    HRolesTable,
+    HStaffTable,
     HUoMCatTable,
-    HSupplierCatTable,
-    HSupplierTable,
     HProductTable,
+    HSupplierTable,
+    HSupplierCatTable,
+    HProductSupplierLine,
 
     PAGE_SIZE,
 
@@ -52,6 +54,7 @@ export {
     ACTION_KIND_STR,
     HTTP_RESPONSES,
     KEYS,
+    DIALOG_ICON,
 
     // strings constants
     HTTP_HEADER_FORM_DATA,
@@ -80,7 +83,7 @@ export {
     // =====  ENTITIES =====
 
     // staff
-    IStaffRow, IDtoStaff,
+    IStaffRow, IDtoStaff, IStaffBasic,
 
     // rbac
     IRoleBasic, IDtoRole,  IPermAssocId, IPermAssoc,
@@ -89,11 +92,14 @@ export {
     IDtoUoM, IDtoUoMCategory, IUoMBasic,
 
     // supplier
-    ISupplierCatRow, IDtoSupplierCat, ISupplierRow, ISuppCatBasic, IDtoSupplier,
+    ISupplierCatRow, IDtoSupplierCat, ISupplierRow, ISuppCatBasic, IDtoSupplier, ISupplierBasic,
 
     // location
     ICountryBasic, ICountryStatesBasic,
 
     // product
-    IProductRow, IProdCatBasic
+    IProductRow, IProdCatBasic, IDtoProduct, IDtoProductSupplierL,
+
+    // currency
+    ICurrencyBasic
 }

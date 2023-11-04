@@ -1,7 +1,7 @@
 <template>
     <div style="text-align: center" class="mb-5">
-        <i class="tim-icons icon-alert-circle-exc text-primary" style="font-size: 80px"></i>
-        <p class="text-primary mt-3">{{ $t( 'data.empty-table' ) }}</p>
+        <i class="tim-icons icon-alert-circle-exc text-default" style="font-size: 60px"></i>
+        <p class="text-default mt-3">{{ $t( 'data.empty-table' ) }}</p>
     </div>
 </template>
 

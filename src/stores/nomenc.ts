@@ -9,9 +9,10 @@ import type {
     ICountryBasic,
     ICountryStatesBasic,
     IMultiselectBasic,
-    IRoleBasic,
-    ISuppCatBasic,
-    IProdCatBasic, IUoMBasic
+    IRoleBasic, IStaffBasic,
+    ISuppCatBasic, ISupplierBasic,
+    IProdCatBasic, IUoMBasic,
+    ICurrencyBasic,
 } from '@/services/definitions'
 
 
@@ -22,12 +23,15 @@ export const useSt_Nomenclatures = defineStore({
     id: 'nomenc',
 
     state: (): IStaffState => ({
-        uom:       [] as IUoMBasic[],
-        roles:     [] as IRoleBasic[],
-        suppCat:   [] as ISuppCatBasic[],
-        prodCat:   [] as IProdCatBasic[],
-        countries: [] as ICountryBasic[],
-        states:    [] as ICountryStatesBasic[]
+        uom:        [] as IUoMBasic[],
+        roles:      [] as IRoleBasic[],
+        suppCat:    [] as ISuppCatBasic[],
+        prodCat:    [] as IProdCatBasic[],
+        countries:  [] as ICountryBasic[],
+        states:     [] as ICountryStatesBasic[],
+        staffs:     [] as IStaffBasic[],
+        suppliers:  [] as ISupplierBasic[],
+        currencies: [] as ICurrencyBasic[]
     }),
 
     /**
@@ -41,7 +45,7 @@ export const useSt_Nomenclatures = defineStore({
          *
          * @param state Nomenclatures ROLES state
          */
-        getRoles4Multiselect: ( state ): IMultiselectBasic[] => {
+        getRoles4Select: ( state ): IMultiselectBasic[] => {
             return state.roles.map((roleData: IRoleBasic) => {
                 return { value: roleData.id, label: roleData.rName }
             })
@@ -52,7 +56,7 @@ export const useSt_Nomenclatures = defineStore({
          *
          * @param state Nomenclatures Supplier Categories state
          */
-        getSuppCat4Multiselect: ( state ): IMultiselectBasic[] => {
+        getSuppCat4Select: ( state ): IMultiselectBasic[] => {
             return state.suppCat.map((suppCatData: ISuppCatBasic) => {
                 return { value: suppCatData.id, label: suppCatData.scName }
             })
@@ -63,7 +67,7 @@ export const useSt_Nomenclatures = defineStore({
          *
          * @param state UoM state
          */
-        getUoM4Multiselect: ( state ): IMultiselectBasic[] => {
+        getUoM4Select: ( state ): IMultiselectBasic[] => {
             return state.uom.map((uom: IUoMBasic) => {
                 return { value: uom.id, label: uom.uName }
             })
@@ -74,7 +78,7 @@ export const useSt_Nomenclatures = defineStore({
          *
          * @param state Nomenclatures Supplier Categories state
          */
-        getProdCat4Multiselect: ( state ): IMultiselectBasic[] => {
+        getProdCat4Select: ( state ): IMultiselectBasic[] => {
             return state.prodCat.map((prodCatData: IProdCatBasic) => {
                 return { value: prodCatData.id, label: prodCatData.pCatName }
             })
@@ -85,7 +89,7 @@ export const useSt_Nomenclatures = defineStore({
          *
          * @param state Nomenclatures COUNTRIES state
          */
-        getCountry4Multiselect: ( state ): IMultiselectBasic[] => {
+        getCountry4Select: ( state ): IMultiselectBasic[] => {
             return state.countries.map((countryData: ICountryBasic) => {
                 return { value: countryData.id, label: countryData.cName }
             })
@@ -96,9 +100,42 @@ export const useSt_Nomenclatures = defineStore({
          *
          * @param state Nomenclatures COUNTRIES state
          */
-        getCountryStates4Multiselect: ( state ): IMultiselectBasic[] => {
+        getCountryStates4Select: ( state ): IMultiselectBasic[] => {
             return state.states.map((stateData: ICountryStatesBasic) => {
                 return { value: stateData.id, label: stateData.sName }
+            })
+        },
+
+        /**
+         * Get the staff from the state in a multiselect component format ({value: ___, label: ___})
+         *
+         * @param state Nomenclatures Staff state
+         */
+        getStaffs4Select: ( state ): IMultiselectBasic[] => {
+            return state.staffs.map((stateData: IStaffBasic) => {
+                return { value: stateData.id, label: stateData.fullName }
+            })
+        },
+
+        /**
+         * Get the suppliers from the state in a multiselect component format ({value: ___, label: ___})
+         *
+         * @param state Nomenclatures Supplier state
+         */
+        getSupplier4Select: (state): IMultiselectBasic[] => {
+            return state.suppliers.map((stateData: ISupplierBasic) => {
+                return { value: stateData.id, label: stateData.sName }
+            })
+        },
+
+        /**
+         * Get the currencies from the state in a multiselect component format ({value: ___, label: ___})
+         *
+         * @param state Nomenclatures Supplier state
+         */
+        getCurrencies4Select: (state): IMultiselectBasic[] => {
+            return state.currencies.map((stateData: ICurrencyBasic) => {
+                return { value: stateData.id, label: stateData.cDenomination }
             })
         },
 
@@ -140,13 +177,19 @@ export const useSt_Nomenclatures = defineStore({
          * @param state Nomenclatures UoM state
          */
         getUoMByIdMap: ( state ): ById<IUoMBasic> => toDicIds(state.uom),
+
+        /**
+         * Map suppliers to a dictionary where the SupplierId is the key of the category value
+         *
+         * @param state
+         */
+        getSuppByMapId: ( state ): ById<ISupplierBasic> => toDicIds(state.suppliers),
     },
     actions: {
 
         // ---mutators ---
         // mutates the states directly without any request call to the backend
         // https://pinia.vuejs.org/core-concepts/state.html#mutating-the-state | https://pinia.vuejs.org/core-concepts/state.html#replacing-the-state
-
 
         // --- server async calls actions ---
 
@@ -249,6 +292,54 @@ export const useSt_Nomenclatures = defineStore({
                 }).catch(error => { reject(error) })
             })
         },
+
+        /**
+         * Tries to get the staff defined on the system. The staff will have only minimum data
+         */
+        async reqNmcStaff(): Promise<void> {
+
+            return await new Promise<void>((resolve, reject) => {
+                ApiNomenclaturesMng.getStaff()
+                .then((response:any) => {
+
+                    this.staffs = response.data
+                    resolve()
+
+                }).catch(error => { reject(error) })
+            })
+        },
+
+        /**
+         * Tries to get the suppliers defined on the system. The supplier list will have only minimum data
+         */
+        async reqNmcSuppliers(): Promise<void> {
+
+            return await new Promise<void>((resolve, reject) => {
+                ApiNomenclaturesMng.getSuppliersM()
+                .then((response:any) => {
+
+                    this.suppliers = response.data
+                    resolve()
+
+                }).catch(error => { reject(error) })
+            })
+        },
+
+        /**
+         * Tries to get the currency defined on the system. The currency list will have only minimum data
+         */
+        async reqNmcCurrency(): Promise<void> {
+
+            return await new Promise<void>((resolve, reject) => {
+                ApiNomenclaturesMng.getCurrenciesM()
+                .then((response:any) => {
+
+                    this.currencies = response.data
+                    resolve()
+
+                }).catch(error => { reject(error) })
+            })
+        },
     }
 })
 
@@ -260,9 +351,10 @@ interface IStaffState {
     suppCat:    Array<ISuppCatBasic>,
     prodCat:    Array<IProdCatBasic>,
     countries:  Array<ICountryBasic>,
-    states:     Array<ICountryStatesBasic>                // states belonging to a determined / defined countries
+    states:     Array<ICountryStatesBasic>,                // states belonging to a determined / defined countries
+    staffs:     Array<IStaffBasic>,
+    suppliers:  Array<ISupplierBasic>,
+    currencies: Array<ICurrencyBasic>
 }
 
 //endregion =============================================================================
-
-
