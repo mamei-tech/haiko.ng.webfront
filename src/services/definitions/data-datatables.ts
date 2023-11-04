@@ -1,5 +1,6 @@
 import { VSchemaUoM } from '@/services/definitions/validations/validations-uom'
-import { SelectUoMType } from '@/services/definitions/data-select-options'
+import { VSchemaPSL } from '@/services/definitions/validations/validations-product'
+import { SelectDataUoMType } from '@/services/definitions/data-select-options'
 import { HTML_INPUT_TYPE } from '@/services/definitions/enums-common'
 import { i18n } from '@/services/i18n'
 
@@ -55,13 +56,29 @@ export const HUoMCatTable: Partial <IColumnHeader>[] = [
 export const HUoMTable: Partial<IColumnHeader>[] = [
     { title: 'id', hidden: true },
     { title: 'uom', navKey: 'uName', styleToLeft: true, styleWidth: 20, cellEditable: true, cellEditableValidation: VSchemaUoM.uName, cellEditableInputType: HTML_INPUT_TYPE.TEXT },
-    { title: 'uType', navKey: 'uType', styleWidth: 10, cellEditableSelect: true, cellEditableSelectOptions: SelectUoMType, cellEditableSelectPlaceholder: t('form.placeholders.uom-type-select') },
+    { title: 'uType', navKey: 'uType', styleWidth: 10, cellEditableSelect: true, cellEditableSelectOptions: SelectDataUoMType, cellEditableSelectPlaceholder: t('form.placeholders.uom-type-select') },
     { title: 'ratio', navKey: 'uRatio', styleWidth: 10, cellEditable: true, cellEditableValidation: VSchemaUoM.uRatio, cellEditableInputType: HTML_INPUT_TYPE.NUMBER },
     { title: 'active', styleToCenter: true, navKey: 'isActive', fieldSwitch: true },
     {
         title:        '',            // actions buttons
         styleToRight: true,
         styleWidth:   40
+    }
+]
+
+export const HProductSupplierLine: Partial<IColumnHeader>[] = [
+    { title: 'id', hidden: true },
+    { title: 'supplier', navKey: 'supplierId', styleWidth: 20, styleToLeft: true, cellEditableSelect: true, cellEditableSelectOptions: [], cellEditableSelectPlaceholder: t('form.placeholders.product-supplier'), cellEditableSelectSearchable: true },        // ❗ this select will be filled in the 'onMounted' present in the ViewFormProduct component
+    { title: 'supp-cod', navKey: 'supplierCode', styleToLeft: true, styleWidth: 12, cellEditable: true, cellEditableValidation: VSchemaPSL.supplierCode, cellEditableInputType: HTML_INPUT_TYPE.TEXT },                                                              // supp-cod == supplier code
+    { title: 'sku', styleWidth: 12, navKey: 'sku' },
+    { title: 'price', navKey: 'sPrice', styleWidth: 10, styleToRight: true, cellEditable: true, cellEditableValidation: VSchemaPSL.sPrice, cellEditableInputType: HTML_INPUT_TYPE.TEXT },
+    { title: 'currency', navKey: 'currencyId', styleWidth: 2, styleToLeft: true, cellEditableSelect: true, cellEditableSelectOptions: [], cellEditableSelectPlaceholder: t('form.placeholders.product-currency') },
+    { title: 'tax', navKey: 'sTax', styleWidth: 2, cellEditable: true, cellEditableValidation: VSchemaPSL.sTax, cellEditableInputType: HTML_INPUT_TYPE.TEXT },
+    { title: 'active', styleToCenter: true, styleWidth: 10, navKey: 'isActive', fieldSwitch: true },
+    {
+        title:        '',                                     // actions buttons
+        styleToRight: true,
+        styleWidth:   6
     }
 ]
 
@@ -99,7 +116,7 @@ export const HProductTable: Partial<IColumnHeader>[] = [
     { title: '', chk: true, styleWidth: 2 },
     { title: 'id', hidden: true },
     { title: 'sellCode', hidden: true },
-    { title: 'sku', hidden: true },
+
     { title: 'name', navKey: 'pName', sorting: '', styleWidth: 20 },
     { title: 'active', styleToCenter: true, navKey: 'isActive', fieldSwitch: true, styleWidth: 5, sorting: '' },
     { title:           'inventory',

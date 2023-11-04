@@ -63,3 +63,14 @@ export interface ISuppCatBasic extends IIndexable {
      */
     scName: string
 }
+
+
+/**
+ * Very basic data of a Supplier
+ */
+export interface ISupplierBasic extends IIndexable {
+    /**
+     * Supplier Name
+     */
+    sName: string
+}

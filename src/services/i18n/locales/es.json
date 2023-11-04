@@ -6,7 +6,7 @@
         "vcard":      "vCard",
         "vcard-info": "escanea para guardar el contacto"
     },
-    "btn":           {
+    "btn": {
         "val-yes":                   "si",
         "val-no":                    "no",
         "val-login":                 "entrar",
@@ -31,6 +31,8 @@
         "tip-grant-all":             "Otorgar todos los permisos",
         "tip-revoke-all":            "Revocar todos los permisos",
         "tip-action-clone":          "Clonar {subject}",
+        "tip-action-update-stock":   "Actualizar Stock",
+        "tip-action-replenish":      "Reaprovisionar",
         "tip-action-gen-vcard-file": "Genera un fichero VCard para descargar con la información de contacto",
         "tip-action-gen-vcard-qr":   "Genera un QR con la información de contacto"
     },
@@ -61,7 +63,8 @@
         "individual":         "Individuo",
         "work":               "trabajo",
         "generals":           "Generales",
-        "data":               "Datos"
+        "data":               "Datos",
+        "days":               "días"
     },
     "others":        {
         "enable":           "Activo",
@@ -99,15 +102,17 @@
         "request-gerund":  "de solicitud"
     },
     "dialogs": {
-        "title-alert":               "Atención",
-        "title-alert-not-allowed":   "No permitido",
-        "confirm":                   "Por favor, confirme",
-        "confirmation":              "¿ Está seguro que desea {action} {plural} {subject} ?",
-        "img-rm-alert":              "Ha eliminado la imagen de perfil. Si a continuación aplica los cambios, la imagen se eliminará de forma permanente",
-        "cant-delete-default":       "No se pueden eliminar las entidades por defecto.",
-        "cant-mod-default":          "No se pueden modificar las entidades por defecto.",
-        "uomcat-del-confirmation":   "Considere que esta acción también elimina todas las unidades asociadas a esta categoría.",
-        "supp-cat-del-confirmation": "Considere que esta acción asignará a la categoría por defecto a todos los proveedores asociados a esta categoría."
+        "title-alert":                    "Atención",
+        "title-alert-not-allowed":        "No permitido",
+        "confirm":                        "Por favor, confirme",
+        "confirmation":                   "¿ Está seguro que desea {action} {plural} {subject} ?",
+        "img-rm-alert":                   "Ha eliminado la imagen de perfil. Si a continuación aplica los cambios, la imagen se eliminará de forma permanente",
+        "cant-delete-default":            "No se pueden eliminar las entidades por defecto.",
+        "cant-mod-default":               "No se pueden modificar las entidades por defecto.",
+        "uomcat-del-confirmation":        "Considere que esta acción también elimina todas las unidades asociadas a esta categoría.",
+        "supp-cat-del-confirmation":      "Considere que esta acción asignará a la categoría por defecto a todos los proveedores asociados a esta categoría.",
+        "product-invalid-supp-assoc":     "No se permiten 2 asociaciones del mismo proveedor con el mismo precio. Verifique la lista de proveedores en la sección de Compras",
+        "product-supp-assoc-most-select": "Debe seleccionar el nombre de un proveedor para cada fila presente en la sección de compras."
     },
     "toasts":        {
         "auth-fail-4xx":         "Credenciales inválidas.",
@@ -123,34 +128,35 @@
         "no-item-type-selected": "El producto no puede ser creado, debe seleccionar un tipo de producto."
     },
     "validation":    {
-        "invalid":                           "El campo no contiene valores válidos. ",
-        "required":                          "El campo es requerido",
-        "email":                             "El campo debe contener un email válido",
-        "cellphone":                         "El campo de # de celular solo debe contener enteros",
-        "min-length":                        "La longitud mínima permitida es de {length} caracteres",
-        "max-length":                        "La longitud máxima permitida es de {length} caracteres",
-        "str-start":                         "El campo no debe comenzar con número",
-        "min-value":                         "El valor mínimo permitido es de {value}",
-        "max-value":                         "El valor máximo permitido es de {value}",
-        "only-numbers":                      "El campo debe contener solo números",
-        "only-integers":                     "El campo debe contener solo números enteros",
-        "password-complexity":               "Al menos 2 letras mayúsculas, 1 caracter espacial {'(!@#$&._*)'} , números y letras, de 8 y 20 caracteres",
-        "password-confirmation":             "El campo no coincide con la contraseña definida",
-        "only-alpha-spaces":                 "El campo solo debe contener caracteres y espacios, terminando solo en caracteres",
-        "only-html-color":                   "El campo debe contener un valor de color HTML válido (ej. #cc1919)",
-        "only-alpha-digits-spaces":          "El campo solo debe contener caracteres, números y espacios, comenzado solo en caracteres",
-        "only-alpha-digits-underscore-dots": "El campo solo debe contener caracteres, guion bajo, puntos y números, sin espacios",
-        "only-alpha-digits-no-spaces":       "El campo debe comenzar con caracteres y puede contener números sin espacios",
-        "upload-file-max-size":              "El archivo a utilizar debe tener un tamaño menor de {size} MB",
-        "avatar-invalid-extension":          "La extensión de la imagen utilizada no esta permitida",
-        "uom-list-one-ref":                  "Solo debe existir una sola unidad de referencia",
-        "uom-list-ratio-ref":                "El ratio de conversión de la unidad de referencia debe ser 1",
-        "uom-list-ref-exist":                "Debe existir al menos una unidad de referencia",
-        "uom-list-min":                      "Al menos debe existir una unidad para la categoría",
-        "uom-list-active":                   "La unidad de referencia debe estar activa",
-        "uom-ratio-gt-zero":                 "El ratio de conversión debe ser un número positivo mayor o igual que 1",
-        "same-phone":                        "Los dos números de teléfono no deben ser iguales",
-        "country-code-present":              "Si se selecciona el país, entonces la selección de la provincia es obligatoria"
+        "invalid":                                  "El campo no contiene valores válidos. ",
+        "required":                                 "El campo es requerido",
+        "email":                                    "El campo debe contener un email válido",
+        "cellphone":                                "El campo de # de celular solo debe contener enteros",
+        "min-length":                               "La longitud mínima permitida es de {length} caracteres",
+        "max-length":                               "La longitud máxima permitida es de {length} caracteres",
+        "str-start":                                "El campo no debe comenzar con número",
+        "min-value":                                "El valor mínimo permitido es de {value}",
+        "max-value":                                "El valor máximo permitido es de {value}",
+        "only-positive-numbers":                    "El campo debe contener solo números (ej 100, 100.25, etc)",
+        "only-integers":                            "El campo debe contener solo números enteros",
+        "password-complexity":                      "Al menos 2 letras mayúsculas, 1 caracter espacial {'(!@#$&._*)'} , números y letras, de 8 y 20 caracteres",
+        "password-confirmation":                    "El campo no coincide con la contraseña definida",
+        "only-alpha-spaces":                        "El campo solo debe contener caracteres y espacios, terminando solo en caracteres",
+        "only-html-color":                          "El campo debe contener un valor de color HTML válido (ej. #cc1919)",
+        "only-alpha-digits-spaces":                 "El campo solo debe contener letras, números y espacios, comenzado solo en caracteres",
+        "only-alpha-digits-underscore-dots":        "El campo solo debe contener letras, guion bajo, puntos y números, sin espacios",
+        "only-alpha-digits-underscore-dots-spaces": "El campo solo debe contener letras, guion bajo, puntos, números y sin espacios",
+        "only-alpha-digits-no-spaces":              "El campo debe comenzar con letras y puede contener números sin espacios",
+        "upload-file-max-size":                     "El archivo a utilizar debe tener un tamaño menor de {size} MB",
+        "avatar-invalid-extension":                 "La extensión de la imagen utilizada no esta permitida",
+        "uom-list-one-ref":                         "Solo debe existir una sola unidad de referencia",
+        "uom-list-ratio-ref":                       "El ratio de conversión de la unidad de referencia debe ser 1",
+        "uom-list-ref-exist":                       "Debe existir al menos una unidad de referencia",
+        "uom-list-min":                             "Al menos debe existir una unidad para la categoría",
+        "uom-list-active":                          "La unidad de referencia debe estar activa",
+        "uom-ratio-gt-zero":                        "El ratio de conversión debe ser un número positivo mayor o igual que 1",
+        "same-phone":                               "Los dos números de teléfono no deben ser iguales",
+        "country-code-present":                     "Si se selecciona el país, entonces la selección de la provincia es obligatoria"
     },
     "form":          {
         "section":       {
@@ -196,23 +202,36 @@
                 "stat-purchases-count-value": "Valor total de compras"
             },
             "product": {
-                "cbe-sold":        "Puede ser vendido",
-                "cbe-purchased":   "Puede ser comprado",
-                "name":            "@:form.fields-common.firstname del @:entities.product.name",
-                "sell-code":       "Código d Venta",
-                "track-inventory": "Llevar Inventario",
-                "note-transfer":   "Nota para movimientos internos",
-                "note-purchase":   "Nota de Compra",
-                "note-sell":       "Nota de Venta",
-                "sell-price":      "Precio de venta",
-                "sell-tax":        "Impuesto",
-                "uom":             "Unidad de Medida",
-                "uom-purchase":    "U.M en Compras",
-                "tool-tips":       {
-                    "track-inventory": "Si esta marcado significa que es un producto almacenale y se gestionará inventario para el mismo.",
-                    "sell-tax":        "Impuesto cargado al cliente en el momento de la venta.",
-                    "uom":             "Unidad de medida por defecto utilizada para todas las operaciones de stock",
-                    "uom-purchase":    "Unidad de medida por defecto utilizada para las compras y los proveedores. Debe pertenecer a la misma categoría que la UM seleccionada para las operaciones de stock."
+                "cbe-sold":                        "Puede ser vendido",
+                "cbe-purchased":                   "Puede ser comprado",
+                "name":                            "@:form.fields-common.firstname del @:entities.product.name",
+                "sell-code":                       "Código",
+                "track-inventory":                 "Llevar Inventario",
+                "note-transfer":                   "Nota movimientos internos",
+                "note-purchase":                   "Nota de Compra",
+                "note-sell":                       "Nota de Venta",
+                "sell-price":                      "Precio de venta",
+                "sell-tax":                        "Impuesto",
+                "uom":                             "Unidad de Medida",
+                "uom-purchase":                    "U.M en Compras",
+                "cost":                            "costo",
+                "stats-stock-ready":               "A mano",
+                "stats-stock-value":               "Valor del Inventario",
+                "stats-total-sales-month":         "Total de ventas este mes",
+                "stats-values-sales-month":        "Valor de venta este mes",
+                "stats-total-uom-purchase-3-mont": "Compras ult. 3 meses",
+                "stats-count-bom":                 "Recetas",
+                "logistic-responsible": "Responsible",
+                "logistic-weight": "Peso",
+                "logistic-volume": "Volumen",
+                "logistic-prep-manuf": "TP de Prep para Fabric",
+                "tool-tips": {
+                    "track-inventory":      "Si esta marcado significa que es un producto almacenale y se gestionará inventario para el mismo. Si no está marcado se interpreta que el producto siempre esta disponible (siempre tiene stock)",
+                    "sell-tax":             "Impuesto cargado al cliente en el momento de la venta.",
+                    "uom":                  "Unidad de medida por defecto utilizada para todas las operaciones de stock",
+                    "uom-purchase":         "Unidad de medida por defecto utilizada para las compras y los proveedores. Debe pertenecer a la misma categoría que la UM seleccionada para las operaciones de stock.",
+                    "logistic-responsible": "La persona del staff responsable respecto a las operaciones de logística del producto en cuestión.",
+                    "manuf-prep-l-time":    "- Tiempo Promedio de Preparación para la Fabricación -. Plazo medio para preparar las órdenes de fabricación. Crear y confirmar las Órdenes de Fabricación con estos días de antelación como promedio, para disponer de tiempo suficiente para reponer materiales o fabricar productos semi-acabados."
                 }
             }
         },
@@ -239,8 +258,11 @@
             "supplier-contact":       "Nombre de contacto con el proveedor, ej. Pepe Bouza",
             "supplier-contact-notes": "Notas acerca del nombre del contacto",
             "supplier-category":      " - @:table-headers.category - ",
+            "staffs":                 " - @:entities.staff.name - ",
             "product-uom":            " - @:entities.uom.name - ",
-            "product-name":           "... helado de chocolate ??"
+            "product-name":           "... helado de chocolate ??",
+            "product-supplier":       " - Selecciona @:entities.supplier.name - ",
+            "product-currency":       "- moneda -"
         }
     },
     "table-headers": {
@@ -263,12 +285,17 @@
         "phone":       "Teléfono",
         "land-phone":  "Fijo",
         "cell":        "Celular",
+        "supplier":    "@:entities.supplier.name",
         "products":    "Productos",
         "inventory":   "Inventario",
-        "price":       "Precio (CUP)",
+        "price":       "Precio",
         "cost":        "Costo",
         "stock":       "A mano",
-        "unit":        "u.m"
+        "unit":        "u.m",
+        "supp-cod":    "Código Prov.",
+        "currency":    "Moneda",
+        "tax":         "Impuesto(%)",
+        "sku":         "SKU"
     },
     "entities": {
         "default":      "entidades",
@@ -277,8 +304,8 @@
             "section-name": "@:entities.staff.name"
         },
         "product":      {
-            "name":         "Producto {ref}",
-            "section-name": "@:table-headers.products"
+            "name":            "Producto {ref}",
+            "section-name":    "@:table-headers.products"
         },
         "role":         {
             "name":         "Rol {ref}",
@@ -286,8 +313,10 @@
         },
         "uom":          {
             "name":         "Unidad de Medida {ref}",
+            "initials":     "UdM",
             "section-name": "Unidades",
-            "u-type":       "Tipo de unidad"
+            "u-type":       "Tipo de unidad",
+            "default":      "Unidades"
         },
         "uomcatetgory": {
             "name":         "@:{'table-headers.category'} de unidades",

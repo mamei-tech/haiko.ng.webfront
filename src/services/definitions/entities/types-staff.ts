@@ -25,3 +25,13 @@ export interface IDtoStaff extends IStaffRow {
 
     avatarImg?: File                    // on server this value is only used in the request DTO for crete / update, this value doesn't exist in the Staff entity / model
 }
+
+/**
+ * Very basic data of a Staff
+ */
+export interface IStaffBasic extends IIndexable {
+    /**
+     * Staff first name + last name
+     */
+    fullName: string
+}

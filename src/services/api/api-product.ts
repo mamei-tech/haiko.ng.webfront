@@ -1,12 +1,16 @@
 import axios from './api'
 import config from './config'
+import { HTTP_HEADER_FORM_DATA } from '@/services/definitions'
+import useCommon from '@/services/composables/useCommon'
 
 import type { AxiosPromise } from 'axios'
-import type { IDataTableQuery, IDataTablePage, IStaffRow } from '@/services/definitions'
+import type { IDataTableQuery, IDataTablePage, IStaffRow, IDtoProduct } from '@/services/definitions'
 
 
 const version = config.server.current_version
 const url = `v${ version }/mngmt/cmproduct`
+
+const { toFormData, toFormDataR } = useCommon()
 
 /***
  * REST API class for backend interaction logic related with Products
@@ -38,6 +42,20 @@ export class ApiProduct {
      */
     public static bulkToggle( ids: Array<number> ): AxiosPromise<void> {
         return axios.post(url + '/toggle', ids)
+    }
+
+    /**
+     * Create / insert a new Product on the system
+     *
+     * @param product
+     * @returns Promise with the identifier of the just created store (the same as the owner)
+     */
+    public static insertProduct( product: IDtoProduct ): AxiosPromise<number> {
+        // return axios.post(url, staff)
+
+        return axios.post(url, toFormDataR(product), {
+            headers: { 'Content-Type': HTTP_HEADER_FORM_DATA }
+        })
     }
 
     //endregion ===========================================================================
