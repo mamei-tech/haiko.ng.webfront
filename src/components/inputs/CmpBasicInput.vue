@@ -39,10 +39,10 @@
                 <div class="input-group-text"><i :class="arightIcon"></i></div>
             </span>
         </slot>
-
-        <!-- Error Msg -->
-        <label v-show="errorMessage" class="error">{{ errorMessage }}</label>
     </div>
+
+    <!-- Error Msg -->
+    <label v-show="errorMessage" class="error">{{ errorMessage }}</label>
 </template>
 
 <script lang="ts">

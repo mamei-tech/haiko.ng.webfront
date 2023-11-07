@@ -11,6 +11,10 @@
     color: $danger-states;
 }
 
+label.error {
+    color: $danger-states !important;
+}
+
 .form-group.has-success .error,
 .input-group.has-success .error {
     color: $success;
