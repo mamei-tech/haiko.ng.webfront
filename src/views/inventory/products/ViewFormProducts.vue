@@ -170,6 +170,22 @@
                                         <!-- left col -->
                                         <div class="col-mx-12 col-md-6">
 
+                                            <!-- can be sold -->
+                                            <div class="row">
+                                                <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                                                    {{ $t('form.fields.product.cbe-sold') }}
+                                                </label>
+                                                <div class="col-md-2">
+                                                    <CmpVeeCheckbox name="canBeSold"
+                                                                    :checked="iniFormData.canBeSold"
+                                                                    :labels="[$t('btn.val-yes'), $t('btn.val-no')]"
+                                                                    v-model="iniFormData.canBeSold"
+                                                                    @chkboxchange="h_changeSoldStatus"
+                                                    />
+
+                                                </div>
+                                            </div>
+
                                             <!-- sell price -->
                                             <div class="row">
                                                 <label class="text-sm-left text-md-right col-md-3 col-form-label">
@@ -182,6 +198,7 @@
                                                             name="sellPrice"
                                                             type="number"
                                                             v-model="iniFormData.sellPrice"
+                                                            :disabled="ls_activateSellPrice"
                                                     />
                                                 </div>
                                             </div>
@@ -203,20 +220,6 @@
                                                 </div>
                                             </div>
 
-                                            <!-- can be sold -->
-                                            <div class="row">
-                                                <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                                                    {{ $t('form.fields.product.cbe-sold') }}
-                                                </label>
-                                                <div class="col-md-2">
-                                                    <CmpVeeCheckbox name="canBeSold"
-                                                                    :checked="iniFormData.canBeSold"
-                                                                    v-model="iniFormData.canBeSold"
-                                                                    :labels="[$t('btn.val-yes'), $t('btn.val-no')]"
-                                                    />
-                                                </div>
-                                            </div>
-
                                         </div>
 
                                         <!-- right col -->
@@ -233,7 +236,7 @@
                                                             :placeholder="$t('form.placeholders.product-uom').toLowerCase()"
                                                             :options="st_nomenclatures.getUoM4Select"
                                                             searchable
-                                                            name="PUoMID"
+                                                            name="pUoMID"
                                                             class="mb-2"
                                                             closeOnSelect
                                                             v-on:changehapend="h_uomChange"
@@ -266,7 +269,7 @@
                                                             :placeholder="$t('form.placeholders.product-uom').toLowerCase()"
                                                             :options="ls_filteredUoM"
                                                             searchable
-                                                            name="PUoMPurchaseID"
+                                                            name="pUoMPurchaseID"
                                                             class="mb-2"
                                                             closeOnSelect
                                                             ref="ref_selectUoMPurchase"
@@ -291,7 +294,6 @@
 
                                         </div>
                                     </div>
-
                                 </CmpTabContent>
 
                                 <!-- TAB inventory -->
@@ -664,6 +666,7 @@ export default defineComponent({
         // form data
         const activeTabId = ref<number>(1)
         const iniFormData = reactive<IDtoProduct>(mkProduct())                                    // initial form data
+        const ls_activateSellPrice = ref<boolean>(true)
         const ls_selectedUoMLabel = ref<string | undefined>(undefined)
         const ls_filteredUoM = ref<IMultiselectBasic[]>([])
         const tabs = [                                                                            // form tabs data array
@@ -813,6 +816,9 @@ export default defineComponent({
             if (!newProduct.notePurchase) delete newProduct.notePurchase
             if (!newProduct.noteSell) delete newProduct.noteSell
             if (!newProduct.noteTransfer) delete newProduct.noteTransfer
+
+            // this is the creation, so is not for sale, then sellPrice not make any sense
+            if(!newProduct.canBeSold) delete newProduct.sellPrice
 
             // suppliers sanitation
             delete newProduct.suppLinesToDelete             // if (!newProduct.suppLinesToDelete || newProduct.suppLinesToDelete.length == 0)  <-- this has don't make any sense here as we are creating product, there is nothing to delete in this case, so we erase the field immediately
@@ -1013,7 +1019,7 @@ export default defineComponent({
                         }
                 }
             // @ts-ignore
-            } else if (iniFormData.supplierLines[ 0 ].supplierId <= 0 ) {               // if we have just one supplier and it supplierId is lesser than or equal 0, we can't allow, we need to ensure a supplier selection for each product supplier association
+            } else if (iniFormData.supplierLines && iniFormData.supplierLines.length == 1 ) {               // if we have just one supplier and it supplierId is lesser than or equal 0, we can't allow, we need to ensure a supplier selection for each product supplier association
                 dfyShowAlert(t('dialogs.title-alert-not-allowed'), t('dialogs.product-supp-assoc-most-select'), DIALOG_ICON.E)
                 return
             }
@@ -1203,6 +1209,13 @@ export default defineComponent({
             hpr_updatePSLInList(data)
         }
 
+        /**
+         * Handle the intent to change the 'canBeSoldStatus' field, so we can hide the 'sellPrice' input we it is not needed
+         */
+        const h_changeSoldStatus = () => {
+            ls_activateSellPrice.value = !ls_activateSellPrice.value
+        }
+
         //#endregion ==========================================================================
 
         return {
@@ -1219,6 +1232,7 @@ export default defineComponent({
             statsDataCards,
             ls_filteredUoM,
             ls_selectedUoMLabel,
+            ls_activateSellPrice,
 
             ref_selectUoMPurchase,
 
@@ -1235,6 +1249,7 @@ export default defineComponent({
             h_removePicture,
             h_staticsRestore,
             h_keyboardKeyPress,
+            h_changeSoldStatus,
             h_uomPurchaseSelect,
             h_changeStatsParams,
 
