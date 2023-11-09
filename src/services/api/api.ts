@@ -1,5 +1,5 @@
 import axios from 'axios'
-import config from './config'
+import appConfig from '@/configs/app.conf'
 import router from '@/router'
 
 //@ts-ignore
@@ -12,7 +12,7 @@ Nprogress.configure({ trickleSpeed: 1500, showSpinner: false, easing: 'ease', sp
 
 
 const customInstance = axios.create({
-    baseURL: config.server.api,
+    baseURL: appConfig.server.api,
     headers: {
         Accept: 'application/json',
         'Access-Control-Allow-Origin': '*'

@@ -1,5 +1,3 @@
-// file that acts like template for adapting the app to the running environment
-
 interface IConfig {
     server: {
         name: string;                                   // name of the web app
@@ -10,21 +8,27 @@ interface IConfig {
     auth: {
         grand_type: string;                             // authentication grants type | Oauth2 flow
     };
+    app: {
+        scale: number                                   // integer conversion scale used in the backend e.g 100 | ❗ Has to be synced with scale number using in the backend
+    }
 }
 
-function getConfig (): IConfig {
+function getConfig(): IConfig {
     return {
         server: {
-            name: 'Un2x3',
+            name:            'Haiko',
             current_version: 1,
-            api: 'http://localhost:7000/',
-            statics: 'http://localhost:7000/statics/'
+            api:             'http://localhost:7000/',
+            statics:         'http://localhost:7000/statics/'
         },
-        auth: {
-            grand_type: 'password',                         // Oauth2 flow
+        auth:   {
+            grand_type: 'password'
         },
-    };
+        app: {
+            scale: 100
+        }
+    }
 }
 
-const config = getConfig();
-export default config;
+const config = getConfig()
+export default config

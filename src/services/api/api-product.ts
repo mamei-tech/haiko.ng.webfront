@@ -1,5 +1,5 @@
 import axios from './api'
-import config from './config'
+import appConfig from '@/configs/app.conf'
 import { HTTP_HEADER_FORM_DATA } from '@/services/definitions'
 import useCommon from '@/services/composables/useCommon'
 
@@ -7,7 +7,7 @@ import type { AxiosPromise } from 'axios'
 import type { IDataTableQuery, IDataTablePage, IStaffRow, IDtoProduct } from '@/services/definitions'
 
 
-const version = config.server.current_version
+const version = appConfig.server.current_version
 const url = `v${ version }/mngmt/cmproduct`
 
 const { toFormData, toFormDataR } = useCommon()

@@ -1,5 +1,5 @@
 import axios from './api'
-import config from './config'
+import appConfig from '@/configs/app.conf'
 import { HTTP_RESPONSES } from '@/services/definitions'
 
 import type { AxiosPromise } from 'axios'
@@ -7,7 +7,7 @@ import type { IDataTableQuery, IDataTablePage, IDtoRole } from '@/services/defin
 import type { IPermAssocId } from '@/services/definitions/entities/types-rbac'
 
 
-const version = config.server.current_version
+const version = appConfig.server.current_version
 const url = `v${ version }/mngmt/cmrbac`
 
 /***

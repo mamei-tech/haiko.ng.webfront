@@ -337,7 +337,7 @@
 </template>
 
 <script lang="ts">
-import config from '@/services/api/config'
+import appConfig from '@/configs/app.conf'
 import { onBeforeUpdate, computed, defineComponent, toRaw, reactive, ref } from 'vue'
 import { watch } from '@vue/runtime-core'
 import CmpTablePagination from './CmpTablePagination.vue'
@@ -936,7 +936,7 @@ export default defineComponent({
 
             cap,
 
-            configStatic: config.server.statics,
+            configStatic: appConfig.server.statics,
             PICTURE_TYPE_CELL: PICTURE_TYPE_CELL
         }
     }

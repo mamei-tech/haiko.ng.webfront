@@ -221,7 +221,7 @@
 </template>
 
 <script lang="ts">
-import config from '@/services/api/config'
+import appConfig from '@/configs/app.conf'
 import { onBeforeUnmount } from 'vue'
 import { useToast } from 'vue-toastification'
 import { useSt_Staff } from '@/stores/staff'
@@ -462,7 +462,7 @@ export default defineComponent({
             h_avatarChange,
             h_removePicture,
 
-            configStatic: config.server.statics
+            configStatic: appConfig.server.statics
         }
     }
 })

@@ -1,5 +1,5 @@
 import axios from './api'
-import config from './config'
+import appConfig from '@/configs/app.conf'
 import qs from 'query-string'
 import { HTTP_HEADER_FORM_URLENCODED } from '@/services/definitions'
 
@@ -8,7 +8,7 @@ import type { IAuthFormData } from '../definitions/types-forms'
 import type { IAuthResponse } from '../definitions/types-api'
 
 
-const version = config.server.current_version
+const version = appConfig.server.current_version
 const url = `v${ version }/cauth`
 
 

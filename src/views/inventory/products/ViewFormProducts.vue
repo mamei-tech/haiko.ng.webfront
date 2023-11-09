@@ -587,7 +587,7 @@
 </template>
 
 <script lang="ts">
-import config from '@/services/api/config'
+import appConfig from '@/configs/app.conf'
 import { computed, defineComponent, onBeforeUnmount, onMounted, reactive, ref } from 'vue'
 import { useForm } from 'vee-validate'
 import { i18n } from '@/services/i18n'
@@ -608,6 +608,7 @@ import { CmpCard, CmpFormActionsButton, CmpBasicInput, CmpCollapseItem, CmpBasic
 import useFactory from '@/services/composables/useFactory'
 import useToastify from '@/services/composables/useToastify'
 import useDialogfy from '@/services/composables/useDialogfy'
+import useNumeric from '@/services/composables/useNumeric'
 import { ApiProduct } from '@/services/api/api-product'
 import { useSt_Nomenclatures } from '@/stores/nomenc'
 import { VSchemaProduct } from '@/services/definitions/validations/validations-product'
@@ -656,6 +657,7 @@ export default defineComponent({
         const { mkProduct, mkProductSupplierLine } = useFactory()
         const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
         const { dfyConfirmation, dfyShowAlert } = useDialogfy()
+        const { valUI2Raw } = useNumeric()
 
         // html references
         const ref_selectUoMPurchase = ref<InstanceType<typeof CmpMultiselectField>>()             // reference to country province / states select field
@@ -802,9 +804,7 @@ export default defineComponent({
         const a_create = ( newProduct: IDtoProduct, doWeNeedToStay: boolean ) => {
 
             // --- sanitation ---
-            !newProduct.sellPrice
-                    ? newProduct.sellPrice = 100000
-                    : newProduct.sellPrice = (+newProduct.sellPrice) * 100000               // converting the price to 100K scale using in the backend
+            newProduct.sellPrice = valUI2Raw(newProduct.sellPrice)                                    // converting the price to 100K scale using in the backend
 
             if (!newProduct.cost) newProduct.cost = 0
             if (!newProduct.sellTax) newProduct.sellTax = 0
@@ -826,9 +826,8 @@ export default defineComponent({
             else newProduct.supplierLines = newProduct.supplierLines.map(( supplier: IDtoProductSupplierL ) => {
 
                 // sanitation
-                !supplier.sPrice                                                                // price sanitation (remember the scale)
-                        ? supplier.sPrice = 100000
-                        : supplier.sPrice = (+supplier.sPrice) * 100000                         // converting the price to 100K scale using in the backend
+                supplier.sPrice = valUI2Raw(supplier.sPrice)                                      // price sanitation (remember the scale)
+
                 delete supplier.sku                                                             // this value will be generate in the backend, it make no sense send it from here
                 delete supplier.id                                                              // only relevant in the front, it will not be needed in the backend
 
@@ -1264,7 +1263,7 @@ export default defineComponent({
             h_intentToggleEnable,
             h_intentToggleDisable,
 
-            configStatic: config.server.statics
+            configStatic: appConfig.server.statics
         }
     }
 

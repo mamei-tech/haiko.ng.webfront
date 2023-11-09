@@ -1,11 +1,11 @@
 import axios from './api'
-import config from './config'
+import appConfig from '@/configs/app.conf'
 
 import type { AxiosPromise } from 'axios'
 import type { IDataTablePage, IDtoUoMCategory } from '@/services/definitions'
 
 
-const version = config.server.current_version
+const version = appConfig.server.current_version
 const url = `v${ version }/mngmt/cmuom`
 
 /***

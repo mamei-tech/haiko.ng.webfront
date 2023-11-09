@@ -42,7 +42,7 @@ import { ApiProduct } from '@/services/api/api-product'
 import { useToast } from 'vue-toastification'
 import useToastify from '@/services/composables/useToastify'
 import useDialogfy from '@/services/composables/useDialogfy'
-import useCommon from '@/services/composables/useCommon'
+import useNumeric from '@/services/composables/useNumeric'
 import { useSt_Nomenclatures } from '@/stores/nomenc'
 import { useSt_Pagination } from '@/stores/pagination'
 import { IsEmptyObj, isNumber } from '@/services/helpers/help-defaults'
@@ -57,7 +57,6 @@ import {
 } from '@/services/definitions'
 
 import type { IDataTableQuery, IColumnHeader, IProductRow, IExtFilterGroup, IBulkData,  TOpsKind, TFormMode } from '@/services/definitions'
-
 
 
 //region ======== STATE INTERFACE =======================================================
@@ -102,7 +101,7 @@ export default defineComponent({
 
         const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
         const { dfyConfirmation, dfyShowAlert } = useDialogfy()
-        const { toUIMoney } = useCommon()
+        const { toUIMoney } = useNumeric()
 
         //#endregion ==========================================================================
 

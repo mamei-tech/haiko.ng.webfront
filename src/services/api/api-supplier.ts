@@ -1,5 +1,5 @@
 import axios from './api'
-import config from './config'
+import appConfig from '@/configs/app.conf'
 import useFactory from '@/services/composables/useFactory'
 import { HTTP_RESPONSES } from '@/services/definitions'
 
@@ -7,7 +7,7 @@ import type { AxiosPromise } from 'axios'
 import type { ISupplierCatRow, IDataTableQuery, IDataTablePage, IDtoSupplierCat, ISupplierRow, IDtoSupplier } from '@/services/definitions'
 
 
-const version = config.server.current_version
+const version = appConfig.server.current_version
 const url = `v${ version }/mngmt/cmsupplier`
 const { mkSupplierCat, mkSupplier } = useFactory()
 

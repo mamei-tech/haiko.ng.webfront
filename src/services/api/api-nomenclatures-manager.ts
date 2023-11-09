@@ -1,11 +1,11 @@
 import axios from './api'
-import config from './config'
+import appConfig from '@/configs/app.conf'
 
 import type { AxiosPromise } from 'axios'
 import type { ICountryBasic, ICountryStatesBasic, IRoleBasic, ISuppCatBasic, IProdCatBasic, IUoMBasic } from '@/services/definitions'
 
 
-const version = config.server.current_version
+const version = appConfig.server.current_version
 const url = `v${ version }/mngmt/cmnomenclators`
 
 /***

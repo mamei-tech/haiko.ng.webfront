@@ -39,40 +39,8 @@ export default function useCommon () {
         return formData
     }
 
-    /**
-    * Round a number <n>, usig the specified decimal <places>
-    */
-    const roundTo = ( n: number, place: number ) => {
-        return +(Math.round(+(n + 'e+' + place)) + 'e-' + place)
-    }
-
-    /**
-     *  Convert the raw money (integer representation of the real money) as per is in the server, to a human
-     *  readable form (user interface)
-     *
-     *  ❗ We are working with 100K conversion ratio in the raw money representation on the server.
-     *
-     * @param rawMoneyValue integer representation of the number (raw value)
-     * @param rounding ❗ if this was true, the method will round up the decimal places instead of trunk it
-     */
-    const toUIMoney = ( rawMoneyValue: string | number, rounding: boolean = false ) => {
-        if (rawMoneyValue === '0') return '0.00'
-        if (rounding) {
-            // Math.round(((rawMoneyValue/100000) + Number.EPSILON) * 100) / 100
-            return roundTo((+rawMoneyValue / 100000), 2)
-        }
-        else {
-            let integer = Math.floor(+rawMoneyValue / 100000)
-            let floating = (+rawMoneyValue % 100000).toString().substring(0, 2)
-
-            return integer + '.' + floating
-        }
-    }
-
     return {
         cap,
-        roundTo,
-        toUIMoney,
         toFormData,
         toFormDataR,
     }

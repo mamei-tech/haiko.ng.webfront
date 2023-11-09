@@ -1,5 +1,5 @@
 import axios from './api'
-import config from './config'
+import appConfig from '@/configs/app.conf'
 import { HTTP_HEADER_FORM_DATA, HTTP_RESPONSES } from '@/services/definitions'
 import useFactory from '@/services/composables/useFactory'
 import useCommon from '@/services/composables/useCommon'
@@ -8,7 +8,7 @@ import type { AxiosPromise } from 'axios'
 import type { IDataTableQuery, IDtoStaff, IDataTablePage, IStaffRow } from '@/services/definitions'
 
 
-const version = config.server.current_version
+const version = appConfig.server.current_version
 const url = `v${ version }/mngmt/cmstaff`
 const { mkStaff } = useFactory()
 const { toFormData } = useCommon()
