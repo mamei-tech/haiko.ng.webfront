@@ -24,4 +24,4 @@ pnpm-debug.log*
 *.sw?
 
 # Project config files
-src/configs/config.ts
+src/configs/app.conf.ts
