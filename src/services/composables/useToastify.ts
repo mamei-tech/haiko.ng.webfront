@@ -47,8 +47,10 @@ export default function useToastify( toast: ToastInterface ) {
             return ''
         }
 
-        let details = error.response.data.title ?? ''
-        const eCode = error.response.status
+        let details = !error.response.data
+            ? ''
+            : !error.response.data.title ? '' : error.response.data.title
+        const eCode = !error.response.status ? '' : error.response.data.title
 
         if (eCode === 404)
             details = isBulk
