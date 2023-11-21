@@ -198,6 +198,9 @@
                                             :max-size="5"
                                             v-on:fileSelected="h_avatarChange"
                                             v-on:removePicture="h_removePicture"
+
+                                            v-on:restore="h_restoreForceImgDelOnCmp"
+                                            :parent-del-intent="forceImgDelOnCmp"
                                     />
 
                                 </div>
@@ -260,15 +263,16 @@ export default defineComponent({
         const route = useRoute()
         const router = useRouter()
 
-        const st_staff = useSt_Staff()                                  // pinia store for staff
-        const st_nomenclatures = useSt_Nomenclatures()                  // pinia store for nomenclatures
-        const { fmode, id } = route.params                              // remember, fmode (form mode) property denotes the mode this form view was called | checkout the type TFormMode in types definitions
+        const st_staff = useSt_Staff()                                      // pinia store for staff
+        const st_nomenclatures = useSt_Nomenclatures()                      // pinia store for nomenclatures
+        const { fmode, id } = route.params                                  // remember, fmode (form mode) property denotes the mode this form view was called | checkout the type TFormMode in types definitions
 
-        const toast = useToast()                                        // the toast lib interface
+        const toast = useToast()                                            // the toast lib interface
         const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
         const { dfyConfirmation, dfyShowAlert } = useDialogfy()
         const { mkStaff } = useFactory()
 
+        const forceImgDelOnCmp = ref<Boolean>(false)                 // so we can tell to the image component 'CmpImageInput' to remove the image if we need to
         const iniFormData = reactive<IDtoStaff>(mkStaff())                 // initial form data
         let formDataFromServer: IDtoStaff | undefined = undefined          // aux variable to save entity data requested from the server
         // const rolesData = ref<IMultiselectBasic[]>([])                  // I will use ref 'cause is only one nested object
@@ -331,7 +335,10 @@ export default defineComponent({
 
                 // so now what ?
                 if(!doWeNeedToStay) h_back()                                  // so we are going back to the data table
-                else resetForm({ values: mkStaff() })                    // so wee need to clean the entire form and stay in it
+                else {                                                        // so wee need to clean the entire form and stay in it
+                    resetForm({ values: mkStaff() })
+                    h_removePicture(true)                               // forcing image deletion no matter what
+                }
 
             }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.ADDITION))
         }
@@ -426,26 +433,39 @@ export default defineComponent({
             if(evt.key === KEYS.ESCAPE) h_back()                       // going back if SCAPE is pressed
         }
 
-        // TIP ❗❗ perhaps we can replace this with the v-model way (two-way data binding) as you do with the other
-        //   inputs see the note around line 297 in the 'onMounted' method
-        const h_avatarChange = (f: any) => {
-            setFieldValue('avatarImg', f)
+        // TIP ❗❗ perhaps we can replace this with the v-model way (two-way data binding) as you do with the other inputs see the note around line 297 in the 'onMounted' method. If so I think we don't need the others image method around this
+        const h_avatarChange = (f: any) => setFieldValue('avatarImg', f)
+
+        /**
+         * Tries to restore the control variable to the original state.
+         *
+         * If CmpImageInput deleted the image 'cause this component tells, CmpImageInput will let this components knows,
+         * and this method handles it
+         */
+        const h_restoreForceImgDelOnCmp = () => forceImgDelOnCmp.value = false
+
+        /**
+         * Handles the image deletion logic
+         *
+         * @param forceIt tell to this logic, if we need to force the image deletion no matter what
+         */
+        const h_removePicture = (forceIt = false) => {
+
+            if (!forceIt) {
+                if(formDataFromServer?.avatarPath === undefined || formDataFromServer?.avatarPath === '') return        // if there is NO data on server, we do nothing
+                dfyShowAlert(t('dialogs.title-alert'), t('dialogs.img-rm-alert'))                              // if there is data (profile picture in this particular case) we need to alert the user the image will be complete completely on server if the user click apply or save btns
+            }
+            else forceImgDelOnCmp.value = true                                                                          // this line will tell to the 'CmpImageInput' that we want to delete de image
+
+            // actual removing the image
+            iniFormData.avatarPath = ''
+            setFieldValue('avatarImg', undefined)                                                            // I don't know if this is needed here
         }
-
-        const h_removePicture = () => {
-            // if there is NO data on server, we do nothing
-            if(formDataFromServer?.avatarPath === undefined || formDataFromServer?.avatarPath === '') return
-
-            // if there is data (profile picture in this particular case) we need to alert the user the image
-            // will be complete completely on server if the user click apply or save btns
-            dfyShowAlert(t('dialogs.title-alert'), t('dialogs.img-rm-alert'))
-            setFieldValue('avatarImg', undefined)
-        }
-
 
         //endregion ===========================================================================
 
         return {
+            forceImgDelOnCmp,
             iniFormData,
 
             hpr_doWeShowCollapsable,
@@ -459,8 +479,10 @@ export default defineComponent({
             h_delete,
             h_keyboardKeyPress,
             h_toggleCollapsable,
+
             h_avatarChange,
             h_removePicture,
+            h_restoreForceImgDelOnCmp,
 
             configStatic: appConfig.server.statics
         }

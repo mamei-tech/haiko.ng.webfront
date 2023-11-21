@@ -38,7 +38,7 @@
 // https://blog.openreplay.com/building-a-custom-file-upload-component-for-vue/
 // https://therichpost.com/vuejs-vue-3-image-upload-preview-working-functionality/
 // https://www.vuescript.com/file-uploader-agent/
-import { computed, defineComponent, ref } from 'vue'
+import { computed, defineComponent, ref, watch } from 'vue'
 import { i18n } from '@/services/i18n'
 import { IMG_ORG_AVATAR_NAME, RELPATH_DEFAULT_AVATAR_IMG, RELPATH_DEFAULT_PRODUCT_IMG } from '@/services/definitions'
 
@@ -72,6 +72,11 @@ export default defineComponent({
             type:        Boolean,
             default:     false,
             description: 'Define that the component should behave and appears as a Profile Avatar image input'
+        },
+        parentDelIntent: {
+            type:        Boolean,
+            default:     false,
+            description: 'A control props to know if there is any intent of image deletion coming from a parent component'
         }
     },
     setup(props, ctx: SetupContext) {
@@ -124,13 +129,18 @@ export default defineComponent({
 
         //region ======== EVENTS HANDLERS & WATCHERS ==============================================
 
-        const h_removeImage = async () => {
+        /**
+         * This method contains the logic for erasing the image
+         *
+         * @param withEmit a control param so we can run this logic without the emission, if we don't need to tell the parent component
+         */
+        const h_removeImage = async (withEmit = true) => {
 
             ref_fileInput.value.files = undefined;
             previewImg.value = props.avatarMode ? RELPATH_DEFAULT_AVATAR_IMG : RELPATH_DEFAULT_PRODUCT_IMG
 
             shallWeShowRmBtn.value = false                                      // hiding the remove img btn
-            ctx.emit('removePicture')
+            if (withEmit) ctx.emit('removePicture')
         }
 
         const h_fileSelection = async () => {
@@ -154,10 +164,21 @@ export default defineComponent({
                 return
             }
 
+            // rendering the preview
             await a_GetAvatarPreview()
 
             ctx.emit('fileSelected', _file)
         }
+
+        /**
+         * We need to check 'props.parentDelIntent' value changes, so we notice a parent intent to delete the image, and set the default image placeholder on the UI
+         */
+        watch(() => [ props.parentDelIntent ], () => {
+            if (!props.parentDelIntent) return    // if isn't a paren component image deletion intent, we can move no touching nothing, so the logic will be bypassed
+
+            h_removeImage(true)
+            ctx.emit('restore')             // with that emission, the paren can restore the prop so it can be used properly next time. That change is going to cause this watch run again, but 'props.parentDelIntent' should be FALSE so there isn't be a any infinite loop
+        })
 
         //endregion ===============================================================================
 
@@ -175,7 +196,7 @@ export default defineComponent({
             h_removeImage
         }
     },
-    emits: ['fileSelected', 'removePicture']
+    emits: ['fileSelected', 'removePicture', 'restore']
 });
 </script>
 
