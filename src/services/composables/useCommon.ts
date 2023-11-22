@@ -24,12 +24,13 @@ export default function useCommon () {
      */
     const toFormDataR = ( object: any, formData = new FormData(), parentKey = '' ) => {
         for (const key in object) {
-            if (object[ key ] !== null && typeof object[ key ] === 'object' && !(object[ key ] instanceof File))        // if the property is an object and not null, and not a File, we dive in recursively
-                toFormDataR(object[ key ], formData, key)
-            else {
-                const value = object[ key ]                                         // saving the value for convenience
-                const currentKey = parentKey ? `${ parentKey }[${ key }]` : key     // saving the curren key for convenience, concatenating with the parent so we are capable of mountain the classing HTML form data indentation
 
+            const value = object[ key ]                                         // saving the value for convenience
+            const currentKey = parentKey ? `${ parentKey }[${ key }]` : key     // saving the curren key for convenience, concatenating with the parent so we are capable of mountain the classing HTML form data indentation
+
+            if (object[ key ] !== null && typeof object[ key ] === 'object' && !(object[ key ] instanceof File))        // if the property is an object and not null, and not a File, we dive in recursively
+                toFormDataR(object[ key ], formData, currentKey)
+            else {
                 if (Array.isArray(value))
                     for (let i = 0; i < value.length; i++) {
                         if (typeof value[ i ] === 'object' && value[ i ] !== null && !(value[ i ] instanceof File))     // similar situation again, if the property is an object and not null, and not a File, we dive in recursively
