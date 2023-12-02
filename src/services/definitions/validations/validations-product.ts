@@ -12,7 +12,7 @@ export const VSchemaProduct = {
     pName:              ( value: string ): boolean | string => {
         if (!required(value)) return t('validation.required')
         if (!min(value, { length: 3 })) return t('validation.min-length', { length: 3 })
-        if (!max(value, { length: 30 })) return t('validation.max-length', { length: 30 })
+        if (!max(value, { length: 36 })) return t('validation.max-length', { length: 36 })
         if (!regex(value, { regex: regOnlyAlphanumNSpacesWithDotsNHyphen })) return t('validation.only-alpha-digits-underscore-dots-spaces')
 
         return true
@@ -26,6 +26,7 @@ export const VSchemaProduct = {
     sellPrice:          ( value: string ): boolean | string => {return VSchemaCommon.numerical(value, 0, 10000, false, false)},
     sellTax:            ( value: string ): boolean | string => {return VSchemaCommon.numerical(value, 0, 100, true, false)},
     cost:               ( value: string ): boolean | string => {return VSchemaCommon.numerical(value, 0, 10000, false, false)}
+    // productImg: VSchemaCommon.productImg,            // TODO should we do this ?
 }
 
 /**

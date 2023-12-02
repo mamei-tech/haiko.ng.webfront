@@ -212,7 +212,7 @@
                 "note-sell":                       "Nota de Venta",
                 "sell-price":                      "Precio de venta",
                 "sell-tax":                        "Impuesto",
-                "uom":                             "Unidad de Medida",
+                "uom":                             "Unidad de Medida (U.M)",
                 "uom-purchase":                    "U.M en Compras",
                 "cost":                            "costo",
                 "stats-stock-ready":               "A mano",
@@ -228,7 +228,7 @@
                 "tool-tips": {
                     "track-inventory":      "Si esta marcado significa que es un producto almacenale y se gestionará inventario para el mismo. Si no está marcado se interpreta que el producto siempre esta disponible (siempre tiene stock)",
                     "sell-tax":             "Impuesto cargado al cliente en el momento de la venta.",
-                    "uom":                  "Unidad de medida por defecto utilizada para todas las operaciones de stock",
+                    "uom":                  "Unidad de medida por defecto utilizada para todas las operaciones de stock y ventas",
                     "uom-purchase":         "Unidad de medida por defecto utilizada para las compras y los proveedores. Debe pertenecer a la misma categoría que la UM seleccionada para las operaciones de stock.",
                     "logistic-responsible": "La persona del staff responsable respecto a las operaciones de logística del producto en cuestión.",
                     "manuf-prep-l-time":    "- Tiempo Promedio de Preparación para la Fabricación -. Plazo medio para preparar las órdenes de fabricación. Crear y confirmar las Órdenes de Fabricación con estos días de antelación como promedio, para disponer de tiempo suficiente para reponer materiales o fabricar productos semi-acabados."

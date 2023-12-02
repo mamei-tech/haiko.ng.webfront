@@ -51,7 +51,7 @@ export class ApiProduct {
      * @returns Promise with the identifier of the just created store (the same as the owner)
      */
     public static insertProduct( product: IDtoProduct ): AxiosPromise<number> {
-        // return axios.post(url, staff)
+        // return axios.post(url, product)
 
         return axios.post(url, toFormDataR(product), {
             headers: { 'Content-Type': HTTP_HEADER_FORM_DATA }

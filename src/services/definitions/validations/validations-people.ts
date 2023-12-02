@@ -31,7 +31,7 @@ export const VSchemaStaffCreate = {
         if (validationInstance.form.password !== value) return t('validation.password-confirmation')                // We could use vee-validate 's 'confirmed' rule here, but it isn't working for some reason
         return true
     }
-    // avatarPath: VSchemaCommon.avatarPath,
+    // avatarPath: VSchemaCommon.avatarPath,            // TODO should we do this ?
     // roleId: ???
 }
 

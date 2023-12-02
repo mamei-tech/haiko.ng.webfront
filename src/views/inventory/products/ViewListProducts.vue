@@ -186,6 +186,7 @@ export default defineComponent({
         function h_reqQuery( _: IDataTableQuery ) {
             a_reqQuery()
         }
+
         const h_navCreateSuppCatIntent = () => {
             router.push({
                 name:   RoutePathNames.prodCreate,
@@ -195,12 +196,15 @@ export default defineComponent({
                 }
             })
         }
+
         const h_navEditSuppIntent = () => {
             console.warn("implement this")
         }
+
         const h_intentRowDelete = () => {
             console.warn("implement this")
         }
+
         const h_intentBulkAction = async ( bulkData: IBulkData ) => {
 
             if (bulkData.actionType === BULK_ACTIONS.ENALBE) {
@@ -223,9 +227,11 @@ export default defineComponent({
                 }
             }
         }
+
         const h_intentToggleEnable = ( id: number ) => {
             a_reqSwitchState([id], OPS_KIND_STR.ENABLE)
         }
+
         const h_intentToggleDisable = ( id: number ) => {
             a_reqSwitchState([id], OPS_KIND_STR.DISABLE)
         }

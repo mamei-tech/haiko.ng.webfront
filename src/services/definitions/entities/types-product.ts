@@ -25,7 +25,9 @@ export interface IDtoProduct extends IProductRow {
     notePurchase: string | undefined
     noteSell: string | undefined
     noteTransfer: string | undefined
-    picPath: string | undefined
+
+    picPath: string | undefined          // relatively path to the image
+    productImg?: File                    // on server this value is only used in the request DTO for create / update, this value doesn't exist in the Product entity / model
 
     canBePurchased: boolean
     canBeSold: boolean

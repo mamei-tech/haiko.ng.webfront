@@ -23,7 +23,7 @@ export interface IDtoStaff extends IStaffRow {
     passwordConf?: string,
     locale: string,
 
-    avatarImg?: File                    // on server this value is only used in the request DTO for crete / update, this value doesn't exist in the Staff entity / model
+    avatarImg?: File                    // on server this value is only used in the request DTO for create / update, this value doesn't exist in the Staff entity / model
 }
 
 /**

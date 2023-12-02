@@ -76,7 +76,8 @@
                                                              searchable
                                                              name="pCategoryID"
                                                              class="mb-2"
-                                                             closeOnSelect>
+                                                             closeOnSelect
+                                        >
 
                                             <!--option coming from slot child component ('slots props') [option] -->
                                             <template #customOption="{option}">
@@ -128,16 +129,19 @@
                             </div>
 
                             <div class="col-mx-12 col-md-6">
-
                                 <div class="row justify-content-center avatar-div-component-holder">
+
                                     <CmpImageInput
-                                            name="picPath"
+                                            name="productImg"
                                             :avatar-mode="false"
                                             :statics="configStatic"
                                             :image="iniFormData.picPath ?? ''"
                                             :max-size="5"
-                                            v-on:fileSelected="h_avatarChange"
+                                            v-on:fileSelected="h_imgChange"
                                             v-on:removePicture="h_removePicture"
+
+                                            v-on:restore="h_restoreForceImgDelOnCmp"
+                                            :parent-del-intent="forceImgDelOnCmp"
                                     />
                                 </div>
 
@@ -227,11 +231,11 @@
 
                                             <!-- product uom stock / sell -->
                                             <div class="row">
-                                                <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                                                <label class="text-sm-left text-md-right col-md-4 col-form-label">
                                                     {{ $t('form.fields.product.uom') }}
                                                     <CmpTooltip is-form-label-mode :tip="$t('form.fields.product.tool-tips.uom')" />
                                                 </label>
-                                                <div class="col-md-8">
+                                                <div class="col-md-7">
                                                     <CmpMultiselectField
                                                             :placeholder="$t('form.placeholders.product-uom').toLowerCase()"
                                                             :options="st_nomenclatures.getUoM4Select"
@@ -239,6 +243,7 @@
                                                             name="pUoMID"
                                                             class="mb-2"
                                                             closeOnSelect
+                                                            ref="ref_selectUoM"
                                                             v-on:changehapend="h_uomChange"
                                                     >
 
@@ -260,11 +265,11 @@
 
                                             <!-- product uom purchase -->
                                             <div class="row">
-                                                <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                                                <label class="text-sm-left text-md-right col-md-4 col-form-label">
                                                     {{ $t('form.fields.product.uom-purchase') }}
                                                     <CmpTooltip is-form-label-mode :tip="$t('form.fields.product.tool-tips.uom-purchase')" />
                                                 </label>
-                                                <div class="col-md-8">
+                                                <div class="col-md-7">
                                                     <CmpMultiselectField
                                                             :placeholder="$t('form.placeholders.product-uom').toLowerCase()"
                                                             :options="ls_filteredUoM"
@@ -349,7 +354,9 @@
                                                                          searchable
                                                                          name="lResponsibleID"
                                                                          class="mb-2"
-                                                                         closeOnSelect>
+                                                                         ref="ref_selectInvResponsible"
+                                                                         closeOnSelect
+                                                    >
 
                                                         <!--option coming from slot child component ('slots props') [option] -->
                                                         <template #customOption="{option}">
@@ -465,7 +472,7 @@
                                                     />
                                                 </div>
                                                 <div class="col-md-2" style="padding-left: 0 !important; padding-top: 10px;">
-                                                    por {{ ls_selectedUoMLabel ?? $t('entities.uom.default') }}
+                                                    por {{ ls_uomChosenLabel ?? $t('entities.uom.default') }}
                                                 </div>
                                             </div>
 
@@ -660,18 +667,21 @@ export default defineComponent({
         const { valUI2Raw } = useNumeric()
 
         // html references
-        const ref_selectUoMPurchase = ref<InstanceType<typeof CmpMultiselectField>>()             // reference to country province / states select field
+        const ref_selectUoM = ref<InstanceType<typeof CmpMultiselectField>>()
+        const ref_selectUoMPurchase = ref<InstanceType<typeof CmpMultiselectField>>()
+        const ref_selectInvResponsible = ref<InstanceType<typeof CmpMultiselectField>>()
 
         // helpers & flags
         const isCloning = ref(false)                                                        // tells is we are in a cloning process so we call the creat endpoint instead the edition endpoint
 
         // form data
         const activeTabId = ref<number>(1)
-        const iniFormData = reactive<IDtoProduct>(mkProduct())                                    // initial form data
-        const ls_activateSellPrice = ref<boolean>(true)
-        const ls_selectedUoMLabel = ref<string | undefined>(undefined)
+        const forceImgDelOnCmp = ref<Boolean>(false)                                        // so we can tell to the image component 'CmpImageInput' to remove the image if we need to
+        const iniFormData = reactive<IDtoProduct>(mkProduct())                              // initial form data
+        const ls_activateSellPrice = ref<boolean>(!iniFormData.canBeSold)
+        const ls_uomChosenLabel = ref<string | undefined>(undefined)                        // string label located in the buying section, to show the selected UoM that will be used in purchase ops
         const ls_filteredUoM = ref<IMultiselectBasic[]>([])
-        const tabs = [                                                                            // form tabs data array
+        const tabs = [                                                                      // form tabs data array
             { id: 1, title: t('data.generals') },
             { id: 2, title: t('table-headers.inventory') },
             { id: 3, title: t('form.fields.suppliers.tab-purchases') },
@@ -680,9 +690,9 @@ export default defineComponent({
         const statsDataCards = reactive([                                                    // form supplier statistics data / information
             {
                 id:       1,
-                title:    !ls_selectedUoMLabel.value
+                title:    !ls_uomChosenLabel.value
                                   ? `${ iniFormData.pTotalStock?.toString() } ${ t('entities.uom.default') }`
-                                  : `${ iniFormData.pTotalStock?.toString() } ${ ls_selectedUoMLabel.value }`,
+                                  : `${ iniFormData.pTotalStock?.toString() } ${ ls_uomChosenLabel.value }`,
                 subTitle: t('form.fields.product.stats-stock-ready'),
                 type:     iniFormData.pTotalStock ?? 0 <= 0 ? 'danger' : 'info',
                 icon:     'tim-icons icon-components'
@@ -711,9 +721,9 @@ export default defineComponent({
             },
             {
                 id:       5,
-                title:    !ls_selectedUoMLabel.value
+                title:    !ls_uomChosenLabel.value
                                   ? `${ iniFormData.pTotalPurchasesIn3Month?.toString() } ${ t('entities.uom.default') }`
-                                  : `${ iniFormData.pTotalPurchasesIn3Month?.toString() } ${ ls_selectedUoMLabel.value }`,
+                                  : `${ iniFormData.pTotalPurchasesIn3Month?.toString() } ${ ls_uomChosenLabel.value }`,
                 subTitle: t('form.fields.product.stats-total-uom-purchase-3-mont'),
                 type:     'info',
                 icon:     'fa fa-codepen'
@@ -857,10 +867,7 @@ export default defineComponent({
 
                 // so now what ?
                 if (!doWeNeedToStay) h_back()                                               // so we are going back to the data table
-                else {
-                    resetForm({ values: mkProduct(), errors: undefined })              // so wee need to clean the entire form and stay in it
-                    hpr_clearStateSelect()                                                  // cleaning select field
-                }
+                else hpr_clearState()                                                       // so wee need to clean the entire form and stay in it
 
             }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.PRODUCT, OPS_KIND_STR.ADDITION))
         }
@@ -933,11 +940,28 @@ export default defineComponent({
         }
 
         /**
-         * Restoring the country provinces / state selected value
+         * Restoring, cleaning some formulary data, so it will be refreshed and be used again for a new product
          */
-        const hpr_clearStateSelect = () => {
-            console.warn('pending, don\'t sure if it\'s needed')
-            // TODO the idea here is to reset all the selects used in the form
+        const hpr_clearState = () => {
+            ls_activateSellPrice.value = true
+
+            // cleaning the for through vee-validate lib
+            resetForm({ values: mkProduct(), errors: undefined })
+
+            // clearing suppliers
+            iniFormData.supplierLines = []
+            iniFormData.suppLinesToDelete = []
+
+            setFieldValue('supplierLines', iniFormData.supplierLines)
+            setFieldValue('suppLinesToDelete', iniFormData.suppLinesToDelete)
+
+            // clearing selects
+            ref_selectUoM.value?.clearSelection()
+            ref_selectUoMPurchase.value?.clearSelection()
+            ref_selectInvResponsible.value?.clearSelection()
+
+            // clearing the selected image
+            h_removePicture(true)
         }
 
         //#endregion ==========================================================================
@@ -980,7 +1004,7 @@ export default defineComponent({
             const u = st_nomenclatures.uom.find(uom => uom.id == +uomId)        // seeking
             if (!u) return
 
-            ls_selectedUoMLabel.value = u.uName
+            ls_uomChosenLabel.value = u.uName
         }
 
         /**
@@ -1039,6 +1063,10 @@ export default defineComponent({
             router.push({ name: RoutePathNames.product });
         }
 
+        /**
+         * Handler of the 'delete' button
+         * @param evt
+         */
         const h_delete = async ( evt: any ) => {
             console.error('delete')
         }
@@ -1093,24 +1121,35 @@ export default defineComponent({
             // ..
         }
 
-        const h_tabChange = ( tabId: number ) => {
-            activeTabId.value = tabId
-        }
+        const h_tabChange = ( tabId: number ) => activeTabId.value = tabId
 
-        // TIP perhaps we can replace this with the v-model way (two-way data binding) as you do with the other fields
-        //   inputs see the note around line 297 in the 'onMounted' method
-        const h_avatarChange = (f: any) => {
-            setFieldValue('picPath', f)
-        }
+        // TIP ❗❗ perhaps we can replace this with the v-model way (two-way data binding) as you do with the other inputs. If so I think we don't need the others image method around this
+        const h_imgChange = (f: any) => setFieldValue('productImg', f)
 
-        const h_removePicture = () => {
-            // if there is NO data on server, we do nothing
-            if(formDataFromServer?.picPath === undefined || formDataFromServer?.picPath === '') return
+        /**
+         * Tries to restore the control variable to the original state.
+         *
+         * If CmpImageInput deleted the image 'cause this component tells, CmpImageInput will let this components knows,
+         * and this method handles it
+         */
+        const h_restoreForceImgDelOnCmp = () => forceImgDelOnCmp.value = false
 
-            // if there is data (profile picture in this particular case) we need to alert the user the image
-            // will be complete completely on server if the user click apply or save btns
-            dfyShowAlert(t('dialogs.title-alert'), t('dialogs.img-rm-alert'))
-            setFieldValue('picPath', undefined)
+        /**
+         * Handles the image deletion logic
+         *
+         * @param forceIt tell to this logic, if we need to force the image deletion no matter what
+         */
+        const h_removePicture = (forceIt = false) => {
+
+            if (!forceIt) {
+                if(formDataFromServer?.picPath === undefined || formDataFromServer?.picPath === '') return              // if there is NO data on server, we do nothing
+                dfyShowAlert(t('dialogs.title-alert'), t('dialogs.img-rm-alert'))                              // if there is data (product picture in this particular case) we need to alert the user the image will be completely deleted on server if the user click apply or save btns
+            }
+            else forceImgDelOnCmp.value = true                                                                          // this line will tell to the 'CmpImageInput' that we want to delete de image
+
+            // actual removing the image
+            setFieldValue('productImg', undefined)
+            iniFormData.picPath = ''                                                                                    // I don't know if this is needed here
         }
 
         /**
@@ -1194,7 +1233,7 @@ export default defineComponent({
                 if(row.id === rowId && rowId > 0 && cpt_fMode.value === FMODE.EDIT) iniFormData.suppLinesToDelete?.push(rowId)
 
                 // this las condition tries to handle the situation of the edit form mode, that we need to record a UoM
-                // that already exist in the database and the user want to deleted. So we write down the UoM's identifier
+                // that already exist in the database and the user want to deleted. So we write down the 'ProductSupplierL' identifier
             })
 
             hpr_syncProductSupplierList()
@@ -1230,10 +1269,13 @@ export default defineComponent({
             activeTabId,
             statsDataCards,
             ls_filteredUoM,
-            ls_selectedUoMLabel,
+            forceImgDelOnCmp,
+            ls_uomChosenLabel,
             ls_activateSellPrice,
 
+            ref_selectUoM,
             ref_selectUoMPurchase,
+            ref_selectInvResponsible,
 
             cpt_fMode,
             st_nomenclatures,
@@ -1244,13 +1286,16 @@ export default defineComponent({
             h_tabChange,
             h_statGoCheck,
             h_beforeSubmit,
-            h_avatarChange,
-            h_removePicture,
             h_staticsRestore,
             h_keyboardKeyPress,
             h_changeSoldStatus,
             h_uomPurchaseSelect,
             h_changeStatsParams,
+
+            h_restoreForceImgDelOnCmp,
+
+            h_imgChange,
+            h_removePicture,
 
             h_formBtnAction_Clone,
             h_formBtnAction_Replenish,
