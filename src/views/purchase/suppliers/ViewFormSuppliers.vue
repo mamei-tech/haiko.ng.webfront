@@ -643,7 +643,7 @@ export default defineComponent({
                 await st_nomenclatures.reqNmcCountries().catch(err => tfyCRUDFail(err, ENTITY_NAMES.COUNTRY, OPS_KIND_STR.REQUEST))
                 // this isn't needed in edition mode, see h_navEditSuppIntent in ViewListSuppliers.vue file
 
-            // edition edition
+            // edition mode
             if (cpt_fMode.value === FMODE.EDIT as TFormMode) {
                 formDataFromServer = await ApiSupplier.getSuppById(+id)
 

@@ -145,7 +145,7 @@ export class ApiSupplier {
      * ❗ If information from server could not be obtained, an empty Entity will be returned then
      * This is mostly used in form population
      *
-     * @param id SupplierCategory identifier
+     * @param id Supplier identifier
      */
     public static async getSuppById( id: number ): Promise<IDtoSupplier> {
         const response = await ApiSupplier.reqSupplierById(+id)
