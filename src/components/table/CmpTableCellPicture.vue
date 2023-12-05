@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
-import { RELPATH_DEFAULT_AVATAR_IMG, PICTURE_TYPE_CELL, RELPATH_DEFAULT_PRODUCT_IMG, IMG_AVATAR_SMALL_THUMBNAIL, IMG_PRODUCT_NAME } from '@/services/definitions'
+import { RELPATH_DEFAULT_AVATAR_IMG, PICTURE_TYPE_CELL, RELPATH_DEFAULT_PRODUCT_IMG, IMG_AVATAR_SMALL_THUMBNAIL, IMG_ORG_PRODUCT_NAM } from '@/services/definitions'
 
 import type { SetupContext } from 'vue'
 
@@ -56,7 +56,7 @@ export default defineComponent({
 
             if (props.picture === '' || props.picture == undefined) return default_pic
             else if (props.type === PICTURE_TYPE_CELL.USER ) return props.statics?.concat(props.picture, IMG_AVATAR_SMALL_THUMBNAIL)
-            else if (props.type === PICTURE_TYPE_CELL.PRODUCT) return props.statics?.concat(props.picture, IMG_PRODUCT_NAME)
+            else if (props.type === PICTURE_TYPE_CELL.PRODUCT) return props.statics?.concat(props.picture, IMG_ORG_PRODUCT_NAM)
 
             else return  default_pic
         })

@@ -40,7 +40,12 @@
 // https://www.vuescript.com/file-uploader-agent/
 import { computed, defineComponent, ref, watch } from 'vue'
 import { i18n } from '@/services/i18n'
-import { IMG_ORG_AVATAR_NAME, RELPATH_DEFAULT_AVATAR_IMG, RELPATH_DEFAULT_PRODUCT_IMG } from '@/services/definitions'
+import {
+    IMG_ORG_AVATAR_NAME,
+    IMG_ORG_PRODUCT_NAM,
+    RELPATH_DEFAULT_AVATAR_IMG,
+    RELPATH_DEFAULT_PRODUCT_IMG
+} from '@/services/definitions'
 
 import type { SetupContext } from 'vue'
 
@@ -102,7 +107,7 @@ export default defineComponent({
                 return props.avatarMode ? RELPATH_DEFAULT_AVATAR_IMG : RELPATH_DEFAULT_PRODUCT_IMG
 
             shallWeShowRmBtn.value = true
-            return props.statics?.concat(props.image, IMG_ORG_AVATAR_NAME)
+            return props.statics?.concat(props.image, props.avatarMode ? IMG_ORG_AVATAR_NAME : IMG_ORG_PRODUCT_NAM)
 
             // something like
             // http://localhost:7000/statics/media/staff/avatars/1953288944/profile_avatar.jpg

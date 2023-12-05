@@ -11,5 +11,5 @@ export const RELPATH_DEFAULT_PRODUCT_IMG = '/src/assets/imgs/defaults/product.pn
 // TIP: ❗ this needs to be synced with PSections.PicsFileName class in the Common.cs file on the api repository
 export const IMG_ORG_AVATAR_NAME = '/org_pa.png'
 export const IMG_AVATAR_SMALL_THUMBNAIL = '/sm_tumb.png'
-export const IMG_PRODUCT_NAME = '/org_pp.png'
+export const IMG_ORG_PRODUCT_NAM = '/org_pp.png'
 
