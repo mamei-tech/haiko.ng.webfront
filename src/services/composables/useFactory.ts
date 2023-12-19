@@ -79,10 +79,9 @@ export default function useFactory() {
      * the workaround is to work with temporally Id for the list of Suppliers so we allow to pass the row identifier to
      * this method.
      *
-     * @param supplierLineId row entity (supplier line in this case) identifier
-     * @param productId Product identifier that the provider is related to
+     * @param supplierLineId row entity (supplier line in this case) identifier / index. Its just a local / front identifier for a index purpose, so it can be identified on the supplierLine array
      */
-    const mkProductSupplierLine = ( supplierLineId: number, productId: number ): IDtoProductSupplierL => {
+    const mkProductSupplierLine = ( supplierLineId: number): IDtoProductSupplierL => {
         return {
             id:           supplierLineId,
             supplierId:   0,            // default supplier
@@ -163,7 +162,7 @@ export default function useFactory() {
 
             cost: undefined,
 
-            lResponsibleID: undefined,
+            lResponsibleID: 0,
             weight:         undefined,
             volume:         undefined,
             preDay2Manuf:   undefined,

@@ -58,7 +58,7 @@ export default defineComponent({
         //region ======= HELPERS ==============================================================
         //endregion ===========================================================================
 
-        //region ======== EVENTS HANDLERS & WATCHERS ==========================================
+        //region ======= EVENTS HANDLERS & WATCHERS ===========================================
 
         const h_toggleCollapsable = () => {
             doWeShowCollapsable.value = !doWeShowCollapsable.value

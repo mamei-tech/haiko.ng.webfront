@@ -114,7 +114,7 @@ export default defineComponent({
         //region ======= HELPERS ==============================================================
         //endregion ===========================================================================
 
-        //region ======== EVENTS HANDLERS & WATCHERS ==========================================
+        //region ======= EVENTS HANDLERS & WATCHERS ===========================================
 
         watch(() => [ props.cellData ], () => {
             value.value = props.cellData

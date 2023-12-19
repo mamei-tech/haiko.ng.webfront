@@ -17,8 +17,8 @@
 
                                   @requestIntent="h_reqQuery"
 
-                                  @navCreateIntent="h_navCreateSuppCatIntent"
-                                  @editIntent="h_navEditSuppIntent"
+                                  @navCreateIntent="h_navCreateProductIntent"
+                                  @editIntent="h_navEditProductIntent"
                                   @deleteIntent="h_intentRowDelete"
 
                                   @bulkActionIntent="h_intentBulkAction"
@@ -187,7 +187,7 @@ export default defineComponent({
             a_reqQuery()
         }
 
-        const h_navCreateSuppCatIntent = () => {
+        const h_navCreateProductIntent = () => {
             router.push({
                 name:   RoutePathNames.prodCreate,
                 params: {
@@ -197,8 +197,18 @@ export default defineComponent({
             })
         }
 
-        const h_navEditSuppIntent = () => {
-            console.warn("implement this")
+        /**
+         * Handler for the intent of edit a record from the table
+         * @param rowData data of the row, intent to be coming form the data table
+         */
+        const h_navEditProductIntent = ( rowData: IProductRow ) => {
+            router.push({
+                name:   RoutePathNames.prodEdit,
+                params: {
+                    fmode: FMODE.EDIT as TFormMode,
+                    id:    rowData.id,
+                }
+            })
         }
 
         const h_intentRowDelete = () => {
@@ -279,8 +289,8 @@ export default defineComponent({
             extFilters,
 
             h_reqQuery,
-            h_navCreateSuppCatIntent,
-            h_navEditSuppIntent,
+            h_navCreateProductIntent,
+            h_navEditProductIntent,
             h_intentRowDelete,
             h_intentBulkAction,
             h_intentToggleEnable,

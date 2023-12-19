@@ -257,7 +257,7 @@ export default defineComponent({
         //region ======= HELPERS ==============================================================
         //#endregion ==========================================================================
 
-        //region ======== EVENTS HANDLERS & WATCHERS ==========================================
+        //region ======= EVENTS HANDLERS & WATCHERS ===========================================
 
         /**
          * Handles the form submission event through the vee-validate 'SubmissionHandler' so we can take advantage of all

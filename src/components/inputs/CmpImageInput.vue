@@ -132,7 +132,7 @@ export default defineComponent({
 
         //#endregion ==============================================================================
 
-        //region ======== EVENTS HANDLERS & WATCHERS ==============================================
+        //region ======= EVENTS HANDLERS & WATCHERS ===============================================
 
         /**
          * This method contains the logic for erasing the image

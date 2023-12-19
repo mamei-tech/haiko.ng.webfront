@@ -541,7 +541,7 @@ export default defineComponent({
 
         //endregion =============================================================================
 
-        //region ======== EVENTS HANDLERS & WATCHERS ============================================
+        //region ======= EVENTS HANDLERS & WATCHERS =============================================
 
         /**
          * This method process the changes made in the UI regarding the extended filters

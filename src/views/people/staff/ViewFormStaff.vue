@@ -390,7 +390,7 @@ export default defineComponent({
 
         //endregion ===========================================================================
 
-        //region ======== EVENTS HANDLERS & WATCHERS ==========================================
+        //region ======= EVENTS HANDLERS & WATCHERS ===========================================
 
         const h_toggleCollapsable = () => {
             hpr_doWeShowCollapsable.value = !hpr_doWeShowCollapsable.value

@@ -73,7 +73,7 @@ export default defineComponent({
         //region ======== COMPUTATIONS & GETTERS ================================================
         //endregion =============================================================================
 
-        //region ======== EVENTS HANDLERS & WATCHERS ============================================
+        //region ======= EVENTS HANDLERS & WATCHERS =============================================
         const onInputFocused = () => {
             isFocused.value = true
         }

@@ -63,7 +63,7 @@
             //region ======== DECLARATIONS & LOCAL STATE ============================================
             //endregion =============================================================================
 
-            //region ======== EVENTS HANDLERS & WATCHERS ============================================
+            //region ======= EVENTS HANDLERS & WATCHERS =============================================
             const h_pageClick = (clickedPos: number) => st_pagination.mutPageWasClicked(clickedPos)
 
             const h_arrowClick = (arrow: number) => st_pagination.mutArrowWasClicked(arrow)

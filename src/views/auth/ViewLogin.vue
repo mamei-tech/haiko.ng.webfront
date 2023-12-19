@@ -90,7 +90,7 @@ export default defineComponent({
 
         //endregion =============================================================================
 
-        //region ======== EVENTS HANDLERS & WATCHERS ============================================
+        //region ======= EVENTS HANDLERS & WATCHERS =============================================
 
         const hLoginIntent = handleSubmit(formData => {
             aReqAccess(formData)

@@ -765,7 +765,7 @@ export default defineComponent({
 
         //#endregion ==========================================================================
 
-        //region ======== EVENTS HANDLERS & WATCHERS ==========================================
+        //region ======= EVENTS HANDLERS & WATCHERS ===========================================
 
         /**
          * This method tries to accommodate the data before it will send to the server to update the permission of the role

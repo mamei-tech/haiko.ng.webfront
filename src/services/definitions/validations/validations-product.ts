@@ -42,5 +42,5 @@ export const VSchemaPSL = {
         return true
     },
     sPrice:       ( value: string ): boolean | string => {return VSchemaCommon.numerical(value, 0, 500000000, false, true)},
-    sTax:  ( value: string ): boolean | string => {return VSchemaCommon.numerical(value, 0, 500000000, true, false)}
+    sTax:  ( value: string ): boolean | string => {return VSchemaCommon.numerical(value, 0, 100, true, false)}
 }

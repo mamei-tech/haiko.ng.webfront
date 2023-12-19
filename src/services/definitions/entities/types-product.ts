@@ -63,7 +63,7 @@ export interface IDtoProductSupplierL {
      * ❗ only front/ui logic intended. It will not be used on the backend.
      */
     id: number | undefined
-    supplierId: number | undefined
+    supplierId: number
     supplierCode: string | undefined
     sku: string | undefined
     /**

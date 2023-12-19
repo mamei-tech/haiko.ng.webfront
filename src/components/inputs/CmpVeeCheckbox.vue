@@ -46,7 +46,7 @@
             const { value, handleChange } = useField(props.name as string, '', { initialValue: props.checked })
             //endregion =============================================================================
 
-            //region ======== EVENTS HANDLERS & WATCHERS ============================================
+            //region ======= EVENTS HANDLERS & WATCHERS =============================================
             const hdlChange = ( evt: any ) => {
                 handleChange(evt.target!.checked)
                 context.emit('chkboxchange', evt.target!.checked)
