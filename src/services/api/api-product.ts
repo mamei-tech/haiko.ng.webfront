@@ -1,16 +1,20 @@
 import axios from './api'
 import appConfig from '@/configs/app.conf'
-import { HTTP_HEADER_FORM_DATA } from '@/services/definitions'
+import { HTTP_HEADER_FORM_DATA, HTTP_RESPONSES } from '@/services/definitions'
+import useFactory from '@/services/composables/useFactory'
 import useCommon from '@/services/composables/useCommon'
+import useNumeric from '@/services/composables/useNumeric'
 
 import type { AxiosPromise } from 'axios'
-import type { IDataTableQuery, IDataTablePage, IStaffRow, IDtoProduct } from '@/services/definitions'
+import type { IDataTableQuery, IDataTablePage, IStaffRow, IDtoProduct, IDtoProductSupplierL } from '@/services/definitions'
 
 
 const version = appConfig.server.current_version
 const url = `v${ version }/mngmt/cmproduct`
 
+const { mkProduct } = useFactory()
 const { toFormData, toFormDataR } = useCommon()
+const { toUIMoney } = useNumeric()
 
 /***
  * REST API class for backend interaction logic related with Products
@@ -50,7 +54,7 @@ export class ApiProduct {
      * @param product
      * @returns Promise with the identifier of the just created store (the same as the owner)
      */
-    public static insertProduct( product: IDtoProduct ): AxiosPromise<number> {
+    public static insert( product: IDtoProduct ): AxiosPromise<number> {
         // return axios.post(url, product)
 
         return axios.post(url, toFormDataR(product), {
@@ -58,8 +62,55 @@ export class ApiProduct {
         })
     }
 
+    /**
+     * Get formulary data information from server, pertaining to a Supplier given its identifier.
+     * This is mostly used in form population
+     * @param productId Product identifier to look for
+     */
+    public static reqProductById( productId: number ): AxiosPromise<IDtoProduct> {
+        return axios.get(url + `/${ productId }`)
+    }
+
+    /**
+     * Get the Providers associated with a specific product
+     * @param productId product identifier to look for
+     */
+    public static reqProductSuppliers ( productId: number ): AxiosPromise<Array<IDtoProductSupplierL>> {
+        return axios.get(url + `/suppliers/${ productId }`)
+    }
+
+    /**
+     * Send the request (multipart/form-data) to update an existing product
+     * @param product product object tom be updated
+     */
+    public static update (product : IDtoProduct) : AxiosPromise<void> {
+
+        return axios.put(url, toFormDataR(product), {
+            headers: { 'Content-Type': HTTP_HEADER_FORM_DATA }
+        })
+    }
+
     //endregion ===========================================================================
 
     //#region ======= DATA READY METHODS ==================================================
+
+    /**
+     * Tries to get formulary data information, pertaining to a Product given its identifier.
+     * ❗ If information from server could not be obtained, an empty Entity will be returned then
+     * This is mostly used in form population
+     *
+     * @param id Product identifier
+     */
+    public static async getProductById( id: number ): Promise<IDtoProduct> {
+        const response = await ApiProduct.reqProductById(id)
+
+        // small data sanitation here because of the integer raw currency scale that we are working with
+        if(response.data.sellPrice !== undefined)
+            response.data.sellPrice = toUIMoney(+response.data.sellPrice)
+
+        if (response.status === HTTP_RESPONSES.OK) return response.data as IDtoProduct
+        return mkProduct()
+    }
+
     //endregion ===========================================================================
 }

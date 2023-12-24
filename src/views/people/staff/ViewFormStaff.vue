@@ -350,6 +350,8 @@ export default defineComponent({
          */
         const a_edit = ( editedStaff: IDtoStaff, doWeNeedToStay: boolean ): void => {
 
+            if(!editedStaff.avatarPath ) delete editedStaff.avatarPath
+
             st_staff.reqStaffUpdate(editedStaff).then(() => {
                 tfyCRUDSuccess(ENTITY_NAMES.STAFF, OPS_KIND_STR.UPDATE, editedStaff.firstName)
 
@@ -453,13 +455,14 @@ export default defineComponent({
 
             if (!forceIt) {
                 if(formDataFromServer?.avatarPath === undefined || formDataFromServer?.avatarPath === '') return        // if there is NO data on server, we do nothing
-                dfyShowAlert(t('dialogs.title-alert'), t('dialogs.img-rm-alert'))                              // if there is data (profile picture in this particular case) we need to alert the user the image will be complete completely on server if the user click apply or save btns
+                dfyShowAlert(t('dialogs.title-alert'), t('dialogs.img-rm-alert'))                                       // if there is data (profile picture in this particular case) we need to alert the user the image will be complete completely on server if the user click apply or save btns
             }
             else forceImgDelOnCmp.value = true                                                                          // this line will tell to the 'CmpImageInput' that we want to delete de image
 
             // actual removing the image
+            setFieldValue('avatarImg', undefined)                                                                       // I don't know if this is needed here
+            setFieldValue('avatarPath', undefined)
             iniFormData.avatarPath = ''
-            setFieldValue('avatarImg', undefined)                                                            // I don't know if this is needed here
         }
 
         //endregion ===========================================================================

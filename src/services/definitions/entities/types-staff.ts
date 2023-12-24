@@ -10,7 +10,7 @@ export interface IStaffRow extends IIndexable {
     isActive: boolean,
     created?: Date,
     cell: number,
-    avatarPath: string
+    avatarPath: string | undefined
 }
 
 /**

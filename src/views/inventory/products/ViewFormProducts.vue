@@ -215,7 +215,7 @@
                                                 </label>
                                                 <div class="col-md-6">
                                                     <CmpBasicInput
-                                                            aleftIcon="fa fa-usd"
+                                                            aleftIcon="fa fa-percent"
                                                             placeholder="0.00"
                                                             name="sellTax"
                                                             type="number"
@@ -348,7 +348,7 @@
                                                     {{ $t('form.fields.product.logistic-responsible') }}
                                                     <CmpTooltip is-form-label-mode :tip="$t('form.fields.product.tool-tips.logistic-responsible')" />
                                                 </label>
-                                                <div class="col-md-9">
+                                                <div class="col-md-6">
                                                     <CmpMultiselectField :placeholder="$t('form.placeholders.staffs').toLowerCase()"
                                                                          :options="st_nomenclatures.getStaffs4Select"
                                                                          searchable
@@ -530,7 +530,7 @@
                                 <!-- TAB data an statistics -->
                                 <CmpTabContent :key="4" :id="tabs[3].title" :activeTabId="activeTabId" :tabId="4">
                                     <div class="row">
-                                        <div class="col-lg-3 col-md-12" v-for="(card, i) in statsDataCards" :key="`card_${card.id}`">
+                                        <div class="col-lg-3 col-md-12" v-for="(card, i) in statsDataCards" :key="card.id">
                                             <CmpCardStats :title="card.title"
                                                           :subTitle="card.subTitle"
                                                           :type="card.type"
@@ -595,7 +595,7 @@
 
 <script lang="ts">
 import appConfig from '@/configs/app.conf'
-import { computed, defineComponent, onBeforeUnmount, onMounted, reactive, ref } from 'vue'
+import { computed, defineComponent, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import { useForm } from 'vee-validate'
 import { i18n } from '@/services/i18n'
 import { useToast } from 'vue-toastification'
@@ -662,9 +662,9 @@ export default defineComponent({
         const { fmode, id } = route.params                                                         // remember, fmode (form mode) property denotes the mode this form view was called | checkout the type TFormMode in types definitions
 
         const { mkProduct, mkProductSupplierLine } = useFactory()
-        const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
+        const { tfyCRUDSuccess, tfyCRUDFail, tfyBasicRqError } = useToastify(toast)
         const { dfyConfirmation, dfyShowAlert } = useDialogfy()
-        const { valUI2Raw } = useNumeric()
+        const { valUI2Raw, toUIMoney } = useNumeric()
 
         // html references
         const ref_selectUoM = ref<InstanceType<typeof CmpMultiselectField>>()
@@ -681,6 +681,7 @@ export default defineComponent({
         const ls_activateSellPrice = ref<boolean>(!iniFormData.canBeSold)
         const ls_uomChosenLabel = ref<string | undefined>(undefined)                        // string label located in the buying section, to show the selected UoM that will be used in purchase ops
         const ls_filteredUoM = ref<IMultiselectBasic[]>([])
+        const ls_suppliersRequested = ref<boolean>(false)                                   // flag var to know if we already requested the suppliers
         const tabs = [                                                                      // form tabs data array
             { id: 1, title: t('data.generals') },
             { id: 2, title: t('table-headers.inventory') },
@@ -729,7 +730,7 @@ export default defineComponent({
                 icon:     'fa fa-codepen'
             },
             {
-                id: 6,
+                id:       6,
                 title:    iniFormData.pCountBoMRecipes?.toString(),
                 subTitle: t('form.fields.product.stats-count-bom'),
                 type:     'info',
@@ -778,15 +779,30 @@ export default defineComponent({
             })
             .catch(err => tfyCRUDFail(err, ENTITY_NAMES.PRODUCT, OPS_KIND_STR.REQUEST))
 
+            await st_nomenclatures.reqNmcStaff().catch(err => tfyCRUDFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.REQUEST))       // getting the staff list that will be used in the responsible select input
+            await st_nomenclatures.reqNmcUoM().catch(err => tfyCRUDFail(err, ENTITY_NAMES.UOM, OPS_KIND_STR.REQUEST))           // getting the UoM list that will be used in both pUoMID and pUoMPurchaseID UoM selection component, recall that the pUoMPurchaseID must be filtered with the same UoM category of pUoMID
+            ls_filteredUoM.value = st_nomenclatures.getUoM4Select
+
             // ---- create mode ----
-            if (cpt_fMode.value === FMODE.CREATE as TFormMode) {
 
-                await st_nomenclatures.reqNmcUoM().catch(err => tfyCRUDFail(err, ENTITY_NAMES.UOM, OPS_KIND_STR.REQUEST))
-                ls_filteredUoM.value = st_nomenclatures.getUoM4Select
+            // ---- edition mode ----
+            if (cpt_fMode.value === FMODE.EDIT as TFormMode) {
+                formDataFromServer = await ApiProduct.getProductById(+id)
+
+                // we need to sync / update some local vars coming from server so
+                Object.assign(iniFormData, formDataFromServer)                     // shallow (primitive values only) copy of form data
+                ls_activateSellPrice.value = !iniFormData.canBeSold                // this here is a hack, when we are in edition mode, we need to update the ls_activateSellPrice var, so the sell price input status can render accordingly
+
+                statsDataCards[0].title = st_nomenclatures.getUoMByIdMap[+formDataFromServer.pUoMID].uName                  // updating stock info card
+                statsDataCards[4].title = st_nomenclatures.getUoMByIdMap[formDataFromServer.pUoMPurchaseID].uName           // updating purchase info card
+                ls_uomChosenLabel.value = st_nomenclatures.getUoMByIdMap[formDataFromServer.pUoMPurchaseID].uName           // updating purchase label in purchase tab
+
+                // setValues(formDataFromServer)
+                resetForm({
+                    errors: {},
+                    values: { ...formDataFromServer }
+                })
             }
-
-            // getting the staff list that will be used in the responsible select input
-            await st_nomenclatures.reqNmcStaff().catch(err => tfyCRUDFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.REQUEST))
 
             // keyboard keys event handler, we need to clean this kind of event when the component are destroyed
             window.addEventListener('keydown', h_keyboardKeyPress)
@@ -804,7 +820,7 @@ export default defineComponent({
         //#region ======= FETCHING DATA & ACTIONS =============================================
 
         /**
-         * Store action for the creating (request) the new entity on the backend system.
+         * Api action for the creating (request) the new entity on the backend system.
          * doWeNeedToStay => This value is related to the * type of save button in the CmpFormActionsButton:
          * APPLY or SAVE (and exit) normally
          *
@@ -813,56 +829,10 @@ export default defineComponent({
          */
         const a_create = ( newProduct: IDtoProduct, doWeNeedToStay: boolean ) => {
 
-            // --- sanitation ---
-            newProduct.sellPrice = valUI2Raw(newProduct.sellPrice)                                    // converting the price to 100K scale using in the backend
-
-            if (!newProduct.cost) newProduct.cost = 0
-            if (!newProduct.sellTax) newProduct.sellTax = 0
-            if (!newProduct.volume) delete newProduct.volume
-            if (!newProduct.weight) delete newProduct.weight
-            if (!newProduct.preDay2Manuf) delete newProduct.preDay2Manuf
-            if (!newProduct.lResponsibleID) delete newProduct.lResponsibleID
-
-            if (!newProduct.notePurchase) delete newProduct.notePurchase
-            if (!newProduct.noteSell) delete newProduct.noteSell
-            if (!newProduct.noteTransfer) delete newProduct.noteTransfer
-
-            // this is the creation, so is not for sale, then sellPrice not make any sense
-            if(!newProduct.canBeSold) delete newProduct.sellPrice
-
-            // suppliers sanitation
-            delete newProduct.suppLinesToDelete             // if (!newProduct.suppLinesToDelete || newProduct.suppLinesToDelete.length == 0)  <-- this has don't make any sense here as we are creating product, there is nothing to delete in this case, so we erase the field immediately
-            if (!newProduct.supplierLines || newProduct.supplierLines.length == 0) delete newProduct.supplierLines
-            else newProduct.supplierLines = newProduct.supplierLines.map(( supplier: IDtoProductSupplierL ) => {
-
-                // sanitation
-                supplier.sPrice = valUI2Raw(supplier.sPrice)                                      // price sanitation (remember the scale)
-
-                delete supplier.sku                                                             // this value will be generate in the backend, it make no sense send it from here
-                delete supplier.id                                                              // only relevant in the front, it will not be needed in the backend
-
-                if (supplier.supplierId)                                                        // seeking for the name of the supplier
-                    supplier.sName = st_nomenclatures.getSuppByMapId[ supplier.supplierId ].sName
-
-                // returning modifier supplier
-                return supplier
-            })
-
-            // some data no need to be sent, e.g backend computed values
-            delete newProduct.pTotalStock
-            delete newProduct.pTotalStockValue
-            delete newProduct.pTotalSalesCountInMonth
-            delete newProduct.pTotalSalesValueInMonth
-            delete newProduct.pTotalPurchasesIn3Month
-            delete newProduct.pCountBoMRecipes
-
-            delete newProduct.picPath
-            delete newProduct.sellCode
-
-            // --- end of sanitation ---
+            hpr_sanitation(newProduct)                                                      // sanitation
 
             // now we can actually call for the product insertion
-            ApiProduct.insertProduct(newProduct).then(() => {
+            ApiProduct.insert(newProduct).then(() => {
                 tfyCRUDSuccess(ENTITY_NAMES.PRODUCT, OPS_KIND_STR.ADDITION, newProduct.pName)
 
                 // so now what ?
@@ -870,6 +840,26 @@ export default defineComponent({
                 else hpr_clearState()                                                       // so wee need to clean the entire form and stay in it
 
             }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.PRODUCT, OPS_KIND_STR.ADDITION))
+        }
+
+        /**
+         * Api action for the updating (request) the existing entity on the backend system.
+         * doWeNeedToStay => This value is related to the * type of save button in the CmpFormActionsButton:
+         * APPLY or SAVE (and exit) normally
+         *
+         * @param editedProduct
+         * @param doWeNeedToStay
+         */
+        const a_edit = ( editedProduct: IDtoProduct, doWeNeedToStay: boolean ) => {
+            hpr_sanitation(editedProduct)
+
+            ApiProduct.update(editedProduct).then(() => {
+                tfyCRUDSuccess(ENTITY_NAMES.PRODUCT, OPS_KIND_STR.UPDATE, editedProduct.pName)
+
+                // so now what ?
+                if (!doWeNeedToStay) h_back()                                               // so we are going back to the data table
+                else hpr_clearStateE()
+            }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.PRODUCT, OPS_KIND_STR.UPDATE))
         }
 
         //#endregion ==========================================================================
@@ -964,9 +954,72 @@ export default defineComponent({
             h_removePicture(true)
         }
 
+        /**
+         * Restoring, cleaning some formulary data for the **EDITION** mode when **applied** button was used, so almost the
+         * entire formulary data should remain
+         */
+        const hpr_clearStateE = () => {
+            iniFormData.suppLinesToDelete = []
+            setFieldValue('suppLinesToDelete', iniFormData.suppLinesToDelete)
+        }
+
+        /**
+         * Form data sanitation method so we can clean the fields values before submitting
+         */
+        const hpr_sanitation = (dirtyProduct: IDtoProduct) => {
+            dirtyProduct.sellPrice = valUI2Raw(dirtyProduct.sellPrice)                                    // converting the price to 100K scale using in the backend
+
+            if (!dirtyProduct.cost) dirtyProduct.cost = 0
+            if (!dirtyProduct.sellTax) dirtyProduct.sellTax = 0
+            if (!dirtyProduct.volume) delete dirtyProduct.volume
+            if (!dirtyProduct.weight) delete dirtyProduct.weight
+            if (!dirtyProduct.preDay2Manuf) delete dirtyProduct.preDay2Manuf
+            if (!dirtyProduct.lResponsibleID || dirtyProduct.lResponsibleID === 0) delete dirtyProduct.lResponsibleID
+
+            if (!dirtyProduct.notePurchase) delete dirtyProduct.notePurchase
+            if (!dirtyProduct.noteSell) delete dirtyProduct.noteSell
+            if (!dirtyProduct.noteTransfer) delete dirtyProduct.noteTransfer
+
+            // this is the creation, so is not for sale, then sellPrice not make any sense
+            if(!dirtyProduct.canBeSold) delete dirtyProduct.sellPrice
+
+            // suppliers sanitation
+            if(cpt_fMode.value === FMODE.CREATE) delete dirtyProduct.suppLinesToDelete
+            if (!dirtyProduct.supplierLines || dirtyProduct.supplierLines.length == 0) delete dirtyProduct.supplierLines
+            else dirtyProduct.supplierLines = dirtyProduct.supplierLines.map(( supplier: IDtoProductSupplierL ) => {
+
+                // sanitation
+                supplier.sPrice = valUI2Raw(supplier.sPrice)                                    // price sanitation & conversion (remember the scale)
+
+                if(cpt_fMode.value === FMODE.CREATE) delete supplier.sku                        // this value will be generate in the backend, it make no sense send it from here on creation
+                delete supplier.id                                                              // only relevant in the front, it will not be needed in the backend
+
+                if (supplier.supplierId)                                                        // seeking for the name of the supplier
+                    supplier.sName = st_nomenclatures.getSuppByMapId[ supplier.supplierId ].sName
+
+                // returning modifier supplier
+                return supplier
+            })
+
+            // some data no need to be sent, e.g backend computed values
+            delete dirtyProduct.pTotalStock
+            delete dirtyProduct.pTotalStockValue
+            delete dirtyProduct.pTotalSalesCountInMonth
+            delete dirtyProduct.pTotalSalesValueInMonth
+            delete dirtyProduct.pTotalPurchasesIn3Month
+            delete dirtyProduct.pCountBoMRecipes
+
+            if(cpt_fMode.value === FMODE.CREATE) delete dirtyProduct.picPath
+            if(cpt_fMode.value === FMODE.EDIT && !dirtyProduct.picPath) delete dirtyProduct.picPath
+            if(!dirtyProduct.productImg) delete dirtyProduct.productImg
+            delete dirtyProduct.sellCode
+
+            return dirtyProduct
+        }
+
         //#endregion ==========================================================================
 
-        //region ======== EVENTS HANDLERS & WATCHERS ==========================================
+        //region ======= EVENTS HANDLERS & WATCHERS ===========================================
 
         /**
          * Handling the change in the main UoM selector. The goal here is to ensure the main UoM selector and the
@@ -981,10 +1034,10 @@ export default defineComponent({
             }
 
             // so the main uom selected value was change,
-            const u = st_nomenclatures.uom.find(uom => uom.id == +uomId)
+            const u = st_nomenclatures.getUoMByIdMap[+uomId]
             if (!u) return
 
-            if (ref_selectUoMPurchase.value) {                                  // making sure the reference value (purchase uom multiselect) exist
+            if (ref_selectUoMPurchase.value) {                                                                      // making sure the reference value (purchase uom multiselect) exist
                 ref_selectUoMPurchase.value.setSelectedValue({ value: u.id, label: u.uName } as IMultiselectBasic)
             }
 
@@ -992,6 +1045,9 @@ export default defineComponent({
             ls_filteredUoM.value = st_nomenclatures.uom.filter(uom => uom.ucName == u?.ucName).map((fUom) => {      // filtering
                 return { value: fUom.id, label: fUom.uName }
             })
+
+            // another thing we need to do is to update de info card about stock units so
+            statsDataCards[0].title = u.uName
         }
 
         /**
@@ -1001,10 +1057,12 @@ export default defineComponent({
          * @param uomId
          */
         const h_uomPurchaseSelect  = ( uomId: string ): void => {
-            const u = st_nomenclatures.uom.find(uom => uom.id == +uomId)        // seeking
+            const u = st_nomenclatures.getUoMByIdMap[+uomId]                    // seeking
             if (!u) return
 
-            ls_uomChosenLabel.value = u.uName
+            // updating dependencies
+            ls_uomChosenLabel.value = u.uName                                   // purchase uom label
+            statsDataCards[4].title = u.uName                                   // purchase information card
         }
 
         /**
@@ -1042,9 +1100,11 @@ export default defineComponent({
                         }
                 }
             // @ts-ignore
-            } else if (iniFormData.supplierLines && iniFormData.supplierLines.length == 1 ) {               // if we have just one supplier and it supplierId is lesser than or equal 0, we can't allow, we need to ensure a supplier selection for each product supplier association
-                dfyShowAlert(t('dialogs.title-alert-not-allowed'), t('dialogs.product-supp-assoc-most-select'), DIALOG_ICON.E)
-                return
+            } else if (iniFormData.supplierLines && iniFormData.supplierLines.length == 1 ) {               // if we have just one supplier and it supplierId is lesser than or equal 0, we can't allow, we need to ensure a supplier selection
+                if(iniFormData.supplierLines[0].supplierId <= 0) {
+                    dfyShowAlert(t('dialogs.title-alert-not-allowed'), t('dialogs.product-supp-assoc-most-select'), DIALOG_ICON.E)
+                    return
+                }
             }
             // ---- validations ends ----
 
@@ -1053,7 +1113,7 @@ export default defineComponent({
             handleSubmit(formData => {
                 if (cpt_fMode.value == (FMODE.CREATE as TFormMode)) a_create(formData, doWeNeedToStay)
                 if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && isCloning.value && meta.value.dirty) console.log('pending cloning mode')
-                if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && !isCloning.value && meta.value.dirty) console.log('pending cloning mode')
+                if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && !isCloning.value && meta.value.dirty) a_edit(formData, doWeNeedToStay)
                 if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && !meta.value.dirty) h_back()
             }).call(this)
         }
@@ -1149,6 +1209,7 @@ export default defineComponent({
 
             // actual removing the image
             setFieldValue('productImg', undefined)
+            setFieldValue('picPath', undefined)
             iniFormData.picPath = ''                                                                                    // I don't know if this is needed here
         }
 
@@ -1205,7 +1266,7 @@ export default defineComponent({
         const h_intentSuppLineCreate = async () => {
             if(!iniFormData.supplierLines) return
 
-            iniFormData.supplierLines.push(mkProductSupplierLine(auxIdCounter.value, cpt_fMode.value === FMODE.CREATE ? 0 : +id))
+            iniFormData.supplierLines.push(mkProductSupplierLine(auxIdCounter.value))
             auxIdCounter.value -= 1
 
             hpr_syncProductSupplierList()
@@ -1228,9 +1289,11 @@ export default defineComponent({
         const h_intentRowDelete = ( rowId: number ) => {
             if(!iniFormData.supplierLines) return
 
-            iniFormData.supplierLines = iniFormData.supplierLines.filter((row) => {
-                if(row.id !== rowId) return row
-                if(row.id === rowId && rowId > 0 && cpt_fMode.value === FMODE.EDIT) iniFormData.suppLinesToDelete?.push(rowId)
+            iniFormData.supplierLines = iniFormData.supplierLines.filter((suppRow) => {
+
+                if(suppRow.id !== rowId) return suppRow
+                if(suppRow.id === rowId && cpt_fMode.value === FMODE.EDIT)
+                    iniFormData.suppLinesToDelete?.push(suppRow.supplierId)
 
                 // this las condition tries to handle the situation of the edit form mode, that we need to record a UoM
                 // that already exist in the database and the user want to deleted. So we write down the 'ProductSupplierL' identifier
@@ -1253,6 +1316,29 @@ export default defineComponent({
         const h_changeSoldStatus = () => {
             ls_activateSellPrice.value = !ls_activateSellPrice.value
         }
+
+        watch(activeTabId, async () => {
+
+            if(ls_suppliersRequested.value) return                                                                  // breaking the habit | if we already requested we have our job done
+
+            if(activeTabId.value == 3 && cpt_fMode.value === FMODE.EDIT) {                                          // we are looking for the 'purchase' tab so we can pull the product providers from server
+                let result = await ApiProduct.reqProductSuppliers(+id).catch(err => tfyBasicRqError(err))           // requesting needed data
+
+                //@ts-ignore
+                iniFormData.supplierLines = result.data.map(supplierLine => {                                       // mapping / normalizing the data to be rendered properly in the table
+                    supplierLine.id = auxIdCounter.value                                                            // setting up the local row identifier for each, so we can identify each other when an action take place
+                    auxIdCounter.value -= 1
+
+                    if (!supplierLine.supplierCode) supplierLine.supplierCode = ''                                  // setting up the field, so table can render it. This is 'cause it may be null
+
+                    supplierLine.sPrice = toUIMoney(+supplierLine.sPrice)                                           // transform the raw currency value (recall the scale) into UI value
+
+                    return supplierLine
+                })
+
+                ls_suppliersRequested.value = true
+            }
+        })
 
         //#endregion ==========================================================================
 
@@ -1311,7 +1397,6 @@ export default defineComponent({
             configStatic: appConfig.server.statics
         }
     }
-
 })
 </script>
 
