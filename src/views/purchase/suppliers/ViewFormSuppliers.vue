@@ -720,7 +720,7 @@ export default defineComponent({
         }
 
         /**
-         * Request the deletion of a supplier to the backend
+         * Request the deletion of a supplier
          * @param suppId Supplier identifier
          * @param ref Subject Entity reference e.g identifier, name or something like that
          */

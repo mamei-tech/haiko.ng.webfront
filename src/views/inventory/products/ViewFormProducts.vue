@@ -601,6 +601,7 @@ import { i18n } from '@/services/i18n'
 import { useToast } from 'vue-toastification'
 import { useRoute, useRouter } from 'vue-router'
 import {
+    ACTION_KIND_STR,
     DIALOG_ICON,
     DT_ACTION_BUTTON_MODE,
     DT_ACTIONBAR_MODE,
@@ -860,6 +861,20 @@ export default defineComponent({
                 if (!doWeNeedToStay) h_back()                                               // so we are going back to the data table
                 else hpr_clearStateE()
             }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.PRODUCT, OPS_KIND_STR.UPDATE))
+        }
+
+        /**
+         * Request the deletion of a product
+         * @param prodId product identifier
+         * @param ref Subject Entity reference e.g identifier, name or something like that
+         */
+        const a_delete = async (prodId: number, ref: undefined | string = undefined ): Promise<void> => {
+            ApiProduct.reqDeleteProducts([prodId])
+            .then(( response: any ) => {
+                tfyCRUDSuccess(ENTITY_NAMES.PRODUCT, OPS_KIND_STR.DELETION, ref)
+                h_back()
+            })
+            .catch(error => tfyCRUDFail(error, ENTITY_NAMES.PRODUCT, OPS_KIND_STR.DELETION, ref))
         }
 
         //#endregion ==========================================================================
@@ -1128,7 +1143,10 @@ export default defineComponent({
          * @param evt
          */
         const h_delete = async ( evt: any ) => {
-            console.error('delete')
+            if (cpt_fMode.value !== FMODE.EDIT as TFormMode) return
+
+            const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.PRODUCT, iniFormData.pName, t('dialogs.prod-remove-warning'))
+            if(wasConfirmed) await a_delete(iniFormData.id, iniFormData.pName)
         }
 
         const h_keyboardKeyPress = ( evt: any ) => {

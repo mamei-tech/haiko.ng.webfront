@@ -124,11 +124,11 @@ export default defineComponent({
             })
         }
 
-        const h_intentRowDelete = async ( objectId: number ): Promise<void> => {
-            const entityReference = st_rbac.getRoleByIdFromLocalStorage(objectId)!.rName
+        const h_intentRowDelete = async ( entityId: number ): Promise<void> => {
+            const entityReference = st_rbac.getRoleByIdFromLocalStorage(entityId)!.rName
 
             const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.ROLE, entityReference)
-            if (wasConfirmed) a_reqDelete([ objectId ], entityReference)
+            if (wasConfirmed) a_reqDelete([ entityId ], entityReference)
         }
 
         const h_navRowEdit = ( rowData: IDtoRole ): void => {

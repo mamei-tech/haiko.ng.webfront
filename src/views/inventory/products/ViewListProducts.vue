@@ -158,7 +158,7 @@ export default defineComponent({
             })
         }
 
-        const a_reqSwitchState = ( ids: Array<number>, ops: TOpsKind ) => {
+        const a_reqSwitchState = async ( ids: Array<number>, ops: TOpsKind ) => {
             let entityReference: undefined | string = undefined
 
             // the 'single' case,  used when this is called for switch status toggle intent
@@ -171,6 +171,20 @@ export default defineComponent({
                 ls_products.value.entityPage.forEach(p => ids.includes(p.id) ? p.isActive = !p.isActive : null)            // updating local store
             })
             .catch(err => tfyCRUDFail(err, ENTITY_NAMES.PRODUCT, ops))
+        }
+
+        /**
+         * Request the deletion of a supplier to the backend
+         * @param prodIds List of products identifiers
+         * @param ref Subject Entity reference e.g identifier, name or something like that
+         */
+        const a_reqDelete = async (prodIds: Array<number>, ref: undefined | string = undefined ): Promise<void> => {
+            ApiProduct.reqDeleteProducts(prodIds)
+            .then(() => {
+                ls_products.value.entityPage = ls_products.value.entityPage.filter(prod => !prodIds.includes(+prod.id)) // filtering the local state
+                tfyCRUDSuccess(ENTITY_NAMES.PRODUCT, OPS_KIND_STR.DELETION, ref)
+            })
+            .catch(error => tfyCRUDFail(error, ENTITY_NAMES.PRODUCT, OPS_KIND_STR.DELETION, ref))
         }
 
         //#endregion ==========================================================================
@@ -211,8 +225,11 @@ export default defineComponent({
             })
         }
 
-        const h_intentRowDelete = () => {
-            console.warn("implement this")
+        const h_intentRowDelete = async (entityId: number) => {
+            const entityReference = ls_products.value.entityPage.find(prod => prod.id === entityId)?.pName ?? ''
+
+            const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.PRODUCT, entityReference, t('dialogs.prod-remove-warning'))
+            if (wasConfirmed) a_reqDelete([ entityId ], entityReference)
         }
 
         const h_intentBulkAction = async ( bulkData: IBulkData ) => {
@@ -224,7 +241,7 @@ export default defineComponent({
                     // actually is in the given Id list ... and also check the Product isn't active already in the local store
                     // I think this checks should be done to be resilient about imprecision may appears between the component id collection
                     let ids = ls_products.value.entityPage.filter(p => bulkData.ids.indexOf(p.id.toString()) !== -1 && !p.isActive).map(p => p.id)
-                    if(ids.length > 0) a_reqSwitchState(ids, OPS_KIND_STR.ENABLE)
+                    if(ids.length > 0) await a_reqSwitchState(ids, OPS_KIND_STR.ENABLE)
                 }
             }
             else if (bulkData.actionType === BULK_ACTIONS.DISABLE) {
@@ -233,8 +250,12 @@ export default defineComponent({
                     // disable case, same as enable but with the disable state ... and also check the Product isn't disabled already in the local store
                     // I think this checks should be done to be resilient about imprecision may appears between the component id collection and the store or local store id collection (single source of truth)
                     let ids = ls_products.value.entityPage.filter(p => bulkData.ids.indexOf(p.id.toString()) !== -1 && p.isActive).map(p => p.id)
-                    if (ids.length > 0) a_reqSwitchState(ids, OPS_KIND_STR.DISABLE)
+                    if (ids.length > 0) await a_reqSwitchState(ids, OPS_KIND_STR.DISABLE)
                 }
+            }
+            else if (bulkData.actionType === BULK_ACTIONS.REMOVE) {
+                const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.PRODUCT, '', t('dialogs.prod-remove-warning'), true)
+                if (wasConfirmed) await a_reqDelete(bulkData.ids.map(Number))
             }
         }
 

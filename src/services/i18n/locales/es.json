@@ -112,7 +112,8 @@
         "uomcat-del-confirmation":        "Considere que esta acción también elimina todas las unidades asociadas a esta categoría.",
         "supp-cat-del-confirmation":      "Considere que esta acción asignará a la categoría por defecto a todos los proveedores asociados a esta categoría.",
         "product-invalid-supp-assoc":     "No se permiten 2 asociaciones del mismo proveedor con el mismo precio. Verifique la lista de proveedores en la sección de Compras",
-        "product-supp-assoc-most-select": "Debe seleccionar el nombre de un proveedor para cada fila presente en la sección de compras."
+        "product-supp-assoc-most-select": "Debe seleccionar el nombre de un proveedor para cada fila presente en la sección de compras.",
+        "prod-remove-warning":            "❗ Otros datos relacionados también serán eliminados (ej. asociación con proveedores, ...)"
     },
     "toasts":        {
         "auth-fail-4xx":         "Credenciales inválidas.",

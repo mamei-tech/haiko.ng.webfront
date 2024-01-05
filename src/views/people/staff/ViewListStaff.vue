@@ -127,7 +127,8 @@ export default defineComponent({
          * @param ref Subject Entity reference e.g identifier, name or something like that
          */
         function a_reqDelete( ids: Array<number> , ref: undefined | string = undefined ) {
-            st_staff.reqStaffDeletion({ ids }).then(() => {
+            st_staff.reqStaffDeletion({ ids })
+            .then(() => {
 
                 tfyCRUDSuccess(ENTITY_NAMES.STAFF, OPS_KIND_STR.DELETION, ref)
 
@@ -159,13 +160,13 @@ export default defineComponent({
 
         /**
          * Handler for the intent of deleting a row from the table
-         * @param objectId object identifier to be deleted
+         * @param entityId object identifier to be deleted
          */
-        const h_intentRowDelete = async ( objectId: number ): Promise<void> => {
-            const entityReference = st_staff.getStaffByIdFromLocalStorage(objectId)!.firstName
+        const h_intentRowDelete = async ( entityId: number ): Promise<void> => {
+            const entityReference = st_staff.getStaffByIdFromLocalStorage(entityId)!.firstName
 
             const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.STAFF, entityReference)
-            if (wasConfirmed) a_reqDelete([ objectId ], entityReference)
+            if (wasConfirmed) a_reqDelete([ entityId ], entityReference)
         }
 
         /**
@@ -200,8 +201,8 @@ export default defineComponent({
 
             // This is a somewhat hacky way of cast string to int in typescript. It has to do with type coercion, and
             // it is a pain to deal with in JS. I use this way because is visually placement and beautiful, in some way;
-            // for a more readable form, use v => parseInt (v)
-            const dataIds = bulkData.ids.map(v => +v)
+            // for a more readable form, use v => parseInt (v) | v => +v
+            const dataIds = bulkData.ids.map(Number)
 
             if (bulkData.actionType === BULK_ACTIONS.REMOVE) {
                 const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.STAFF)

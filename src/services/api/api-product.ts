@@ -90,6 +90,12 @@ export class ApiProduct {
         })
     }
 
+    public static reqDeleteProducts( ids: Array<number>): AxiosPromise<void> {
+        return axios.delete(url, {
+            data: ids
+        })
+    }
+
     //endregion ===========================================================================
 
     //#region ======= DATA READY METHODS ==================================================

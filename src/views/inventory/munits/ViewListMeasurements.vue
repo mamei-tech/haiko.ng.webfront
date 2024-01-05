@@ -110,13 +110,13 @@ export default defineComponent({
 
         //#region ======= EVENTS HANDLERS =====================================================
 
-        const h_intentRowDelete = async ( objectId: number ): Promise<void> => {
+        const h_intentRowDelete = async ( entityId: number ): Promise<void> => {
             // we don't allow to delete the default categories, so we proceed only for above the 6th uom category
-            if (objectId > 6) {
-                const entityReference = st_uom.getCatByIdFromLocalStorage(objectId)!.ucName
+            if (entityId > 6) {
+                const entityReference = st_uom.getCatByIdFromLocalStorage(entityId)!.ucName
 
                 const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.UOMCATEGORY, entityReference, t('dialogs.uomcat-del-confirmation'))
-                if (wasConfirmed) a_reqDelete( objectId , entityReference)
+                if (wasConfirmed) a_reqDelete( entityId , entityReference)
             }
             else dfyShowAlert(t('dialogs.title-alert-not-allowed'),  t('dialogs.cant-delete-default'))          // telling the user
         }

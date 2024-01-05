@@ -171,13 +171,13 @@ export default defineComponent({
             a_reqQuery()
         }
 
-        const h_intentRowDelete = async ( objectId: number ): Promise<void> => {
-            if (objectId == 1) dfyShowAlert(t('dialogs.title-alert-not-allowed'),  t('dialogs.cant-delete-default'))
+        const h_intentRowDelete = async ( entityId: number ): Promise<void> => {
+            if (entityId == 1) dfyShowAlert(t('dialogs.title-alert-not-allowed'),  t('dialogs.cant-delete-default'))
             else {
-                const entityReference = ls_suppliersCategories.value.entityPage.find(suppCat => suppCat.id === objectId)?.scName ?? ''
+                const entityReference = ls_suppliersCategories.value.entityPage.find(suppCat => suppCat.id === entityId)?.scName ?? ''
 
                 const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.SUPPLIER_CAT, entityReference, t('dialogs.supp-cat-del-confirmation'))
-                if (wasConfirmed) a_reqDelete(objectId, entityReference)
+                if (wasConfirmed) a_reqDelete(entityId, entityReference)
             }
         }
 
