@@ -102,7 +102,7 @@ export const HSupplierTable: Partial <IColumnHeader>[] = [
     { title: 'cell', navKey: 'cell', sorting: '', forceEmptyRender: true, styleWidth: 10 },
     { title: 'phone', navKey: 'sPhone', sorting: '', forceEmptyRender: true, styleWidth: 10 },
     { title: 'active', styleToCenter: true, navKey: 'isActive', fieldSwitch: true, styleWidth: 5 },
-    { title: 'category', styleToCenter: true, navKey: 'sCategoryID' },
+    { title: 'category', styleToCenter: true, navKey: 'sCategoryID', sorting: '' },
     { title: 'products', navKey: 'pCount',  sorting: '', styleToCenter: true, styleWidth: 8 },
     { title: 'countryCode', hidden: true },
     {
@@ -130,7 +130,7 @@ export const HProductTable: Partial<IColumnHeader>[] = [
             { icon: '', val: false }
         ]
     },
-    { title: 'category', styleToCenter: true, navKey: 'pCategoryID', styleWidth: 10 },
+    { title: 'category', styleToCenter: true, navKey: 'pCategoryID', styleWidth: 10, sorting: '' },
     { title: 'price', navKey: 'sellPrice', styleToRight: true, styleWidth: 6, sorting: '' },
     { title: 'cost', styleToCenter: true, styleWidth: 6 },
     { title: 'stock', navKey: 'pTotalStock', styleToRight: true, styleWidth: 4, forceEmptyRender: true, sorting: '' },
