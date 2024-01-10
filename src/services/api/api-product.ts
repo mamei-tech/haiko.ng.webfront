@@ -76,7 +76,7 @@ export class ApiProduct {
      * @param productId product identifier to look for
      */
     public static reqProductSuppliers ( productId: number ): AxiosPromise<Array<IDtoProductSupplierL>> {
-        return axios.get(url + `/suppliers/${ productId }`)
+        return axios.get(url + `/${ productId }/suppliers`)
     }
 
     /**

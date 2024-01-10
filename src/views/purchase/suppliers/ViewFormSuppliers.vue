@@ -535,7 +535,14 @@ import useToastify from '@/services/composables/useToastify'
 import useQrCodes from '@/services/composables/useQrCodes'
 import useDialogfy from '@/services/composables/useDialogfy'
 import { CmpCard, CmpCardStats, CmpFormActionsButton, CmpBasicInput, CmpMultiselectField, CmpVeeCheckbox, CmpTab, CmpTabContent, CmpTextInput, CmpModal } from '@/components'
-import { ACTION_KIND_STR, ENTITY_NAMES, FMODE, KEYS, OPS_KIND_STR, RoutePathNames } from '@/services/definitions'
+import {
+    ACTION_KIND_STR,
+    ENTITY_NAMES,
+    FMODE,
+    KEYS,
+    OPS_KIND_STR,
+    RoutePathNames
+} from '@/services/definitions'
 import { VSchemaSupplier } from '@/services/definitions/validations/validations-suppliers'
 
 import type { ComputedRef } from 'vue'
@@ -681,10 +688,10 @@ export default defineComponent({
          */
         const a_create = ( newSupplier: IDtoSupplier, doWeNeedToStay: boolean ) => {
 
-            // some value sanitation to ensure it will pass backend validations
-            if (newSupplier.zip == 0) newSupplier.zip = undefined
+            hpr_sanitation(newSupplier)
 
-            ApiSupplier.insertSupplier(newSupplier).then(() => {
+            ApiSupplier.insertSupplier(newSupplier)
+            .then(() => {
                 tfyCRUDSuccess(ENTITY_NAMES.SUPPLIER, OPS_KIND_STR.ADDITION, newSupplier.sName)
 
                 // so now what ?
@@ -694,29 +701,33 @@ export default defineComponent({
                     hpr_clearStateSelect()                                                  // cleaning select field
                 }
 
-            }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.SUPPLIER, OPS_KIND_STR.ADDITION))
+            })
+            .catch(err => tfyCRUDFail(err, ENTITY_NAMES.SUPPLIER, OPS_KIND_STR.ADDITION))
         }
 
         /**
          * Action for edit the supplier category
-         * @param editedSupplierCat object containing the edited information
+         * @param editedSupplier object containing the edited information
          * @param doWeNeedToStay This value, in this context, tells if the clicked button was the 'Applied' or the 'Save'
          */
-        const a_edit = ( editedSupplierCat: IDtoSupplier, doWeNeedToStay: boolean ): void => {
+        const a_edit = ( editedSupplier: IDtoSupplier, doWeNeedToStay: boolean ): void => {
             // default entity cannot be changed
-            if (editedSupplierCat.id == 1) {
+            if (editedSupplier.id == 1) {
                 dfyShowAlert(t('dialogs.title-alert-not-allowed'),  t('dialogs.cant-mod-default'))
                 return
             }
 
-            ApiSupplier.reqUpdateSupplier(editedSupplierCat)
+            hpr_sanitation(editedSupplier)
+
+            ApiSupplier.reqUpdateSupplier(editedSupplier)
             .then(() => {
-                tfyCRUDSuccess(ENTITY_NAMES.SUPPLIER, OPS_KIND_STR.UPDATE, editedSupplierCat.sName)
+                tfyCRUDSuccess(ENTITY_NAMES.SUPPLIER, OPS_KIND_STR.UPDATE, editedSupplier.sName)
 
                 // so now what ?
                 if(!doWeNeedToStay) h_back()                                  // so we are going back to the data table
 
-            }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.SUPPLIER_CAT, OPS_KIND_STR.UPDATE))
+            })
+            .catch(err => tfyCRUDFail(err, ENTITY_NAMES.SUPPLIER_CAT, OPS_KIND_STR.UPDATE))
         }
 
         /**
@@ -762,6 +773,15 @@ export default defineComponent({
 
             ref_selectStates.value.clearSelection()
         }
+
+        /**
+         * Form data sanitation method so we can clean the fields values before submitting
+         */
+        const hpr_sanitation = (dirtyProduct: IDtoSupplier) => {
+            if (dirtyProduct.zip == 0) dirtyProduct.zip = undefined
+            if (!dirtyProduct.sWebSite || dirtyProduct.sWebSite == '') delete dirtyProduct.sWebSite
+        }
+
 
         //#endregion ==========================================================================
 

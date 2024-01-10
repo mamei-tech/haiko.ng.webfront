@@ -682,7 +682,7 @@ export default defineComponent({
         const ls_activateSellPrice = ref<boolean>(!iniFormData.canBeSold)
         const ls_uomChosenLabel = ref<string | undefined>(undefined)                        // string label located in the buying section, to show the selected UoM that will be used in purchase ops
         const ls_filteredUoM = ref<IMultiselectBasic[]>([])
-        const ls_suppliersRequested = ref<boolean>(false)                                   // flag var to know if we already requested the suppliers
+        const ls_isSuppliersRequested = ref<boolean>(false)                                   // flag var to know if we already requested the suppliers
         const tabs = [                                                                      // form tabs data array
             { id: 1, title: t('data.generals') },
             { id: 2, title: t('table-headers.inventory') },
@@ -1337,7 +1337,7 @@ export default defineComponent({
 
         watch(activeTabId, async () => {
 
-            if(ls_suppliersRequested.value) return                                                                  // breaking the habit | if we already requested we have our job done
+            if(ls_isSuppliersRequested.value) return                                                                  // breaking the habit | if we already requested we have our job done
 
             if(activeTabId.value == 3 && cpt_fMode.value === FMODE.EDIT) {                                          // we are looking for the 'purchase' tab so we can pull the product providers from server
                 let result = await ApiProduct.reqProductSuppliers(+id).catch(err => tfyBasicRqError(err))           // requesting needed data
@@ -1354,7 +1354,7 @@ export default defineComponent({
                     return supplierLine
                 })
 
-                ls_suppliersRequested.value = true
+                ls_isSuppliersRequested.value = true
             }
         })
 
