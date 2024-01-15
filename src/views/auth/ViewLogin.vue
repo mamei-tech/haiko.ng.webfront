@@ -76,7 +76,7 @@ export default defineComponent({
 
         const aReqAccess = ( data: IAuthFormData ) => {
             st_auth.reqLogin(data)
-            .then(() => { goToDashboard() })
+            .then(() => { goToModuleHub() })
             .catch(error => { tfyAuthFail(error) })
         }
 
@@ -84,8 +84,8 @@ export default defineComponent({
 
         //region ======== NAVIGATION ============================================================
 
-        const goToDashboard = () => {
-            router.push({ name: RoutePathNames.dashboard })
+        const goToModuleHub = () => {
+            router.push({ name: RoutePathNames.hub })
         }
 
         //endregion =============================================================================

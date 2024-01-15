@@ -1,6 +1,10 @@
 <template>
     <transition appear name="page-fade">
-        <p>Listado para las órdenes de compra, salidas, otros filtra por el estado pendiente</p>
+        <div class="row">
+            <div class="col-12">
+                <h2>This is the POS central view</h2>
+            </div>
+        </div>
     </transition>
 </template>
 
@@ -10,7 +14,7 @@ import { useRouter } from 'vue-router'
 import { KEYS, RoutePathNames } from '@/services/definitions'
 
 export default defineComponent({
-    name: 'ViewListPurchase',
+    name: 'ViewPOS',
     components: {},
     setup() {
 
@@ -51,18 +55,17 @@ export default defineComponent({
         //#endregion ==========================================================================
 
         //region ======== NAVIGATION ==========================================================
-
-        const nav_2Hub = () => {
-            // router.back()
-            router.push({ name: RoutePathNames.hub });
-        }
-
         //endregion ===========================================================================
 
         //#region ======= EVENTS HANDLERS & WATCHERS ==========================================
 
         const h_keyboardKeyPress = ( evt: any ) => {
-            if (evt.key === KEYS.ESCAPE) nav_2Hub()
+            if (evt.key === KEYS.ESCAPE) h_back()
+        }
+
+        const h_back = () => {
+            // router.back()
+            router.push({ name: RoutePathNames.hub });
         }
 
         //#endregion ==========================================================================

@@ -64,6 +64,7 @@ export enum BULK_ACTIONS {
 export enum KEYS {
     ESCAPE = 'Escape',
     ENTER = 'Enter',
+    BACKSPC = 'Backspace'
 }
 
 /***

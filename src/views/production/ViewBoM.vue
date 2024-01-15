@@ -1,6 +1,10 @@
 <template>
     <transition appear name="page-fade">
-        <p>Listado para las órdenes de compra, salidas, otros filtra por el estado pendiente</p>
+        <div class="row">
+            <div class="col-12">
+                <h2>This is the production central view, BoM in this case</h2>
+            </div>
+        </div>
     </transition>
 </template>
 
@@ -9,8 +13,9 @@ import { defineComponent, onBeforeUnmount, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { KEYS, RoutePathNames } from '@/services/definitions'
 
+
 export default defineComponent({
-    name: 'ViewListPurchase',
+    name: 'ViewBoM',
     components: {},
     setup() {
 

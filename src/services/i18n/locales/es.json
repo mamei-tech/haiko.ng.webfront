@@ -335,5 +335,18 @@
             "name":         "Categorías de Proveedor {ref}",
             "section-name": "@:{'entities.suppliers-cat.name'}"
         }
+    },
+    "hub": {
+        "modules": {
+            "pos":           "POS",
+            "dash":          "Dashboard & Reports",
+            "management":    "Gestión",
+            "inventory":     "Inventario",
+            "manufacturing": "Producción",
+            "purchases":     "Compras",
+            "people":        "Personas",
+            "gallery":       "Galería",
+            "configs":       "Configuraciones"
+        }
     }
 }

@@ -1,11 +1,12 @@
 <template>
 
     <!-- SIDEBAR -->
-    <CmpSideBarMenu>
-        <div id="topper-border-cont" class="mp-stylized main-panel" >
+    <!-- FIXME Why the sidebar have to wrap the whole view ?? -->
+    <component :is="this.$route.meta.sidebar || 'div'">
 
+        <div id="topper-border-cont" class="mp-stylized main-panel" >
             <!-- NAV BAR -->
-            <LayBaseTopNav></LayBaseTopNav>
+            <LayMainTopNav></LayMainTopNav>
             <!--<notifications />-->
 
              <!--CONTENT-->
@@ -19,7 +20,8 @@
             <!-- FOOTER -->
             <LayFooterContent />
         </div>
-    </CmpSideBarMenu>
+    </component>
+
 
 </template>
 
@@ -27,15 +29,14 @@
 import { defineComponent } from 'vue'
 import PerfectScrollbar from 'perfect-scrollbar'
 import LayFooterContent from './LayFooterContent.vue'
-import LayBaseTopNav from './LayBaseTopNav.vue'
-import { CmpSideBarMenu, CmpButtonBackTop } from '@/components'
+import LayMainTopNav from './LayMainTopNav.vue'
+import { CmpButtonBackTop } from '@/components'
 
 export default defineComponent({
-    name: 'LayBaseDashboard',
+    name: 'LayMain',
     components: {
-        LayBaseTopNav,
+        LayMainTopNav,
         LayFooterContent,
-        CmpSideBarMenu,
         CmpButtonBackTop,
     },
     mounted(this:any): void {

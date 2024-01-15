@@ -1,6 +1,10 @@
 <template>
     <transition appear name="page-fade">
-        <p>Listado para las órdenes de compra, salidas, otros filtra por el estado pendiente</p>
+        <div class="row">
+            <div class="col-12">
+                <h2>This is the Daily Operations / WorkDay management central view</h2>
+            </div>
+        </div>
     </transition>
 </template>
 
@@ -10,7 +14,8 @@ import { useRouter } from 'vue-router'
 import { KEYS, RoutePathNames } from '@/services/definitions'
 
 export default defineComponent({
-    name: 'ViewListPurchase',
+    name: 'ViewDailyOps',       // DOPS / dops == daily operations
+    components: {},
     components: {},
     setup() {
 

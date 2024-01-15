@@ -9,14 +9,10 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { CmpSideBarMenu } from '@/components'
 
 
 export default defineComponent({
     name:       'Application',
-    components: {
-        CmpSideBarMenu
-    }
 })
 </script>
 

@@ -9,7 +9,6 @@ import CmpDataTable from '@/components/table/CmpDataTable.vue'
 import CmpTextInput from '@/components/inputs/CmpTextInput.vue'
 import CmpBasicInput from '@/components/inputs/CmpBasicInput.vue'
 import CmpImageInput from '@/components/inputs/CmpImageInput.vue'
-import CmpSideBarMenu from '@/components/sidebar/CmpSideBarMenu.vue'
 import CmpTableCellPicture from '@/components/table/CmpDataTable.vue'
 import CmpVeeCheckbox from '@/components/inputs/CmpVeeCheckbox.vue'
 import CmpBasicCheckbox from '@/components/inputs/CmpBasicCheckbox.vue'
@@ -41,9 +40,6 @@ export {
     // tabs
     CmpTab,
     CmpTabContent,
-
-    // sidebar
-    CmpSideBarMenu,
 
     // tooltip
     CmpTooltip,

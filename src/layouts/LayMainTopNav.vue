@@ -145,7 +145,7 @@ interface INavData {
 }
 
 export default defineComponent({
-    name: 'LayBaseTopNav',
+    name: 'LayMainTopNav',
     components: {
         CmpModal,
         CmpDropdown

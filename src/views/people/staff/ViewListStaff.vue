@@ -34,7 +34,7 @@
 
 <script lang="ts">
 import { useRouter } from 'vue-router'
-import { defineComponent, ref, onMounted } from 'vue'
+import { defineComponent, ref, onMounted, onBeforeUnmount } from 'vue'
 import { useToast } from 'vue-toastification'
 import { useSt_Staff } from '@/stores/staff'
 import { useSt_Nomenclatures } from '@/stores/nomenc'
@@ -48,7 +48,7 @@ import {
     OPS_KIND_STR,
     HStaffTable,
     DT_ACTIONBAR_MODE,
-    RoutePathNames
+    RoutePathNames, KEYS
 } from '@/services/definitions'
 import { CmpCard, CmpDataTable } from '@/components'
 import useDialogfy from '@/services/composables/useDialogfy'
@@ -109,6 +109,17 @@ export default defineComponent({
 
             // getting the staff list data for populating staff datatable (side effect)
             st_staff.reqStaffPages().catch(err => tfyCRUDFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.REQUEST))
+
+            // keyboard keys event handler, we need to clean this kind of event when the component are destroyed
+            window.addEventListener('keydown', h_keyboardKeyPress)
+        })
+
+        /**
+         * Vue hook before component is unmounted from the DOM
+         */
+        onBeforeUnmount(() => {
+            // cleaning the event manually added before to the document. Wee need to keep the things as clean as posible
+            window.removeEventListener('keydown', h_keyboardKeyPress)
         })
 
         //endregion ===========================================================================
@@ -155,6 +166,18 @@ export default defineComponent({
 
         //#region ======= COMPUTATIONS & GETTERS ==============================================
         //#endregion ==========================================================================
+
+        //region ======= HELPERS ==============================================================
+        //#endregion ==========================================================================
+
+        //region ======== NAVIGATION ==========================================================
+
+        const nav_2Hub = () => {
+            // router.back()
+            router.push({ name: RoutePathNames.hub });
+        }
+
+        //endregion ===========================================================================
 
         //#region ======= EVENTS HANDLERS =====================================================
 
@@ -235,6 +258,10 @@ export default defineComponent({
 
         function h_intentToggleDisable( id: number ) {
             a_reqSwitchState([id], OPS_KIND_STR.DISABLE)
+        }
+
+        const h_keyboardKeyPress = ( evt: any ) => {
+            if (evt.key === KEYS.ESCAPE) nav_2Hub()
         }
 
         //#endregion ==========================================================================

@@ -22,7 +22,7 @@
     import PerfectScrollbar from 'perfect-scrollbar'
 
     export default defineComponent({
-        name: 'LayBasePage',
+        name: 'LayBasic',
         mounted (): void {
             new PerfectScrollbar('#topper-border-cont')
         }
