@@ -111,7 +111,7 @@ button.vsm--toggle-btn {
     -ms-flex-align: center;
     align-items: center;
     font-size: 0.625rem;
-    font-weight: 400;
+    font-weight: 425;
     padding: 10px 15px;
     line-height: 30px;
     text-decoration: none;
@@ -124,7 +124,7 @@ button.vsm--toggle-btn {
 }
 
 .v-sidebar-menu .vsm--link_active {
-    font-weight: 600
+    font-weight: 650
 }
 
 .v-sidebar-menu .vsm--link_disabled {
@@ -402,6 +402,17 @@ button.vsm--toggle-btn {
 
 //Custom styles
 
+a.sidebar-cheader {
+    color: $default-states !important;
+    font-weight: 800 !important;
+    font-size: medium;
+}
+
+span.sidebar-item-icon-text {
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 500;
+    padding-right: 6px;
+}
 
 #container {
     padding-left: 200px;

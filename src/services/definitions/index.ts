@@ -1,17 +1,20 @@
 import { ALIGN_POSITION } from './types-common'
 import { RoutePaths, RoutePathNames } from './route-paths'
-import { HStaffTable, HRolesTable, HUoMCatTable, HUoMTable, PAGE_SIZE, HSupplierCatTable, HSupplierTable, HProductTable, HProductSupplierLine } from './data-datatables'
+import { HStaffTable, HRolesTable, HUoMCatTable, HUoMTable, PAGE_SIZE, HSupplierCatTable, HSupplierTable, HProductTable, HProductSupplierLine, HWarehouseTable } from './data-datatables'
 import { SelectDataUoMType } from './data-select-options'
 import { HTTP_HEADER_FORM_DATA, HTTP_HEADER_FORM_URLENCODED,RELPATH_DEFAULT_AVATAR_IMG, RELPATH_DEFAULT_PRODUCT_IMG, IMG_ORG_AVATAR_NAME, IMG_AVATAR_SMALL_THUMBNAIL, IMG_ORG_PRODUCT_NAM } from './data-strs'
 import { DT_ACTIONBAR_MODE, ENTITY_NAMES, DT_ACTION_BUTTON_MODE } from '@/services/definitions/enums-entities'
 import { HTTP_RESPONSES, OPS_KIND_STR, ACTION_KIND_STR, FMODE, BULK_ACTIONS, KEYS, PICTURE_TYPE_CELL, HTML_INPUT_TYPE, DIALOG_ICON } from '@/services/definitions/enums-common'
 
-import { VSchemaStaffCreate, VSchemaStaffEdit } from '@/services/definitions/validations/validations-people'
-import { VSchemaCommon } from '@/services/definitions/validations/validations-commons'
 import { VSchemaAuth } from '@/services/definitions/validations/validations-auth'
 import { VSchemaRole } from '@/services/definitions/validations/validations-rbac'
+import { VSchemaCommon } from '@/services/definitions/validations/validations-commons'
+import { VSchemaSupplier } from '@/services/definitions/validations/validations-suppliers'
+import { VSchemaWarehouse } from '@/services/definitions/validations/validations-warehouse'
+import { VSchemaStaffCreate, VSchemaStaffEdit } from '@/services/definitions/validations/validations-people'
 
 import type { Problem, ErrorDictionary } from '@/services/definitions/types-errors'
+import type { IWarehouseRow, IDtoWarehouse } from '@/services/definitions/entities/types-warehouse'
 import type { TOpsKind, Function0, Function1, IColumnHeader, IDataTableQuery, ITableChkEmit, TBulkAction, ById, IIndexable, IChecked, Filter, IDataListBasicResponse, TFormMode, TActionKind, IdsArray, IBulkData, IMultiselectBasic, IShell, IScrollInfo, IDataTablePage, ICellUpdate, IvCard, IExtFilter, IExtFilterGroup } from './types-common'
 import type { IStaffRow, IDtoStaff, IStaffBasic } from '@/services/definitions/entities/types-staff'
 import type { IRoleBasic, IDtoRole, IPermAssocId, IPermAssoc, IGroupPermsDict } from '@/services/definitions/entities/types-rbac'
@@ -37,24 +40,25 @@ export {
     HUoMCatTable,
     HProductTable,
     HSupplierTable,
+    HWarehouseTable,
     HSupplierCatTable,
     HProductSupplierLine,
 
     PAGE_SIZE,
 
     // Enums
+    KEYS,
+    FMODE,
+    DIALOG_ICON,
+    OPS_KIND_STR,
+    ENTITY_NAMES,
+    BULK_ACTIONS,
+    HTTP_RESPONSES,
+    ACTION_KIND_STR,
     HTML_INPUT_TYPE,
+    PICTURE_TYPE_CELL,
     DT_ACTIONBAR_MODE,
     DT_ACTION_BUTTON_MODE,
-    PICTURE_TYPE_CELL,
-    ENTITY_NAMES,
-    OPS_KIND_STR,
-    FMODE,
-    BULK_ACTIONS,
-    ACTION_KIND_STR,
-    HTTP_RESPONSES,
-    KEYS,
-    DIALOG_ICON,
 
     // strings constants
     HTTP_HEADER_FORM_DATA,
@@ -78,9 +82,12 @@ export {
     ALIGN_POSITION,
 
     // Validations ... VSchema == validations schema
-    VSchemaAuth, VSchemaCommon, VSchemaStaffCreate, VSchemaStaffEdit, VSchemaRole,
+    VSchemaAuth, VSchemaCommon, VSchemaStaffCreate, VSchemaStaffEdit, VSchemaRole, VSchemaWarehouse, VSchemaSupplier,
 
     // =====  ENTITIES =====
+
+    // warehouse
+    IWarehouseRow, IDtoWarehouse,
 
     // staff
     IStaffRow, IDtoStaff, IStaffBasic,

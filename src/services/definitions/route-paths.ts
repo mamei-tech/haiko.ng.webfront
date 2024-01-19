@@ -22,15 +22,27 @@ export const RoutePaths = {
 
     //#region ======= INVENTORY ===========================================================
 
-    inventory: '/inventory',                          // general inventory view
+    inventory: '/inventory',                                            // general inventory view
 
-    muList:   '/inventory/mu/list',                   // uom = mu = units of measurement
-    muEdit:   '/inventory/mu/:fmode/:id',             // uom = mu = units of measurement
-    muCreate: '/inventory/mu/:fmode',                 // uom = mu = units of measurement
+    muList:   '/inventory/mu/list',                                     // uom = mu = units of measurement
+    muEdit:   '/inventory/mu/:fmode/:id',                               // uom = mu = units of measurement
+    muCreate: '/inventory/mu/:fmode',                                   // uom = mu = units of measurement
 
     prodList:   '/inventory/product/list',
     prodEdit:   '/inventory/product/:fmode/:id',
     prodCreate: '/inventory/product/:fmode',
+
+    warehouseList: '/inventory/warehouse/list',
+    warehouseEdit:   '/inventory/warehouse/:fmode/:id',
+    warehouseCreate: '/inventory/warehouse/:fmode',
+
+    wlocationList : '/inventory/wlocation/list',                       // wlocation = warehouse location
+    wlocationEdit : '/inventory/wlocation/:fmode/:id',
+    wlocationCreate : '/inventory/wlocation/:fmode',
+
+    strgcategoryList: '/inventory/strgcategory/list',                  // strgcategory = storage location
+    strgcategoryEdit: '/inventory/strgcategory/:fmode/:id',
+    strgcategoryCreate: '/inventory/strgcategory/:fmode',
 
     //#endregion ==========================================================================
 
@@ -109,15 +121,27 @@ export const RoutePathNames = {
 
     //#region ======= INVENTORY ===========================================================
 
-    inventory: 'view-inventory',            // general inventory view
+    inventory: 'view-inventory',                                        // general inventory view
 
-    munits:   'units',                      // uom = mu = units of measurement
-    muCreate: 'units-create',               // uom = mu = units of measurement
-    muEdit:   'units-edit',                 // uom = mu = units of measurement
+    munits:   'units',                                                  // uom = mu = units of measurement
+    muCreate: 'units-create',                                           // uom = mu = units of measurement
+    muEdit:   'units-edit',                                             // uom = mu = units of measurement
 
     product:    'product',
     prodCreate: 'product-create',
     prodEdit:   'product-edit',
+
+    warehouseList: 'warehouse',
+    warehouseEdit:   'warehouse-edit',
+    warehouseCreate: 'warehouse-crete',
+
+    wlocationList : 'wlocation',                                        // wlocation = warehouse location
+    wlocationEdit : 'wlocation-edit',
+    wlocationCreate : 'wlocation-create',
+
+    strgcategoryList: 'strgcategory',                                   // strgcategory = storage location
+    strgcategoryEdit: 'strgcategory-edit',
+    strgcategoryCreate: 'strgcategory-ceate',
 
     //#endregion ==========================================================================
 

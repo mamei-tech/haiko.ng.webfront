@@ -28,25 +28,81 @@ export default {
         return {
             menu:       [
                 {
+                    // module header
+                    disabled: true,
+                    hiddenOnCollapse: true,
+                    class: 'sidebar-cheader',
+                    title: this.$t('nav.sb.inventory').toUpperCase(),
+                    icon: {
+                        element: 'span',
+                    }
+                    // icon: {
+                    //     element: 'span',
+                        // class: 'fa fa-user',
+                        // attributes: {}
+                        // text: 'I'
+                    // }
+                },
+                {
                     href:  { path: RoutePaths.hub },
                     title: this.$t( 'routes.' + RoutePathNames.hub ).toUpperCase(),
                     icon:  'tim-icons icon-app',
                 },
                 {
-                    // href: { path: '' },
-                    title: this.$t( 'nav.sb.inventory' ).toUpperCase(),
-                    icon:  'tim-icons icon-components',
+                    href:  { path: RoutePaths.inventory },
+                    title: this.$t( 'nav.sb.overview' ).toUpperCase(),
+                    icon:  'tim-icons icon-sound-wave',
+                },
+                {
+                    href:  { path: RoutePaths.prodList },
+                    title: this.$t( 'routes.' + RoutePathNames.product ).toUpperCase(),
+                    icon:  'tim-icons icon-atom',
+                },
+                {
+                    title: this.$t('nav.sb.ops').toUpperCase(),
+                    icon:  'tim-icons icon-world',
+                    child: [],
+                },
+                {
+                    title: this.$t( 'nav.sb.configs' ).toUpperCase(),
+                    icon:  'tim-icons icon-settings-gear-63',
                     child: [
                         {
                             href:  { path: RoutePaths.muList },
                             title: this.$t( 'routes.' + RoutePathNames.munits ).toLowerCase(),
-                            icon:  'tim-icons icon-support-17',
+                            icon: {
+                                element: 'span',
+                                text: 'U',
+                                class: 'sidebar-item-icon-text'
+                            }
                         },
                         {
-                            href:  { path: RoutePaths.prodList },
-                            title: this.$t( 'routes.' + RoutePathNames.product ).toLowerCase(),
-                            icon:  'tim-icons icon-app',
+                            href:  { path: RoutePaths.warehouseList },
+                            title: this.$t( 'routes.' + RoutePathNames.warehouseList ).toLowerCase(),
+                            icon: {
+                                element: 'span',
+                                text: 'A',
+                                class: 'sidebar-item-icon-text'
+                            }
                         },
+                        {
+                            // href:  { path: RoutePaths.wlocation },
+                            title: this.$t( 'routes.' + RoutePathNames.wlocationList ).toLowerCase(),
+                            icon: {
+                                element: 'span',
+                                text:    'B',
+                                class:   'sidebar-item-icon-text'
+                            }
+                        },
+                        {
+                            // href:  { path: RoutePaths.strgcategory },
+                            title: this.$t( 'routes.' + RoutePathNames.strgcategoryList ).toLowerCase(),
+                            icon: {
+                                element: 'span',
+                                text:    'C',
+                                class:   'sidebar-item-icon-text'
+                            }
+                        }
                     ],
                 },
             ],

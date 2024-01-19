@@ -4,6 +4,7 @@ import type {
     IDtoStaff,
     IDtoProduct,
     IDtoSupplier,
+    IDtoWarehouse,
     IDtoSupplierCat,
     IDtoUoMCategory,
     IDtoProductSupplierL,
@@ -172,6 +173,15 @@ export default function useFactory() {
         }
     }
 
+    const mkWarehouse = (): IDtoWarehouse => {
+        return {
+            id:     0,
+            wName:  '',
+            code:   '',
+            suppID: ''
+        }
+    }
+
     //#endregion ==========================================================================
 
     return {
@@ -184,6 +194,7 @@ export default function useFactory() {
         mkSupplier,
         mkSupplierCat,
 
+        mkWarehouse,
         mkProduct,
         mkProductSupplierLine
     }

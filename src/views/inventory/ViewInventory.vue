@@ -1,11 +1,11 @@
 <template>
-    <transition appear name="page-fade">
-        <div class="row">
-            <div class="col-12">
-                <h2>This is the inventory central view</h2>
-            </div>
-        </div>
-    </transition>
+  <transition appear name="page-fade">
+    <div class="row">
+      <div class="col-12">
+        <h2>This is the inventory central view</h2>
+      </div>
+    </div>
+  </transition>
 </template>
 
 <script lang="ts">

@@ -29,15 +29,27 @@ export default {
 
     //#region ======= INVENTORY ===========================================================
 
-    [ RoutePathNames.inventory ]: 'Inventario',
+    [ RoutePathNames.inventory ]: '@:data.overview',
 
-    [ RoutePathNames.product ]:    '@:{\'entities.product.name\'}',
+    [ RoutePathNames.product ]:    '@:table-headers.products',
     [ RoutePathNames.prodCreate ]: '@:crud-actions.create @:entities.product.name',
     [ RoutePathNames.prodEdit ]:   '@:crud-actions.edition @:entities.product.name',
 
     [ RoutePathNames.munits ]:   '@:{\'entities.uom.section-name\'}',
     [ RoutePathNames.muCreate ]: '@:crud-actions.create @:entities.uom.section-name',
     [ RoutePathNames.muEdit ]:   '@:crud-actions.edition @:entities.uom.section-name',
+
+    [ RoutePathNames.warehouseList ]:   '@:{\'entities.warehouse.section-name\'}',
+    [ RoutePathNames.warehouseCreate ]: '@:crud-actions.create @:entities.warehouse.section-name',
+    [ RoutePathNames.warehouseEdit ]:   '@:crud-actions.edition @:entities.warehouse.section-name',
+
+    [ RoutePathNames.wlocationList ]:   '@:{\'entities.wlocation.section-name\'}',
+    [ RoutePathNames.wlocationCreate ]: '@:crud-actions.create @:entities.wlocation.section-name',
+    [ RoutePathNames.wlocationEdit ]:   '@:crud-actions.edition @:entities.wlocation.section-name',
+
+    [ RoutePathNames.strgcategoryList ]:   '@:{\'entities.strgcategory.section-name\'}',
+    [ RoutePathNames.strgcategoryCreate ]: '@:crud-actions.create @:entities.strgcategory.section-name',
+    [ RoutePathNames.strgcategoryEdit ]:   '@:crud-actions.edition @:entities.strgcategory.section-name',
 
     //#endregion ==========================================================================
 

@@ -141,3 +141,15 @@ export const HProductTable: Partial<IColumnHeader>[] = [
         styleWidth:   5
     }
 ]
+
+export const HWarehouseTable: Partial<IColumnHeader>[] = [
+    { title: 'id', hidden: true },
+    { title: 'name', navKey: 'wName', sorting: '' },
+    { title: 'code', styleWidth: 30, sorting: '' },
+    { title: 'address', navKey: 'suppID' },
+    {
+        title:        '',            // actions buttons
+        styleToRight: true,
+        styleWidth:   40
+    }
+]

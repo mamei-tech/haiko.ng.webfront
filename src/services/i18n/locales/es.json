@@ -6,7 +6,7 @@
         "vcard":      "vCard",
         "vcard-info": "escanea para guardar el contacto"
     },
-    "btn": {
+    "btn":           {
         "val-yes":                   "si",
         "val-no":                    "no",
         "val-login":                 "entrar",
@@ -39,15 +39,16 @@
     "nav":           {
         "sb": {
             "people":    "Personas",
+            "overview":  "@:{'data.overview'}",
             "inventory": "Inventario",
-            "ops":       "Operaciones"
+            "ops":       "Operaciones",
+            "configs":   "@:{'hub.modules.configs'}"
         }
     },
     "data":          {
         "status":             "Estado",
         "_id":                "ID",
         "id":                 "@:data._id",
-        "name":               "nombre",
         "isEnable":           "@:data.status",
         "Items":              "Elementos",
         "Actions":            "Acciones",
@@ -62,7 +63,7 @@
         "company":            "Empresa",
         "individual":         "Individuo",
         "work":               "trabajo",
-        "generals":           "Generales",
+        "overview":           "Generales",
         "data":               "Datos",
         "days":               "días"
     },
@@ -101,7 +102,7 @@
         "request-pas":     "solicitado",
         "request-gerund":  "de solicitud"
     },
-    "dialogs": {
+    "dialogs":       {
         "title-alert":                    "Atención",
         "title-alert-not-allowed":        "No permitido",
         "confirm":                        "Por favor, confirme",
@@ -164,6 +165,7 @@
             "staff-information": "Información del Staff"
         },
         "fields-common": {
+            "name":              "nombre",
             "cloning-state":     "[ CLONANDO ]",
             "country":           "País",
             "country-state":     "Prov/Est",
@@ -202,7 +204,7 @@
                 "stat-purchases-count":       "Total de compras",
                 "stat-purchases-count-value": "Valor total de compras"
             },
-            "product": {
+            "product":   {
                 "cbe-sold":                        "Puede ser vendido",
                 "cbe-purchased":                   "Puede ser comprado",
                 "name":                            "@:form.fields-common.firstname del @:entities.product.name",
@@ -222,11 +224,11 @@
                 "stats-values-sales-month":        "Valor de venta este mes",
                 "stats-total-uom-purchase-3-mont": "Compras ult. 3 meses",
                 "stats-count-bom":                 "Recetas",
-                "logistic-responsible": "Responsible",
-                "logistic-weight": "Peso",
-                "logistic-volume": "Volumen",
-                "logistic-prep-manuf": "TP de Prep para Fabric",
-                "tool-tips": {
+                "logistic-responsible":            "Responsible",
+                "logistic-weight":                 "Peso",
+                "logistic-volume":                 "Volumen",
+                "logistic-prep-manuf":             "TP de Prep para Fabric",
+                "tool-tips":                       {
                     "track-inventory":      "Si esta marcado significa que es un producto almacenale y se gestionará inventario para el mismo. Si no está marcado se interpreta que el producto siempre esta disponible (siempre tiene stock)",
                     "sell-tax":             "Porciento de impuesto cargado al cliente en el momento de la venta.",
                     "uom":                  "Unidad de medida por defecto utilizada para todas las operaciones de stock y ventas",
@@ -234,28 +236,31 @@
                     "logistic-responsible": "La persona del staff responsable respecto a las operaciones de logística del producto en cuestión.",
                     "manuf-prep-l-time":    "- Tiempo Promedio de Preparación para la Fabricación -. Plazo medio para preparar las órdenes de fabricación. Crear y confirmar las Órdenes de Fabricación con estos días de antelación como promedio, para disponer de tiempo suficiente para reponer materiales o fabricar productos semi-acabados."
                 }
+            },
+            "warehouse": {
+                "code": "@:form.fields-common.name corto"
             }
         },
-        "placeholders": {
+        "placeholders":  {
             "website":                "www.elsitiowebaqui.com",
             "username":               "nickname__78",
             "select":                 " - selección - ",
             "address":                "Prado #34 Apt 2, e/ Gervasio y Escobar, Centro Habana",
             "zip":                    "######",
-            "staff-firstname":        "escriba el @:data.name del empleado",
+            "staff-firstname":        "escriba el @:form.fields-common.name del empleado",
             "staff-lastname":         "escriba los apellidos del empleado",
-            "role-rname":             "@:data.name del rol",
+            "role-rname":             "@:form.fields-common.name del rol",
             "role-description":       "describe aspectos relevantes del rol",
             "filters":                "Filtros",
             "reset-filters":          "Restablecer filtros",
-            "uom-cat-ucname":         "@:data.name de la nueva categoría para unidades medida",
+            "uom-cat-ucname":         "@:form.fields-common.name de la nueva categoría para unidades medida",
             "user":                   "usuario",
             "pass":                   "contraseña",
             "search":                 "buscar",
             "email":                  "correo.{'@'}.dominio.que",
             "uom-type-select":        "ratio de conversión",
             "suppliers-company-name": "ej. La Primordial",
-            "supplier-cat-name":      "@:data.name para la categoría de proveedores",
+            "supplier-cat-name":      "@:form.fields-common.name para la categoría de proveedores",
             "supplier-contact":       "Nombre de contacto con el proveedor, ej. Pepe Bouza",
             "supplier-contact-notes": "Notas acerca del nombre del contacto",
             "supplier-category":      " - @:table-headers.category - ",
@@ -263,11 +268,13 @@
             "product-uom":            " - @:entities.uom.name - ",
             "product-name":           "... helado de chocolate ??",
             "product-supplier":       " - Selecciona @:entities.supplier.name - ",
-            "product-currency":       "- moneda -"
+            "product-currency":       "- moneda -",
+            "warehouse-name":         "MiNegocio",
+            "warehouse-code":         "A"
         }
     },
     "table-headers": {
-        "name":        "@:data.name",
+        "name":        "@:form.fields-common.name",
         "avatar":      "Avatar",
         "id":          "Id",
         "user":        "Usuario",
@@ -293,20 +300,22 @@
         "cost":        "Costo",
         "stock":       "Stock",
         "unit":        "u.m",
-        "supp-cod":    "Código Prov.",
+        "supp-cod":    "@:table-headers.code Prov.",
+        "code":        "Código",
+        "address":     "@:form.fields-common.address",
         "currency":    "Moneda",
         "tax":         "Impuesto(%)",
         "sku":         "SKU"
     },
-    "entities": {
+    "entities":      {
         "default":      "entidades",
         "staff":        {
             "name":         "Staff {ref}",
             "section-name": "@:entities.staff.name"
         },
         "product":      {
-            "name":            "Producto {ref}",
-            "section-name":    "@:table-headers.products"
+            "name":         "Producto {ref}",
+            "section-name": "@:table-headers.products"
         },
         "role":         {
             "name":         "Rol {ref}",
@@ -334,9 +343,21 @@
         "supplier-cat": {
             "name":         "Categorías de Proveedor {ref}",
             "section-name": "@:{'entities.suppliers-cat.name'}"
+        },
+        "warehouse":    {
+            "name":         "Almacén {ref}",
+            "section-name": "Lugar d Almacén"
+        },
+        "wlocation":    {
+            "name":         "Ubicación {ref}",
+            "section-name": "@:entities.wlocation.name"
+        },
+        "strgcategory": {
+            "name":         "Categoría d @:entities.wlocation.name {ref}",
+            "section-name": "@:entities.strgcategory.name"
         }
     },
-    "hub": {
+    "hub":           {
         "modules": {
             "pos":           "POS",
             "dash":          "Dashboard & Reports",
@@ -346,7 +367,7 @@
             "purchases":     "Compras",
             "people":        "Personas",
             "gallery":       "Galería",
-            "configs":       "Configuraciones"
+            "configs":       "Configuración"
         }
     }
 }
