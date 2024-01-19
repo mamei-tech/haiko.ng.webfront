@@ -8,7 +8,7 @@ const { t } = i18n.global
  * RBAC validation schema. Prepared to be used with Vee-validate lib in ROLE CRUD
  */
 export const VSchemaRole = {
-    rName:       ( value: string ): boolean | string => {return VSchemaCommon.nameNoSpaceValidation(value)},
+    rName:       ( value: string ): boolean | string => {return VSchemaCommon.nameValidation(value)},
     description: ( value: string ): boolean | string => {return VSchemaCommon.notes(value)}
 }
 

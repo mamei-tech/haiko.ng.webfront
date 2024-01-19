@@ -1,35 +1,35 @@
 <template>
-    <transition appear name="page-fade">
-        <div class="row">
-            <div class="col-12">
-                <CmpCard>
-                    <CmpDataTable table-type="hover"
-                                  :subject="$t('entities.staff.name')"
+  <transition appear name="page-fade">
+    <div class="row">
+      <div class="col-12">
+        <CmpCard>
+          <CmpDataTable table-type="hover"
+                        :subject="$t('entities.staff.name')"
 
-                                  :action-bar-mode="abar_mode"
-                                  :action-btn-mode="abutton_mode"
+                        :action-bar-mode="abar_mode"
+                        :action-btn-mode="abutton_mode"
 
-                                  :columns="columns"
-                                  :data="st_staff.getStaffList"
-                                  :has-actions="true"
-                                  :headerFilters="headerFilters"
+                        :columns="columns"
+                        :data="st_staff.getStaffList"
+                        :has-actions="true"
+                        :headerFilters="headerFilters"
 
-                                  @navCreateIntent="h_navCreateStaff"
-                                  @requestIntent="h_reqQuery"
+                        @navCreateIntent="h_navCreateStaff"
+                        @requestIntent="h_reqQuery"
 
-                                  @deleteIntent="h_intentRowDelete"
-                                  @editIntent="h_navRowEdit"
+                        @deleteIntent="h_intentRowDelete"
+                        @editIntent="h_navRowEdit"
 
-                                  @bulkActionIntent="h_intentBulkAction"
+                        @bulkActionIntent="h_intentBulkAction"
 
-                                  @enableIntent="h_intentToggleEnable"
-                                  @disableIntent="h_intentToggleDisable"
-                    >
-                    </CmpDataTable>
-                </CmpCard>
-            </div>
-        </div>
-    </transition>
+                        @enableIntent="h_intentToggleEnable"
+                        @disableIntent="h_intentToggleDisable"
+          >
+          </CmpDataTable>
+        </CmpCard>
+      </div>
+    </div>
+  </transition>
 </template>
 
 <script lang="ts">
@@ -179,7 +179,7 @@ export default defineComponent({
 
         //endregion ===========================================================================
 
-        //#region ======= EVENTS HANDLERS =====================================================
+        //#region ======= EVENTS HANDLERS & WATCHERS ==========================================
 
         /**
          * Handler for the intent of deleting a row from the table

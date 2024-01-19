@@ -1,11 +1,11 @@
 <template>
-    <transition appear name="page-fade">
-        <div class="row">
-            <div class="col-12">
-                <h2>This is the Daily Operations / WorkDay management central view</h2>
-            </div>
-        </div>
-    </transition>
+  <transition appear name="page-fade">
+    <div class="row">
+      <div class="col-12">
+        <h2>This is the Daily Operations / WorkDay management central view</h2>
+      </div>
+    </div>
+  </transition>
 </template>
 
 <script lang="ts">
@@ -15,7 +15,6 @@ import { KEYS, RoutePathNames } from '@/services/definitions'
 
 export default defineComponent({
     name: 'ViewDailyOps',       // DOPS / dops == daily operations
-    components: {},
     components: {},
     setup() {
 

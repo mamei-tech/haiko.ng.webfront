@@ -1,31 +1,31 @@
 <template>
-    <transition appear name="page-fade">
-        <div class="row">
-            <div class="col-12">
-                <CmpCard>
-                    <CmpDataTable table-type="hover"
-                                  :subject="$t('entities.role.name')"
+  <transition appear name="page-fade">
+    <div class="row">
+      <div class="col-12">
+        <CmpCard>
+          <CmpDataTable table-type="hover"
+                        :subject="$t('entities.role.name')"
 
-                                  :action-bar-mode="abar_mode"
-                                  :action-btn-mode="abutton_mode"
+                        :action-bar-mode="abar_mode"
+                        :action-btn-mode="abutton_mode"
 
-                                  :columns="columns"
-                                  :data="st_rbac.entityPage"
-                                  :has-actions="true"
+                        :columns="columns"
+                        :data="st_rbac.entityPage"
+                        :has-actions="true"
 
-                                  @navCreateIntent=""
-                                  @deleteIntent="h_intentRowDelete"
-                                  @editIntent="h_navRowEdit"
-                    >
-                    </CmpDataTable>
-                </CmpCard>
-            </div>
-        </div>
-    </transition>
+                        @navCreateIntent=""
+                        @deleteIntent="h_intentRowDelete"
+                        @editIntent="h_navRowEdit"
+          >
+          </CmpDataTable>
+        </CmpCard>
+      </div>
+    </div>
+  </transition>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from 'vue'
+import { defineComponent, onBeforeUnmount, onMounted } from 'vue'
 import { CmpCard, CmpDataTable } from '@/components'
 import {
     ACTION_KIND_STR,
@@ -35,7 +35,7 @@ import {
     OPS_KIND_STR,
     RoutePathNames,
     HRolesTable,
-    DT_ACTION_BUTTON_MODE
+    DT_ACTION_BUTTON_MODE, KEYS
 } from '@/services/definitions'
 import { useRouter } from 'vue-router'
 import { useSt_Rbac } from '@/stores/rbac'
@@ -80,14 +80,22 @@ export default defineComponent({
         onMounted(() => {
             // getting the roles list data for populating staff datatable (side effect)
             st_rbac.reqRolePages().catch(err => tfyCRUDFail(err, ENTITY_NAMES.ROLE, OPS_KIND_STR.REQUEST))
+
+            // keyboard keys event handler, we need to clean this kind of event when the component are destroyed
+            window.addEventListener('keydown', h_keyboardKeyPress)
+        })
+
+        /**
+         * Vue hook before component is unmounted from the DOM
+         */
+        onBeforeUnmount(() => {
+            // cleaning the event manually added before to the document. Wee need to keep the things as clean as posible
+            window.removeEventListener('keydown', h_keyboardKeyPress)
         })
 
         //endregion ===========================================================================
 
         //#region ======= FETCHING DATA ACTIONS ===============================================
-        //#endregion ==========================================================================
-
-        //#region ======= ACTIONS =============================================================
 
         /**
          * Request the deletion (from server) of a entities according to the list of identifiers given as parameters
@@ -112,7 +120,23 @@ export default defineComponent({
         //#region ======= COMPUTATIONS & GETTERS ==============================================
         //#endregion ==========================================================================
 
-        //#region ======= EVENTS HANDLERS =====================================================
+        //region ======= HELPERS ==============================================================
+        //#endregion ==========================================================================
+
+        //region ======== NAVIGATION ==========================================================
+
+        const nav_2Hub = () => {
+            // router.back()
+            router.push({ name: RoutePathNames.hub });
+        }
+
+        //endregion ===========================================================================
+
+        //#region ======= EVENTS HANDLERS & WATCHERS ==========================================
+
+        const h_keyboardKeyPress = ( evt: any ) => {
+            if (evt.key === KEYS.ESCAPE) nav_2Hub()
+        }
 
         const h_navCreateRole = (): void => {
             router.push({

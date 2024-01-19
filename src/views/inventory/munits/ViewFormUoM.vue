@@ -1,87 +1,87 @@
 <template>
-    <transition appear name="page-fade">
-        <div class="row">
-            <div class="col-12">
+  <transition appear name="page-fade">
+    <div class="row">
+      <div class="col-12">
 
-                <CmpCard :hasFormBackBtn="true" v-on:doClick="h_back">
+        <CmpCard :hasFormBackBtn="true" v-on:doClick="h_back">
 
-                    <!-- FORM -->
-                    <form class="form">
-                        <div class="row">
+          <!-- FORM -->
+          <form class="form">
+            <div class="row">
 
-                            <div class="col-xm-12 col-md-6">
-                                <!-- id -->
-                                <div class="row">
-                                    <div class="col-md-9">
-                                        <CmpBasicInput
-                                                disabled
-                                                placeholder="###########"
-                                                name="id"
-                                                type="hidden"
-                                                v-model="iniFormData.id"
-                                        />
-                                    </div>
-                                </div>
+              <div class="col-xm-12 col-md-6">
+                <!-- id -->
+                <div class="row">
+                  <div class="col-md-9">
+                    <CmpBasicInput
+                        disabled
+                        placeholder="###########"
+                        name="id"
+                        type="hidden"
+                        v-model="iniFormData.id"
+                    />
+                  </div>
+                </div>
 
-                                <!-- ucName -->
-                                <div class="row">
-                                    <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                                        {{ $t("entities.uomcatetgory.name") }}
-                                    </label>
-                                    <div class="col-md-9">
-                                        <CmpBasicInput
-                                                :placeholder="$t('form.placeholders.uom-cat-ucname')"
-                                                name="ucName"
-                                                type="text"
-                                                v-model="iniFormData.ucName"
-                                        />
-                                    </div>
-                                </div>
+                <!-- ucName -->
+                <div class="row">
+                  <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                    {{ $t( 'entities.uomcatetgory.name' ) }}
+                  </label>
+                  <div class="col-md-9">
+                    <CmpBasicInput
+                        :placeholder="$t('form.placeholders.uom-cat-ucname')"
+                        name="ucName"
+                        type="text"
+                        v-model="iniFormData.ucName"
+                    />
+                  </div>
+                </div>
 
-                            </div>
-                        </div>
-
-                        <!-- uom list -->
-                        <div class="row">
-                            <div class="col-12">
-                                <CmpDataTable table-type="hover"
-                                              :action-bar-mode="abar_mode"
-                                              :action-btn-mode="abutton_mode"
-
-                                              :columns="columns"
-                                              :data="iniFormData.units"
-
-                                              :has-actions="true"
-                                              :has-top-btn-bar="true"
-                                              :has-page-size-selector="false"
-                                              :has-search="false"
-
-                                              @deleteIntent="h_intentRowDelete"
-                                              @navCreateIntent="h_intentUoMCreate"
-                                              @cellUpdateIntent="h_updateCell"
-
-                                              @enableIntent="h_intentToggleEnable"
-                                              @disableIntent="h_intentToggleDisable"
-                                >
-                                </CmpDataTable>
-                            </div>
-                        </div>
-                    </form>
-
-                    <!-- FORM ACTION BUTTONS -->
-                    <template v-slot:footer>
-                        <CmpFormActionsButton
-                                :show-delete="cpt_fMode === 'edit'"
-                                v-on:saveIntent="h_beforeSubmit"
-                                v-on:deleteIntent="h_delete"
-                                v-on:cancelIntent="h_back"
-                        />
-                    </template>
-                </CmpCard>
-
+              </div>
             </div>
-        </div>
-    </transition>
+
+            <!-- uom list -->
+            <div class="row">
+              <div class="col-12">
+                <CmpDataTable table-type="hover"
+                              :action-bar-mode="abar_mode"
+                              :action-btn-mode="abutton_mode"
+
+                              :columns="columns"
+                              :data="iniFormData.units"
+
+                              :has-actions="true"
+                              :has-top-btn-bar="true"
+                              :has-page-size-selector="false"
+                              :has-search="false"
+
+                              @deleteIntent="h_intentRowDelete"
+                              @navCreateIntent="h_intentUoMCreate"
+                              @cellUpdateIntent="h_updateCell"
+
+                              @enableIntent="h_intentToggleEnable"
+                              @disableIntent="h_intentToggleDisable"
+                >
+                </CmpDataTable>
+              </div>
+            </div>
+          </form>
+
+          <!-- FORM ACTION BUTTONS -->
+          <template v-slot:footer>
+            <CmpFormActionsButton
+                :show-delete="cpt_fMode === 'edit'"
+                v-on:saveIntent="h_beforeSubmit"
+                v-on:deleteIntent="h_delete"
+                v-on:cancelIntent="h_back"
+            />
+          </template>
+        </CmpCard>
+
+      </div>
+    </div>
+  </transition>
 </template>
 
 <script lang="ts">
@@ -351,9 +351,9 @@ export default defineComponent({
         //region ======= EVENTS HANDLERS & WATCHERS ===========================================
 
         /**
-         * This method tries to accommodate the data before it will send to the server to update the permission of the role
-         * Basically, filter the perms2mod record with the data it was actually changed and allocate in 2 groups
-         * (remove & grant) the perms that has changed.
+         * This method tries to accommodate the data before it will be sent to the server
+         * Handles the form submission event through the vee-validate 'SubmissionHandler' so we can take advantage of all
+         * the its validation logic but using with own logic inserted as callback
          *
          * @param evt HTML event
          * @param doWeNeedToStay This is a boolean data coming from our Vue UI custom component (CmpFormActionsButton in this case). Tell us where to go after the successfully creation of the entity

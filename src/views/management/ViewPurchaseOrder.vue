@@ -1,7 +1,7 @@
 <template>
-    <transition appear name="page-fade">
-        <p>Listado para las órdenes de compra, salidas, otros filtra por el estado pendiente</p>
-    </transition>
+  <transition appear name="page-fade">
+    <p>Listado para las órdenes de compra, salidas, otros filtra por el estado pendiente</p>
+  </transition>
 </template>
 
 <script lang="ts">
@@ -15,16 +15,19 @@ export default defineComponent({
         //#region ======= DECLARATIONS & LOCAL STATE ==========================================
         //#endregion ==========================================================================
 
-        //#region ======= FETCHING DATA ACTIONS ===============================================
-        //#endregion ==========================================================================
-
-        //#region ======= ACTIONS =============================================================
+        //#region ======= FETCHING DATA & ACTIONS =============================================
         //#endregion ==========================================================================
 
         //#region ======= COMPUTATIONS & GETTERS ==============================================
         //#endregion ==========================================================================
 
-        //#region ======= EVENTS HANDLERS =====================================================
+        //#region ======= HELPERS =============================================================
+        //#endregion ==========================================================================
+
+        //#region ======= NAVIGATIONS =========================================================
+        //#endregion ==========================================================================
+
+        //#region ======= EVENTS HANDLERS & WATCHERS ==========================================
         //#endregion ==========================================================================
 
         return {}

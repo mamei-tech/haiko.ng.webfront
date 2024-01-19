@@ -1,36 +1,36 @@
 <template>
-    <transition appear name="page-fade">
-        <div class="row">
-            <div class="col-12">
-                <CmpCard>
-                    <CmpDataTable table-type="hover"
-                                  :subject="$t('entities.supplier-cat.name')"
+  <transition appear name="page-fade">
+    <div class="row">
+      <div class="col-12">
+        <CmpCard>
+          <CmpDataTable table-type="hover"
+                        :subject="$t('entities.supplier-cat.name')"
 
-                                  :action-bar-mode="abar_mode"
-                                  :action-btn-mode="abutton_mode"
+                        :action-bar-mode="abar_mode"
+                        :action-btn-mode="abutton_mode"
 
-                                  :columns="columns"
-                                  :data="ls_suppliersCategories.entityPage"
-                                  :has-actions="true"
+                        :columns="columns"
+                        :data="ls_suppliersCategories.entityPage"
+                        :has-actions="true"
 
-                                  @requestIntent="h_reqQuery"
+                        @requestIntent="h_reqQuery"
 
-                                  @navCreateIntent="h_navCreateSuppCatIntent"
-                                  @editIntent="h_navEditSuppCatIntent"
-                                  @deleteIntent="h_intentRowDelete"
+                        @navCreateIntent="h_navCreateSuppCatIntent"
+                        @editIntent="h_navEditSuppCatIntent"
+                        @deleteIntent="h_intentRowDelete"
 
-                                  @enableIntent=""
-                                  @disableIntent=""
-                    >
-                    </CmpDataTable>
-                </CmpCard>
-            </div>
-        </div>
-    </transition>
+                        @enableIntent=""
+                        @disableIntent=""
+          >
+          </CmpDataTable>
+        </CmpCard>
+      </div>
+    </div>
+  </transition>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue'
+import { defineComponent, onBeforeUnmount, onMounted, ref } from 'vue'
 import { i18n } from '@/services/i18n'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
@@ -44,7 +44,7 @@ import {
     DT_ACTION_BUTTON_MODE,
     DT_ACTIONBAR_MODE, ENTITY_NAMES,
     FMODE,
-    HSupplierCatTable, OPS_KIND_STR,
+    HSupplierCatTable, KEYS, OPS_KIND_STR,
     RoutePathNames
 } from '@/services/definitions'
 
@@ -75,7 +75,7 @@ export default defineComponent({
         const st_pagination = useSt_Pagination()                                                                  // pinia instance of pagination store | check the text on --> https://pinia.vuejs.org/cookbook/composing-stores.html#nested-stores
         const ls_suppliersCategories = ref<ISupplierCatState>({entityPage: [] as ISupplierCatRow[]})        // local store
 
-        const abar_mode: DT_ACTIONBAR_MODE = DT_ACTIONBAR_MODE.JC                        // datatable action bar mode
+        const abar_mode: DT_ACTIONBAR_MODE = DT_ACTIONBAR_MODE.JC                           // datatable action bar mode
         const abutton_mode: DT_ACTION_BUTTON_MODE = DT_ACTION_BUTTON_MODE.JEDINDEL          // datatable button mode
         const columns = ref<Partial<IColumnHeader>[]>(HSupplierCatTable)                    // entity customized datatab
 
@@ -92,7 +92,20 @@ export default defineComponent({
          *
          * Manually setting the needed values is way cleaner than the other way around. This is needed mainly because api call is asynchronous.
          */
-        onMounted(() => a_reqQuery())
+        onMounted(() => {
+            a_reqQuery()
+
+            // keyboard keys event handler, we need to clean this kind of event when the component are destroyed
+            window.addEventListener('keydown', h_keyboardKeyPress)
+        })
+
+        /**
+         * Vue hook before component is unmounted from the DOM
+         */
+        onBeforeUnmount(() => {
+            // cleaning the event manually added before to the document. Wee need to keep the things as clean as posible
+            window.removeEventListener('keydown', h_keyboardKeyPress)
+        })
 
         //endregion ===========================================================================
 
@@ -113,10 +126,6 @@ export default defineComponent({
             })
             .catch(error => tfyCRUDFail(error, ENTITY_NAMES.SUPPLIER_CAT, OPS_KIND_STR.DELETION, ref))
         }
-
-        //#endregion ==========================================================================
-
-        //#region ======= ACTIONS =============================================================
 
         function a_reqQuery( queryData: IDataTableQuery | undefined = undefined ) {
             // getting the suppliers categories list data for populating the datatable (side effect)
@@ -141,7 +150,19 @@ export default defineComponent({
         //#region ======= COMPUTATIONS & GETTERS ==============================================
         //#endregion ==========================================================================
 
-        //#region ======= EVENTS HANDLERS =====================================================
+        //region ======= HELPERS ==============================================================
+        //#endregion ==========================================================================
+
+        //region ======== NAVIGATION ==========================================================
+
+        const nav_2Hub = () => {
+            // router.back()
+            router.push({ name: RoutePathNames.hub });
+        }
+
+        //endregion ===========================================================================
+
+        //#region ======= EVENTS HANDLERS & WATCHERS ==========================================
 
         const h_navCreateSuppCatIntent = (): void => {
             router.push({
@@ -179,6 +200,10 @@ export default defineComponent({
                 const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.SUPPLIER_CAT, entityReference, t('dialogs.supp-cat-del-confirmation'))
                 if (wasConfirmed) a_reqDelete(entityId, entityReference)
             }
+        }
+
+        const h_keyboardKeyPress = ( evt: any ) => {
+            if (evt.key === KEYS.ESCAPE) nav_2Hub()
         }
 
         //#endregion ==========================================================================

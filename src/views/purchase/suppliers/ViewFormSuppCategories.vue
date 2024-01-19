@@ -1,94 +1,94 @@
 <template>
-    <transition appear name="page-fade">
-        <div class="row">
-            <div class="col-12">
+  <transition appear name="page-fade">
+    <div class="row">
+      <div class="col-12">
 
-                <CmpCard :hasFormBackBtn="true" v-on:doClick="h_back">
+        <CmpCard :hasFormBackBtn="true" v-on:doClick="nav_back">
 
-                    <!-- FORM -->
-                    <form class="form-horizontal">
+          <!-- FORM -->
+          <form class="form-horizontal">
 
-                        <!-- id -->
-                        <CmpBasicInput
-                                disabled
-                                placeholder="###########"
-                                name="id"
-                                type="hidden"
-                                v-model="iniFormData.id"
-                        />
+            <!-- id -->
+            <CmpBasicInput
+                disabled
+                placeholder="###########"
+                name="id"
+                type="hidden"
+                v-model="iniFormData.id"
+            />
 
-                        <div class="row">
+            <div class="row">
 
-                            <div class="col-xm-12 col-md-6">
+              <div class="col-xm-12 col-md-6">
 
-                                <!-- supplier category name -->
-                                <div class="row">
-                                    <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                                        {{ $t("form.fields-common.firstname") }}
-                                    </label>
-                                    <div class="col-md-9">
-                                        <CmpBasicInput
-                                                :placeholder="$t('form.placeholders.supplier-cat-name')"
-                                                name="scName"
-                                                type="text"
-                                                v-model="iniFormData.sDescription"
-                                        />
-                                    </div>
-                                </div>
+                <!-- supplier category name -->
+                <div class="row">
+                  <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                    {{ $t( 'form.fields-common.firstname' ) }}
+                  </label>
+                  <div class="col-md-9">
+                    <CmpBasicInput
+                        :placeholder="$t('form.placeholders.supplier-cat-name')"
+                        name="scName"
+                        type="text"
+                        v-model="iniFormData.sDescription"
+                    />
+                  </div>
+                </div>
 
-                                <!-- supplier category description -->
-                                <div class="row">
-                                    <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                                        {{ $t( "data.description" ) }}
-                                    </label>
-                                    <div class="col-md-9">
-                                        <CmpBasicInput
-                                                placeholder="..."
-                                                name="sDescription"
-                                                type="text"
-                                                v-model="iniFormData.sDescription"
-                                        />
-                                    </div>
-                                </div>
+                <!-- supplier category description -->
+                <div class="row">
+                  <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                    {{ $t( 'data.description' ) }}
+                  </label>
+                  <div class="col-md-9">
+                    <CmpBasicInput
+                        placeholder="..."
+                        name="sDescription"
+                        type="text"
+                        v-model="iniFormData.sDescription"
+                    />
+                  </div>
+                </div>
 
-                            </div>
+              </div>
 
-                            <div class="col-xm-12 col-md-6">
+              <div class="col-xm-12 col-md-6">
 
-                                <!-- supplier category color -->
-                                <div class="row">
-                                    <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                                        {{ $t("data.color") }}
-                                    </label>
-                                    <div class="col-md-9">
-                                        <CmpBasicInput
-                                                :placeholder="$t('data.description')"
-                                                name="scColor"
-                                                type="color"
-                                                v-model="iniFormData.scColor"
-                                        />
-                                    </div>
-                                </div>
+                <!-- supplier category color -->
+                <div class="row">
+                  <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                    {{ $t( 'data.color' ) }}
+                  </label>
+                  <div class="col-md-9">
+                    <CmpBasicInput
+                        :placeholder="$t('data.description')"
+                        name="scColor"
+                        type="color"
+                        v-model="iniFormData.scColor"
+                    />
+                  </div>
+                </div>
 
-                            </div>
-
-                        </div>
-                    </form>
-
-                    <!-- FORM ACTION BUTTONS -->
-                    <template v-slot:footer>
-                        <CmpFormActionsButton
-                                :show-delete="cpt_fMode === 'edit'"
-                                v-on:saveIntent="h_beforeSubmit"
-                                v-on:deleteIntent="h_delete"
-                                v-on:cancelIntent="h_back"
-                        />
-                    </template>
-                </CmpCard>
+              </div>
 
             </div>
-        </div>
-    </transition>
+          </form>
+
+          <!-- FORM ACTION BUTTONS -->
+          <template v-slot:footer>
+            <CmpFormActionsButton
+                :show-delete="cpt_fMode === 'edit'"
+                v-on:saveIntent="h_beforeSubmit"
+                v-on:deleteIntent="h_delete"
+                v-on:cancelIntent="nav_back"
+            />
+          </template>
+        </CmpCard>
+
+      </div>
+    </div>
+  </transition>
 </template>
 
 <script lang="ts">
@@ -198,7 +198,7 @@ export default defineComponent({
                 tfyCRUDSuccess(subject, OPS_KIND_STR.UPDATE, editedSupplierCat.scName)
 
                 // so now what ?
-                if(!doWeNeedToStay) h_back()                                  // so we are going back to the data table
+                if(!doWeNeedToStay) nav_back()                                  // so we are going back to the data table
 
             }).catch(err => tfyCRUDFail(err, subject, OPS_KIND_STR.UPDATE))
         }
@@ -217,7 +217,7 @@ export default defineComponent({
                 tfyCRUDSuccess(ENTITY_NAMES.SUPPLIER_CAT, OPS_KIND_STR.ADDITION, newSupplierCat.scName)
 
                 // so now what ?
-                if(!doWeNeedToStay) h_back()                                  // so we are going back to the data table
+                if(!doWeNeedToStay) nav_back()                                  // so we are going back to the data table
                 else resetForm({ values: mkSupplierCat() })              // so wee need to clean the entire form and stay in it
 
             }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.SUPPLIER_CAT, OPS_KIND_STR.ADDITION))
@@ -233,7 +233,7 @@ export default defineComponent({
             ApiSupplier.reqDeleteSuppCat(catId)
             .then(( response: any ) => {
                 tfyCRUDSuccess(ENTITY_NAMES.SUPPLIER_CAT, OPS_KIND_STR.DELETION)
-                h_back()
+                nav_back()
             })
             .catch(error => tfyCRUDFail(error, ENTITY_NAMES.SUPPLIER_CAT, OPS_KIND_STR.DELETION))
         }
@@ -260,6 +260,7 @@ export default defineComponent({
         //region ======= EVENTS HANDLERS & WATCHERS ===========================================
 
         /**
+         * This method tries to accommodate the data before it will be sent to the server
          * Handles the form submission event through the vee-validate 'SubmissionHandler' so we can take advantage of all
          * the its validation logic but using with own logic inserted as callback
          *
@@ -273,13 +274,8 @@ export default defineComponent({
             handleSubmit(formData => {
                 if (cpt_fMode.value == (FMODE.CREATE as TFormMode)) a_create(formData, doWeNeedToStay)
                 if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && meta.value.dirty) a_edit(formData, doWeNeedToStay)
-                if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && !meta.value.dirty) h_back()               // was no changes (no dirty) with the data, so going back normally
+                if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && !meta.value.dirty) nav_back()               // was no changes (no dirty) with the data, so going back normally
             }).call(this)
-        }
-
-        const h_back = () => {
-            // router.back()
-            router.push({ name: RoutePathNames.supplierCat })
         }
 
         const h_delete = async ( evt: any ) => {
@@ -298,18 +294,26 @@ export default defineComponent({
         }
 
         const h_keyboardKeyPress = ( evt: any ) => {
-            if (evt.key === KEYS.ESCAPE) h_back()                       // going back if SCAPE is pressed
+            if (evt.key === KEYS.ESCAPE) nav_back()                       // going back if SCAPE is pressed
         }
 
-
         //#endregion ==========================================================================
+
+        //region ======== NAVIGATION ==========================================================
+
+        const nav_back = () => {
+            // router.back()
+            router.push({ name: RoutePathNames.supplierCat })
+        }
+
+        //endregion ===========================================================================
 
         return {
             iniFormData,
 
             cpt_fMode,
 
-            h_back,
+            nav_back,
             h_delete,
             h_beforeSubmit,
             h_keyboardKeyPress

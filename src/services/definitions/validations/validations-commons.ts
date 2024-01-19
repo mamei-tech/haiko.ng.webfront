@@ -95,10 +95,20 @@ export const VSchemaCommon = {
      * @param minLength minimum string length allowed
      * @param maxLength maximum string length allowed
      * @param isThisRequired tell if the field value need to be present mandatory
+     * @param cregex Custom regular expression to be matched up
+     * @param cregexMsg Custom regular expression message to show if cregex don't match with the given value
      */
-    nameNoSpaceValidation: ( value: string, minLength = 4, maxLength = 20, isThisRequired: boolean = true ): boolean | string => {
+    nameValidation: (
+                        value: string,
+                        minLength = 4,
+                        maxLength = 20,
+                        isThisRequired: boolean = true,
+                        cregex: RegExp = regAlphaUnderscoreNDots,
+                        cregexMsg: string = t('validation.only-alpha-digits-underscore-dots')
+
+                    ): boolean | string => {
         if (isThisRequired && !required(value)) return t('validation.required')
-        if (!regex(value, { regex: regAlphaUnderscoreNDots })) return t('validation.only-alpha-digits-underscore-dots')
+        if (!regex(value, { regex: cregex })) return cregexMsg
         if (!min(value, { length: minLength })) return t('validation.min-length', { length: minLength })
         if (!max(value, { length: maxLength })) return t('validation.max-length', { length: maxLength })
 

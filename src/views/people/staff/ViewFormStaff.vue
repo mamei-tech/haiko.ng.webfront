@@ -1,226 +1,228 @@
 <template>
-    <transition appear name="page-fade">
-        <div class="row">
-            <div class="col-12">
-                <CmpCard :hasFormBackBtn="true" v-on:doClick="h_back">
+  <transition appear name="page-fade">
+    <div class="row">
+      <div class="col-12">
+        <CmpCard :hasFormBackBtn="true" v-on:doClick="h_back">
 
-                    <!-- FORM -->
-                    <form class="form-horizontal">
-                        <div class="row">
-                            <div class="col-xm-12 col-md-6">
-                                <h3 class="text">{{ $t("form.section.staff-information") }}</h3>
+          <!-- FORM -->
+          <form class="form-horizontal">
+            <div class="row">
+              <div class="col-xm-12 col-md-6">
+                <h3 class="text">{{ $t( 'form.section.staff-information' ) }}</h3>
 
-                                <!-- id -->
-                                <div class="row">
-                                    <div class="col-md-9">
-                                        <CmpBasicInput
-                                                disabled
-                                                placeholder="###########"
-                                                name="id"
-                                                type="hidden"
-                                                v-model="iniFormData.id"
-                                        />
-                                    </div>
-                                </div>
+                <!-- id -->
+                <div class="row">
+                  <div class="col-md-9">
+                    <CmpBasicInput
+                        disabled
+                        placeholder="###########"
+                        name="id"
+                        type="hidden"
+                        v-model="iniFormData.id"
+                    />
+                  </div>
+                </div>
 
-                                <!-- firstname -->
-                                <div class="row">
-                                    <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                                        {{ $t("form.fields-common.firstname") }}
-                                    </label>
-                                    <div class="col-md-9">
-                                        <CmpBasicInput
-                                                :placeholder="$t('form.placeholders.staff-firstname')"
-                                                name="firstName"
-                                                type="text"
-                                                v-model="iniFormData.firstName"
-                                        />
-                                    </div>
-                                </div>
+                <!-- firstname -->
+                <div class="row">
+                  <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                    {{ $t( 'form.fields-common.firstname' ) }}
+                  </label>
+                  <div class="col-md-9">
+                    <CmpBasicInput
+                        :placeholder="$t('form.placeholders.staff-firstname')"
+                        name="firstName"
+                        type="text"
+                        v-model="iniFormData.firstName"
+                    />
+                  </div>
+                </div>
 
-                                <!-- lastname -->
-                                <div class="row">
-                                    <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                                        {{ $t("form.fields-common.lastname") }}
-                                    </label>
-                                    <div class="col-md-9">
-                                        <CmpBasicInput
-                                                :placeholder="$t('form.placeholders.staff-lastname')"
-                                                name="lastName"
-                                                type="text"
-                                                v-model="iniFormData.lastName"
-                                        />
-                                    </div>
-                                </div>
+                <!-- lastname -->
+                <div class="row">
+                  <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                    {{ $t( 'form.fields-common.lastname' ) }}
+                  </label>
+                  <div class="col-md-9">
+                    <CmpBasicInput
+                        :placeholder="$t('form.placeholders.staff-lastname')"
+                        name="lastName"
+                        type="text"
+                        v-model="iniFormData.lastName"
+                    />
+                  </div>
+                </div>
 
-                                <!-- username -->
-                                <div class="row">
-                                    <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                                        {{ $t("form.fields-common.username") }}
-                                    </label>
-                                    <div class="col-md-9">
-                                        <CmpBasicInput
-                                                :placeholder="$t('form.placeholders.username')"
-                                                name="username"
-                                                type="text"
-                                                v-model="iniFormData.username"
-                                        />
-                                    </div>
-                                </div>
+                <!-- username -->
+                <div class="row">
+                  <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                    {{ $t( 'form.fields-common.username' ) }}
+                  </label>
+                  <div class="col-md-9">
+                    <CmpBasicInput
+                        :placeholder="$t('form.placeholders.username')"
+                        name="username"
+                        type="text"
+                        v-model="iniFormData.username"
+                    />
+                  </div>
+                </div>
 
-                                <!-- username -->
-                                <div class="row">
-                                    <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                                        {{ $t("form.fields-common.email") }}
-                                    </label>
-                                    <div class="col-md-9">
-                                        <CmpBasicInput
-                                                :placeholder="$t('form.placeholders.email')"
-                                                name="email"
-                                                type="text"
-                                                v-model="iniFormData.email"
-                                        />
-                                    </div>
-                                </div>
+                <!-- username -->
+                <div class="row">
+                  <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                    {{ $t( 'form.fields-common.email' ) }}
+                  </label>
+                  <div class="col-md-9">
+                    <CmpBasicInput
+                        :placeholder="$t('form.placeholders.email')"
+                        name="email"
+                        type="text"
+                        v-model="iniFormData.email"
+                    />
+                  </div>
+                </div>
 
-                                <!-- cell -->
-                                <div class="row">
-                                    <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                                        {{ $t("form.fields-common.cell") }}
-                                    </label>
-                                    <div class="col-md-9">
-                                        <CmpBasicInput
-                                                placeholder="### ## ### ## ##"
-                                                name="cell"
-                                                type="number"
-                                                v-model="iniFormData.cell"
-                                        />
-                                    </div>
-                                </div>
+                <!-- cell -->
+                <div class="row">
+                  <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                    {{ $t( 'form.fields-common.cell' ) }}
+                  </label>
+                  <div class="col-md-9">
+                    <CmpBasicInput
+                        placeholder="### ## ### ## ##"
+                        name="cell"
+                        type="number"
+                        v-model="iniFormData.cell"
+                    />
+                  </div>
+                </div>
 
-                                <!-- role -->
-                                <div class="row">
-                                    <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                                        {{ $t('form.fields.staff.system-role') }}
-                                    </label>
-                                    <div class="col-md-9">
-                                        <CmpMultiselectField placeholder="- rol - "
-                                                             :options="st_nomenclatures.getRoles4Select"
-                                                             name="roleId"
-                                                             class="mb-2"
-                                                             closeOnSelect>
+                <!-- role -->
+                <div class="row">
+                  <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                    {{ $t( 'form.fields.staff.system-role' ) }}
+                  </label>
+                  <div class="col-md-9">
+                    <CmpMultiselectField placeholder="- rol - "
+                                         :options="st_nomenclatures.getRoles4Select"
+                                         name="roleId"
+                                         class="mb-2"
+                                         closeOnSelect>
 
-                                            <!--option coming from slot child component ('slots props') [option] -->
-                                            <template #customOption="{option}">
-                                                {{  option.label }}
-                                            </template>
+                      <!--option coming from slot child component ('slots props') [option] -->
+                      <template #customOption="{option}">
+                        {{ option.label }}
+                      </template>
 
-                                            <!-- option coming from slot child component ('slots props') [value] -->
-                                            <template #customSingleLabel="{value}">
-                                                <div class="multiselect-placeholder">
-                                                    {{ value.label }}
-                                                </div>
-                                            </template>
-
-                                        </CmpMultiselectField>
-                                    </div>
-                                </div>
-
-                                <!-- isActive / status -->
-                                <div class="row">
-                                    <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                                        {{ $t('data.status') }}
-                                    </label>
-                                    <div class="col-md-9">
-                                        <CmpVeeCheckbox name="isActive"
-                                                          :checked="iniFormData.isActive"
-                                                          v-model="iniFormData.isActive"
-                                                          :labels="[$t('others.available'), $t('others.unavailable')]"
-                                        />
-                                    </div>
-                                </div>
-
-                                <!-- change / set password -->
-                                <div class="row" @click.prevent="h_toggleCollapsable">
-                                    <h5 class="text-sm-left text-md-right col-md-3 col-form-label">
-                                        {{ cpt_fMode === 'edit' ? $t( 'form.fields-common.change-password' ) : $t( 'form.fields-common.set-password' ) }}
-                                    </h5>
-                                    <div class="col-md-9">
-                                        <i class="tim-icons icon-minimal-down caret-form-section"
-                                           :class="hpr_rotationCaretClass" />
-                                    </div>
-                                    <hr class="collapsable-form-section-divisor">
-                                </div>
-                                <Transition name="collapsable">
-                                    <div class="collapsable-div" v-if="hpr_doWeShowCollapsable">
-                                        <div class="row">
-                                            <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                                                {{ $t( 'form.fields-common.password' ) }}
-                                            </label>
-                                            <div class="col-md-9">
-                                                <CmpBasicInput
-                                                        placeholder="**************"
-                                                        name="password"
-                                                        type="password"
-                                                        v-model="iniFormData.password"
-                                                        ref="password"
-                                                />
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                                                {{ $t( 'form.fields-common.password-confirm' ) }}
-                                            </label>
-                                            <div class="col-md-9">
-                                                <CmpBasicInput
-                                                        placeholder="**************"
-                                                        name="passwordConf"
-                                                        type="password"
-                                                        v-model="iniFormData.passwordConf"
-                                                        data-vv-as="password"
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </Transition>
-
-                            </div>
-
-                            <div class="col-xs-12 col-md-6">
-                                <div class="row justify-content-center avatar-div-component-holder">
-
-                                    <CmpImageInput
-                                            name="avatarImg"
-                                            :avatar-mode="true"
-                                            :statics="configStatic"
-                                            :image="iniFormData.avatarPath"
-                                            :max-size="5"
-                                            v-on:fileSelected="h_avatarChange"
-                                            v-on:removePicture="h_removePicture"
-
-                                            v-on:restore="h_restoreForceImgDelOnCmp"
-                                            :parent-del-intent="forceImgDelOnCmp"
-                                    />
-
-                                </div>
-                            </div>
+                      <!-- option coming from slot child component ('slots props') [value] -->
+                      <template #customSingleLabel="{value}">
+                        <div class="multiselect-placeholder">
+                          {{ value.label }}
                         </div>
-                    </form>
+                      </template>
 
-                    <!-- FORM ACTION BUTTONS -->
-                    <template v-slot:footer>
-                        <CmpFormActionsButton
-                                :show-delete="cpt_fMode === 'edit'"
-                                v-on:saveIntent="h_beforeSubmit"
-                                v-on:deleteIntent="h_delete"
-                                v-on:cancelIntent="h_back"
+                    </CmpMultiselectField>
+                  </div>
+                </div>
+
+                <!-- isActive / status -->
+                <div class="row">
+                  <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                    {{ $t( 'data.status' ) }}
+                  </label>
+                  <div class="col-md-9">
+                    <CmpVeeCheckbox name="isActive"
+                                    :checked="iniFormData.isActive"
+                                    v-model="iniFormData.isActive"
+                                    :labels="[$t('others.available'), $t('others.unavailable')]"
+                    />
+                  </div>
+                </div>
+
+                <!-- change / set password -->
+                <div class="row" @click.prevent="h_toggleCollapsable">
+                  <h5 class="text-sm-left text-md-right col-md-3 col-form-label">
+                    {{
+                      cpt_fMode === 'edit' ? $t( 'form.fields-common.change-password' ) : $t( 'form.fields-common.set-password' )
+                    }}
+                  </h5>
+                  <div class="col-md-9">
+                    <i class="tim-icons icon-minimal-down caret-form-section"
+                       :class="hpr_rotationCaretClass" />
+                  </div>
+                  <hr class="collapsable-form-section-divisor">
+                </div>
+                <Transition name="collapsable">
+                  <div class="collapsable-div" v-if="hpr_doWeShowCollapsable">
+                    <div class="row">
+                      <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                        {{ $t( 'form.fields-common.password' ) }}
+                      </label>
+                      <div class="col-md-9">
+                        <CmpBasicInput
+                            placeholder="**************"
+                            name="password"
+                            type="password"
+                            v-model="iniFormData.password"
+                            ref="password"
                         />
-                    </template>
-                </CmpCard>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                        {{ $t( 'form.fields-common.password-confirm' ) }}
+                      </label>
+                      <div class="col-md-9">
+                        <CmpBasicInput
+                            placeholder="**************"
+                            name="passwordConf"
+                            type="password"
+                            v-model="iniFormData.passwordConf"
+                            data-vv-as="password"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </Transition>
+
+              </div>
+
+              <div class="col-xs-12 col-md-6">
+                <div class="row justify-content-center avatar-div-component-holder">
+
+                  <CmpImageInput
+                      name="avatarImg"
+                      :avatar-mode="true"
+                      :statics="configStatic"
+                      :image="iniFormData.avatarPath"
+                      :max-size="5"
+                      v-on:fileSelected="h_avatarChange"
+                      v-on:removePicture="h_removePicture"
+
+                      v-on:restore="h_restoreForceImgDelOnCmp"
+                      :parent-del-intent="forceImgDelOnCmp"
+                  />
+
+                </div>
+              </div>
             </div>
-        </div>
-    </transition>
+          </form>
+
+          <!-- FORM ACTION BUTTONS -->
+          <template v-slot:footer>
+            <CmpFormActionsButton
+                :show-delete="cpt_fMode === 'edit'"
+                v-on:saveIntent="h_beforeSubmit"
+                v-on:deleteIntent="h_delete"
+                v-on:cancelIntent="h_back"
+            />
+          </template>
+        </CmpCard>
+      </div>
+    </div>
+  </transition>
 </template>
 
 <script lang="ts">
@@ -400,6 +402,7 @@ export default defineComponent({
         }
 
         /**
+         * This method tries to accommodate the data before it will be sent to the server
          * Handles the form submission event through the vee-validate 'SubmissionHandler' so we can take advantage of all
          * the its validation logic but using with own logic inserted as callback
          *

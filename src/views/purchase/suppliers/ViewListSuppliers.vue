@@ -1,39 +1,39 @@
 <template>
-    <transition appear name="page-fade">
-        <div class="row">
-            <div class="col-12">
-                <CmpCard>
-                    <CmpDataTable table-type="hover"
-                                  :subject="$t('entities.supplier.name')"
+  <transition appear name="page-fade">
+    <div class="row">
+      <div class="col-12">
+        <CmpCard>
+          <CmpDataTable table-type="hover"
+                        :subject="$t('entities.supplier.name')"
 
-                                  :action-bar-mode="abar_mode"
-                                  :action-btn-mode="abutton_mode"
+                        :action-bar-mode="abar_mode"
+                        :action-btn-mode="abutton_mode"
 
-                                  :columns="columns"
-                                  :data="ls_suppliers.entityPage"
-                                  :has-actions="true"
-                                  :headerFilters="headerFilters"
+                        :columns="columns"
+                        :data="ls_suppliers.entityPage"
+                        :has-actions="true"
+                        :headerFilters="headerFilters"
 
-                                  @requestIntent="h_reqQuery"
+                        @requestIntent="h_reqQuery"
 
-                                  @navCreateIntent="h_navCreateSuppCatIntent"
-                                  @editIntent="h_navEditSuppIntent"
-                                  @deleteIntent="h_intentRowDelete"
+                        @navCreateIntent="h_navCreateSuppCatIntent"
+                        @editIntent="h_navEditSuppIntent"
+                        @deleteIntent="h_intentRowDelete"
 
-                                  @bulkActionIntent="h_intentBulkAction"
+                        @bulkActionIntent="h_intentBulkAction"
 
-                                  @enableIntent="h_intentToggleEnable"
-                                  @disableIntent="h_intentToggleDisable"
-                    >
-                    </CmpDataTable>
-                </CmpCard>
-            </div>
-        </div>
-    </transition>
+                        @enableIntent="h_intentToggleEnable"
+                        @disableIntent="h_intentToggleDisable"
+          >
+          </CmpDataTable>
+        </CmpCard>
+      </div>
+    </div>
+  </transition>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue'
+import { defineComponent, onBeforeUnmount, onMounted, ref } from 'vue'
 import { i18n } from '@/services/i18n'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
@@ -49,7 +49,7 @@ import {
     DT_ACTION_BUTTON_MODE,
     DT_ACTIONBAR_MODE, ENTITY_NAMES,
     FMODE,
-    HSupplierTable, OPS_KIND_STR,
+    HSupplierTable, KEYS, OPS_KIND_STR,
     RoutePathNames
 } from '@/services/definitions'
 
@@ -117,11 +117,22 @@ export default defineComponent({
             .catch(err => tfyCRUDFail(err, ENTITY_NAMES.SUPPLIER, OPS_KIND_STR.REQUEST))
 
             a_reqQuery()
+
+            // keyboard keys event handler, we need to clean this kind of event when the component are destroyed
+            window.addEventListener('keydown', h_keyboardKeyPress)
+        })
+
+        /**
+         * Vue hook before component is unmounted from the DOM
+         */
+        onBeforeUnmount(() => {
+            // cleaning the event manually added before to the document. Wee need to keep the things as clean as posible
+            window.removeEventListener('keydown', h_keyboardKeyPress)
         })
 
         //endregion ===========================================================================
 
-        //#region ======= FETCHING DATA ACTIONS ===============================================
+        //#region ======= FETCHING DATA & ACTIONS ==============================================
 
         /**
          * Request the deletion of a supplier to the backend
@@ -178,7 +189,41 @@ export default defineComponent({
         //#region ======= COMPUTATIONS & GETTERS ==============================================
         //#endregion ==========================================================================
 
-        //#region ======= EVENTS HANDLERS =====================================================
+        //region ======= HELPERS ==============================================================
+
+        /**
+         * Maps the supplier categories id present in one of the fields of the lis of datatable records (suppliers)
+         * to the actual suppliers categories name (user friendliness)
+         */
+        const mapCat2Names = () => {
+            if (IsEmptyObj(st_nomenclatures.getSuppCatByIdMap)) return        // If there are no supplier categories yet, retrieve the entities as it is
+
+            ls_suppliers.value.entityPage = ls_suppliers.value.entityPage.map((row: ISupplierRow) => {
+
+                // there is a chance that this line run, and the sCategoryID field was already mapped to the role name making it a string value so we can used as index anymore, so we have to check first
+                if(isNumber(row.sCategoryID))
+                    row.sCategoryID = st_nomenclatures.getSuppCatByIdMap[+row.sCategoryID].scName
+
+                return row
+            })
+        }
+
+        //#endregion ==========================================================================
+
+        //region ======== NAVIGATION ==========================================================
+
+        const nav_2Hub = () => {
+            // router.back()
+            router.push({ name: RoutePathNames.hub });
+        }
+        //endregion ===========================================================================
+
+        //#region ======= EVENTS HANDLERS & WATCHERS ==========================================
+
+        const h_keyboardKeyPress = ( evt: any ) => {
+            if (evt.key === KEYS.ESCAPE) nav_2Hub()
+        }
+
 
         const h_navCreateSuppCatIntent = (): void => {
             router.push({
@@ -262,27 +307,6 @@ export default defineComponent({
                     if (ids.length > 0) a_reqSwitchState(ids, OPS_KIND_STR.DISABLE)
                 }
             }
-        }
-
-        //#endregion ==========================================================================
-
-        //#region ======= AUX =================================================================
-
-        /**
-         * Maps the supplier categories id present in one of the fields of the lis of datatable records (suppliers)
-         * to the actual suppliers categories name (user friendliness)
-         */
-        const mapCat2Names = () => {
-            if (IsEmptyObj(st_nomenclatures.getSuppCatByIdMap)) return        // If there are no supplier categories yet, retrieve the entities as it is
-
-            ls_suppliers.value.entityPage = ls_suppliers.value.entityPage.map((row: ISupplierRow) => {
-
-                // there is a chance that this line run, and the sCategoryID field was already mapped to the role name making it a string value so we can used as index anymore, so we have to check first
-                if(isNumber(row.sCategoryID))
-                    row.sCategoryID = st_nomenclatures.getSuppCatByIdMap[+row.sCategoryID].scName
-
-                return row
-            })
         }
 
         //#endregion ==========================================================================

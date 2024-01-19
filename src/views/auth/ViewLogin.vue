@@ -1,37 +1,37 @@
 <template>
 
-    <div class="label-container">
-        <h1 class="label-justify main-title">HAIKO</h1>
-        <h5 class="label-justify main-title-description" style="font-style: italic">Sistema de Administración</h5>
-    </div>
+  <div class="label-container">
+    <h1 class="label-justify main-title">HAIKO</h1>
+    <h5 class="label-justify main-title-description" style="font-style: italic">Sistema de Administración</h5>
+  </div>
 
-    <CmpCard card-type="auto-margin">
-        <form>
-            <div class="form-group">
-                <CmpBasicInput
-                        id="user"
-                        name="username"
-                        type="text"
-                        :placeholder="$t('form.placeholders.user')"
-                />
-            </div>
-            <div class="form-group has-label">
-                <CmpBasicInput
-                        id="password"
-                        name="password"
-                        type="password"
-                        :placeholder="$t('form.placeholders.pass')"
-                        v-on:keydown.enter="hLoginIntent"
-                />
-            </div>
-        </form>
+  <CmpCard card-type="auto-margin">
+    <form>
+      <div class="form-group">
+        <CmpBasicInput
+            id="user"
+            name="username"
+            type="text"
+            :placeholder="$t('form.placeholders.user')"
+        />
+      </div>
+      <div class="form-group has-label">
+        <CmpBasicInput
+            id="password"
+            name="password"
+            type="password"
+            :placeholder="$t('form.placeholders.pass')"
+            v-on:keydown.enter="hLoginIntent"
+        />
+      </div>
+    </form>
 
-        <template v-slot:footer>
-            <CmpBaseButton block button-type="primary" @doClick.prevent="hLoginIntent">
-                {{ cap($t("btn.val-login")) }}
-            </CmpBaseButton>
-        </template>
-    </CmpCard>
+    <template v-slot:footer>
+      <CmpBaseButton block button-type="primary" @doClick.prevent="hLoginIntent">
+        {{ cap( $t( 'btn.val-login' ) ) }}
+      </CmpBaseButton>
+    </template>
+  </CmpCard>
 
 </template>
 

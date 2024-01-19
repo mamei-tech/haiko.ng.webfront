@@ -1,31 +1,33 @@
 <template>
-    <transition appear name="page-fade">
-        <div class="row">
-            <div class="col-12">
-                <CmpCard>
-                    <CmpDataTable table-type="hover"
-                                  :subject="$t('entities.uomcatetgory.name')"
+  <transition appear name="page-fade">
+    <div class="row">
+      <div class="col-12">
+        <CmpCard>
+          <CmpDataTable table-type="hover"
+                        :subject="$t('entities.uomcatetgory.name')"
 
-                                  :action-bar-mode="abar_mode"
-                                  :action-btn-mode="abutton_mode"
+                        :action-bar-mode="abar_mode"
+                        :action-btn-mode="abutton_mode"
 
-                                  :columns="columns"
-                                  :data="st_uom.entityPage"
-                                  :has-actions="true"
+                        :columns="columns"
+                        :data="st_uom.entityPage"
+                        :has-actions="true"
+                        :has-search="false"
+                        :has-page-size-selector="false"
 
-                                  @navCreateIntent="h_navCreateUoMCatIntent"
-                                  @editIntent="h_navEditUoMCatIntent"
-                                  @deleteIntent="h_intentRowDelete"
-                    >
-                    </CmpDataTable>
-                </CmpCard>
-            </div>
-        </div>
-    </transition>
+                        @navCreateIntent="h_navCreateUoMCatIntent"
+                        @editIntent="h_navEditUoMCatIntent"
+                        @deleteIntent="h_intentRowDelete"
+          >
+          </CmpDataTable>
+        </CmpCard>
+      </div>
+    </div>
+  </transition>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue'
+import { defineComponent, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useToast } from 'vue-toastification'
 import { i18n } from '@/services/i18n'
 import { useRouter } from 'vue-router'
@@ -40,7 +42,7 @@ import {
     OPS_KIND_STR,
     HUoMCatTable,
     RoutePathNames,
-    DT_ACTION_BUTTON_MODE,
+    DT_ACTION_BUTTON_MODE, KEYS
 } from '@/services/definitions'
 import { CmpCard, CmpDataTable } from '@/components'
 
@@ -81,14 +83,22 @@ export default defineComponent({
 
             // getting the uom categories list data for populating the datatable (side effect)
             st_uom.reqUoMCatPages().catch(err => tfyCRUDFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.REQUEST))
+
+            // keyboard keys event handler, we need to clean this kind of event when the component are destroyed
+            window.addEventListener('keydown', h_keyboardKeyPress)
+        })
+
+        /**
+         * Vue hook before component is unmounted from the DOM
+         */
+        onBeforeUnmount(() => {
+            // cleaning the event manually added before to the document. Wee need to keep the things as clean as posible
+            window.removeEventListener('keydown', h_keyboardKeyPress)
         })
 
         //endregion ===========================================================================
 
-        //#region ======= FETCHING DATA ACTIONS ===============================================
-        //#endregion ==========================================================================
-
-        //#region ======= ACTIONS =============================================================
+        //#region ======= FETCHING DATA & ACTIONS ===============================================
 
         /**
          * Request the deletion (from server) of an entity according with the given identifier
@@ -108,7 +118,20 @@ export default defineComponent({
         //#region ======= COMPUTATIONS & GETTERS ==============================================
         //#endregion ==========================================================================
 
-        //#region ======= EVENTS HANDLERS =====================================================
+        //region ======== NAVIGATION ==========================================================
+
+        const nav_2Hub = () => {
+            // router.back()
+            router.push({ name: RoutePathNames.hub });
+        }
+
+        //endregion ===========================================================================
+
+        //#region ======= EVENTS HANDLERS & WATCHERS ==========================================
+
+        const h_keyboardKeyPress = ( evt: any ) => {
+            if (evt.key === KEYS.ESCAPE) nav_2Hub()
+        }
 
         const h_intentRowDelete = async ( entityId: number ): Promise<void> => {
             // we don't allow to delete the default categories, so we proceed only for above the 6th uom category

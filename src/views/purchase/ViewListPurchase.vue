@@ -1,7 +1,7 @@
 <template>
-    <transition appear name="page-fade">
-        <p>Listado para las órdenes de compra, salidas, otros filtra por el estado pendiente</p>
-    </transition>
+  <transition appear name="page-fade">
+    <p>Listado para las órdenes de compra, salidas, otros filtra por el estado pendiente</p>
+  </transition>
 </template>
 
 <script lang="ts">

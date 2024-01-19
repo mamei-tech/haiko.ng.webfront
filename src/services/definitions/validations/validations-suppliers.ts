@@ -10,7 +10,7 @@ const { t } = i18n.global
 
 
 export const VSchemaSupplierCat = {
-    scName:       ( value: string ): boolean | string => {return VSchemaCommon.nameNoSpaceValidation(value)},
+    scName:       ( value: string ): boolean | string => {return VSchemaCommon.nameValidation(value)},
     sDescription: ( value: string ): boolean | string => {return VSchemaCommon.notes(value)},
     scColor:      ( value: string ): boolean | string => {
         if (!required(value)) return t('validation.required')

@@ -1,596 +1,597 @@
 <template>
-    <transition appear name="page-fade">
-        <div class="row">
-            <div class="col-12">
+  <transition appear name="page-fade">
+    <div class="row">
+      <div class="col-12">
 
-                <CmpCard :hasFormBackBtn="true" v-on:doClick="h_back">
+        <CmpCard :hasFormBackBtn="true" v-on:doClick="nav_back">
 
-                    <!-- card / form action bar -->
-                    <!--<template v-if="cpt_fMode === 'edit'" v-slot:card-actionbar>-->
-                    <template v-if="cpt_fMode === 'edit'" v-slot:card-actionbar>
-                        <button :title="$t('btn.tip-action-clone', {subject: $t('entities.product.name') } )"
-                                style="float: right"
-                                class="btn btn-icon btn-default ml-1"
-                                :class="!isCloning ? 'btn-default' : 'btn-danger'"
-                                @click.prevent="h_formBtnAction_Clone">
-                            <i class="fa fa-clone"></i>
-                        </button>
+          <!-- card / form action bar -->
+          <!--<template v-if="cpt_fMode === 'edit'" v-slot:card-actionbar>-->
+          <template v-if="cpt_fMode === 'edit'" v-slot:card-actionbar>
+            <button :title="$t('btn.tip-action-clone', {subject: $t('entities.product.name') } )"
+                    style="float: right"
+                    class="btn btn-icon btn-default ml-1"
+                    :class="!isCloning ? 'btn-default' : 'btn-danger'"
+                    @click.prevent="h_formBtnAction_Clone">
+              <i class="fa fa-clone"></i>
+            </button>
 
-                        <button :title="$t('btn.tip-action-update-stock')"
-                                style="float: right"
-                                class="btn btn-icon btn-default ml-1 mr-1"
-                                @click.prevent="h_formBtnAction_UpdateStock">
-                            <i class="tim-icons icon-molecule-40"></i>
-                        </button>
+            <button :title="$t('btn.tip-action-update-stock')"
+                    style="float: right"
+                    class="btn btn-icon btn-default ml-1 mr-1"
+                    @click.prevent="h_formBtnAction_UpdateStock">
+              <i class="tim-icons icon-molecule-40"></i>
+            </button>
 
-                        <button :title="$t('btn.tip-action-replenish')"
-                                style="float: right"
-                                class="btn btn-icon btn-default mr-1"
-                                @click.prevent="h_formBtnAction_Replenish">
-                            <i class="tim-icons icon-refresh-02"></i>
-                        </button>
+            <button :title="$t('btn.tip-action-replenish')"
+                    style="float: right"
+                    class="btn btn-icon btn-default mr-1"
+                    @click.prevent="h_formBtnAction_Replenish">
+              <i class="tim-icons icon-refresh-02"></i>
+            </button>
 
-                    </template>
+          </template>
 
-                    <!-- FORM -->
-                    <form class="form-horizontal">
+          <!-- FORM -->
+          <form class="form-horizontal">
 
-                        <!-- main fields -->
-                        <div class="row">
-                            <div class="col-mx-12 col-md-6">
+            <!-- main fields -->
+            <div class="row">
+              <div class="col-mx-12 col-md-6">
 
-                                <!-- name / status -->
-                                <div class="row">
-                                    <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                                        {{ $t('form.fields.product.name') }}
-                                    </label>
-                                    <div class="col-md-5">
-                                        <CmpBasicInput
-                                                :placeholder="$t('form.placeholders.product-name')"
-                                                name="pName"
-                                                type="text"
-                                                v-model="iniFormData.pName"
-                                        />
-                                    </div>
+                <!-- name / status -->
+                <div class="row">
+                  <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                    {{ $t( 'form.fields.product.name' ) }}
+                  </label>
+                  <div class="col-md-5">
+                    <CmpBasicInput
+                        :placeholder="$t('form.placeholders.product-name')"
+                        name="pName"
+                        type="text"
+                        v-model="iniFormData.pName"
+                    />
+                  </div>
 
-                                    <label class="text-sm-left text-md-right col-md-1 col-form-label">
-                                        {{ $t('data.status') }}
-                                    </label>
-                                    <div class="col-md-2">
-                                        <CmpVeeCheckbox name="isActive"
-                                                        :checked="iniFormData.isActive"
-                                                        v-model="iniFormData.isActive"
-                                                        :labels="[$t('others.available'), $t('others.unavailable')]"
-                                        />
-                                    </div>
-                                </div>
+                  <label class="text-sm-left text-md-right col-md-1 col-form-label">
+                    {{ $t( 'data.status' ) }}
+                  </label>
+                  <div class="col-md-2">
+                    <CmpVeeCheckbox name="isActive"
+                                    :checked="iniFormData.isActive"
+                                    v-model="iniFormData.isActive"
+                                    :labels="[$t('others.available'), $t('others.unavailable')]"
+                    />
+                  </div>
+                </div>
 
-                                <!-- category -->
-                                <div class="row">
-                                    <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                                        {{ $t('table-headers.category') }}
-                                    </label>
-                                    <div class="col-md-9">
-                                        <CmpMultiselectField :placeholder="$t('form.placeholders.supplier-category').toLowerCase()"
-                                                             :options="st_nomenclatures.getProdCat4Select"
-                                                             searchable
-                                                             name="pCategoryID"
-                                                             class="mb-2"
-                                                             closeOnSelect
-                                        >
+                <!-- category -->
+                <div class="row">
+                  <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                    {{ $t( 'table-headers.category' ) }}
+                  </label>
+                  <div class="col-md-9">
+                    <CmpMultiselectField :placeholder="$t('form.placeholders.supplier-category').toLowerCase()"
+                                         :options="st_nomenclatures.getProdCat4Select"
+                                         searchable
+                                         name="pCategoryID"
+                                         class="mb-2"
+                                         closeOnSelect
+                    >
 
-                                            <!--option coming from slot child component ('slots props') [option] -->
-                                            <template #customOption="{option}">
-                                                {{  option.label }}
-                                            </template>
+                      <!--option coming from slot child component ('slots props') [option] -->
+                      <template #customOption="{option}">
+                        {{ option.label }}
+                      </template>
 
-                                            <!-- option coming from slot child component ('slots props') [value] -->
-                                            <template #customSingleLabel="{value}">
-                                                <div class="multiselect-placeholder">
-                                                    {{ value.label }}
-                                                </div>
-                                            </template>
-
-                                        </CmpMultiselectField>
-                                    </div>
-                                </div>
-
-                                <!-- sell code -->
-                                <div class="row" v-if="cpt_fMode === 'edit'">
-                                    <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                                        {{ $t('form.fields.product.sell-code') }}
-                                    </label>
-                                    <div class="col-md-5">
-                                        <CmpBasicInput
-                                                disabled
-                                                placeholder="... NAM.CODE ..."
-                                                name="sellCode"
-                                                type="text"
-                                                v-model="iniFormData.sellCode"
-                                        />
-                                    </div>
-                                </div>
-
-                                <!-- notes sell -->
-                                <div class="row">
-                                    <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                                        {{ $t('form.fields.product.note-sell') }}
-                                    </label>
-                                    <div class="col-md-9">
-                                        <CmpTextInput
-                                                height="150"
-                                                name="noteSell"
-                                                type="text"
-                                                v-model="iniFormData.noteSell"
-                                        />
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div class="col-mx-12 col-md-6">
-                                <div class="row justify-content-center avatar-div-component-holder">
-
-                                    <CmpImageInput
-                                            name="productImg"
-                                            :avatar-mode="false"
-                                            :statics="configStatic"
-                                            :image="iniFormData.picPath ?? ''"
-                                            :max-size="5"
-                                            v-on:fileSelected="h_imgChange"
-                                            v-on:removePicture="h_removePicture"
-
-                                            v-on:restore="h_restoreForceImgDelOnCmp"
-                                            :parent-del-intent="forceImgDelOnCmp"
-                                    />
-                                </div>
-
-                            </div>
+                      <!-- option coming from slot child component ('slots props') [value] -->
+                      <template #customSingleLabel="{value}">
+                        <div class="multiselect-placeholder">
+                          {{ value.label }}
                         </div>
+                      </template>
 
-                        <!-- tabs section -->
-                        <hr class="collapsable-form-section-divisor mt-4">
-                        <div class="row mt-5">
+                    </CmpMultiselectField>
+                  </div>
+                </div>
 
-                            <!-- tabs | nav pills -->
-                            <div class="col-md-2">
-                                <ul role="tablist" class="nav nav-pills nav-pills-default flex-column">
-                                    <CmpTab v-for="tab in tabs"
-                                            :key="tab.title"
-                                            :title="tab.title"
-                                            :activeTabId="activeTabId"
-                                            :tabId="tab.id"
-                                            @tab-change="h_tabChange"
-                                    />
-                                </ul>
-                            </div>
+                <!-- sell code -->
+                <div class="row" v-if="cpt_fMode === 'edit'">
+                  <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                    {{ $t( 'form.fields.product.sell-code' ) }}
+                  </label>
+                  <div class="col-md-5">
+                    <CmpBasicInput
+                        disabled
+                        placeholder="... NAM.CODE ..."
+                        name="sellCode"
+                        type="text"
+                        v-model="iniFormData.sellCode"
+                    />
+                  </div>
+                </div>
 
-                            <!-- tabs content -->
-                            <div class="tab-content col-md-10">
+                <!-- notes sell -->
+                <div class="row">
+                  <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                    {{ $t( 'form.fields.product.note-sell' ) }}
+                  </label>
+                  <div class="col-md-9">
+                    <CmpTextInput
+                        height="150"
+                        name="noteSell"
+                        type="text"
+                        v-model="iniFormData.noteSell"
+                    />
+                  </div>
+                </div>
 
-                                <!-- TAB general / common info  -->
-                                <CmpTabContent :key="1" :id="tabs[0].title" :activeTabId="activeTabId" :tabId="1">
-                                    <div class="row">
-                                        <!-- left col -->
-                                        <div class="col-mx-12 col-md-6">
+              </div>
 
-                                            <!-- can be sold -->
-                                            <div class="row">
-                                                <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                                                    {{ $t('form.fields.product.cbe-sold') }}
-                                                </label>
-                                                <div class="col-md-2">
-                                                    <CmpVeeCheckbox name="canBeSold"
-                                                                    :checked="iniFormData.canBeSold"
-                                                                    :labels="[$t('btn.val-yes'), $t('btn.val-no')]"
-                                                                    v-model="iniFormData.canBeSold"
-                                                                    @chkboxchange="h_changeSoldStatus"
-                                                    />
+              <div class="col-mx-12 col-md-6">
+                <div class="row justify-content-center avatar-div-component-holder">
 
-                                                </div>
-                                            </div>
+                  <CmpImageInput
+                      name="productImg"
+                      :avatar-mode="false"
+                      :statics="configStatic"
+                      :image="iniFormData.picPath ?? ''"
+                      :max-size="5"
+                      v-on:fileSelected="h_imgChange"
+                      v-on:removePicture="h_removePicture"
 
-                                            <!-- sell price -->
-                                            <div class="row">
-                                                <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                                                    {{ $t("form.fields.product.sell-price") }}
-                                                </label>
-                                                <div class="col-md-6">
-                                                    <CmpBasicInput
-                                                            aleftIcon="fa fa-usd"
-                                                            placeholder="0.00"
-                                                            name="sellPrice"
-                                                            type="number"
-                                                            v-model="iniFormData.sellPrice"
-                                                            :disabled="ls_activateSellPrice"
-                                                    />
-                                                </div>
-                                            </div>
+                      v-on:restore="h_restoreForceImgDelOnCmp"
+                      :parent-del-intent="forceImgDelOnCmp"
+                  />
+                </div>
 
-                                            <!-- sell tax -->
-                                            <div class="row">
-                                                <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                                                    {{ $t("form.fields.product.sell-tax") }}
-                                                    <CmpTooltip is-form-label-mode :tip="$t('form.fields.product.tool-tips.sell-tax')"/>
-                                                </label>
-                                                <div class="col-md-6">
-                                                    <CmpBasicInput
-                                                            aleftIcon="fa fa-percent"
-                                                            placeholder="0.00"
-                                                            name="sellTax"
-                                                            type="number"
-                                                            v-model="iniFormData.sellTax"
-                                                    />
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-                                        <!-- right col -->
-                                        <div class="col-mx-12 col-md-6">
-
-                                            <!-- product uom stock / sell -->
-                                            <div class="row">
-                                                <label class="text-sm-left text-md-right col-md-4 col-form-label">
-                                                    {{ $t('form.fields.product.uom') }}
-                                                    <CmpTooltip is-form-label-mode :tip="$t('form.fields.product.tool-tips.uom')" />
-                                                </label>
-                                                <div class="col-md-7">
-                                                    <CmpMultiselectField
-                                                            :placeholder="$t('form.placeholders.product-uom').toLowerCase()"
-                                                            :options="st_nomenclatures.getUoM4Select"
-                                                            searchable
-                                                            name="pUoMID"
-                                                            class="mb-2"
-                                                            closeOnSelect
-                                                            ref="ref_selectUoM"
-                                                            v-on:changehapend="h_uomChange"
-                                                    >
-
-                                                        <!--option coming from slot child component ('slots props') [option] -->
-                                                        <template #customOption="{option}">
-                                                            {{  option.label }}
-                                                        </template>
-
-                                                        <!-- option coming from slot child component ('slots props') [value] -->
-                                                        <template #customSingleLabel="{value}">
-                                                            <div class="multiselect-placeholder">
-                                                                {{ value.label }}
-                                                            </div>
-                                                        </template>
-
-                                                    </CmpMultiselectField>
-                                                </div>
-                                            </div>
-
-                                            <!-- product uom purchase -->
-                                            <div class="row">
-                                                <label class="text-sm-left text-md-right col-md-4 col-form-label">
-                                                    {{ $t('form.fields.product.uom-purchase') }}
-                                                    <CmpTooltip is-form-label-mode :tip="$t('form.fields.product.tool-tips.uom-purchase')" />
-                                                </label>
-                                                <div class="col-md-7">
-                                                    <CmpMultiselectField
-                                                            :placeholder="$t('form.placeholders.product-uom').toLowerCase()"
-                                                            :options="ls_filteredUoM"
-                                                            searchable
-                                                            name="pUoMPurchaseID"
-                                                            class="mb-2"
-                                                            closeOnSelect
-                                                            ref="ref_selectUoMPurchase"
-                                                            v-on:changehapend="h_uomPurchaseSelect"
-                                                    >
-
-                                                        <!--option coming from slot child component ('slots props') [option] -->
-                                                        <template #customOption="{option}">
-                                                            {{  option.label }}
-                                                        </template>
-
-                                                        <!-- option coming from slot child component ('slots props') [value] -->
-                                                        <template #customSingleLabel="{value}">
-                                                            <div class="multiselect-placeholder">
-                                                                {{ value.label }}
-                                                            </div>
-                                                        </template>
-
-                                                    </CmpMultiselectField>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </CmpTabContent>
-
-                                <!-- TAB inventory -->
-                                <CmpTabContent :key="2" :id="tabs[1].title" :activeTabId="activeTabId" :tabId="2">
-                                    <div class="row">
-                                        <!-- left col -->
-                                        <div class="col-mx-12 col-md-6">
-
-                                            <!-- track inventory -->
-                                            <div class="row">
-                                                <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                                                    {{ $t('form.fields.product.track-inventory') }}
-                                                    <CmpTooltip is-form-label-mode :tip="$t('form.fields.product.tool-tips.track-inventory')" />
-                                                </label>
-                                                <div class="col-md-9">
-                                                    <CmpVeeCheckbox name="doWeTrackInventory"
-                                                                    :checked="iniFormData.doWeTrackInventory"
-                                                                    v-model="iniFormData.doWeTrackInventory"
-                                                                    :labels="[$t('btn.val-yes'), $t('btn.val-no')]"
-                                                    />
-                                                </div>
-                                            </div>
-
-                                            <!-- notes internal transfer -->
-                                            <div class="row">
-                                                <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                                                    {{ $t('form.fields.product.note-transfer') }}
-                                                </label>
-                                                <div class="col-md-9">
-                                                    <CmpTextInput
-                                                            height="150"
-                                                            name="noteTransfer"
-                                                            type="text"
-                                                            v-model="iniFormData.noteTransfer"
-                                                    />
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-                                        <!-- right col -->
-                                        <div class="col-mx-12 col-md-6">
-
-                                            <!-- logistics - responsible -->
-                                            <div class="row">
-                                                <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                                                    {{ $t('form.fields.product.logistic-responsible') }}
-                                                    <CmpTooltip is-form-label-mode :tip="$t('form.fields.product.tool-tips.logistic-responsible')" />
-                                                </label>
-                                                <div class="col-md-6">
-                                                    <CmpMultiselectField :placeholder="$t('form.placeholders.staffs').toLowerCase()"
-                                                                         :options="st_nomenclatures.getStaffs4Select"
-                                                                         searchable
-                                                                         name="lResponsibleID"
-                                                                         class="mb-2"
-                                                                         ref="ref_selectInvResponsible"
-                                                                         closeOnSelect
-                                                    >
-
-                                                        <!--option coming from slot child component ('slots props') [option] -->
-                                                        <template #customOption="{option}">
-                                                            {{  option.label }}
-                                                        </template>
-
-                                                        <!-- option coming from slot child component ('slots props') [value] -->
-                                                        <template #customSingleLabel="{value}">
-                                                            <div class="multiselect-placeholder">
-                                                                {{ value.label }}
-                                                            </div>
-                                                        </template>
-
-                                                    </CmpMultiselectField>
-                                                </div>
-                                            </div>
-
-                                            <!-- logistics - weight -->
-                                            <div class="row">
-                                                <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                                                    {{ $t("form.fields.product.logistic-weight") }}
-                                                </label>
-                                                <div class="col-md-6">
-                                                    <CmpBasicInput
-                                                            placeholder="0.00"
-                                                            name="weight"
-                                                            type="number"
-                                                            v-model="iniFormData.weight"
-                                                    />
-                                                </div>
-                                                <div class="col-md-2" style="padding-left: 0 !important; padding-top: 10px;">
-                                                    Kg
-                                                </div>
-                                            </div>
-
-                                            <!-- logistics - volume -->
-                                            <div class="row">
-                                                <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                                                    {{ $t("form.fields.product.logistic-volume") }}
-                                                </label>
-                                                <div class="col-md-6">
-                                                    <CmpBasicInput
-                                                            placeholder="0.00"
-                                                            name="volume"
-                                                            type="number"
-                                                            v-model="iniFormData.volume"
-                                                    />
-                                                </div>
-                                                <div class="col-md-2" style="padding-left: 0 !important; padding-top: 10px;">
-                                                    m³
-                                                </div>
-                                            </div>
-
-                                            <!-- logistics - preparation manufacturing lead time -->
-                                            <div class="row">
-                                                <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                                                    {{ $t("form.fields.product.logistic-prep-manuf") }}
-                                                    <CmpTooltip is-form-label-mode :tip="$t('form.fields.product.tool-tips.manuf-prep-l-time')" />
-                                                </label>
-                                                <div class="col-md-6">
-                                                    <CmpBasicInput placeholder="0"
-                                                                   name="preDay2Manuf"
-                                                                   type="number"
-                                                                   v-model="iniFormData.preDay2Manuf"
-                                                    />
-                                                </div>
-                                                <div class="col-md-2" style="padding-left: 0 !important; padding-top: 10px;">
-                                                    {{ $t('data.days') }}
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </CmpTabContent>
-
-                                <!-- TAB purchases / suppliers -->
-                                <CmpTabContent :key="3" :id="tabs[2].title" :activeTabId="activeTabId" :tabId="3">
-                                    <div class="row">
-
-                                        <!-- left col -->
-                                        <div class="col-mx-12 col-md-6">
-
-                                            <!-- can be purchased -->
-                                            <div class="row">
-                                                <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                                                    {{ $t('form.fields.product.cbe-purchased') }}
-                                                </label>
-                                                <div class="col-md-2">
-                                                    <CmpVeeCheckbox name="canBePurchased"
-                                                                    :checked="iniFormData.canBePurchased"
-                                                                    v-model="iniFormData.canBePurchased"
-                                                                    :labels="[$t('btn.val-yes'), $t('btn.val-no')]"
-                                                    />
-                                                </div>
-                                            </div>
-
-                                            <!-- cost -->
-                                            <!-- TODO the actual business logic for this is still pendant -->
-                                            <!-- TIP from Odoo In Standard Price & AVCO: value of the product (automatically computed in AVCO).\n        In FIFO: value of the next unit that will leave the stock (automatically computed).\n        Used to value the product when the purchase cost is not known (e.g. inventory adjustment).\n        Used to compute margins on sale orders.-->
-                                            <div class="row">
-                                                <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                                                    {{ $t( 'form.fields.product.cost' ) }}
-                                                    <CmpTooltip is-form-label-mode tip="todo" />
-                                                </label>
-                                                <div class="col-md-5">
-                                                    <CmpBasicInput
-                                                            aleftIcon="fa fa-usd"
-                                                            placeholder="0.00"
-                                                            name="cost"
-                                                            type="number"
-                                                            v-model="iniFormData.cost"
-                                                            disabled
-                                                    />
-                                                </div>
-                                                <div class="col-md-2" style="padding-left: 0 !important; padding-top: 10px;">
-                                                    por {{ ls_uomChosenLabel ?? $t('entities.uom.default') }}
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-                                        <!-- right col -->
-                                        <div class="col-mx-12 col-md-6">
-
-                                            <!-- notes purchase -->
-                                            <div class="row">
-                                                <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                                                    {{ $t('form.fields.product.note-purchase') }}
-                                                </label>
-                                                <div class="col-md-9">
-                                                    <CmpTextInput
-                                                            height="60"
-                                                            name="notePurchase"
-                                                            type="text"
-                                                            v-model="iniFormData.notePurchase"
-                                                    />
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                    <!-- product - supplier relationship -->
-                                    <div class="row mr-1 ml-1" style="justify-content: center">
-                                        <CmpDataTable table-type="hover"
-                                                      :action-bar-mode="abar_mode"
-                                                      :action-btn-mode="abutton_mode"
-
-                                                      :columns="columns"
-                                                      :data="iniFormData.supplierLines"
-
-                                                      :has-search="false"
-                                                      :has-actions="true"
-                                                      :has-top-btn-bar="true"
-                                                      :has-pagination="false"
-                                                      :has-page-size-selector="false"
-
-                                                      @deleteIntent="h_intentRowDelete"
-                                                      @navCreateIntent="h_intentSuppLineCreate"
-                                                      @cellUpdateIntent="h_updateCell"
-
-                                                      @enableIntent="h_intentToggleEnable"
-                                                      @disableIntent="h_intentToggleDisable"
-                                        >
-                                        </CmpDataTable>
-                                    </div>
-
-                                </CmpTabContent>
-
-                                <!-- TAB data an statistics -->
-                                <CmpTabContent :key="4" :id="tabs[3].title" :activeTabId="activeTabId" :tabId="4">
-                                    <div class="row">
-                                        <div class="col-lg-3 col-md-12" v-for="(card, i) in statsDataCards" :key="card.id">
-                                            <CmpCardStats :title="card.title"
-                                                          :subTitle="card.subTitle"
-                                                          :type="card.type"
-                                                          :icon="card.icon"
-                                                          :with-restore="card.id === 3 || card.id === 4"
-                                                          v-on:doRestore="card.id === 3 || card.id === 4 ? h_staticsRestore(card.id) : undefined">
-
-                                                <template v-slot:footer>
-
-                                                    <!-- jump cases -->
-                                                    <div v-if="card.id === 1 || card.id === 2 || card.id === 5 || card.id === 6">
-                                                        <a href="#" @click.prevent="h_statGoCheck(card.id)">
-
-                                                            <i class="tim-icons icon-zoom-split"></i>
-                                                            {{ $t( 'form.fields-common.view-check' ) }}
-                                                        </a>
-                                                    </div>
-
-                                                    <!-- change params cases -->
-                                                    <div v-else-if="card.id === 3 || card.id === 4">
-                                                        <a href="#" @click.prevent="h_changeStatsParams(card.id, 'pm')">
-                                                            <i class="tim-icons icon-calendar-60"></i>
-                                                            {{ $t( 'form.fields-common.month-pass-min' ) }}
-                                                        </a>
-
-                                                        <a href="#" @click.prevent="h_changeStatsParams(card.id, 'py')" class="ml-3">
-                                                            <i class="tim-icons icon-chart-bar-32"></i>
-                                                            {{ $t( 'form.fields-common.year-pass-min' ) }}
-                                                        </a>
-
-                                                        <a href="#" @click.prevent="h_changeStatsParams(card.id, 'cy')" class="ml-3">
-                                                            <i class="tim-icons icon-chart-bar-32"></i>
-                                                            {{ $t( 'form.fields-common.year-current-min' ) }}
-                                                        </a>
-                                                    </div>
-
-                                                </template>
-                                            </CmpCardStats>
-                                        </div>
-                                    </div>
-                                </CmpTabContent>
-
-                            </div>
-                        </div>
-                    </form>
-
-                    <!-- FORM ACTION BUTTONS -->
-                    <template v-slot:footer>
-                        <CmpFormActionsButton
-                                :show-delete="cpt_fMode === 'edit'"
-                                v-on:saveIntent="h_beforeSubmit"
-                                v-on:deleteIntent="h_delete"
-                                v-on:cancelIntent="h_back"
-                        />
-                    </template>
-                </CmpCard>
-
+              </div>
             </div>
-        </div>
-    </transition>
+
+            <!-- tabs section -->
+            <hr class="collapsable-form-section-divisor mt-4">
+            <div class="row mt-5">
+
+              <!-- tabs | nav pills -->
+              <div class="col-md-2">
+                <ul role="tablist" class="nav nav-pills nav-pills-default flex-column">
+                  <CmpTab v-for="tab in tabs"
+                          :key="tab.title"
+                          :title="tab.title"
+                          :activeTabId="activeTabId"
+                          :tabId="tab.id"
+                          @tab-change="h_tabChange"
+                  />
+                </ul>
+              </div>
+
+              <!-- tabs content -->
+              <div class="tab-content col-md-10">
+
+                <!-- TAB general / common info  -->
+                <CmpTabContent :key="1" :id="tabs[0].title" :activeTabId="activeTabId" :tabId="1">
+                  <div class="row">
+                    <!-- left col -->
+                    <div class="col-mx-12 col-md-6">
+
+                      <!-- can be sold -->
+                      <div class="row">
+                        <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                          {{ $t( 'form.fields.product.cbe-sold' ) }}
+                        </label>
+                        <div class="col-md-2">
+                          <CmpVeeCheckbox name="canBeSold"
+                                          :checked="iniFormData.canBeSold"
+                                          :labels="[$t('btn.val-yes'), $t('btn.val-no')]"
+                                          v-model="iniFormData.canBeSold"
+                                          @chkboxchange="h_changeSoldStatus"
+                          />
+
+                        </div>
+                      </div>
+
+                      <!-- sell price -->
+                      <div class="row">
+                        <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                          {{ $t( 'form.fields.product.sell-price' ) }}
+                        </label>
+                        <div class="col-md-6">
+                          <CmpBasicInput
+                              aleftIcon="fa fa-usd"
+                              placeholder="0.00"
+                              name="sellPrice"
+                              type="number"
+                              v-model="iniFormData.sellPrice"
+                              :disabled="ls_activateSellPrice"
+                          />
+                        </div>
+                      </div>
+
+                      <!-- sell tax -->
+                      <div class="row">
+                        <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                          {{ $t( 'form.fields.product.sell-tax' ) }}
+                          <CmpTooltip is-form-label-mode :tip="$t('form.fields.product.tool-tips.sell-tax')" />
+                        </label>
+                        <div class="col-md-6">
+                          <CmpBasicInput
+                              aleftIcon="fa fa-percent"
+                              placeholder="0.00"
+                              name="sellTax"
+                              type="number"
+                              v-model="iniFormData.sellTax"
+                          />
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <!-- right col -->
+                    <div class="col-mx-12 col-md-6">
+
+                      <!-- product uom stock / sell -->
+                      <div class="row">
+                        <label class="text-sm-left text-md-right col-md-4 col-form-label">
+                          {{ $t( 'form.fields.product.uom' ) }}
+                          <CmpTooltip is-form-label-mode :tip="$t('form.fields.product.tool-tips.uom')" />
+                        </label>
+                        <div class="col-md-7">
+                          <CmpMultiselectField
+                              :placeholder="$t('form.placeholders.product-uom').toLowerCase()"
+                              :options="st_nomenclatures.getUoM4Select"
+                              searchable
+                              name="pUoMID"
+                              class="mb-2"
+                              closeOnSelect
+                              ref="ref_selectUoM"
+                              v-on:changehapend="h_uomChange"
+                          >
+
+                            <!--option coming from slot child component ('slots props') [option] -->
+                            <template #customOption="{option}">
+                              {{ option.label }}
+                            </template>
+
+                            <!-- option coming from slot child component ('slots props') [value] -->
+                            <template #customSingleLabel="{value}">
+                              <div class="multiselect-placeholder">
+                                {{ value.label }}
+                              </div>
+                            </template>
+
+                          </CmpMultiselectField>
+                        </div>
+                      </div>
+
+                      <!-- product uom purchase -->
+                      <div class="row">
+                        <label class="text-sm-left text-md-right col-md-4 col-form-label">
+                          {{ $t( 'form.fields.product.uom-purchase' ) }}
+                          <CmpTooltip is-form-label-mode :tip="$t('form.fields.product.tool-tips.uom-purchase')" />
+                        </label>
+                        <div class="col-md-7">
+                          <CmpMultiselectField
+                              :placeholder="$t('form.placeholders.product-uom').toLowerCase()"
+                              :options="ls_filteredUoM"
+                              searchable
+                              name="pUoMPurchaseID"
+                              class="mb-2"
+                              closeOnSelect
+                              ref="ref_selectUoMPurchase"
+                              v-on:changehapend="h_uomPurchaseSelect"
+                          >
+
+                            <!--option coming from slot child component ('slots props') [option] -->
+                            <template #customOption="{option}">
+                              {{ option.label }}
+                            </template>
+
+                            <!-- option coming from slot child component ('slots props') [value] -->
+                            <template #customSingleLabel="{value}">
+                              <div class="multiselect-placeholder">
+                                {{ value.label }}
+                              </div>
+                            </template>
+
+                          </CmpMultiselectField>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </CmpTabContent>
+
+                <!-- TAB inventory -->
+                <CmpTabContent :key="2" :id="tabs[1].title" :activeTabId="activeTabId" :tabId="2">
+                  <div class="row">
+                    <!-- left col -->
+                    <div class="col-mx-12 col-md-6">
+
+                      <!-- track inventory -->
+                      <div class="row">
+                        <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                          {{ $t( 'form.fields.product.track-inventory' ) }}
+                          <CmpTooltip is-form-label-mode :tip="$t('form.fields.product.tool-tips.track-inventory')" />
+                        </label>
+                        <div class="col-md-9">
+                          <CmpVeeCheckbox name="doWeTrackInventory"
+                                          :checked="iniFormData.doWeTrackInventory"
+                                          v-model="iniFormData.doWeTrackInventory"
+                                          :labels="[$t('btn.val-yes'), $t('btn.val-no')]"
+                          />
+                        </div>
+                      </div>
+
+                      <!-- notes internal transfer -->
+                      <div class="row">
+                        <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                          {{ $t( 'form.fields.product.note-transfer' ) }}
+                        </label>
+                        <div class="col-md-9">
+                          <CmpTextInput
+                              height="150"
+                              name="noteTransfer"
+                              type="text"
+                              v-model="iniFormData.noteTransfer"
+                          />
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <!-- right col -->
+                    <div class="col-mx-12 col-md-6">
+
+                      <!-- logistics - responsible -->
+                      <div class="row">
+                        <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                          {{ $t( 'form.fields.product.logistic-responsible' ) }}
+                          <CmpTooltip is-form-label-mode
+                                      :tip="$t('form.fields.product.tool-tips.logistic-responsible')" />
+                        </label>
+                        <div class="col-md-6">
+                          <CmpMultiselectField :placeholder="$t('form.placeholders.staffs').toLowerCase()"
+                                               :options="st_nomenclatures.getStaffs4Select"
+                                               searchable
+                                               name="lResponsibleID"
+                                               class="mb-2"
+                                               ref="ref_selectInvResponsible"
+                                               closeOnSelect
+                          >
+
+                            <!--option coming from slot child component ('slots props') [option] -->
+                            <template #customOption="{option}">
+                              {{ option.label }}
+                            </template>
+
+                            <!-- option coming from slot child component ('slots props') [value] -->
+                            <template #customSingleLabel="{value}">
+                              <div class="multiselect-placeholder">
+                                {{ value.label }}
+                              </div>
+                            </template>
+
+                          </CmpMultiselectField>
+                        </div>
+                      </div>
+
+                      <!-- logistics - weight -->
+                      <div class="row">
+                        <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                          {{ $t( 'form.fields.product.logistic-weight' ) }}
+                        </label>
+                        <div class="col-md-6">
+                          <CmpBasicInput
+                              placeholder="0.00"
+                              name="weight"
+                              type="number"
+                              v-model="iniFormData.weight"
+                          />
+                        </div>
+                        <div class="col-md-2" style="padding-left: 0 !important; padding-top: 10px;">
+                          Kg
+                        </div>
+                      </div>
+
+                      <!-- logistics - volume -->
+                      <div class="row">
+                        <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                          {{ $t( 'form.fields.product.logistic-volume' ) }}
+                        </label>
+                        <div class="col-md-6">
+                          <CmpBasicInput
+                              placeholder="0.00"
+                              name="volume"
+                              type="number"
+                              v-model="iniFormData.volume"
+                          />
+                        </div>
+                        <div class="col-md-2" style="padding-left: 0 !important; padding-top: 10px;">
+                          m³
+                        </div>
+                      </div>
+
+                      <!-- logistics - preparation manufacturing lead time -->
+                      <div class="row">
+                        <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                          {{ $t( 'form.fields.product.logistic-prep-manuf' ) }}
+                          <CmpTooltip is-form-label-mode :tip="$t('form.fields.product.tool-tips.manuf-prep-l-time')" />
+                        </label>
+                        <div class="col-md-6">
+                          <CmpBasicInput placeholder="0"
+                                         name="preDay2Manuf"
+                                         type="number"
+                                         v-model="iniFormData.preDay2Manuf"
+                          />
+                        </div>
+                        <div class="col-md-2" style="padding-left: 0 !important; padding-top: 10px;">
+                          {{ $t( 'data.days' ) }}
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </CmpTabContent>
+
+                <!-- TAB purchases / suppliers -->
+                <CmpTabContent :key="3" :id="tabs[2].title" :activeTabId="activeTabId" :tabId="3">
+                  <div class="row">
+
+                    <!-- left col -->
+                    <div class="col-mx-12 col-md-6">
+
+                      <!-- can be purchased -->
+                      <div class="row">
+                        <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                          {{ $t( 'form.fields.product.cbe-purchased' ) }}
+                        </label>
+                        <div class="col-md-2">
+                          <CmpVeeCheckbox name="canBePurchased"
+                                          :checked="iniFormData.canBePurchased"
+                                          v-model="iniFormData.canBePurchased"
+                                          :labels="[$t('btn.val-yes'), $t('btn.val-no')]"
+                          />
+                        </div>
+                      </div>
+
+                      <!-- cost -->
+                      <!-- TODO the actual business logic for this is still pendant -->
+                      <!-- TIP from Odoo In Standard Price & AVCO: value of the product (automatically computed in AVCO).\n        In FIFO: value of the next unit that will leave the stock (automatically computed).\n        Used to value the product when the purchase cost is not known (e.g. inventory adjustment).\n        Used to compute margins on sale orders.-->
+                      <div class="row">
+                        <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                          {{ $t( 'form.fields.product.cost' ) }}
+                          <CmpTooltip is-form-label-mode tip="todo" />
+                        </label>
+                        <div class="col-md-5">
+                          <CmpBasicInput
+                              aleftIcon="fa fa-usd"
+                              placeholder="0.00"
+                              name="cost"
+                              type="number"
+                              v-model="iniFormData.cost"
+                              disabled
+                          />
+                        </div>
+                        <div class="col-md-2" style="padding-left: 0 !important; padding-top: 10px;">
+                          por {{ ls_uomChosenLabel ?? $t( 'entities.uom.default' ) }}
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <!-- right col -->
+                    <div class="col-mx-12 col-md-6">
+
+                      <!-- notes purchase -->
+                      <div class="row">
+                        <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                          {{ $t( 'form.fields.product.note-purchase' ) }}
+                        </label>
+                        <div class="col-md-9">
+                          <CmpTextInput
+                              height="60"
+                              name="notePurchase"
+                              type="text"
+                              v-model="iniFormData.notePurchase"
+                          />
+                        </div>
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                  <!-- product - supplier relationship -->
+                  <div class="row mr-1 ml-1" style="justify-content: center">
+                    <CmpDataTable table-type="hover"
+                                  :action-bar-mode="abar_mode"
+                                  :action-btn-mode="abutton_mode"
+
+                                  :columns="columns"
+                                  :data="iniFormData.supplierLines"
+
+                                  :has-search="false"
+                                  :has-actions="true"
+                                  :has-top-btn-bar="true"
+                                  :has-pagination="false"
+                                  :has-page-size-selector="false"
+
+                                  @deleteIntent="h_intentRowDelete"
+                                  @navCreateIntent="h_intentSuppLineCreate"
+                                  @cellUpdateIntent="h_updateCell"
+
+                                  @enableIntent="h_intentToggleEnable"
+                                  @disableIntent="h_intentToggleDisable"
+                    >
+                    </CmpDataTable>
+                  </div>
+
+                </CmpTabContent>
+
+                <!-- TAB data an statistics -->
+                <CmpTabContent :key="4" :id="tabs[3].title" :activeTabId="activeTabId" :tabId="4">
+                  <div class="row">
+                    <div class="col-lg-3 col-md-12" v-for="(card, i) in statsDataCards" :key="card.id">
+                      <CmpCardStats :title="card.title"
+                                    :subTitle="card.subTitle"
+                                    :type="card.type"
+                                    :icon="card.icon"
+                                    :with-restore="card.id === 3 || card.id === 4"
+                                    v-on:doRestore="card.id === 3 || card.id === 4 ? h_staticsRestore(card.id) : undefined">
+
+                        <template v-slot:footer>
+
+                          <!-- jump cases -->
+                          <div v-if="card.id === 1 || card.id === 2 || card.id === 5 || card.id === 6">
+                            <a href="#" @click.prevent="h_statGoCheck(card.id)">
+
+                              <i class="tim-icons icon-zoom-split"></i>
+                              {{ $t( 'form.fields-common.view-check' ) }}
+                            </a>
+                          </div>
+
+                          <!-- change params cases -->
+                          <div v-else-if="card.id === 3 || card.id === 4">
+                            <a href="#" @click.prevent="h_changeStatsParams(card.id, 'pm')">
+                              <i class="tim-icons icon-calendar-60"></i>
+                              {{ $t( 'form.fields-common.month-pass-min' ) }}
+                            </a>
+
+                            <a href="#" @click.prevent="h_changeStatsParams(card.id, 'py')" class="ml-3">
+                              <i class="tim-icons icon-chart-bar-32"></i>
+                              {{ $t( 'form.fields-common.year-pass-min' ) }}
+                            </a>
+
+                            <a href="#" @click.prevent="h_changeStatsParams(card.id, 'cy')" class="ml-3">
+                              <i class="tim-icons icon-chart-bar-32"></i>
+                              {{ $t( 'form.fields-common.year-current-min' ) }}
+                            </a>
+                          </div>
+
+                        </template>
+                      </CmpCardStats>
+                    </div>
+                  </div>
+                </CmpTabContent>
+
+              </div>
+            </div>
+          </form>
+
+          <!-- FORM ACTION BUTTONS -->
+          <template v-slot:footer>
+            <CmpFormActionsButton
+                :show-delete="cpt_fMode === 'edit'"
+                v-on:saveIntent="h_beforeSubmit"
+                v-on:deleteIntent="h_delete"
+                v-on:cancelIntent="nav_back"
+            />
+          </template>
+        </CmpCard>
+
+      </div>
+    </div>
+  </transition>
 </template>
 
 <script lang="ts">
@@ -684,7 +685,7 @@ export default defineComponent({
         const ls_filteredUoM = ref<IMultiselectBasic[]>([])
         const ls_isSuppliersRequested = ref<boolean>(false)                                   // flag var to know if we already requested the suppliers
         const tabs = [                                                                      // form tabs data array
-            { id: 1, title: t('data.generals') },
+            { id: 1, title: t('data.overview') },
             { id: 2, title: t('table-headers.inventory') },
             { id: 3, title: t('form.fields.suppliers.tab-purchases') },
             { id: 4, title: t('data.data') }
@@ -768,7 +769,7 @@ export default defineComponent({
                 // data-datable.ts file, we weed to do it dynamically. Hence this here and no the conventionally
                 // definition in data-datable.ts.
             })
-            .catch(err => tfyCRUDFail(err, ENTITY_NAMES.PRODUCT, OPS_KIND_STR.REQUEST))
+            .catch(err => tfyCRUDFail(err, ENTITY_NAMES.SUPPLIER, OPS_KIND_STR.REQUEST))
 
             st_nomenclatures.reqNmcCurrency()
             .then(() => {
@@ -778,7 +779,7 @@ export default defineComponent({
                 // data-datable.ts file, we weed to do it dynamically. Hence this here and no the conventionally
                 // definition in data-datable.ts.
             })
-            .catch(err => tfyCRUDFail(err, ENTITY_NAMES.PRODUCT, OPS_KIND_STR.REQUEST))
+            .catch(err => tfyCRUDFail(err, ENTITY_NAMES.CURRENCY, OPS_KIND_STR.REQUEST))
 
             await st_nomenclatures.reqNmcStaff().catch(err => tfyCRUDFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.REQUEST))       // getting the staff list that will be used in the responsible select input
             await st_nomenclatures.reqNmcUoM().catch(err => tfyCRUDFail(err, ENTITY_NAMES.UOM, OPS_KIND_STR.REQUEST))           // getting the UoM list that will be used in both pUoMID and pUoMPurchaseID UoM selection component, recall that the pUoMPurchaseID must be filtered with the same UoM category of pUoMID
@@ -837,7 +838,7 @@ export default defineComponent({
                 tfyCRUDSuccess(ENTITY_NAMES.PRODUCT, OPS_KIND_STR.ADDITION, newProduct.pName)
 
                 // so now what ?
-                if (!doWeNeedToStay) h_back()                                               // so we are going back to the data table
+                if (!doWeNeedToStay) nav_back()                                               // so we are going back to the data table
                 else hpr_clearState()                                                       // so wee need to clean the entire form and stay in it
 
             }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.PRODUCT, OPS_KIND_STR.ADDITION))
@@ -858,7 +859,7 @@ export default defineComponent({
                 tfyCRUDSuccess(ENTITY_NAMES.PRODUCT, OPS_KIND_STR.UPDATE, editedProduct.pName)
 
                 // so now what ?
-                if (!doWeNeedToStay) h_back()                                               // so we are going back to the data table
+                if (!doWeNeedToStay) nav_back()                                               // so we are going back to the data table
                 else hpr_clearStateE()
             }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.PRODUCT, OPS_KIND_STR.UPDATE))
         }
@@ -872,7 +873,7 @@ export default defineComponent({
             ApiProduct.reqDeleteProducts([prodId])
             .then(( response: any ) => {
                 tfyCRUDSuccess(ENTITY_NAMES.PRODUCT, OPS_KIND_STR.DELETION, ref)
-                h_back()
+                nav_back()
             })
             .catch(error => tfyCRUDFail(error, ENTITY_NAMES.PRODUCT, OPS_KIND_STR.DELETION, ref))
         }
@@ -1081,9 +1082,9 @@ export default defineComponent({
         }
 
         /**
-         * This method tries to accommodate the data before it will send to the server to update the permission of the role
-         * Basically, filter the perms2mod record with the data it was actually changed and allocate in 2 groups
-         * (remove & grant) the perms that has changed.
+         * This method tries to accommodate the data before it will be sent to the server
+         * Handles the form submission event through the vee-validate 'SubmissionHandler' so we can take advantage of all
+         * the its validation logic but using with own logic inserted as callback
          *
          * @param evt
          * @param doWeNeedToStay This is a boolean data coming from our Vue UI custom component (CmpFormActionsButton in this case). Tell us where to go after the successfully creation of the entity
@@ -1129,13 +1130,8 @@ export default defineComponent({
                 if (cpt_fMode.value == (FMODE.CREATE as TFormMode)) a_create(formData, doWeNeedToStay)
                 if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && isCloning.value && meta.value.dirty) console.log('pending cloning mode')
                 if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && !isCloning.value && meta.value.dirty) a_edit(formData, doWeNeedToStay)
-                if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && !meta.value.dirty) h_back()
+                if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && !meta.value.dirty) nav_back()
             }).call(this)
-        }
-
-        const h_back = () => {
-            // router.back()
-            router.push({ name: RoutePathNames.product });
         }
 
         /**
@@ -1150,7 +1146,7 @@ export default defineComponent({
         }
 
         const h_keyboardKeyPress = ( evt: any ) => {
-            if (evt.key === KEYS.ESCAPE) h_back()                       // going back if SCAPE is pressed
+            if (evt.key === KEYS.ESCAPE) nav_back()                       // going back if SCAPE is pressed
         }
 
         /**
@@ -1360,6 +1356,15 @@ export default defineComponent({
 
         //#endregion ==========================================================================
 
+        //region ======== NAVIGATION ==========================================================
+
+        const nav_back = () => {
+            // router.back()
+            router.push({ name: RoutePathNames.product });
+        }
+
+        //endregion ===========================================================================
+
         return {
             isCloning,
 
@@ -1384,7 +1389,7 @@ export default defineComponent({
             cpt_fMode,
             st_nomenclatures,
 
-            h_back,
+            nav_back,
             h_delete,
             h_uomChange,
             h_tabChange,

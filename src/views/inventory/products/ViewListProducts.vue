@@ -1,40 +1,40 @@
 <template>
-    <transition appear name="page-fade">
-        <div class="row">
-            <div class="col-12">
-                <CmpCard>
-                    <CmpDataTable table-type="hover"
-                                  :subject="$t('entities.product.name')"
+  <transition appear name="page-fade">
+    <div class="row">
+      <div class="col-12">
+        <CmpCard>
+          <CmpDataTable table-type="hover"
+                        :subject="$t('entities.product.name')"
 
-                                  :action-bar-mode="abar_mode"
-                                  :action-btn-mode="abutton_mode"
+                        :action-bar-mode="abar_mode"
+                        :action-btn-mode="abutton_mode"
 
-                                  :columns="columns"
-                                  :data="ls_products.entityPage"
-                                  :has-actions="true"
-                                  :headerFilters="headerFilters"
-                                  :extendedFilters="extFilters"
+                        :columns="columns"
+                        :data="ls_products.entityPage"
+                        :has-actions="true"
+                        :headerFilters="headerFilters"
+                        :extendedFilters="extFilters"
 
-                                  @requestIntent="h_reqQuery"
+                        @requestIntent="h_reqQuery"
 
-                                  @navCreateIntent="h_navCreateProductIntent"
-                                  @editIntent="h_navEditProductIntent"
-                                  @deleteIntent="h_intentRowDelete"
+                        @navCreateIntent="nav_createProductIntent"
+                        @editIntent="nav_editProductIntent"
+                        @deleteIntent="h_intentRowDelete"
 
-                                  @bulkActionIntent="h_intentBulkAction"
+                        @bulkActionIntent="h_intentBulkAction"
 
-                                  @enableIntent="h_intentToggleEnable"
-                                  @disableIntent="h_intentToggleDisable"
-                    >
-                    </CmpDataTable>
-                </CmpCard>
-            </div>
-        </div>
-    </transition>
+                        @enableIntent="h_intentToggleEnable"
+                        @disableIntent="h_intentToggleDisable"
+          >
+          </CmpDataTable>
+        </CmpCard>
+      </div>
+    </div>
+  </transition>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue'
+import { defineComponent, onBeforeUnmount, onMounted, ref } from 'vue'
 import { i18n } from '@/services/i18n'
 import { useRouter } from 'vue-router'
 import { CmpCard, CmpDataTable } from '@/components'
@@ -52,7 +52,7 @@ import {
     DT_ACTION_BUTTON_MODE,
     DT_ACTIONBAR_MODE,
     ENTITY_NAMES, FMODE,
-    HProductTable,
+    HProductTable, KEYS,
     OPS_KIND_STR, RoutePathNames
 } from '@/services/definitions'
 
@@ -132,11 +132,22 @@ export default defineComponent({
             st_nomenclatures.reqNmcUoM()
 
             a_reqQuery()
+
+            // keyboard keys event handler, we need to clean this kind of event when the component are destroyed
+            window.addEventListener('keydown', h_keyboardKeyPress)
+        })
+
+        /**
+         * Vue hook before component is unmounted from the DOM
+         */
+        onBeforeUnmount(() => {
+            // cleaning the event manually added before to the document. Wee need to keep the things as clean as posible
+            window.removeEventListener('keydown', h_keyboardKeyPress)
         })
 
         //endregion ===========================================================================
 
-        //#region ======= FETCHING DATA ACTIONS ===============================================
+        //#region ======= FETCHING DATA & ACTIONS =============================================
 
         const a_reqQuery = ( queryData: IDataTableQuery | undefined = undefined ) => {
             // getting the product list data for populating the datatable (side effect)
@@ -189,19 +200,48 @@ export default defineComponent({
 
         //#endregion ==========================================================================
 
-        //#region ======= ACTIONS =============================================================
-        //#endregion ==========================================================================
-
         //#region ======= COMPUTATIONS & GETTERS ==============================================
         //#endregion ==========================================================================
 
-        //#region ======= EVENTS HANDLERS =====================================================
+        //region ======= HELPERS ==============================================================
 
-        function h_reqQuery( _: IDataTableQuery ) {
-            a_reqQuery()
+        /**
+         * Maps the product categories id present in one of the fields of the list of datatable records (products),
+         * to the actual product categories name (user friendliness)
+         *
+         * ❗ Also this mathe makes other local data transformation / formatting jobs
+         */
+        const mappingProperties = () => {
+            if (IsEmptyObj(st_nomenclatures.getProdCatByIdMap)) return        // If there are no supplier categories yet, retrieve the entities as it is
+
+            ls_products.value.entityPage = ls_products.value.entityPage.map((prodRow: IProductRow) => {
+
+                // there is a chance that this line run, and the pCategoryID field was already mapped to the role name making it a string value so we can used as index anymore, so we have to check first
+                if(isNumber(prodRow.pCategoryID)) prodRow.pCategoryID = st_nomenclatures.getProdCatByIdMap[+prodRow.pCategoryID].pCatName
+
+                // there is a chance that this line run, and the pUoMID field was already mapped to the role name making it a string value so we can used as index anymore, so we have to check first
+                if(isNumber(prodRow.pUoMID)) prodRow.pUoMID = st_nomenclatures.getUoMByIdMap[+prodRow.pUoMID].uName
+
+                // so the 0 value doesnt mess with the user in the UI making them confuse, we remove the 0 values
+                if (prodRow.pTotalStock == 0) prodRow.pTotalStock = 0
+
+                // money ui conversion
+                prodRow.sellPrice = '$ ' + toUIMoney(prodRow?.sellPrice ?? '0') as string
+
+                return prodRow
+            })
         }
 
-        const h_navCreateProductIntent = () => {
+        //#endregion ==========================================================================
+
+        //region ======== NAVIGATION ==========================================================
+
+        const nav_2Hub = () => {
+            // router.back()
+            router.push({ name: RoutePathNames.hub });
+        }
+
+        const nav_createProductIntent = () => {
             router.push({
                 name:   RoutePathNames.prodCreate,
                 params: {
@@ -215,7 +255,7 @@ export default defineComponent({
          * Handler for the intent of edit a record from the table
          * @param rowData data of the row, intent to be coming form the data table
          */
-        const h_navEditProductIntent = ( rowData: IProductRow ) => {
+        const nav_editProductIntent = ( rowData: IProductRow ) => {
             router.push({
                 name:   RoutePathNames.prodEdit,
                 params: {
@@ -223,6 +263,18 @@ export default defineComponent({
                     id:    rowData.id,
                 }
             })
+        }
+
+        //endregion ===========================================================================
+
+        //#region ======= EVENTS HANDLERS & WATCHERS ==========================================
+
+        const h_keyboardKeyPress = ( evt: any ) => {
+            if (evt.key === KEYS.ESCAPE) nav_2Hub()
+        }
+
+        function h_reqQuery( _: IDataTableQuery ) {
+            a_reqQuery()
         }
 
         const h_intentRowDelete = async (entityId: number) => {
@@ -269,37 +321,6 @@ export default defineComponent({
 
         //#endregion ==========================================================================
 
-        //#region ======= AUX =================================================================
-
-        /**
-         * Maps the product categories id present in one of the fields of the lis of datatable records (products),
-         * to the actual product categories name (user friendliness)
-         *
-         * ❗ Also this mathe makes other local data transformation / formatting jobs
-         */
-        const mappingProperties = () => {
-            if (IsEmptyObj(st_nomenclatures.getProdCatByIdMap)) return        // If there are no supplier categories yet, retrieve the entities as it is
-
-            ls_products.value.entityPage = ls_products.value.entityPage.map((prodRow: IProductRow) => {
-
-                // there is a chance that this line run, and the pCategoryID field was already mapped to the role name making it a string value so we can used as index anymore, so we have to check first
-                if(isNumber(prodRow.pCategoryID)) prodRow.pCategoryID = st_nomenclatures.getProdCatByIdMap[+prodRow.pCategoryID].pCatName
-
-                // there is a chance that this line run, and the pUoMID field was already mapped to the role name making it a string value so we can used as index anymore, so we have to check first
-                if(isNumber(prodRow.pUoMID)) prodRow.pUoMID = st_nomenclatures.getUoMByIdMap[+prodRow.pUoMID].uName
-
-                // so the 0 value doesnt mess with the user in the UI making them confuse, we remove the 0 values
-                if (prodRow.pTotalStock == 0) prodRow.pTotalStock = 0
-
-                // money ui conversion
-                prodRow.sellPrice = '$ ' + toUIMoney(prodRow?.sellPrice ?? '0') as string
-
-                return prodRow
-            })
-        }
-
-        //#endregion ==========================================================================
-
         return {
             ls_products,
 
@@ -310,8 +331,8 @@ export default defineComponent({
             extFilters,
 
             h_reqQuery,
-            h_navCreateProductIntent,
-            h_navEditProductIntent,
+            nav_createProductIntent,
+            nav_editProductIntent,
             h_intentRowDelete,
             h_intentBulkAction,
             h_intentToggleEnable,

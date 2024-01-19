@@ -1,11 +1,11 @@
 <template>
-    <transition appear name="page-fade">
+  <transition appear name="page-fade">
     <div class="row">
-        <div class="col-12">
-            <h2>This is the dashboard and reports section</h2>
-        </div>
+      <div class="col-12">
+        <h2>This is the dashboard and reports section</h2>
+      </div>
     </div>
-    </transition>
+  </transition>
 </template>
 
 <script lang="ts">

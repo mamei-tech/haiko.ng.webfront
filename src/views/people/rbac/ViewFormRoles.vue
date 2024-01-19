@@ -1,114 +1,114 @@
 <template>
-    <transition appear name="page-fade">
-        <div class="row">
-            <div class="col-12">
+  <transition appear name="page-fade">
+    <div class="row">
+      <div class="col-12">
 
-                <CmpCard :hasFormBackBtn="true" v-on:doClick="h_back">
+        <CmpCard :hasFormBackBtn="true" v-on:doClick="h_back">
 
-                    <!-- FORM -->
-                    <form class="form">
+          <!-- FORM -->
+          <form class="form">
 
-                        <!-- id -->
-                        <CmpBasicInput
-                                disabled
-                                placeholder="###########"
-                                name="id"
-                                type="hidden"
-                                v-model="iniFormData.id"
-                        />
+            <!-- id -->
+            <CmpBasicInput
+                disabled
+                placeholder="###########"
+                name="id"
+                type="hidden"
+                v-model="iniFormData.id"
+            />
 
-                        <div class="row">
+            <div class="row">
 
-                            <div class="col-xm-12 col-md-6">
-                                <!-- role name -->
-                                <div class="row">
-                                    <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                                        {{ $t("entities.role.name") }}
-                                    </label>
-                                    <div class="col-md-9">
-                                        <CmpBasicInput
-                                                :placeholder="$t('form.placeholders.role-rname')"
-                                                name="rName"
-                                                type="text"
-                                                v-model="iniFormData.rName"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
+              <div class="col-xm-12 col-md-6">
+                <!-- role name -->
+                <div class="row">
+                  <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                    {{ $t( 'entities.role.name' ) }}
+                  </label>
+                  <div class="col-md-9">
+                    <CmpBasicInput
+                        :placeholder="$t('form.placeholders.role-rname')"
+                        name="rName"
+                        type="text"
+                        v-model="iniFormData.rName"
+                    />
+                  </div>
+                </div>
+              </div>
 
-                            <div class="col-xm-12 col-md-6">
-                                <!-- description -->
-                                <div class="row">
-                                    <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                                        {{ $t("data.description") }}
-                                    </label>
-                                    <div class="col-md-9">
-                                        <CmpBasicInput
-                                                :placeholder="$t('form.placeholders.role-description')"
-                                                name="description"
-                                                type="text"
-                                                v-model="iniFormData.description"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
+              <div class="col-xm-12 col-md-6">
+                <!-- description -->
+                <div class="row">
+                  <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                    {{ $t( 'data.description' ) }}
+                  </label>
+                  <div class="col-md-9">
+                    <CmpBasicInput
+                        :placeholder="$t('form.placeholders.role-description')"
+                        name="description"
+                        type="text"
+                        v-model="iniFormData.description"
+                    />
+                  </div>
+                </div>
+              </div>
 
-                            <div class="col-xm-12 col-md-6">
-                                <CmpBaseButton
-                                        icon
-                                        class="mr-1"
-                                        buttonType="success"
-                                        :title="$t('btn.tip-grant-all')"
-                                        @doClick="h_aggregationMode(true)">
-                                    <i class="tim-icons icon-check-2"></i>
-                                </CmpBaseButton>
-                                <CmpBaseButton
-                                        icon
-                                        class="ml-1"
-                                        buttonType="danger"
-                                        :title="$t('btn.tip-revoke-all')"
-                                        @doClick="h_aggregationMode(false)">
-                                    <i class="tim-icons icon-simple-delete"></i>
-                                </CmpBaseButton>
-                            </div>
+              <div class="col-xm-12 col-md-6">
+                <CmpBaseButton
+                    icon
+                    class="mr-1"
+                    buttonType="success"
+                    :title="$t('btn.tip-grant-all')"
+                    @doClick="h_aggregationMode(true)">
+                  <i class="tim-icons icon-check-2"></i>
+                </CmpBaseButton>
+                <CmpBaseButton
+                    icon
+                    class="ml-1"
+                    buttonType="danger"
+                    :title="$t('btn.tip-revoke-all')"
+                    @doClick="h_aggregationMode(false)">
+                  <i class="tim-icons icon-simple-delete"></i>
+                </CmpBaseButton>
+              </div>
 
-                            <!-- permission list grouped with collapsable items -->
-                            <div class="col-xm-12 col-md-12">
-                                <CmpCollapseItem v-for="(permsDict, group) in permsByGroup" :key="group" :title="group">
-                                    <div v-for="(perm, permId) in permsDict" class="row" :key="permId">
-                                        <label class="text-sm-left text-md-right col-md-4 col-form-label">
-                                            <p style="font-weight: 900">{{ perm.pName }} | </p> {{ perm.description }}
-                                        </label>
-                                        <div class="col-md-8">
-                                            <CmpBasicCheckbox :checked="perm.isAssociated"
-                                                              :name="perm.pName"
-                                                              :identifier_a="permId + ''"
-                                                              :identifier_b="perm.group"
-                                                              :labels="[$t('others.granted'), $t('others.ungranted')]"
-                                                              v-on:statusChanged="h_permMod"
-                                            />
-                                        </div>
-                                    </div>
-                                </CmpCollapseItem>
-                            </div>
-
-                        </div>
-                    </form>
-
-                    <!-- FORM ACTION BUTTONS -->
-                    <template v-slot:footer>
-                        <CmpFormActionsButton
-                                :show-delete="cpt_fMode === 'edit'"
-                                v-on:saveIntent="h_beforeSubmit"
-                                v-on:deleteIntent="h_delete"
-                                v-on:cancelIntent="h_back"
-                        />
-                    </template>
-                </CmpCard>
+              <!-- permission list grouped with collapsable items -->
+              <div class="col-xm-12 col-md-12">
+                <CmpCollapseItem v-for="(permsDict, group) in permsByGroup" :key="group" :title="group">
+                  <div v-for="(perm, permId) in permsDict" class="row" :key="permId">
+                    <label class="text-sm-left text-md-right col-md-4 col-form-label">
+                      <p style="font-weight: 900">{{ perm.pName }} | </p> {{ perm.description }}
+                    </label>
+                    <div class="col-md-8">
+                      <CmpBasicCheckbox :checked="perm.isAssociated"
+                                        :name="perm.pName"
+                                        :identifier_a="permId + ''"
+                                        :identifier_b="perm.group"
+                                        :labels="[$t('others.granted'), $t('others.ungranted')]"
+                                        v-on:statusChanged="h_permMod"
+                      />
+                    </div>
+                  </div>
+                </CmpCollapseItem>
+              </div>
 
             </div>
-        </div>
-    </transition>
+          </form>
+
+          <!-- FORM ACTION BUTTONS -->
+          <template v-slot:footer>
+            <CmpFormActionsButton
+                :show-delete="cpt_fMode === 'edit'"
+                v-on:saveIntent="h_beforeSubmit"
+                v-on:deleteIntent="h_delete"
+                v-on:cancelIntent="h_back"
+            />
+          </template>
+        </CmpCard>
+
+      </div>
+    </div>
+  </transition>
 </template>
 
 <script lang="ts">

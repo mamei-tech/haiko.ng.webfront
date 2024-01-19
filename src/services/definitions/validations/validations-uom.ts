@@ -1,6 +1,6 @@
 import { i18n } from '@/services/i18n'
 import { max, min, regex, required } from '@vee-validate/rules'
-import { regDecimalDotSeparator, regOnlyAlphanumericNoSpaces } from '@/services/definitions/validations/validations-commons'
+import { regDecimalDotSeparator, regOnlyAlphanumericNoSpaces, VSchemaCommon } from '@/services/definitions/validations/validations-commons'
 
 
 const { t } = i18n.global
@@ -10,12 +10,7 @@ const { t } = i18n.global
  */
 export const VSchemaUoM = {
     uName:  ( value: string ): boolean | string => {
-        if (!required(value)) return t('validation.required')
-        if (!min(value, { length: 3 })) return t('validation.min-length', { length: 3 })
-        if (!max(value, { length: 30 })) return t('validation.max-length', { length: 30 })
-        if (!regex(value, { regex: regOnlyAlphanumericNoSpaces })) return t('validation.only-alpha-digits-no-spaces')
-
-        return true
+        return VSchemaCommon.nameValidation(value, 3, 30, true, regOnlyAlphanumericNoSpaces, t('validation.only-alpha-digits-no-spaces'))
     },
     uType:  ( value: number ): boolean | string => {
         if (!required(value)) return t('validation.required')
@@ -34,12 +29,7 @@ export const VSchemaUoM = {
 
 export const VSchemaUoMCat = {
     ucName: ( value: string ): boolean | string => {
-        if (!required(value)) return t('validation.required')
-        if (!min(value, { length: 3 })) return t('validation.min-length', { length: 3 })
-        if (!max(value, { length: 30 })) return t('validation.max-length', { length: 30 })
-        if (!regex(value, { regex: regOnlyAlphanumericNoSpaces })) return t('validation.only-alpha-digits-no-spaces')
-
-        return true
-    }
+        return VSchemaCommon.nameValidation(value, 3, 30, true, regOnlyAlphanumericNoSpaces, t('validation.only-alpha-digits-no-spaces'))
+    },
 }
 

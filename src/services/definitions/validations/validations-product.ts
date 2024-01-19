@@ -1,6 +1,10 @@
 import { i18n } from '@/services/i18n'
 import { max, min, regex, required } from '@vee-validate/rules'
-import { regOnlyAlphanumNSpacesWithDotsNHyphen, VSchemaCommon } from '@/services/definitions/validations/validations-commons'
+import {
+    regOnlyAlphanumericNoSpaces,
+    regOnlyAlphanumNSpacesWithDotsNHyphen,
+    VSchemaCommon
+} from '@/services/definitions/validations/validations-commons'
 
 
 const { t } = i18n.global
@@ -10,12 +14,7 @@ const { t } = i18n.global
  */
 export const VSchemaProduct = {
     pName:              ( value: string ): boolean | string => {
-        if (!required(value)) return t('validation.required')
-        if (!min(value, { length: 3 })) return t('validation.min-length', { length: 3 })
-        if (!max(value, { length: 36 })) return t('validation.max-length', { length: 36 })
-        if (!regex(value, { regex: regOnlyAlphanumNSpacesWithDotsNHyphen })) return t('validation.only-alpha-digits-underscore-dots-spaces')
-
-        return true
+        return VSchemaCommon.nameValidation(value, 3, 36, true, regOnlyAlphanumNSpacesWithDotsNHyphen, t('validation.only-alpha-digits-underscore-dots-spaces'))
     },
     noteSell:           ( value: string ): boolean | string => {return VSchemaCommon.notes(value, 3, 200, false)},
     notePurchase:       ( value: string ): boolean | string => {return VSchemaCommon.notes(value, 3, 200, false)},
@@ -35,11 +34,7 @@ export const VSchemaProduct = {
  */
 export const VSchemaPSL = {
     supplierCode: ( value: string ): boolean | string => {
-        if (!min(value, { length: 3 })) return t('validation.min-length', { length: 3 })
-        if (!max(value, { length: 30 })) return t('validation.max-length', { length: 30 })
-        if (!regex(value, { regex: regOnlyAlphanumNSpacesWithDotsNHyphen })) return t('validation.only-alpha-digits-underscore-dots-spaces')
-
-        return true
+        return VSchemaCommon.nameValidation(value, 3, 36, false, regOnlyAlphanumNSpacesWithDotsNHyphen, t('validation.only-alpha-digits-underscore-dots-spaces'))
     },
     sPrice:       ( value: string ): boolean | string => {return VSchemaCommon.numerical(value, 0, 500000000, false, true)},
     sTax:  ( value: string ): boolean | string => {return VSchemaCommon.numerical(value, 0, 100, true, false)}
