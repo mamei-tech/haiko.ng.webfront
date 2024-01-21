@@ -213,20 +213,22 @@ export default defineComponent({
             // ❗❗ we do this as a exploit, regarding to the fact possibly there is no more than 10 roles defined
             // in the system
             if (cpt_fMode.value === FMODE.EDIT as TFormMode) {
-                const role = st_rbac.entityPage.filter(r => r.id === roleId)[0]        // getting the role from pinia store
+                const role = st_rbac.entityPage.find(r => r.id === roleId)        // getting the role from pinia store
 
-                // this is so the form does not appear as dirty
-                // https://vee-validate.logaretm.com/v4/guide/components/handling-forms/ | resetting the form
-                resetForm({
-                    values: {
-                        ...role,
-                        permsToGrant: [],                                           // we don't fill this data at this moment, we handle it apart with the permByGroup and perm2mod refs
-                        permsToRemove: [],                                          // we don't fill this data at this moment, we handle it apart with the permByGroup and perm2mod refs
-                    },
-                    errors:{},
-                })
-                // iniFormData.value = {... role}                                   // this is an alternative, but vee-validate will see the form as dirty
-                // setValues(role)                                                  // this is an alternative, but vee-validate will see the form as dirty
+                if(role != undefined) {
+                    // this is so the form does not appear as dirty
+                    // https://vee-validate.logaretm.com/v4/guide/components/handling-forms/ | resetting the form
+                    resetForm({
+                        values: {
+                            ...role,
+                            permsToGrant: [],                                           // we don't fill this data at this moment, we handle it apart with the permByGroup and perm2mod refs
+                            permsToRemove: [],                                          // we don't fill this data at this moment, we handle it apart with the permByGroup and perm2mod refs
+                        },
+                        errors:{},
+                    })
+                    // iniFormData.value = {... role}                                   // this is an alternative, but vee-validate will see the form as dirty
+                    // setValues(role)                                                  // this is an alternative, but vee-validate will see the form as dirty
+                }
             }
 
             // keyboard keys event handler, we need to clean this kind of event when the component are destroyed

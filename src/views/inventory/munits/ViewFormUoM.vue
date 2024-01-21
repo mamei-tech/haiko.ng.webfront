@@ -160,25 +160,27 @@ export default defineComponent({
         onMounted(async () => {
 
             if (cpt_fMode.value === FMODE.EDIT as TFormMode) {
-                const uomCat = st_uom.entityPage.filter(uc => uc.id === +id)[0]        // getting the uom cat from pinia store
+                const uomCat = st_uom.entityPage.find(uc => uc.id === +id)        // getting the uom cat from pinia store
 
                 // it is needed here 'cause we keep two collection of the list of uom
-                iniFormData.value = {
-                    ...uomCat,
-                    units: [ ...uomCat == undefined ? [] : uomCat.units ],
-                    unitsToDelete: []
+                if (uomCat != undefined) {
+                    iniFormData.value = {
+                        ...uomCat,
+                        units:         [ ...uomCat.units ],
+                        unitsToDelete: []
+                    }
+
+                    // ❗❗❗ we have to use the spread operator here to prevent the array of units it's being copied by reference, and reflect the changes in the store
+
+                    // this is so the form does not appear as dirty
+                    // also, this will sync the 'units' && 'unitsToDelete' fields with 'iniFormData.value.units' and 'iniFormData.value.unitsToDelete' respectively.
+                    // as javascript pass the values as reference
+                    // https://vee-validate.logaretm.com/v4/guide/components/handling-forms/ | resetting the form
+                    resetForm({
+                        values: { ...uomCat, units: iniFormData.value.units, unitsToDelete: iniFormData.value.unitsToDelete },
+                        errors: {}
+                    })
                 }
-
-                // ❗❗❗ we have to use the spread operator here to prevent the array of units it's being copied by reference, and reflect the changes in the store
-
-                // this is so the form does not appear as dirty
-                // also, this will sync the 'units' && 'unitsToDelete' fields with 'iniFormData.value.units' and 'iniFormData.value.unitsToDelete' respectively.
-                // as javascript pass the values as reference
-                // https://vee-validate.logaretm.com/v4/guide/components/handling-forms/ | resetting the form
-                resetForm({
-                    values: { ...uomCat, units: iniFormData.value.units, unitsToDelete: iniFormData.value.unitsToDelete },
-                    errors: {}
-                })
             }
 
             // keyboard keys event handler, we need to clean this kind of event when the component are destroyed

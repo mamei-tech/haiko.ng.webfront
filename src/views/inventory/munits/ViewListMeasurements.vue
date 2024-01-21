@@ -15,8 +15,8 @@
                         :has-search="false"
                         :has-page-size-selector="false"
 
-                        @navCreateIntent="h_navCreateUoMCatIntent"
-                        @editIntent="h_navEditUoMCatIntent"
+                        @navCreateIntent="nav_createUoMCatIntent"
+                        @editIntent="nav_editUoMCatIntent"
                         @deleteIntent="h_intentRowDelete"
           >
           </CmpDataTable>
@@ -125,6 +125,30 @@ export default defineComponent({
             router.push({ name: RoutePathNames.hub });
         }
 
+        const nav_createUoMCatIntent = (): void => {
+            router.push({
+                name:   RoutePathNames.muCreate,
+                params: {
+                    fmode: FMODE.CREATE as TFormMode
+                    // id   : '', no need for passing ID on creation mode
+                }
+            })
+        }
+
+        /**
+         * Handler for the intent of edit a record from the table
+         * @param rowData data of the row
+         */
+        const nav_editUoMCatIntent = ( rowData: IDtoUoMCategory ): void => {
+            router.push({
+                name:   RoutePathNames.muEdit,
+                params: {
+                    fmode: FMODE.EDIT as TFormMode,
+                    id:    rowData.id
+                }
+            })
+        }
+
         //endregion ===========================================================================
 
         //#region ======= EVENTS HANDLERS & WATCHERS ==========================================
@@ -144,30 +168,6 @@ export default defineComponent({
             else dfyShowAlert(t('dialogs.title-alert-not-allowed'),  t('dialogs.cant-delete-default'))          // telling the user
         }
 
-        const h_navCreateUoMCatIntent = (): void => {
-            router.push({
-                name:   RoutePathNames.muCreate,
-                params: {
-                    fmode: FMODE.CREATE as TFormMode
-                    // id   : '', no need for passing ID on creation mode
-                }
-            })
-        }
-
-        /**
-         * Handler for the intent of edit a record from the table
-         * @param rowData data of the row
-         */
-        const h_navEditUoMCatIntent = ( rowData: IDtoUoMCategory ): void => {
-            router.push({
-                name:   RoutePathNames.muEdit,
-                params: {
-                    fmode: FMODE.EDIT as TFormMode,
-                    id:    rowData.id
-                }
-            })
-        }
-
         //#endregion ==========================================================================
 
         return {
@@ -178,8 +178,8 @@ export default defineComponent({
             columns,
 
             h_intentRowDelete,
-            h_navEditUoMCatIntent,
-            h_navCreateUoMCatIntent
+            nav_editUoMCatIntent,
+            nav_createUoMCatIntent
         }
     }
 

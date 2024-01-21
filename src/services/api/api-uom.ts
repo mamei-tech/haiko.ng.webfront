@@ -35,7 +35,7 @@ export class ApiUoM {
      * @param payload
      */
     public static async updateUoMCat( payload: IDtoUoMCategory ): Promise<void> {
-        return axios.put(url, payload)
+        return axios.put(url + `/category`, payload)
     }
 
     /**

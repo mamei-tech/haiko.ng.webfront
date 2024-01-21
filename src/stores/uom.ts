@@ -49,10 +49,17 @@ export const useSt_UoM = defineStore({
 
         /**
          * Update the local store with the edited UoM Cat data
+         * @param updateMode Set the logic of the method for update the uom store after a backend / server uom update
          * @param payload UoM Cat data to be updated
          */
-        mutUpdateUoMList( payload: IDtoUoMCategory ): void {
-            this.entityPage.push(payload)               // with Vue3 we can do it this way too
+        mutUpdateUoMList( payload: IDtoUoMCategory, updateMode:boolean = false ): void {
+            if (!updateMode) this.entityPage.push(payload)
+            else {
+                this.entityPage = this.entityPage.map(( cat: IDtoUoMCategory ) => {
+                    if(cat.id !== payload.id) return cat
+                    return payload
+                })
+            }
         },
 
         // --- server async calls actions ---
@@ -90,7 +97,7 @@ export const useSt_UoM = defineStore({
                 ApiUoM.updateUoMCat(payload)
                 .then((response:any) => {
 
-                    this.mutUpdateUoMList(payload)                      // mutating / updating the local store so we don't need to request to the server
+                    this.mutUpdateUoMList(response.data, true)                     // mutating / updating the local store so we don't need to request to the server
                     resolve(response.data)
                 })
                 .catch(error => {reject(error)})
