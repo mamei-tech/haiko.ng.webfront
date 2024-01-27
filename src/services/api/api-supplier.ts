@@ -94,7 +94,7 @@ export class ApiSupplier {
     }
 
     /**
-     * Get formulary data information from server, pertaining to a SupplierCategory given its identifier
+     * Get formulary data information from the server about a SupplierCategory given its identifier
      * @param categoryId SupplierCategory identifier
      */
     public static reqSupplierCatById (categoryId: number): AxiosPromise<IDtoSupplierCat> {
@@ -102,12 +102,12 @@ export class ApiSupplier {
     }
 
     /**
-     * Get formulary data information from server, pertaining to a Supplier given its identifier.
+     * Get formulary data information from the server about a Warehouse given its identifier.
      * This is mostly used in form population
-     * @param supplierId Supplier identifier to look for
+     * @param warehouseId Warehouse identifier to look for
      */
-    public static reqSupplierById (supplierId: number): AxiosPromise<IDtoSupplier> {
-        return axios.get(url + `/${ supplierId }`)
+    public static reqSupplierById (warehouseId: number): AxiosPromise<IDtoSupplier> {
+        return axios.get(url + `/${ warehouseId }`)
     }
 
     /**
@@ -141,7 +141,7 @@ export class ApiSupplier {
     //#region ======= DATA READY METHODS ==================================================
 
     /**
-     * Tries to get formulary data information, pertaining to a Supplier given its identifier.
+     * Get formulary data information from the server about a Supplier given its identifier.
      * ❗ If information from server could not be obtained, an empty Entity will be returned then
      * This is mostly used in form population
      *
@@ -155,7 +155,7 @@ export class ApiSupplier {
     }
 
     /**
-     * Tries to get formulary data information, pertaining to a SupplierCategory given its identifier.
+     * Get formulary data information from the server about a SupplierCategory given its identifier.
      * ❗ If information from server could not be obtained, an empty Entity will be returned then
      * This is mostly used in form population
      * @param id SupplierCategory identifier

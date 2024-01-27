@@ -8,6 +8,7 @@
           <!-- card / form action bar -->
           <!--<template v-if="cpt_fMode === 'edit'" v-slot:card-actionbar>-->
           <template v-if="cpt_fMode === 'edit'" v-slot:card-actionbar>
+
             <button :title="$t('btn.tip-action-clone', {subject: $t('entities.product.name') } )"
                     style="float: right"
                     class="btn btn-icon btn-default ml-1"

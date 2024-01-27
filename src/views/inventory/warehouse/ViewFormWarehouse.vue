@@ -107,16 +107,25 @@
 import { computed, defineComponent, onBeforeUnmount, onMounted, reactive } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useForm } from 'vee-validate'
+import { i18n } from '@/services/i18n'
 import { useToast } from 'vue-toastification'
 import useFactory from '@/services/composables/useFactory'
 import useToastify from '@/services/composables/useToastify'
+import useDialogfy from '@/services/composables/useDialogfy'
 import { useSt_Nomenclatures } from '@/stores/nomenc'
-import { ENTITY_NAMES, FMODE, KEYS, OPS_KIND_STR, RoutePathNames, VSchemaWarehouse } from '@/services/definitions'
+import { ApiWarehouse } from '@/services/api/api-warehouse'
+import {
+    ENTITY_NAMES,
+    FMODE,
+    KEYS,
+    OPS_KIND_STR,
+    RoutePathNames,
+    VSchemaWarehouse
+} from '@/services/definitions'
 import { CmpCard, CmpFormActionsButton, CmpBasicInput, CmpCollapseItem, CmpBasicCheckbox, CmpBaseButton, CmpMultiselectField } from '@/components'
 
 import type { ComputedRef } from 'vue'
 import type { IDtoWarehouse, TFormMode } from '@/services/definitions'
-import { ApiWarehouse } from '@/services/api/api-warehouse'
 
 
 export default defineComponent({
@@ -134,6 +143,8 @@ export default defineComponent({
 
         //region ======= DECLARATIONS & LOCAL STATE ===========================================
 
+        const { t } = i18n.global
+
         const route = useRoute()
         const toast = useToast()                                                // The toast lib interface
         const router = useRouter()
@@ -142,14 +153,13 @@ export default defineComponent({
 
         const { fmode, id } = route.params                                      // remember, fmode (form mode) property denotes the mode this form view was called | checkout the type TFormMode in types definitions
 
-        // html references
-        // ...
+        const { dfyConfirmation, dfyShowAlert } = useDialogfy()
 
         const { mkWarehouse } = useFactory()
         const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
 
         const iniFormData = reactive<IDtoWarehouse>(mkWarehouse())              // initial form data
-        // let formDataFromServer: IDtoWarehouse | undefined = undefined      // aux variable to save entity data requested from the server
+        let formDataFromServer: IDtoWarehouse | undefined = undefined           // aux variable to save entity data requested from the server
 
         //endregion ===========================================================================
 
@@ -165,7 +175,22 @@ export default defineComponent({
         onMounted(async () => {
 
             try {await st_nomenclatures.reqNmcSuppliers()}
-            catch (err) {  }
+            catch (err) {}
+
+            if (cpt_fMode.value === FMODE.EDIT as TFormMode) {
+                try {
+                    formDataFromServer = (await ApiWarehouse.reqWarehouseById(+id)).data as IDtoWarehouse
+
+                    Object.assign(iniFormData, formDataFromServer)                          // shallow (primitive values only) copy of form data
+
+                    // setValues(formDataFromServer)
+                    resetForm({
+                        errors: {},
+                        values: { ...formDataFromServer }
+                    })
+                }
+                catch (err) {}
+            }
 
             // keyboard keys event handler, we need to clean this kind of event when the component are destroyed
             window.addEventListener('keydown', h_keyboardKeyPress)
@@ -205,6 +230,23 @@ export default defineComponent({
             .catch(err => tfyCRUDFail(err, ENTITY_NAMES.WAREHOUSE, OPS_KIND_STR.ADDITION))
         }
 
+        /**
+         * Action for edit the Warehouse
+         * @param editWarehouse object containing the edited information
+         * @param doWeNeedToStay This value, in this context, tells if the clicked button was the 'Applied' or the 'Save'
+         */
+        const a_edit  = ( editWarehouse: IDtoWarehouse, doWeNeedToStay: boolean ): void => {
+
+            ApiWarehouse.reqUpdateWarehouse(editWarehouse)
+            .then(() => {
+                tfyCRUDSuccess(ENTITY_NAMES.WAREHOUSE, OPS_KIND_STR.UPDATE, editWarehouse.wName)
+
+                // so now what ?
+                if(!doWeNeedToStay) nav_back()                                  // so we are going back to the data table
+
+            }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.WAREHOUSE, OPS_KIND_STR.UPDATE))
+        }
+
         //#endregion ==========================================================================
 
         //region ======= COMPUTATIONS & GETTERS ===============================================
@@ -240,7 +282,7 @@ export default defineComponent({
             // handling the submission with vee-validate method
             handleSubmit(formData => {
                 if (cpt_fMode.value == (FMODE.CREATE as TFormMode)) a_create(formData, doWeNeedToStay)
-                if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && meta.value.dirty) console.warn('formData, doWeNeedToStay')
+                if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && meta.value.dirty) a_edit(formData, doWeNeedToStay)
                 if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && !meta.value.dirty) nav_back()                                                  // was no changes (no dirty) with the data, so going back normally
             }).call(this)
         }

@@ -41,6 +41,24 @@ export class ApiWarehouse {
         return axios.get(url + '/page', { params: payload })
     }
 
+    /**
+     * Make the request to update the Warehouse entity data
+     *
+     * @param payload
+     */
+    public static reqUpdateWarehouse( payload: IDtoWarehouse ): AxiosPromise<void> {
+        return axios.put(url, payload)
+    }
+
+    /**
+     * Get formulary data information from the server about a to a Warehouse given its identifier.
+     * This is mostly used in form population
+     * @param warehouseId Warehouse identifier to look for
+     */
+    public static reqWarehouseById (warehouseId: number): AxiosPromise<IDtoWarehouse> {
+        return axios.get(url + `/${ warehouseId }`)
+    }
+
     //endregion ===========================================================================
 
     //#region ======= DATA READY METHODS ==================================================

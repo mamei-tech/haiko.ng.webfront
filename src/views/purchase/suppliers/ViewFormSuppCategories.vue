@@ -96,6 +96,7 @@ import { computed, defineComponent, onBeforeUnmount, onMounted, reactive } from 
 import { useRoute, useRouter } from 'vue-router'
 import { useForm } from 'vee-validate'
 import { useToast } from 'vue-toastification'
+import { i18n } from '@/services/i18n'
 import useFactory from '@/services/composables/useFactory'
 import useToastify from '@/services/composables/useToastify'
 import useDialogfy from '@/services/composables/useDialogfy'
@@ -106,7 +107,6 @@ import { CmpCard, CmpFormActionsButton, CmpBasicInput, CmpCollapseItem, CmpBasic
 
 import type { ComputedRef } from 'vue'
 import type { IDtoSupplierCat, TFormMode } from '@/services/definitions'
-import { i18n } from '@/services/i18n'
 
 
 export default defineComponent({

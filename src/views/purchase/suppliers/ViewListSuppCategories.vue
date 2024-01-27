@@ -15,8 +15,8 @@
 
                         @requestIntent="h_reqQuery"
 
-                        @navCreateIntent="h_navCreateSuppCatIntent"
-                        @editIntent="h_navEditSuppCatIntent"
+                        @navCreateIntent="nav_createSuppCatIntent"
+                        @editIntent="nav_editSuppCatIntent"
                         @deleteIntent="h_intentRowDelete"
 
                         @enableIntent=""
@@ -160,11 +160,7 @@ export default defineComponent({
             router.push({ name: RoutePathNames.hub });
         }
 
-        //endregion ===========================================================================
-
-        //#region ======= EVENTS HANDLERS & WATCHERS ==========================================
-
-        const h_navCreateSuppCatIntent = (): void => {
+        const nav_createSuppCatIntent = (): void => {
             router.push({
                 name:   RoutePathNames.supplierCatCreate,
                 params: {
@@ -178,7 +174,7 @@ export default defineComponent({
          * Handler for the intent of edit a record from the table
          * @param rowData data of the row
          */
-        const h_navEditSuppCatIntent = ( rowData: ISupplierCatRow ): void => {
+        const nav_editSuppCatIntent = ( rowData: ISupplierCatRow ): void => {
             router.push({
                 name:   RoutePathNames.supplierCatEdit,
                 params: {
@@ -187,6 +183,10 @@ export default defineComponent({
                 }
             })
         }
+
+        //endregion ===========================================================================
+
+        //#region ======= EVENTS HANDLERS & WATCHERS ==========================================
 
         function h_reqQuery( _: IDataTableQuery ) {
             a_reqQuery()
@@ -217,8 +217,9 @@ export default defineComponent({
 
             h_reqQuery,
             h_intentRowDelete,
-            h_navEditSuppCatIntent,
-            h_navCreateSuppCatIntent,
+
+            nav_editSuppCatIntent,
+            nav_createSuppCatIntent,
         }
     }
 

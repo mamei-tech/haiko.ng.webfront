@@ -15,8 +15,8 @@
                         :has-search="false"
                         :has-page-size-selector="false"
 
-                        @navCreateIntent="h_navCreate"
-                        @editIntent="h_navEdit"
+                        @navCreateIntent="nav_createIntent"
+                        @editIntent="nav_editIntent"
                         @deleteIntent="h_intentRowDelete"
           >
           </CmpDataTable>
@@ -145,18 +145,7 @@ export default defineComponent({
             router.push({ name: RoutePathNames.hub });
         }
 
-        //endregion ===========================================================================
-
-        //#region ======= EVENTS HANDLERS & WATCHERS ==========================================
-
-        const h_keyboardKeyPress = ( evt: any ) => {
-            if (evt.key === KEYS.ESCAPE) nav_2Hub()
-        }
-
-        const h_intentRowDelete = async ( entityId: number ): Promise<void> => {
-        }
-
-        const h_navCreate = (): void => {
+        const nav_createIntent = (): void => {
             router.push({
                 name:   RoutePathNames.warehouseCreate,
                 params: {
@@ -170,7 +159,26 @@ export default defineComponent({
          * Handler for the intent of edit a record from the table
          * @param rowData data of the row
          */
-        const h_navEdit = ( rowData: IWarehouseRow ): void => {
+        const nav_editIntent = ( rowData: IWarehouseRow ): void => {
+            router.push({
+                name:   RoutePathNames.warehouseEdit,
+                params: {
+                    fmode: FMODE.EDIT as TFormMode,
+                    id   : rowData.id
+                }
+            })
+        }
+
+        //endregion ===========================================================================
+
+        //#region ======= EVENTS HANDLERS & WATCHERS ==========================================
+
+        const h_keyboardKeyPress = ( evt: any ) => {
+            if (evt.key === KEYS.ESCAPE) nav_2Hub()
+        }
+
+        const h_intentRowDelete = async ( entityId: number ): Promise<void> => {
+            console.error('not implemented')
         }
 
         //#endregion ==========================================================================
@@ -183,8 +191,9 @@ export default defineComponent({
             ls_warehouses,
 
             h_intentRowDelete,
-            h_navEdit,
-            h_navCreate
+
+            nav_editIntent,
+            nav_createIntent
         }
     }
 

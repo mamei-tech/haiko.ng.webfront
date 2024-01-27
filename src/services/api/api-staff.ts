@@ -74,7 +74,7 @@ export class ApiStaff {
     }
 
     /**
-     * Get formulary data information from server, pertaining to a Staff given its identifier
+     * Get formulary data information from the server about a Staff given its identifier
      * @param id staff identifier
      */
     public static reqStaffById (id: number): AxiosPromise<IDtoStaff> {
@@ -104,7 +104,7 @@ export class ApiStaff {
     //#region ======= DATA READY METHODS ==================================================
 
     /**
-     * Tries to get formulary data information, pertaining to a Staff given its identifier.
+     * Get formulary data information from the server about a Staff given its identifier.
      * ❗ If information from server could not be obtained, an empty Entity will be returned then
      *
      * @param id staff identifier
