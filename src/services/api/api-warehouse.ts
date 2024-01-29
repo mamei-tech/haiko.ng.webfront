@@ -59,6 +59,14 @@ export class ApiWarehouse {
         return axios.get(url + `/${ warehouseId }`)
     }
 
+    /**
+     * Invoke an api call to delete a Warehouse from the server
+     * @param warehouseId Warehouse identifier to delete
+     */
+    public static reqDeleteWarehouse (warehouseId: number): AxiosPromise<void> {
+        return axios.delete(url + `/${ warehouseId }`)
+    }
+
     //endregion ===========================================================================
 
     //#region ======= DATA READY METHODS ==================================================

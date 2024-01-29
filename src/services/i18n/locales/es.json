@@ -106,7 +106,7 @@
         "title-alert":                    "Atención",
         "title-alert-not-allowed":        "No permitido",
         "confirm":                        "Por favor, confirme",
-        "confirmation":                   "¿ Está seguro que desea {action} {plural} {subject} ?",
+        "confirmation":                   "¿ Desea {action} {plural} {subject} ?",
         "img-rm-alert":                   "Ha eliminado la imagen de perfil. Si a continuación aplica los cambios, la imagen se eliminará de forma permanente",
         "cant-delete-default":            "No se pueden eliminar las entidades por defecto.",
         "cant-mod-default":               "No se pueden modificar las entidades por defecto.",
@@ -114,7 +114,8 @@
         "supp-cat-del-confirmation":      "Considere que esta acción asignará a la categoría por defecto a todos los proveedores asociados a esta categoría.",
         "product-invalid-supp-assoc":     "No se permiten 2 asociaciones del mismo proveedor con el mismo precio. Verifique la lista de proveedores en la sección de Compras",
         "product-supp-assoc-most-select": "Debe seleccionar el nombre de un proveedor para cada fila presente en la sección de compras.",
-        "prod-remove-warning":            "❗ Otros datos relacionados también serán eliminados (ej. asociación con proveedores, ...)"
+        "prod-remove-warning":            "❗ Otros datos relacionados también serán eliminados (ej. asociación con proveedores, ...)",
+        "warehouse-remove-warning":       "❗ No podrá eliminar el almacén si tiene operaciones asociadas"
     },
     "toasts":        {
         "auth-fail-4xx":         "Credenciales inválidas.",

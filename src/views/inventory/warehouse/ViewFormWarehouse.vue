@@ -115,6 +115,7 @@ import useDialogfy from '@/services/composables/useDialogfy'
 import { useSt_Nomenclatures } from '@/stores/nomenc'
 import { ApiWarehouse } from '@/services/api/api-warehouse'
 import {
+    ACTION_KIND_STR,
     ENTITY_NAMES,
     FMODE,
     KEYS,
@@ -247,6 +248,20 @@ export default defineComponent({
             }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.WAREHOUSE, OPS_KIND_STR.UPDATE))
         }
 
+        /**
+         * Request the deletion of a warehouse
+         * @param warehouseId warehouse identifier
+         * @param ref Subject Entity reference e.g identifier, name or something like that
+         */
+        const a_delete = async (warehouseId: number, ref: undefined | string = undefined ): Promise<void> => {
+            ApiWarehouse.reqDeleteWarehouse(warehouseId)
+            .then(() => {
+                tfyCRUDSuccess(ENTITY_NAMES.WAREHOUSE, OPS_KIND_STR.DELETION, ref)
+                nav_back()
+            })
+            .catch(error => tfyCRUDFail(error, ENTITY_NAMES.WAREHOUSE, OPS_KIND_STR.DELETION, ref))
+        }
+
         //#endregion ==========================================================================
 
         //region ======= COMPUTATIONS & GETTERS ===============================================
@@ -288,7 +303,10 @@ export default defineComponent({
         }
 
         const h_delete = async ( evt: any ) => {
-            console.error('delete')
+            if (cpt_fMode.value !== FMODE.EDIT as TFormMode) return
+
+            const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.WAREHOUSE, iniFormData.wName, t('dialogs.warehouse-remove-warning'))
+            if(wasConfirmed) await a_delete (iniFormData.id, iniFormData.wName)
         }
 
         const h_keyboardKeyPress = ( evt: any ) => {
