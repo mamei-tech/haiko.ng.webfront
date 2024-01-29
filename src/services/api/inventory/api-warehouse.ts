@@ -1,4 +1,4 @@
-import axios from './api'
+import axios from '../api'
 import appConfig from '@/configs/app.conf'
 
 import type { AxiosPromise } from 'axios'
@@ -6,7 +6,7 @@ import type { IDataTableQuery, IDataTablePage, IWarehouseRow, IDtoWarehouse } fr
 
 
 const version = appConfig.server.current_version
-const url = `v${ version }/mngmt/cmwarehouse`
+const url = `v${ version }/inventory/cwarehouse`
 
 /***
  * REST API class for backend interaction logic related with Warehouse

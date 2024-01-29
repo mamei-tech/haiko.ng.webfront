@@ -36,7 +36,7 @@ import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 import useToastify from '@/services/composables/useToastify'
 import useDialogfy from '@/services/composables/useDialogfy'
-import { ApiSupplier } from '@/services/api/api-supplier'
+import { ApiSupplier } from '@/services/api/purchase/api-supplier'
 import { CmpCard, CmpDataTable } from '@/components'
 import { useSt_Pagination } from '@/stores/pagination'
 import {

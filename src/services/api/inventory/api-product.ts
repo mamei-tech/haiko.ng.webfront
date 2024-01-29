@@ -1,4 +1,4 @@
-import axios from './api'
+import axios from '../api'
 import appConfig from '@/configs/app.conf'
 import { HTTP_HEADER_FORM_DATA, HTTP_RESPONSES } from '@/services/definitions'
 import useFactory from '@/services/composables/useFactory'
@@ -10,7 +10,7 @@ import type { IDataTableQuery, IDataTablePage, IStaffRow, IDtoProduct, IDtoProdu
 
 
 const version = appConfig.server.current_version
-const url = `v${ version }/mngmt/cmproduct`
+const url = `v${ version }/inventory/cproduct`
 
 const { mkProduct } = useFactory()
 const { toFormData, toFormDataR } = useCommon()

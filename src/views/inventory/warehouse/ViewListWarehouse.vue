@@ -44,7 +44,7 @@ import {
     DT_ACTION_BUTTON_MODE, KEYS
 } from '@/services/definitions'
 import { CmpCard, CmpDataTable } from '@/components'
-import { ApiWarehouse } from '@/services/api/api-warehouse'
+import { ApiWarehouse } from '@/services/api/inventory/api-warehouse'
 import { useSt_Pagination } from '@/stores/pagination'
 
 import type { TFormMode, IColumnHeader, IDataTableQuery, IWarehouseRow } from '@/services/definitions'

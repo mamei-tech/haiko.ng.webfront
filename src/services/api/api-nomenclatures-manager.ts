@@ -6,7 +6,7 @@ import type { ICountryBasic, ICountryStatesBasic, IRoleBasic, ISuppCatBasic, IPr
 
 
 const version = appConfig.server.current_version
-const url = `v${ version }/mngmt/cmnomenclators`
+const url = `v${ version }/common/cnomenclatures`
 
 /***
  * REST API class for backend interaction logic related with Nomenclatures at manager level

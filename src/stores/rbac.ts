@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { useSt_Pagination } from '@/stores/pagination'
-import { ApiRbac } from '@/services/api/api-rbac'
+import { ApiRbac } from '@/services/api/people/api-rbac'
 
 import type { IDtoRole, IdsArray } from '@/services/definitions'
 

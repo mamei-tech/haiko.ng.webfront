@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { useSt_Nomenclatures } from '@/stores/nomenc'
 import { useSt_Pagination } from '@/stores/pagination'
-import { ApiStaff } from '@/services/api/api-staff'
+import { ApiStaff } from '@/services/api/people/api-staff'
 import { IsEmptyObj, isNumber } from '@/services/helpers/help-defaults'
 
 import type { IStaffRow, IdsArray } from '@/services/definitions'

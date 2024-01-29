@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { useSt_Pagination } from '@/stores/pagination'
-import { ApiUoM } from '@/services/api/api-uom'
+import { ApiUoM } from '@/services/api/inventory/api-uom'
 
 import type { IDtoUoMCategory } from '@/services/definitions'
 

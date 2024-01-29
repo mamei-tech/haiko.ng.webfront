@@ -619,7 +619,7 @@ import useFactory from '@/services/composables/useFactory'
 import useToastify from '@/services/composables/useToastify'
 import useDialogfy from '@/services/composables/useDialogfy'
 import useNumeric from '@/services/composables/useNumeric'
-import { ApiProduct } from '@/services/api/api-product'
+import { ApiProduct } from '@/services/api/inventory/api-product'
 import { useSt_Nomenclatures } from '@/stores/nomenc'
 import { VSchemaProduct } from '@/services/definitions/validations/validations-product'
 

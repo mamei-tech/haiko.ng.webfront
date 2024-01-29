@@ -1,4 +1,4 @@
-import axios from './api'
+import axios from '../api'
 import appConfig from '@/configs/app.conf'
 import { HTTP_RESPONSES } from '@/services/definitions'
 
@@ -8,7 +8,7 @@ import type { IPermAssocId } from '@/services/definitions/entities/types-rbac'
 
 
 const version = appConfig.server.current_version
-const url = `v${ version }/mngmt/cmrbac`
+const url = `v${ version }/people/crbac`
 
 /***
  * REST API class for backend interaction logic related with Nomenclatures at manager level

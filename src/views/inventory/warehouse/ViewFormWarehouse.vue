@@ -113,7 +113,7 @@ import useFactory from '@/services/composables/useFactory'
 import useToastify from '@/services/composables/useToastify'
 import useDialogfy from '@/services/composables/useDialogfy'
 import { useSt_Nomenclatures } from '@/stores/nomenc'
-import { ApiWarehouse } from '@/services/api/api-warehouse'
+import { ApiWarehouse } from '@/services/api/inventory/api-warehouse'
 import {
     ACTION_KIND_STR,
     ENTITY_NAMES,

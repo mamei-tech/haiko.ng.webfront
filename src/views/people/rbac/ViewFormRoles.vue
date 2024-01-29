@@ -122,7 +122,7 @@ import { CmpCard, CmpFormActionsButton, CmpBasicInput, CmpCollapseItem, CmpBasic
 import useFactory from '@/services/composables/useFactory'
 import useToastify from '@/services/composables/useToastify'
 import useDialogfy from '@/services/composables/useDialogfy'
-import { ApiRbac } from '@/services/api/api-rbac'
+import { ApiRbac } from '@/services/api/people/api-rbac'
 import {
     ACTION_KIND_STR,
     ENTITY_NAMES,
