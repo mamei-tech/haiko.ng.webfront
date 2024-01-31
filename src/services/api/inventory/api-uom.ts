@@ -18,7 +18,7 @@ export class ApiUoM {
      */
     public static getPage(): AxiosPromise<IDataTablePage<IDtoUoMCategory>> {
 
-        return axios.get(url + '/page', {})
+        return axios.get(`${url}/page`, {})
     }
 
     /**

@@ -32,7 +32,7 @@ export class ApiRbac {
             ...queryParams.Filters
         }
 
-        return axios.get(url + '/page', { params: payload })
+        return axios.get(`${url}/page`, { params: payload })
     }
 
     /**

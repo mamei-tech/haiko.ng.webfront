@@ -37,7 +37,7 @@ export class ApiProduct {
             ...queryParams.Filters
         }
 
-        return axios.get(url + '/page', { params: payload })
+        return axios.get(`${url}/page`, { params: payload })
     }
 
     /**
