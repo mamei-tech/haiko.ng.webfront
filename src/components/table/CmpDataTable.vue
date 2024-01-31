@@ -1,53 +1,53 @@
 <template>
 
-    <!-- BUTTONS BAR -->
-    <template v-if="hasTopBtnBar">
-        <!-- If you need another direction of action bar function create a dynamic component here -->
-        <CmpTableActionBar
-                :subject="this.$props.subject"
-                :mode="abar_mode"
-                :chkCount="Object.keys(ls_selections.selected).length"
-                :extendedFilters="ls_extFilters"
-                v-on:navCreateIntent="$emit('navCreateIntent')"
-                v-on:enableChkCollIntent="h_EnableChkCollection"
-                v-on:disableChkCollIntent="h_DisableChkCollection"
-                v-on:removeChkCollIntent="h_RemoveChkCollection"
-                v-on:extFilClick="h_extFilter"
+  <!-- BUTTONS BAR -->
+  <template v-if="hasTopBtnBar">
+    <!-- If you need another direction of action bar function create a dynamic component here -->
+    <CmpTableActionBar
+        :subject="this.$props.subject"
+        :mode="abar_mode"
+        :chkCount="Object.keys(ls_selections.selected).length"
+        :extendedFilters="ls_extFilters"
+        v-on:navCreateIntent="$emit('navCreateIntent')"
+        v-on:enableChkCollIntent="h_EnableChkCollection"
+        v-on:disableChkCollIntent="h_DisableChkCollection"
+        v-on:removeChkCollIntent="h_RemoveChkCollection"
+        v-on:extFilClick="h_extFilter"
+    />
+  </template>
+
+  <!-- SEARCH & PAGE SIZE BAR -->
+  <template v-if="hasPageSizeSelector || hasSearch">
+    <div class="table-action-bars col-12 d-flex justify-content-center justify-content-sm-between flex-wrap">
+      <!-- TABLE PAGE SIZE -->
+      <div class="select-primary mb-3 m-1 pagination-select row" v-if="hasPageSizeSelector">
+        <multiselect
+            v-model="pageSizeOptions.value"
+            id="table-page-size"
+            v-if="data.length > 0"
+            name="page_size"
+            closeOnSelect
+            placeholder="10"
+            :options="pageSizeOptions"
+            style="width:100px"
+            @change="h_pageSizeChange($event)"
         />
-    </template>
+      </div>
 
-    <!-- SEARCH & PAGE SIZE BAR -->
-    <template v-if="hasPageSizeSelector || hasSearch">
-        <div class="table-action-bars col-12 d-flex justify-content-center justify-content-sm-between flex-wrap">
-            <!-- TABLE PAGE SIZE -->
-            <div class="select-primary mb-3 m-1 pagination-select row" v-if="hasPageSizeSelector">
-                <multiselect
-                        v-model="pageSizeOptions.value"
-                        id="table-page-size"
-                        v-if="data.length > 0"
-                        name="page_size"
-                        closeOnSelect
-                        placeholder="10"
-                        :options="pageSizeOptions"
-                        style="width:100px"
-                        @change="h_pageSizeChange($event)"
-                />
-            </div>
-
-            <!-- SEARCH INPUT -->
-            <div class="form-group has-icon" v-if="hasSearch">
-                <div class="mb-0 input-group">
-                    <div v-if="cpt_isAnyFilerActive " class="pr-3 justify-content-left">
-                        <button
-                                @click.prevent="h_clearAllFilters()"
-                                type="button"
-                                :title="$t('form.placeholders.reset-filters')"
-                                class="btn remove btn-icon btn-sm"
-                        >
-                            <i class="tim-icons icon-refresh-01"></i>
-                        </button>
-                    </div>
-                    <span class="input-group-prepend" @click="h_doRequest">
+      <!-- SEARCH INPUT -->
+      <div class="form-group has-icon" v-if="hasSearch">
+        <div class="mb-0 input-group">
+          <div v-if="cpt_isAnyFilerActive " class="pr-3 justify-content-left">
+            <button
+                @click.prevent="h_clearAllFilters()"
+                type="button"
+                :title="$t('form.placeholders.reset-filters')"
+                class="btn remove btn-icon btn-sm"
+            >
+              <i class="tim-icons icon-refresh-01"></i>
+            </button>
+          </div>
+          <span class="input-group-prepend" @click="h_doRequest">
                         <div class="input-group-text">
                             <i :class="cpt_searchHasText ? 'multiselect-clear multiselect-clear-icon' : 'tim-icons icon-zoom-split'"
                                @click="h_cleanInputSearch()"
@@ -55,285 +55,286 @@
                         </div>
                     </span>
 
-                    <!--With debaunce version for trigger the event for request the new data with the search criteria-->
-                    <!--<input v-model="search"-->
-                    <!--       class="form-control"-->
-                    <!--       type="text"-->
-                    <!--       :placeholder="cap('data.ph-search')"-->
-                    <!--       aria-describedby="addon-right addon-left"-->
-                    <!--       @input="debounceListener"-->
-                    <!--       @blur="h_onSrchBlursEvt($event)"-->
-                    <!--       @focus="h_onSrchFocusEvt($event)"                           -->
-                    <!--/>-->
+          <!--With debaunce version for trigger the event for request the new data with the search criteria-->
+          <!--<input v-model="search"-->
+          <!--       class="form-control"-->
+          <!--       type="text"-->
+          <!--       :placeholder="cap('data.ph-search')"-->
+          <!--       aria-describedby="addon-right addon-left"-->
+          <!--       @input="debounceListener"-->
+          <!--       @blur="h_onSrchBlursEvt($event)"-->
+          <!--       @focus="h_onSrchFocusEvt($event)"                           -->
+          <!--/>-->
 
-                    <input v-model="search"
-                           class="form-control"
-                           type="text"
-                           :placeholder="cap($t('form.placeholders.search'))"
-                           aria-describedby="addon-right addon-left"
-                           @blur="h_onSrchBlursEvt($event)"
-                           @focus="h_onSrchFocusEvt($event)"
-                           @keydown.enter="h_searchChange($event)"
-                    />
+          <input v-model="search"
+                 class="form-control"
+                 type="text"
+                 :placeholder="cap($t('form.placeholders.search'))"
+                 aria-describedby="addon-right addon-left"
+                 @blur="h_onSrchBlursEvt($event)"
+                 @focus="h_onSrchFocusEvt($event)"
+                 @keydown.enter="h_searchChange($event)"
+          />
 
-                </div>
-            </div>
         </div>
-    </template>
+      </div>
+    </div>
+  </template>
 
-    <!-- TABLE -->
-    <table v-if="data.length > 0" class="table table-responsive-sm" :class="cpt_tableClass">
-        <!-- TABLE HEADER -->
-        <thead :class="theadClasses">
-        <tr>
-            <template v-for="header in ls_columns" :key="header.title">
-                <!-- check all cell -->
-                <th v-if="header.chk" colspan="1" rowspan="1">
-                    <div class="form-check">
-                        <label class="form-check-label">
-                            <input
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    v-bind="$attrs"
-                                    :checked="ls_rootChkBoxState"
-                                    @change="h_ChkAllObjects($event)"
-                            />
-                            <span class="form-check-sign"></span>
-                        </label>
-                    </div>
-                </th>
+  <!-- TABLE -->
+  <table v-if="data.length > 0" class="table table-responsive-sm" :class="cpt_tableClass">
+    <!-- TABLE HEADER -->
+    <thead :class="theadClasses">
+    <tr>
+      <template v-for="header in ls_columns" :key="header.title">
+        <!-- check all cell -->
+        <th v-if="header.chk" colspan="1" rowspan="1">
+          <div class="form-check">
+            <label class="form-check-label">
+              <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-bind="$attrs"
+                  :checked="ls_rootChkBoxState"
+                  @change="h_ChkAllObjects($event)"
+              />
+              <span class="form-check-sign"></span>
+            </label>
+          </div>
+        </th>
 
-                <!-- normal header cell -->
-                <th v-else-if="!header.hidden"
-                    colspan="1"
-                    rowspan="1"
-                    :class="[
+        <!-- normal header cell -->
+        <th v-else-if="!header.hidden"
+            colspan="1"
+            rowspan="1"
+            :class="[
                             { 'text-right': header.styleToRight },
                             { 'text-left': header.styleToLeft },
                             { 'text-center': header.styleToCenter }
                         ]">
 
-                    <!-- printing the header with i18n -->
+          <!-- printing the header with i18n -->
 
-                    {{ header.title !== '' ? $t( 'table-headers["' + header.title + '"]' ) : '' }}
+          {{ header.title !== '' ? $t( 'table-headers["' + header.title + '"]' ) : '' }}
 
-                    <!-- some alternatives -->
-                    <!--{{ $t( 'table-headers.' + header.title ) }}-->
-                    <!--{{ $t( 'table-headers["' + header.title + '"]' ) }}-->
-                    <!-- {{ header.navKey ? $t("table-headers." + header.navKey) : $t("table-headers." + header.title) }} -->
+          <!-- some alternatives -->
+          <!--{{ $t( 'table-headers.' + header.title ) }}-->
+          <!--{{ $t( 'table-headers["' + header.title + '"]' ) }}-->
+          <!-- {{ header.navKey ? $t("table-headers." + header.navKey) : $t("table-headers." + header.title) }} -->
 
-                    <!-- printing the sorters carets -->
-                    <span @click.prevent="h_changeSort(header)"
-                          v-if="header.sorting || header.sorting === ''"
-                          class="caret-wrapper"
-                    >
+          <!-- printing the sorters carets -->
+          <span @click.prevent="h_changeSort(header)"
+                v-if="header.sorting || header.sorting === ''"
+                class="caret-wrapper"
+          >
                             <i class="fa fa-caret-up sorter" :class="{ active: header.sorting === 'ASC' }"></i>
                             <i class="fa fa-caret-down sorter" :class="{ active: header.sorting === 'DESC' }"></i>
                     </span>
-                </th>
-            </template>
-        </tr>
+        </th>
+      </template>
+    </tr>
 
-        <!-- Another row if field filters are specified -->
-        <tr v-if="headerFilters.length > 0">
-            <template v-for="(header, i) in ls_columns" :key="`filter-${header.title}`" class="text-center">
-                <!-- filter cases: checkbox || a fieldSwitch || a iconField with only 2 options -->
-                <th v-if="(header.chk || header.fieldSwitch || (header.iconField && header.iconMapValues?.length === 2 )) && headerFilters.includes(hpr_getNavKey(header))"
-                    colspan="1"
-                    rowspan="1"
-                    :style="[{ width: header.styleWidth + '%' }]">
-                    <div class="form-check text-center">
-                        <label class="form-check-label">
-                            <input class="form-check-input"
-                                   type="checkbox"
-                                   :checked="dtFilters[hpr_getNavKey(header)]"
-                                   v-model="dtFilters[hpr_getNavKey(header)]"
-                                   @click="hpr_setCheckBoxDirty($event)"
-                            />
-                            <span class="form-check-sign"></span>
-                        </label>
-                    </div>
-                </th>
-                <th v-else-if="headerFilters.includes(hpr_getNavKey(header)) && header.filterSelectOptions"
-                    colspan="1"
-                    rowspan="1"
-                    :style="[{ width: header.styleWidth + '%' }]"
-                >
-                    <div class="form-group input-group">
-                        <multiselect
-                                v-model="dtFilters[hpr_getNavKey(header)]"
-                                :options="header.filterSelectOptions"
-                                @change="hpr_lastSelectedSelectElem($event)"
-                                :ref=" el => { if (el) selectFilterListRef [i] = el; }"
-                        />
-                    </div>
-                </th>
-                <th v-else-if="!header.hidden"></th>
-            </template>
-        </tr>
-        </thead>
+    <!-- Another row if field filters are specified -->
+    <tr v-if="headerFilters.length > 0">
+      <template v-for="(header, i) in ls_columns" :key="`filter-${header.title}`" class="text-center">
+        <!-- filter cases: checkbox || a fieldSwitch || a iconField with only 2 options -->
+        <th v-if="(header.chk || header.fieldSwitch || (header.iconField && header.iconMapValues?.length === 2 )) && headerFilters.includes(hpr_getNavKey(header))"
+            colspan="1"
+            rowspan="1"
+            :style="[{ width: header.styleWidth + '%' }]">
+          <div class="form-check text-center">
+            <label class="form-check-label">
+              <input class="form-check-input"
+                     type="checkbox"
+                     :checked="dtFilters[hpr_getNavKey(header)]"
+                     v-model="dtFilters[hpr_getNavKey(header)]"
+                     @click="hpr_setCheckBoxDirty($event)"
+              />
+              <span class="form-check-sign"></span>
+            </label>
+          </div>
+        </th>
+        <th v-else-if="headerFilters.includes(hpr_getNavKey(header)) && header.filterSelectOptions"
+            colspan="1"
+            rowspan="1"
+            :style="[{ width: header.styleWidth + '%' }]"
+        >
+          <div class="form-group input-group">
+            <multiselect
+                :options="header.filterSelectOptions"
+                :ref=" el => { if (el) selectFilterListRef [i] = el; }"
+                v-model="dtFilters[hpr_getNavKey(header)]"
+                @change="hpr_lastSelectedSelectElem($event)"
+            />
+          </div>
+        </th>
+        <th v-else-if="!header.hidden"></th>
+      </template>
+    </tr>
+    </thead>
 
-        <!-- TABLE BODY -->
-        <tbody :class="tbodyClasses">
-        <tr v-for="(rowObj, rindex) in data" class="d-md-table-row" :key="rindex">
-            <template v-for="(header, hindex) in ls_columns" :key="hindex">
+    <!-- TABLE BODY -->
+    <tbody :class="tbodyClasses">
+    <tr v-for="(rowObj, rindex) in data" class="d-md-table-row" :key="rindex">
+      <template v-for="(header, hindex) in ls_columns" :key="hindex">
 
-                <!-- checkbox cell -->
-                <td v-if="header.chk === true" rowspan="1" colspan="1" :style="[{ width: header.styleWidth + '%' }]">
-                    <CmpTableChkbox :identifier="rowObj['id']"
-                                    :checked="ls_selections.selected[rowObj['id']]"
-                                    v-on:checkIntent="h_ChkObject"
+        <!-- checkbox cell -->
+        <td v-if="header.chk === true" rowspan="1" colspan="1" :style="[{ width: header.styleWidth + '%' }]">
+          <CmpTableChkbox :identifier="rowObj['id']"
+                          :checked="ls_selections.selected[rowObj['id']]"
+                          v-on:checkIntent="h_ChkObject"
 
-                                    :key="hindex + '' + rindex"
-                    />
-                </td>
+                          :key="hindex + '' + rindex"
+          />
+        </td>
 
-                <!-- switch / toggle mode for a cell -->
-                <td v-else-if="hpr_chkHasValue(rowObj, header) && !header.hidden && header.fieldSwitch"
-                    rowspan="1"
-                    colspan="1"
-                    :style="[{ width: header.styleWidth + '%' }]"
-                >
-                    <!-- main role -->
-                    <CmpCellSwitch :identifier="rowObj['id']"
-                                   :is-enable="hpr_getRowValue(rowObj, header)"
-                                   v-on:enableIntent="$emit('enableIntent', $event)"
-                                   v-on:disableIntent="$emit('disableIntent', $event)"
-                                   v-if="header.fieldSwitchRole !== undefined && header.fieldSwitchRole === 'main'"
-                                   :key="hindex + '' + rindex"
-                    />
+        <!-- switch / toggle mode for a cell -->
+        <td v-else-if="hpr_chkHasValue(rowObj, header) && !header.hidden && header.fieldSwitch"
+            rowspan="1"
+            colspan="1"
+            :style="[{ width: header.styleWidth + '%' }]"
+        >
+          <!-- main role -->
+          <CmpCellSwitch :identifier="rowObj['id']"
+                         :is-enable="hpr_getRowValue(rowObj, header)"
+                         v-on:enableIntent="$emit('enableIntent', $event)"
+                         v-on:disableIntent="$emit('disableIntent', $event)"
+                         v-if="header.fieldSwitchRole !== undefined && header.fieldSwitchRole === 'main'"
+                         :key="hindex + '' + rindex"
+          />
 
-                    <!-- secondary role | when we need two switches in the data-grid -->
-                    <CmpCellSwitch :identifier="rowObj['id']"
-                                   :is-enable="hpr_getRowValue(rowObj, header)"
-                                   v-on:enableIntent="$emit('enableIntentSecond', $event)"
-                                   v-on:disableIntent="$emit('disableIntentSecond', $event)"
-                                   v-else-if="header.fieldSwitchRole !== undefined && header.fieldSwitchRole === 'secondary'"
-                                   :key="hindex + '' + rindex"
-                    />
+          <!-- secondary role | when we need two switches in the data-grid -->
+          <CmpCellSwitch :identifier="rowObj['id']"
+                         :is-enable="hpr_getRowValue(rowObj, header)"
+                         v-on:enableIntent="$emit('enableIntentSecond', $event)"
+                         v-on:disableIntent="$emit('disableIntentSecond', $event)"
+                         v-else-if="header.fieldSwitchRole !== undefined && header.fieldSwitchRole === 'secondary'"
+                         :key="hindex + '' + rindex"
+          />
 
-                    <!-- default switch -->
-                    <CmpCellSwitch :identifier="rowObj['id']"
-                                   :is-enable="hpr_getRowValue(rowObj, header)"
-                                   v-on:enableIntent="$emit('enableIntent', $event)"
-                                   v-on:disableIntent="$emit('disableIntent', $event)"
-                                   v-else
-                                   :key="hindex + '' + rindex"
-                    />
-                </td>
+          <!-- default switch -->
+          <CmpCellSwitch :identifier="rowObj['id']"
+                         :is-enable="hpr_getRowValue(rowObj, header)"
+                         v-on:enableIntent="$emit('enableIntent', $event)"
+                         v-on:disableIntent="$emit('disableIntent', $event)"
+                         v-else
+                         :key="hindex + '' + rindex"
+          />
+        </td>
 
-                <!-- picture mode -->
-                <td v-else-if="hpr_chkHasValue(rowObj, header) && !header.hidden && header.fieldPicture"
-                    class="text-center"
-                    rowspan="1" colspan="1"
-                    :style="[{ width: header.styleWidth + '%' }]"
-                >
-                    <CmpTableCellPicture
-                            :type="PICTURE_TYPE_CELL.USER"
-                            :statics="configStatic"
-                            :picture="hpr_getRowValue( rowObj, header )"
-                            :key="hindex + '' + rindex"
-                    />
-                </td>
+        <!-- picture mode -->
+        <td v-else-if="hpr_chkHasValue(rowObj, header) && !header.hidden && header.fieldPicture"
+            class="text-center"
+            rowspan="1" colspan="1"
+            :style="[{ width: header.styleWidth + '%' }]"
+        >
+          <CmpTableCellPicture
+              :type="PICTURE_TYPE_CELL.USER"
+              :statics="configStatic"
+              :picture="hpr_getRowValue( rowObj, header )"
+              :key="hindex + '' + rindex"
+          />
+        </td>
 
-                <!-- color cell -->
-                <td v-else-if="hpr_chkHasValue(rowObj, header) && !header.hidden && header.fieldColor"
-                    rowspan="1"
-                    colspan="1"
-                    :class="[ { 'text-right': header.styleToRight }, { 'text-left': header.styleToLeft }, { 'text-center': header.styleToCenter } ]"
-                    :style="[{ width: header.styleWidth + '%' }, { color: hpr_getRowValue( rowObj, header ) + '!important' }]"
-                >
-                    {{ hpr_getRowValue( rowObj, header ) }}
-                </td>
+        <!-- color cell -->
+        <td v-else-if="hpr_chkHasValue(rowObj, header) && !header.hidden && header.fieldColor"
+            rowspan="1"
+            colspan="1"
+            :class="[ { 'text-right': header.styleToRight }, { 'text-left': header.styleToLeft }, { 'text-center': header.styleToCenter } ]"
+            :style="[{ width: header.styleWidth + '%' }, { color: hpr_getRowValue( rowObj, header ) + '!important' }]"
+        >
+          {{ hpr_getRowValue( rowObj, header ) }}
+        </td>
 
-                <!-- icon cell -->
-                <td v-else-if="hpr_chkHasValue(rowObj, header) && !header.hidden && header.iconField"
-                    rowspan="1"
-                    colspan="1"
-                    :class="[ { 'text-right': header.styleToRight }, { 'text-left': header.styleToLeft }, { 'text-center': header.styleToCenter } ]"
-                    :style="[{ width: header.styleWidth + '%' }]"
-                >
-                    <i :class="h_renderIconCell( rowObj, header )"></i>
-                </td>
+        <!-- icon cell -->
+        <td v-else-if="hpr_chkHasValue(rowObj, header) && !header.hidden && header.iconField"
+            rowspan="1"
+            colspan="1"
+            :class="[ { 'text-right': header.styleToRight }, { 'text-left': header.styleToLeft }, { 'text-center': header.styleToCenter } ]"
+            :style="[{ width: header.styleWidth + '%' }]"
+        >
+          <i :class="h_renderIconCell( rowObj, header )"></i>
+        </td>
 
-                <!-- list mode | UoM (listOPillsUoM)  version -->
-                <td v-else-if="hpr_chkHasValue(rowObj, header) && !header.hidden && header.listOPillsUoM"
-                    class="text-left"
-                    rowspan="1" colspan="1"
-                    :style="[{ width: header.styleWidth + '%' }]"
-                >
-                    <CmpCellListUoM :units="hpr_getRowValue( rowObj, header )"
-                                    :key="hindex + '' + rindex"
-                    />
-                </td>
+        <!-- list mode | UoM (listOPillsUoM)  version -->
+        <td v-else-if="hpr_chkHasValue(rowObj, header) && !header.hidden && header.listOPillsUoM"
+            class="text-left"
+            rowspan="1" colspan="1"
+            :style="[{ width: header.styleWidth + '%' }]"
+        >
+          <CmpCellListUoM :units="hpr_getRowValue( rowObj, header )"
+                          :key="hindex + '' + rindex"
+          />
+        </td>
 
-                <!-- normal mode | follow 3 modes: 2 editables (text & select) and 1 non editable normal text cell  -->
-                <!-- normal mode | normal editable cell -->
-                <CmpTableEditableCell v-else-if="hpr_chkHasValue(rowObj, header) && !header.hidden && header.cellEditable"
-                        :style="[{ width: header.styleWidth + '%' }]"
-                        :class="[ { 'text-right': header.styleToRight }, { 'text-left': header.styleToLeft }, { 'text-center': header.styleToCenter } ]"
+        <!-- normal mode | follow 3 modes: 2 editables (text & select) and 1 non editable normal text cell  -->
+        <!-- normal mode | normal editable cell -->
+        <CmpTableEditableCell v-else-if="hpr_chkHasValue(rowObj, header) && !header.hidden && header.cellEditable"
+                              :style="[{ width: header.styleWidth + '%' }]"
+                              :class="[ { 'text-right': header.styleToRight }, { 'text-left': header.styleToLeft }, { 'text-center': header.styleToCenter } ]"
 
-                        :cell-data="hpr_getRowValue( rowObj, header )"
-                        :ref-field="hpr_getNavKey(header)"
-                        :ref-id="rowObj.id ?? 0"
-                        :validation="header.cellEditableValidation ?? hpr_empty"
-                        :input-type="header.cellEditableInputType ?? 'text'"
+                              :cell-data="hpr_getRowValue( rowObj, header )"
+                              :ref-field="hpr_getNavKey(header)"
+                              :ref-id="rowObj.id ?? 0"
+                              :validation="header.cellEditableValidation ?? hpr_empty"
+                              :input-type="header.cellEditableInputType ?? 'text'"
 
-                        :align-tex-left="header.styleToLeft"
-                        :align-tex-right="header.styleToRight"
+                              :align-tex-left="header.styleToLeft"
+                              :align-tex-right="header.styleToRight"
 
-                        @fieldUpdateIntent="h_passCellUpdateEmission"
+                              @fieldUpdateIntent="h_passCellUpdateEmission"
 
-                        :key="hindex + '' + rindex"
-                />
+                              :key="hindex + '' + rindex"
+        />
 
-                <!-- normal mode | select editable cell -->
-                <CmpTableEditableCellSelect v-else-if="hpr_chkHasValue(rowObj, header) && !header.hidden && header.cellEditableSelect"
-                        :placeholder="header.cellEditableSelectPlaceholder ?? ''"
-                        :cell-data="hpr_getRowValue( rowObj, header )"
-                        :ref-field="hpr_getNavKey(header)"
-                        :ref-id="rowObj.id ?? 0"
-                        :validation="header.cellEditableValidation ?? hpr_empty"
-                        :options="header.cellEditableSelectOptions ?? []"
-                        :searchable="header.cellEditableSelectSearchable ?? false"
+        <!-- normal mode | select editable cell -->
+        <CmpTableEditableCellSelect
+            v-else-if="hpr_chkHasValue(rowObj, header) && !header.hidden && header.cellEditableSelect"
+            :placeholder="header.cellEditableSelectPlaceholder ?? ''"
+            :cell-data="hpr_getRowValue( rowObj, header )"
+            :ref-field="hpr_getNavKey(header)"
+            :ref-id="rowObj.id ?? 0"
+            :validation="header.cellEditableValidation ?? hpr_empty"
+            :options="header.cellEditableSelectOptions ?? []"
+            :searchable="header.cellEditableSelectSearchable ?? false"
 
-                        @fieldUpdateIntent="h_passCellUpdateEmission"
+            @fieldUpdateIntent="h_passCellUpdateEmission"
 
-                        :key="hindex + '' + rindex"
-                />
+            :key="hindex + '' + rindex"
+        />
 
-                <!-- normal mode | non editable cell -->
-                <td v-else-if="hpr_chkHasValue(rowObj, header, header.forceEmptyRender) && !header.hidden"
-                    rowspan="1"
-                    colspan="1"
-                    :class="[ { 'text-right': header.styleToRight }, { 'text-left': header.styleToLeft }, { 'text-center': header.styleToCenter } ]"
-                    :style="[{ width: header.styleWidth + '%' }]"
-                >
-                    {{ hpr_getRowValue( rowObj, header ) }}
-                </td>
+        <!-- normal mode | non editable cell -->
+        <td v-else-if="hpr_chkHasValue(rowObj, header, header.forceEmptyRender) && !header.hidden"
+            rowspan="1"
+            colspan="1"
+            :class="[ { 'text-right': header.styleToRight }, { 'text-left': header.styleToLeft }, { 'text-center': header.styleToCenter } ]"
+            :style="[{ width: header.styleWidth + '%' }]"
+        >
+          {{ hpr_getRowValue( rowObj, header ) }}
+        </td>
 
-            </template>
+      </template>
 
-            <!-- ACTIONS BUTTONS TD -->
-            <td class="actions" v-if="hasActions && hpr_chkHasId(rowObj)">
-                <!-- we can are going to adapt the action bar buttons according to the entity given in entityMode props -->
+      <!-- ACTIONS BUTTONS TD -->
+      <td class="actions" v-if="hasActions && hpr_chkHasId(rowObj)">
+        <!-- we can are going to adapt the action bar buttons according to the entity given in entityMode props -->
 
-                <CmpTableRowActions :mode="abutton_mode"
-                                    :identifier="rowObj['id']"
-                                    v-on:deleteIntent="$emit('deleteIntent', $event)"
-                                    v-on:detailsIntent="$emit('detailsIntent', $event)"
-                                    v-on:editIntent="$emit('editIntent', {...rowObj})"
+        <CmpTableRowActions :mode="abutton_mode"
+                            :identifier="rowObj['id']"
+                            v-on:deleteIntent="$emit('deleteIntent', $event)"
+                            v-on:detailsIntent="$emit('detailsIntent', $event)"
+                            v-on:editIntent="$emit('editIntent', {...rowObj})"
 
-                                    :key="'a' + rindex"
-                />
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <CmpTableEmpty v-else />
+                            :key="'a' + rindex"
+        />
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <CmpTableEmpty v-else />
 
-    <!-- PAGINATION -->
-    <CmpTablePagination v-if="data.length > 0 && hasPagination" v-on:next="h_computePaginationData" />
+  <!-- PAGINATION -->
+  <CmpTablePagination v-if="data.length > 0 && hasPagination" v-on:next="h_computePaginationData" />
 </template>
 
 <script lang="ts">
@@ -491,8 +492,8 @@ export default defineComponent({
         const ls_columns = ref<Array<Partial<IColumnHeader>>>([ ...props.columns ])
         const ls_extFilters = ref<Array<IExtFilterGroup>>([...props.extendedFilters])
 
-        const hpr_lastSelectedSelectElemRef = ref<number>(0)                                      // Receive the value of item selected in select component
-        const isAnyCheckboxSelectedRef = ref<boolean>(false)                                      // True if at least, one checkbox component filter was selected
+        const hpr_lastSelectedSelectElemRef = ref<number>(0)                                      // receive the key (or identifier) of item selected in select component
+        const isAnyCheckboxSelectedRef = ref<boolean>(false)                                      // true if at least, one checkbox component filter was selected
         const selectFilterListRef = <any> ref([])                                                 // reference to any select component filter
 
         /**
@@ -855,7 +856,7 @@ export default defineComponent({
          * @param evt
          */
         const hpr_lastSelectedSelectElem = ( evt: any ) => {
-            hpr_lastSelectedSelectElemRef.value = +evt
+            hpr_lastSelectedSelectElemRef.value = isNaN(+evt) ? evt.length : +evt
         }
 
         /***
