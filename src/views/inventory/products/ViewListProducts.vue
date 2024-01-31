@@ -118,7 +118,7 @@ export default defineComponent({
             // this is used to fetch supplier category basic data from the system so we can map the cat identifier to cat name in the datatable column
             st_nomenclatures.reqNmcProdCat()
             .then(() => {
-                columns.value[5].filterSelectOptions = st_nomenclatures.getProdCat4Select
+                columns.value[6].filterSelectOptions = st_nomenclatures.getProdCat4Select
                 // the 5th column is 'category' / 'sCategoryID' column. In this datatable this is a (column header) filter
                 // (see filters in the declaration section). So, rather define the 'select options' filter data statically in the
                 // data-datable.ts file, we weed to do it dynamically. Hence this here and no the conventionally
