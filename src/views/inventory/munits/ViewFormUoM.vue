@@ -95,13 +95,12 @@ import { useSt_UoM } from '@/stores/uom'
 import useFactory from '@/services/composables/useFactory'
 import useToastify from '@/services/composables/useToastify'
 import useDialogfy from '@/services/composables/useDialogfy'
-import { VSchemaUoMCat } from '@/services/definitions/validations/validations-uom'
 import {
     ENTITY_NAMES, DT_ACTIONBAR_MODE,
     FMODE,
     KEYS, OPS_KIND_STR,
     RoutePathNames, DT_ACTION_BUTTON_MODE,
-    HUoMTable, ACTION_KIND_STR
+    HUoMTable, ACTION_KIND_STR, VSchemaUoMCat
 } from '@/services/definitions'
 import { i18n } from '@/services/i18n'
 
