@@ -30,7 +30,7 @@ export class ApiStaff {
      * @param staff
      * @returns Promise with the identifier of the just created store (the same as the owner)
      */
-    public static insert( staff: IDtoStaff ): AxiosPromise<number> {
+    public static reqIns( staff: IDtoStaff ): AxiosPromise<number> {
         // return axios.post(url, staff)
 
         return axios.post(url, toFormData(staff), {
@@ -78,7 +78,7 @@ export class ApiStaff {
      * @param id staff identifier
      */
     public static reqStaffById (id: number): AxiosPromise<IDtoStaff> {
-        return axios.get(url + `/${ id }`)
+        return axios.get(`${ url }/${ id }`)
     }
 
     /**
@@ -96,7 +96,7 @@ export class ApiStaff {
      * @param ids entities identifiers
      */
     public static bulkToggle( ids: Array<number> ): AxiosPromise<void> {
-        return axios.post(url + '/toggle', ids)
+        return axios.post(`${ url }/toggle`, ids)
     }
 
     //endregion ===========================================================================

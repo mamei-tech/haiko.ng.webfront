@@ -87,7 +87,7 @@ export const useSt_Staff = defineStore({
         async reqInsertStaff (payload: IDtoStaff, doWeNeedToStay: boolean = false) : Promise<void> {
 
             return await new Promise<void>((resolve, reject) => {
-                ApiStaff.insert(payload)
+                ApiStaff.reqIns(payload)
                 .then((response:any) => {resolve(response.data)})
                 .catch(error => {reject(error)})
             })

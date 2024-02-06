@@ -141,7 +141,7 @@ export default defineComponent({
 
         /**
          * An ID counter auxiliary var for the UoM rows of the table when the creation mode is on. We need that the UoM rows has it own temporal identifier for proper data update when child component emit cell update intents
-         * ❗ An important thing, we use negative values so we can diferenciate this from the existing UoM in edition mode
+         * ❗ An important thing, we use negative values so we can diferenciate new associations from the existing ones in edition mode
          */
         const auxIdCounter = ref<number>(-1)
 
@@ -378,8 +378,7 @@ export default defineComponent({
 
         /**
          * Locally, add a empty UoM in the collection so the UI can react / reflect the changes.
-         * This method allows to add new UoM to the
-         * UoM Category
+         * This method allows to add new UoM to the UoM Category
          */
         const h_intentUoMCreate = async () => {
             iniFormData.value.units.push(mkUoM(auxIdCounter.value, cpt_fMode.value === FMODE.CREATE ? 0 : +id))

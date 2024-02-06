@@ -19,7 +19,8 @@ export class ApiNomenclaturesMng {
      * from other methods retrieving county data. Check ICountryBasic
      */
     public static getCountries(): AxiosPromise<ICountryBasic[]> {
-        return axios.get(url + '/countries')
+        return axios.get(`${url}/countries`)
+
     }
 
     /**
@@ -30,7 +31,7 @@ export class ApiNomenclaturesMng {
      * @param countryId Identifier of the country we want to look for
      */
     public static getCountryStates( countryId: string ): AxiosPromise<ICountryStatesBasic[]> {
-        return axios.get(url + `/countries/states/${ countryId }`)
+        return axios.get(`${url}/countries/states/${ countryId }`)
     }
 
     /**
@@ -39,7 +40,7 @@ export class ApiNomenclaturesMng {
      * retrieving system role. Check IRoleBasic
      */
     public static getRoles(): AxiosPromise<IRoleBasic[]> {
-        return axios.get(url + '/roles')
+        return axios.get(`${url}/roles `)
     }
 
     /**
@@ -48,7 +49,7 @@ export class ApiNomenclaturesMng {
      * retrieving system Supplier Category data. Check ISuppCatBasic
      */
     public static getSuppCat(): AxiosPromise<ISuppCatBasic[]> {
-        return axios.get(url + '/supplierscat')
+        return axios.get(`${url}/supplierscat`)
     }
 
     /**
@@ -57,7 +58,7 @@ export class ApiNomenclaturesMng {
      * retrieving system Products Category data. Check IProdCatBasic
      */
     public static getProdCat(): AxiosPromise<IProdCatBasic[]> {
-        return axios.get(url + '/productcat')
+        return axios.get(`${url}/productcat`)
     }
 
     /**
@@ -66,7 +67,7 @@ export class ApiNomenclaturesMng {
      * retrieving system UoM data. Check IUoMBasic
      */
     public static getUoM(): AxiosPromise<IUoMBasic[]> {
-        return axios.get(url + '/uom')
+        return axios.get(`${url}/uom`)
     }
 
     /**
@@ -74,7 +75,7 @@ export class ApiNomenclaturesMng {
      * - The retrieve list just will have minimum data (name) Check IStaffBasic
      */
     public static getStaff(): AxiosPromise<IUoMBasic[]> {
-        return axios.get(url + '/staffs')
+        return axios.get(`${url}/staffs`)
     }
 
     /**
@@ -83,7 +84,7 @@ export class ApiNomenclaturesMng {
      * - M == minimum / basic information
      */
     public static getSuppliersM(): AxiosPromise<IUoMBasic[]> {
-        return axios.get(url + '/suppliers')
+        return axios.get(`${url}/suppliers`)
     }
 
     /**
@@ -92,6 +93,6 @@ export class ApiNomenclaturesMng {
      * - M == minimum / basic information
      */
     public static getCurrenciesM(): AxiosPromise<IUoMBasic[]> {
-        return axios.get(url + '/currencies')
+        return axios.get(`${url}/currencies`)
     }
 }

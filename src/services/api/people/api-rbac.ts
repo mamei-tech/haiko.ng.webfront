@@ -43,7 +43,7 @@ export class ApiRbac {
      * @param id role identifier
      */
     public static async getGetPermsRoleMapAssoc( id: number ): Promise<Array<IPermAssocId>> {
-        const response = await axios.get(url + `/assoc/${ id }`)
+        const response = await axios.get(`${ url }/assoc/${ id }`)
 
         if (response.status === HTTP_RESPONSES.OK) return response.data as Array<IPermAssocId>
         return []
@@ -56,7 +56,7 @@ export class ApiRbac {
      * @returns Promise with the identifier of the just created entity
      */
     // public static insertRolePerms( newRoleData: IDtoRole ): AxiosPromise<number> {
-    public static insertRolePerms( newRoleData: IDtoRole ) {
+    public static reqInsRolePerms( newRoleData: IDtoRole ) {
         return axios.post(url, newRoleData)
     }
 

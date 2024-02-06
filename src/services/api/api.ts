@@ -35,7 +35,7 @@ customInstance.interceptors.request.use(
 
         // Trying to show the nprogress bar
         const a = document.querySelector('div#topper-border-cont')
-        a!.setAttribute('class', a!.className + ' mp-4-nprogress')
+        a!.setAttribute('class',  `${a!.className} mp-4-nprogress`)
         Nprogress.start()
 
         return config

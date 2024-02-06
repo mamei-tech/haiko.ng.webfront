@@ -127,7 +127,7 @@ export default defineComponent({
                 // Regarding the use of '.then()' for the callback, we jus could use async in the hook and later awaited
                 // (await) the getSuppCat4Select() call ... but I like the old fashion way
             })
-            .catch(err => tfyCRUDFail(err, ENTITY_NAMES.PRODUCT_CAT, OPS_KIND_STR.REQUEST))
+            .catch(err => tfyCRUDFail(err, ENTITY_NAMES.PRODUCT, OPS_KIND_STR.REQUEST))
 
             st_nomenclatures.reqNmcUoM()
 

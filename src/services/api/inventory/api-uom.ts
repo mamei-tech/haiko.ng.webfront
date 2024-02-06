@@ -25,8 +25,8 @@ export class ApiUoM {
      * Invoke an api call to deletes a UoM Category from the server
      * @param categoryId UoM category identifier to be deleted
      */
-    public static deleteCat( categoryId: number ): AxiosPromise<void> {
-        return axios.delete(url + `/category/${ categoryId }`)
+    public static reqDeleteCat( categoryId: number ): AxiosPromise<void> {
+        return axios.delete(`${ url }/category/${ categoryId }`)
     }
 
     /**
@@ -34,8 +34,8 @@ export class ApiUoM {
      *
      * @param payload
      */
-    public static async updateUoMCat( payload: IDtoUoMCategory ): Promise<void> {
-        return axios.put(url + `/category`, payload)
+    public static async reqUpdateUoMCat( payload: IDtoUoMCategory ): Promise<void> {
+        return axios.put(`${ url }/category`, payload)
     }
 
     /**
@@ -44,7 +44,7 @@ export class ApiUoM {
      * @param uomCategory
      * @returns Promise with the identifier of the just created entity (the same as the owner)
      */
-    public static insertUoMCat( uomCategory: IDtoUoMCategory ): AxiosPromise<number> {
-        return axios.post(url + `/category`, uomCategory)
+    public static reqInsUoMCat( uomCategory: IDtoUoMCategory ): AxiosPromise<number> {
+        return axios.post(`${url}/category`, uomCategory)
     }
 }

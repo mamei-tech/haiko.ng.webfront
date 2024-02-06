@@ -219,7 +219,7 @@ export default defineComponent({
          */
         const a_create = ( newWarehouse: IDtoWarehouse, doWeNeedToStay: boolean ) => {
 
-            ApiWarehouse.insertWarehouse(newWarehouse)
+            ApiWarehouse.reqInsWarehouse(newWarehouse)
             .then(() => {
                 tfyCRUDSuccess(ENTITY_NAMES.WAREHOUSE, OPS_KIND_STR.ADDITION, newWarehouse.wName)
 

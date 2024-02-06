@@ -106,7 +106,7 @@ export const useSt_Rbac = defineStore({
         async reqInsertRolePerms (payload: IDtoRole, doWeNeedToStay: boolean = false) : Promise<void> {
 
             return await new Promise<void>((resolve, reject) => {
-                ApiRbac.insertRolePerms(payload)
+                ApiRbac.reqInsRolePerms(payload)
                 .then((response:any) => {resolve(response.data)})
                 .catch(error => {reject(error)})
             })

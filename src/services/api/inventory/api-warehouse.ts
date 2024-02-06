@@ -19,7 +19,7 @@ export class ApiWarehouse {
      * Request the creation of a new warehouse on the system
      * @param warehouse
      */
-    public static insertWarehouse( warehouse: IDtoWarehouse ): AxiosPromise<number> {
+    public static reqInsWarehouse( warehouse: IDtoWarehouse ): AxiosPromise<number> {
         return axios.post(url, warehouse)
     }
 
@@ -56,7 +56,7 @@ export class ApiWarehouse {
      * @param warehouseId Warehouse identifier to look for
      */
     public static reqWarehouseById (warehouseId: number): AxiosPromise<IDtoWarehouse> {
-        return axios.get(url + `/${ warehouseId }`)
+        return axios.get(`${ url }/${ warehouseId }`)
     }
 
     /**
@@ -64,7 +64,7 @@ export class ApiWarehouse {
      * @param warehouseId Warehouse identifier to delete
      */
     public static reqDeleteWarehouse (warehouseId: number): AxiosPromise<void> {
-        return axios.delete(url + `/${ warehouseId }`)
+        return axios.delete(`${ url }/${ warehouseId }`)
     }
 
     //endregion ===========================================================================

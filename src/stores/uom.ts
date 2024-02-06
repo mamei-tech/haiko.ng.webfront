@@ -72,7 +72,7 @@ export const useSt_UoM = defineStore({
         async reqInsertUoMCat (payload: IDtoUoMCategory, doWeNeedToStay: boolean = false) : Promise<void> {
 
             return await new Promise<void>((resolve, reject) => {
-                ApiUoM.insertUoMCat(payload)
+                ApiUoM.reqInsUoMCat(payload)
                 .then((response:any) => {
 
                     payload.id = response.data          // updating the payload with its identifier given by the backend server
@@ -94,7 +94,7 @@ export const useSt_UoM = defineStore({
         async reqUoMCatUpdate (payload: IDtoUoMCategory, doWeNeedToStay: boolean = false) : Promise<void> {
 
             return await new Promise<void>((resolve, reject) => {
-                ApiUoM.updateUoMCat(payload)
+                ApiUoM.reqUpdateUoMCat(payload)
                 .then((response:any) => {
 
                     this.mutUpdateUoMList(response.data, true)                     // mutating / updating the local store so we don't need to request to the server
@@ -144,7 +144,7 @@ export const useSt_UoM = defineStore({
         async reqUoMCatDeletion( payload: number ): Promise<void> {
 
             return await new Promise<void>(( resolve, reject ) => {
-                ApiUoM.deleteCat(payload).then(( response: any ) => {
+                ApiUoM.reqDeleteCat(payload).then(( response: any ) => {
 
                     // deleting (mutate / modify) the uom category from the local store
                     this.mutDeleteUoMList(payload)

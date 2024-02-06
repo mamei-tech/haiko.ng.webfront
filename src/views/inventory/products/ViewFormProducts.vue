@@ -612,7 +612,7 @@ import {
     HProductSupplierLine,
     KEYS,
     OPS_KIND_STR,
-    RoutePathNames
+    RoutePathNames, VSchemaProduct
 } from '@/services/definitions'
 import { CmpCard, CmpFormActionsButton, CmpBasicInput, CmpCollapseItem, CmpBasicCheckbox, CmpBaseButton, CmpVeeCheckbox, CmpMultiselectField, CmpTabContent, CmpTab, CmpTooltip, CmpTextInput, CmpImageInput, CmpCardStats, CmpDataTable } from '@/components'
 import useFactory from '@/services/composables/useFactory'
@@ -621,7 +621,6 @@ import useDialogfy from '@/services/composables/useDialogfy'
 import useNumeric from '@/services/composables/useNumeric'
 import { ApiProduct } from '@/services/api/inventory/api-product'
 import { useSt_Nomenclatures } from '@/stores/nomenc'
-import { VSchemaProduct } from '@/services/definitions/validations/validations-product'
 
 import type { ComputedRef } from 'vue'
 import type { IColumnHeader, IDtoProduct, TFormMode, IMultiselectBasic, ICellUpdate, IDtoProductSupplierL } from '@/services/definitions'
@@ -680,12 +679,12 @@ export default defineComponent({
         // form data
         const activeTabId = ref<number>(1)
         const forceImgDelOnCmp = ref<Boolean>(false)                                        // so we can tell to the image component 'CmpImageInput' to remove the image if we need to
-        const iniFormData = reactive<IDtoProduct>(mkProduct())                              // initial form data
+        const iniFormData = reactive<IDtoProduct>(mkProduct())                                    // initial form data
         const ls_activateSellPrice = ref<boolean>(!iniFormData.canBeSold)
         const ls_uomChosenLabel = ref<string | undefined>(undefined)                        // string label located in the buying section, to show the selected UoM that will be used in purchase ops
         const ls_filteredUoM = ref<IMultiselectBasic[]>([])
-        const ls_isSuppliersRequested = ref<boolean>(false)                                   // flag var to know if we already requested the suppliers
-        const tabs = [                                                                      // form tabs data array
+        const ls_isSuppliersRequested = ref<boolean>(false)                                 // flag var to know if we already requested the suppliers
+        const tabs = [                                                                            // form tabs data array
             { id: 1, title: t('data.overview') },
             { id: 2, title: t('table-headers.inventory') },
             { id: 3, title: t('form.fields.suppliers.tab-purchases') },
@@ -835,12 +834,12 @@ export default defineComponent({
             hpr_sanitation(newProduct)                                                      // sanitation
 
             // now we can actually call for the product insertion
-            ApiProduct.insert(newProduct).then(() => {
+            ApiProduct.reqIns(newProduct).then(() => {
                 tfyCRUDSuccess(ENTITY_NAMES.PRODUCT, OPS_KIND_STR.ADDITION, newProduct.pName)
 
                 // so now what ?
                 if (!doWeNeedToStay) nav_back()                                               // so we are going back to the data table
-                else hpr_clearState()                                                       // so wee need to clean the entire form and stay in it
+                else hpr_clearState()                                                         // so wee need to clean the entire form and stay in it
 
             }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.PRODUCT, OPS_KIND_STR.ADDITION))
         }
@@ -1334,7 +1333,7 @@ export default defineComponent({
 
         watch(activeTabId, async () => {
 
-            if(ls_isSuppliersRequested.value) return                                                                  // breaking the habit | if we already requested we have our job done
+            if(ls_isSuppliersRequested.value) return                                                                // breaking the habit | if we already requested we have our job done
 
             if(activeTabId.value == 3 && cpt_fMode.value === FMODE.EDIT) {                                          // we are looking for the 'purchase' tab so we can pull the product providers from server
                 let result = await ApiProduct.reqProductSuppliers(+id).catch(err => tfyBasicRqError(err))           // requesting needed data

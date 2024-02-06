@@ -45,7 +45,7 @@ export class ApiProduct {
      * @param ids entities identifiers
      */
     public static bulkToggle( ids: Array<number> ): AxiosPromise<void> {
-        return axios.post(url + '/toggle', ids)
+        return axios.post(`${ url }/toggle`, ids)
     }
 
     /**
@@ -54,7 +54,7 @@ export class ApiProduct {
      * @param product
      * @returns Promise with the identifier of the just created store (the same as the owner)
      */
-    public static insert( product: IDtoProduct ): AxiosPromise<number> {
+    public static reqIns( product: IDtoProduct ): AxiosPromise<number> {
         // return axios.post(url, product)
 
         return axios.post(url, toFormDataR(product), {
@@ -68,7 +68,7 @@ export class ApiProduct {
      * @param productId Product identifier to look for
      */
     public static reqProductById( productId: number ): AxiosPromise<IDtoProduct> {
-        return axios.get(url + `/${ productId }`)
+        return axios.get(`${ url }/${ productId }`)
     }
 
     /**
@@ -76,7 +76,7 @@ export class ApiProduct {
      * @param productId product identifier to look for
      */
     public static reqProductSuppliers ( productId: number ): AxiosPromise<Array<IDtoProductSupplierL>> {
-        return axios.get(url + `/${ productId }/suppliers`)
+        return axios.get(`${ url }/${ productId }/suppliers`)
     }
 
     /**

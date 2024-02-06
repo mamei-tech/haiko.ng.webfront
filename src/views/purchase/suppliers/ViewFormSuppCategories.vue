@@ -212,7 +212,7 @@ export default defineComponent({
          * @param doWeNeedToStay Tell us where to go after the successfully creation of the entity
          */
         const a_create = ( newSupplierCat: IDtoSupplierCat, doWeNeedToStay: boolean) => {
-             ApiSupplier.insertSupplierCat(newSupplierCat).then(() => {
+             ApiSupplier.reqInsSupplierCat(newSupplierCat).then(() => {
 
                 tfyCRUDSuccess(ENTITY_NAMES.SUPPLIER_CAT, OPS_KIND_STR.ADDITION, newSupplierCat.scName)
 

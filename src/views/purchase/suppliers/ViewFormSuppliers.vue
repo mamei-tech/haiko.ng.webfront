@@ -695,7 +695,7 @@ export default defineComponent({
 
             hpr_sanitation(newSupplier)
 
-            ApiSupplier.insertSupplier(newSupplier)
+            ApiSupplier.reqInsSupplier(newSupplier)
             .then(() => {
                 tfyCRUDSuccess(ENTITY_NAMES.SUPPLIER, OPS_KIND_STR.ADDITION, newSupplier.sName)
 

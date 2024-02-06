@@ -35,7 +35,7 @@ export class ApiSupplier {
             ...queryParams.Filters
         }
 
-        return axios.get(url + '/category/page', { params: payload })
+        return axios.get(`${url}/category/page` , { params: payload })
     }
 
     /**
@@ -63,8 +63,8 @@ export class ApiSupplier {
      * @returns Promise with the identifier of the just created entity
      */
     // public static insertRolePerms( newRoleData: IDtoRole ): AxiosPromise<number> {
-    public static insertSupplierCat( newSupplierCat: IDtoSupplierCat ): AxiosPromise<void>  {
-        return axios.post(url + '/category', newSupplierCat)
+    public static reqInsSupplierCat( newSupplierCat: IDtoSupplierCat ): AxiosPromise<void>  {
+        return axios.post(`${url}/category`, newSupplierCat)
     }
 
     /**
@@ -73,7 +73,7 @@ export class ApiSupplier {
      * @param newSupplier
      * @returns Promise with the identifier of the just created entity
      */
-    public static insertSupplier( newSupplier: IDtoSupplier ): AxiosPromise<number>  {
+    public static reqInsSupplier( newSupplier: IDtoSupplier ): AxiosPromise<number>  {
         return axios.post(url, newSupplier)
     }
 
@@ -82,7 +82,7 @@ export class ApiSupplier {
      * @param categoryId Supplier Category identifier to be deleted
      */
     public static reqDeleteSuppCat( categoryId: number ): AxiosPromise<void> {
-        return axios.delete(url + `/category/${ categoryId }`)
+        return axios.delete(`${url}/category/${ categoryId }`)
     }
 
     /**
@@ -90,7 +90,7 @@ export class ApiSupplier {
      * @param supplierId Supplier identifier to be deleted
      */
     public static reqDeleteSupp ( supplierId: number ): AxiosPromise<void> {
-        return axios.delete(url + `/${ supplierId }`)
+        return axios.delete(`${url}/${ supplierId }`)
     }
 
     /**
@@ -98,7 +98,7 @@ export class ApiSupplier {
      * @param categoryId SupplierCategory identifier
      */
     public static reqSupplierCatById (categoryId: number): AxiosPromise<IDtoSupplierCat> {
-        return axios.get(url + `/category/${ categoryId }`)
+        return axios.get(`${url}/category/${ categoryId }`)
     }
 
     /**
@@ -107,7 +107,7 @@ export class ApiSupplier {
      * @param warehouseId Warehouse identifier to look for
      */
     public static reqSupplierById (warehouseId: number): AxiosPromise<IDtoSupplier> {
-        return axios.get(url + `/${ warehouseId }`)
+        return axios.get(`${url}/${ warehouseId }`)
     }
 
     /**
@@ -116,7 +116,7 @@ export class ApiSupplier {
      * @param payload
      */
     public static reqUpdateSupplierCategory( payload: IDtoSupplierCat ): AxiosPromise<void> {
-        return axios.put(url + '/category', payload)
+        return axios.put(`${url}/category`, payload)
     }
 
     /**
@@ -133,7 +133,7 @@ export class ApiSupplier {
      * @param ids entities identifiers
      */
     public static bulkToggle( ids: Array<number> ): AxiosPromise<void> {
-        return axios.post(url + '/toggle', ids)
+        return axios.post(`${url}/toggle`, ids)
     }
 
     //endregion ===========================================================================
