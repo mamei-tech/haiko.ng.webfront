@@ -21,11 +21,16 @@
                      :closeOnSelect="closeOnSelect"
                      :mode="mode"
                      :max="max"
+
                      v-model="inputValue"
                      v-bind="$attrs"
-                     @change="h_OnChangeWrap"
+
+                     ref="selectRef"
+
                      @open="h_onOpenWrap"
-                     ref="selectRef">
+                     @change="h_OnChangeWrap"
+                     @search-change="h_onWriteSearch"
+        >
 
             <!-- using 'slots props' features see here https://v3.vuejs.org/guide/component-slots.html#scoped-slots -->
             <!-- allow us to customize the render front parent component -->
@@ -106,7 +111,7 @@ export default defineComponent({
             required:    false
         }
     },
-    emits:      [ 'changehapend', 'openhapend' ],
+    emits:      [ 'changehapend', 'openhapend', 'writehapend' ],
     setup( props: any, context: any ) {
 
         const { value: inputValue, errorMessage, handleChange, meta } = useField(
@@ -138,6 +143,16 @@ export default defineComponent({
         }
 
         /**
+         * Hooks the moment after a character is typed in the select search input
+         *
+         * @param characterWritten Text written in the search input
+         */
+        const h_onWriteSearch = ( characterWritten: any ) => {
+            if (characterWritten.length >= 3)
+                context.emit('writehapend', characterWritten)
+        }
+
+        /**
          * As this component wraps the 'multi select' component, its API methods ar not reachable from others
          * parents component (of this). So this method acts like a proxy so parents component can reach / call
          * to 'multiselect.clear' API method
@@ -165,7 +180,8 @@ export default defineComponent({
             setSelectedValue,
 
             h_onOpenWrap,
-            h_OnChangeWrap
+            h_OnChangeWrap,
+            h_onWriteSearch
             // handleChange,
         }
     }

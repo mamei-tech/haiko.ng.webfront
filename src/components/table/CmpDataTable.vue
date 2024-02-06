@@ -300,6 +300,7 @@
 
             @fieldUpdateIntent="h_passCellUpdateEmission"
             @openhapend="h_passSelectOpenEmission"
+            @writehapend="h_passSelectSearchEmission"
 
             :key="hindex + '' + rindex"
         />
@@ -467,6 +468,7 @@ export default defineComponent({
     emits: [
         'cellUpdateIntent',                     // an editable cell (is a child component) emit an update event
         'selectFieldOpened',                    // to notice when the select open its window
+        'selectFieldSearch',                    // when at least 2 characters is written in a select search input field
 
         'detailsIntent',                        // details, rows action event
         'deleteIntent',                         // delete, rows action event
@@ -567,11 +569,19 @@ export default defineComponent({
         }
 
         /**
-         * To notice when the select open its window
+         * To notice when an existing select field open its window
          * @param selectInstance Multiselect instance
          */
         const h_passSelectOpenEmission = ( selectInstance: Multiselect ) => {
             ctx.emit ('selectFieldOpened', selectInstance)
+        }
+
+        /**
+         * To notice parent components when its written something in an existing select field
+         * @param characterWritten Text written in the search input
+         */
+        const h_passSelectSearchEmission = ( characterWritten: string ) => {
+            ctx.emit ('selectFieldSearch', characterWritten)
         }
 
         const h_onSrchFocusEvt = ( evt: any ) => {
@@ -940,6 +950,7 @@ export default defineComponent({
 
             h_passCellUpdateEmission,
             h_passSelectOpenEmission,
+            h_passSelectSearchEmission,
 
             // ...useDebaunce(h_searchChange),
 

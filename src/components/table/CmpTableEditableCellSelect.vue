@@ -15,8 +15,10 @@
                 :searchable="searchable"
                 :closeOnSelect="true"
                 :mode="'single'"
-                @change="h_OnChangeWrap"
+
                 @open="h_onOpenWrap"
+                @change="h_OnChangeWrap"
+                @search-change="h_onWriteSearch"
         />
 
     </td>
@@ -68,7 +70,8 @@ export default defineComponent({
     },
     emits: [
         'fieldUpdateIntent',            // to notice the entity field value (cell data) has updated / changed
-        'openhapend'                    // to notice when the select open its window
+        'openhapend',                   // to notice when the select open its window
+        'writehapend'                   // to notice when something was written in the select search input
     ],
 
     setup( props: any, ctx: SetupContext ) {
@@ -152,6 +155,16 @@ export default defineComponent({
         }
 
         /**
+         * Hooks the moment after a character is typed in the select search input
+         *
+         * @param characterWritten Text written in the search input
+         */
+        const h_onWriteSearch = ( characterWritten: string ) => {
+            if (characterWritten.length >= 3)
+                ctx.emit('writehapend', characterWritten)
+        }
+
+        /**
          * If not locked already, then we lock and enable the edition mode
          */
         const h_click = () => {
@@ -172,6 +185,7 @@ export default defineComponent({
             h_click,
             h_onOpenWrap,
             h_OnChangeWrap,
+            h_onWriteSearch,
         }
     }
 })
