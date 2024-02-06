@@ -299,6 +299,7 @@
             :searchable="header.cellEditableSelectSearchable ?? false"
 
             @fieldUpdateIntent="h_passCellUpdateEmission"
+            @openhapend="h_passSelectOpenEmission"
 
             :key="hindex + '' + rindex"
         />
@@ -465,6 +466,7 @@ export default defineComponent({
     },
     emits: [
         'cellUpdateIntent',                     // an editable cell (is a child component) emit an update event
+        'selectFieldOpened',                    // to notice when the select open its window
 
         'detailsIntent',                        // details, rows action event
         'deleteIntent',                         // delete, rows action event
@@ -562,6 +564,14 @@ export default defineComponent({
 
         const h_passCellUpdateEmission = (data: ICellUpdate) => {
             ctx.emit('cellUpdateIntent', data)
+        }
+
+        /**
+         * To notice when the select open its window
+         * @param selectInstance Multiselect instance
+         */
+        const h_passSelectOpenEmission = ( selectInstance: Multiselect ) => {
+            ctx.emit ('selectFieldOpened', selectInstance)
         }
 
         const h_onSrchFocusEvt = ( evt: any ) => {
@@ -926,8 +936,10 @@ export default defineComponent({
             h_doRequest,
             h_extFilter,
             h_clearAllFilters,
-            h_passCellUpdateEmission,
             h_renderIconCell,
+
+            h_passCellUpdateEmission,
+            h_passSelectOpenEmission,
 
             // ...useDebaunce(h_searchChange),
 

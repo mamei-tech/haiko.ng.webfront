@@ -24,6 +24,7 @@
                      v-model="inputValue"
                      v-bind="$attrs"
                      @change="h_OnChangeWrap"
+                     @open="h_onOpenWrap"
                      ref="selectRef">
 
             <!-- using 'slots props' features see here https://v3.vuejs.org/guide/component-slots.html#scoped-slots -->
@@ -105,7 +106,7 @@ export default defineComponent({
             required:    false
         }
     },
-    emits:      [ 'changehapend' ],
+    emits:      [ 'changehapend', 'openhapend' ],
     setup( props: any, context: any ) {
 
         const { value: inputValue, errorMessage, handleChange, meta } = useField(
@@ -124,6 +125,16 @@ export default defineComponent({
         const h_OnChangeWrap = ( newSelectedValue: any ) => {
             handleChange(newSelectedValue)
             context.emit('changehapend', newSelectedValue)
+        }
+
+        /**
+         * This may come in handy when a parent component needs to trigger something after
+         * the select opens its window
+         *
+         * @param selectInstance MultiSelect instance reference
+         */
+        const h_onOpenWrap = ( selectInstance: Multiselect ) => {
+            context.emit('openhapend', selectInstance)
         }
 
         /**
@@ -153,8 +164,9 @@ export default defineComponent({
             clearSelection,
             setSelectedValue,
 
-            // handleChange,
+            h_onOpenWrap,
             h_OnChangeWrap
+            // handleChange,
         }
     }
 })

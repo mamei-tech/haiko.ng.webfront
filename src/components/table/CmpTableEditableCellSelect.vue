@@ -16,6 +16,7 @@
                 :closeOnSelect="true"
                 :mode="'single'"
                 @change="h_OnChangeWrap"
+                @open="h_onOpenWrap"
         />
 
     </td>
@@ -67,6 +68,7 @@ export default defineComponent({
     },
     emits: [
         'fieldUpdateIntent',            // to notice the entity field value (cell data) has updated / changed
+        'openhapend'                    // to notice when the select open its window
     ],
 
     setup( props: any, ctx: SetupContext ) {
@@ -140,6 +142,16 @@ export default defineComponent({
         }
 
         /**
+         * This may come in handy when a parent component needs to trigger something after
+         * the select opens its window
+         *
+         * @param selectInstance MultiSelect instance reference
+         */
+        const h_onOpenWrap = ( selectInstance: Multiselect ) => {
+            ctx.emit('openhapend', selectInstance)
+        }
+
+        /**
          * If not locked already, then we lock and enable the edition mode
          */
         const h_click = () => {
@@ -158,7 +170,8 @@ export default defineComponent({
             cpt_cellText,
 
             h_click,
-            h_OnChangeWrap
+            h_onOpenWrap,
+            h_OnChangeWrap,
         }
     }
 })
