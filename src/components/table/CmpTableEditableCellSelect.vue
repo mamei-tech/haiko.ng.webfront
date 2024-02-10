@@ -2,7 +2,7 @@
 
     <!-- non edition mode situation -->
     <td v-show="!isEditionMode" rowspan="1" colspan="1" @click.prevent="h_click" v-bind="$attrs">
-        {{ cpt_cellText }}
+        {{ text }}
     </td>
 
     <!-- edition mode situation -->
@@ -25,10 +25,9 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, nextTick, ref, watch } from 'vue'
-import Multiselect from '@vueform/multiselect'
-
 import type { SetupContext } from 'vue'
+import { defineComponent, ref, watch } from 'vue'
+import Multiselect from '@vueform/multiselect'
 import type { ICellUpdate, IMultiselectBasic } from '@/services/definitions'
 
 
@@ -78,10 +77,11 @@ export default defineComponent({
 
         //region ======= DECLARATIONS & LOCAL STATE ===========================================
 
-        const isEditionMode = ref<boolean>(false)       // tell is the component (cell) should be rendered in edition mode, so the input value for editing should be enabled
-        const isEditionLock = ref<boolean>(false)       // a flag value to lock the edition mode until input blur event or until enter (keydown) event, so the input remains on edition mode if an accidental click was made by the user
+        const isEditionMode = ref<boolean>(false)          // tell is the component (cell) should be rendered in edition mode, so the input value for editing should be enabled
+        const isEditionLock = ref<boolean>(false)          // a flag value to lock the edition mode until input blur event or until enter (keydown) event, so the input remains on edition mode if an accidental click was made by the user
 
-        const value = ref<string | number>(props.cellData)   // just save the selection made by the user in the select
+        const value = ref<string | number>(props.cellData)      // just save the selection made by the user in the select
+        const text = ref<string | number>(props.placeholder)    // default set up for the cell text of the row to be displayed when edit mode isn't on
 
         //endregion ===========================================================================
 
@@ -92,31 +92,25 @@ export default defineComponent({
         //endregion ===========================================================================
 
         //region ======= COMPUTATIONS & GETTERS ===============================================
-
-        /**
-         * This is a computed value that comes in handy to render the label (it has more meaning than a value)
-         * that match to the current value of the cell
-         *
-         * If nothing match,
-         */
-        const cpt_cellText = computed((): string => {
-
-            let cellText = props.placeholder
-
-            props.options.find(( option: IMultiselectBasic ) => {
-
-                if (option.value == props.cellData) {
-                    cellText = option.label
-                    return
-                }
-            })
-
-            return cellText
-        })
-
         //endregion ===========================================================================
 
         //region ======= HELPERS ==============================================================
+
+        /**
+         * Search for the correspondent label of the given value.
+         * @param search4
+         */
+        const hpr_findLabelByValue = ( search4: string | number ): string => {
+            let label = "";
+
+            props.options.find(( option: IMultiselectBasic ) => {
+                if (option.value == search4) label = option.label
+                return
+            })
+
+            return label
+        }
+
         //endregion ===========================================================================
 
         //region ======= EVENTS HANDLERS & WATCHERS ===========================================
@@ -136,6 +130,7 @@ export default defineComponent({
             isEditionMode.value = false
 
             value.value = newSelectedValue ?? 0
+            text.value = hpr_findLabelByValue(newSelectedValue)
 
             ctx.emit('fieldUpdateIntent', {
                 entityId:     props.refId,
@@ -180,7 +175,7 @@ export default defineComponent({
         return {
             isEditionMode,
 
-            cpt_cellText,
+            text,
 
             h_click,
             h_onOpenWrap,
