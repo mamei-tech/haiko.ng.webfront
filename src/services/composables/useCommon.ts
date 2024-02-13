@@ -1,4 +1,3 @@
-/* COMMON FUNCTIONS */
 
 export default function useCommon () {
 
@@ -43,9 +42,42 @@ export default function useCommon () {
         return formData
     }
 
+    /**
+     * Debounce function for wait X milliseconds until callback
+     *
+     * @param func callback to be invoked pass 'wait' milliseconds
+     * @param wait4 milliseconds to be waited until invoke callback function | default to 1 seconds = 1000 milliseconds
+     */
+     function debounce( func: Function, wait4: number = 1000 ): ( ...args: any[] ) => void {
+        let timeoutId: any
+
+        return function( this: any, ...args: any[] ) {
+            const context = this
+
+            clearTimeout(timeoutId)
+
+            timeoutId = setTimeout(() => {
+                func.apply(context, args)
+            }, wait4)
+        }
+    }
+
+    // simpler alternative with no context handling
+    /*function debounce( callback: Function, wait: number ) {
+        let timerId: any
+        return ( ...args: any[] ) => {
+            clearTimeout(timerId)
+            timerId = setTimeout(() => {
+                callback(...args)
+            }, wait)
+        }
+    }*/
+
     return {
         cap,
         toFormData,
         toFormDataR,
+
+        debounce,
     }
 }

@@ -50,9 +50,22 @@ export default function useNumeric () {
         else return (+val) * appConfig.app.scale
     }
 
+    /**
+     * Get the DateTime now in second
+     * Returns the number of seconds elapsed since January 1, 1970 00:00:00 UTC.
+     * @param mili if mili is set to true, then milliseconds will be used instead of seconds
+     */
+    const timeNow = ( mili = false ): number => {
+        if (mili) return Date.now()
+
+        return Math.floor(Date.now() / 1000)
+    }
+
     return {
         roundTo,
         valUI2Raw,
         toUIMoney,
+
+        timeNow,
     }
 }

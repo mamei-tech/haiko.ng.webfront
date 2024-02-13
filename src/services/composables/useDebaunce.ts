@@ -5,6 +5,9 @@ import type { Function1 } from '@/services/definitions'
  * Callback a function after specific(default) timeout of an event trigger
  * Eg. this could be use in a input for trigger a event when a amount of time has passed
  *
+ * ❗ It was build for an input element (target of the trigger) or something that has value on "evt.target.value"
+ * ❗ Form more general use, check debounce functions on 'useCommon.ts' file
+ *
  * @param callback Function to call back when timeout complete
  * @param timeoutCount Number of milliseconds to wait for
  * @param minLength Ming length of text(value) for check out to callback the function
