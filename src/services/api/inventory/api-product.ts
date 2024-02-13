@@ -13,7 +13,7 @@ const version = appConfig.server.current_version
 const url = `v${ version }/inventory/cproduct`
 
 const { mkProduct } = useFactory()
-const { toFormData, toFormDataR } = useCommon()
+const { toFormDataR } = useCommon()
 const { toUIMoney } = useNumeric()
 
 /***

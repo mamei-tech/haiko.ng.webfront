@@ -675,6 +675,12 @@ export default defineComponent({
 
         // helpers & flags
         const isCloning = ref(false)                                                        // tells is we are in a cloning process so we call the creat endpoint instead the edition endpoint
+        const ls_isSuppliersRequested = ref<boolean>(false)                                 // flag var to know if we already requested the suppliers
+        /**
+         * An ID counter auxiliary var for the ProductSupplier Line rows of the table when the creation mode is on. We need that the UoM rows has it own temporal identifier for proper data update when child component emit cell update intents
+         * ❗ An important thing, we use negative values so we can diferenciate this from the existing UoM in edition mode
+         */
+        const auxIdCounter = ref<number>(-1)
 
         // form data
         const activeTabId = ref<number>(1)
@@ -683,7 +689,6 @@ export default defineComponent({
         const ls_activateSellPrice = ref<boolean>(!iniFormData.canBeSold)
         const ls_uomChosenLabel = ref<string | undefined>(undefined)                        // string label located in the buying section, to show the selected UoM that will be used in purchase ops
         const ls_filteredUoM = ref<IMultiselectBasic[]>([])
-        const ls_isSuppliersRequested = ref<boolean>(false)                                 // flag var to know if we already requested the suppliers
         const tabs = [                                                                            // form tabs data array
             { id: 1, title: t('data.overview') },
             { id: 2, title: t('table-headers.inventory') },
@@ -741,12 +746,6 @@ export default defineComponent({
         ])
         let formDataFromServer: IDtoProduct | undefined = undefined                               // aux variable to save entity data requested from the server
 
-        /**
-         * An ID counter auxiliary var for the ProductSupplier Line rows of the table when the creation mode is on. We need that the UoM rows has it own temporal identifier for proper data update when child component emit cell update intents
-         * ❗ An important thing, we use negative values so we can diferenciate this from the existing UoM in edition mode
-         */
-        const auxIdCounter = ref<number>(-1)
-
         //endregion ===========================================================================
 
         //region ======= HOOKS ================================================================
@@ -781,8 +780,8 @@ export default defineComponent({
             })
             .catch(err => tfyCRUDFail(err, ENTITY_NAMES.CURRENCY, OPS_KIND_STR.REQUEST))
 
-            await st_nomenclatures.reqNmcStaff().catch(err => tfyCRUDFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.REQUEST))       // getting the staff list that will be used in the responsible select input
-            await st_nomenclatures.reqNmcUoM().catch(err => tfyCRUDFail(err, ENTITY_NAMES.UOM, OPS_KIND_STR.REQUEST))           // getting the UoM list that will be used in both pUoMID and pUoMPurchaseID UoM selection component, recall that the pUoMPurchaseID must be filtered with the same UoM category of pUoMID
+            await st_nomenclatures.reqNmcStaff()                                                                                // getting the staff list that will be used in the responsible select input
+            await st_nomenclatures.reqNmcUoM()                                                                                  // getting the UoM list that will be used in both pUoMID and pUoMPurchaseID UoM selection component, recall that the pUoMPurchaseID must be filtered with the same UoM category of pUoMID
             ls_filteredUoM.value = st_nomenclatures.getUoM4Select
 
             // ---- create mode ----

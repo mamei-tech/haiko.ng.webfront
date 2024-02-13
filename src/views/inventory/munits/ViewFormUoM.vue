@@ -221,7 +221,7 @@ export default defineComponent({
 
                 // so now what ?
                 if(!doWeNeedToStay) h_back()        // so we are going back to the data table
-                else cleanForm()                    // so wee need to clean the entire form and stay in it
+                else hpr_cleanForm()                    // so wee need to clean the entire form and stay in it
 
             }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.UOMCATEGORY, OPS_KIND_STR.ADDITION))
         }
@@ -307,9 +307,9 @@ export default defineComponent({
 
         /**
          * Runs a set of validations related with the UoM of reference in the category / collection
-         * If the set of validations isn't successful, the the submit event doesn't go further.
+         * If the set of validations isn't successful, the the submit event doesn't go any further.
          */
-        const isUoMListValid = (): string | boolean => {
+        const hpr_isUoMListValid = (): string | boolean => {
 
             let uoReference = undefined
             let uoReferenceCount = 0
@@ -342,7 +342,7 @@ export default defineComponent({
         /**
          * Resetting the form
          */
-        const cleanForm = (): void => {
+        const hpr_cleanForm = (): void => {
             resetForm({ values: mkUoMCategory() })
             iniFormData.value = mkUoMCategory()
         }
@@ -363,7 +363,7 @@ export default defineComponent({
             evt.preventDefault()
 
             // validating the uom list first
-            if(!isUoMListValid()) return
+            if(!hpr_isUoMListValid()) return
 
             handleSubmit(formData => {
                 if (cpt_fMode.value == (FMODE.CREATE as TFormMode)) a_create(formData, meta.value.dirty, doWeNeedToStay)
