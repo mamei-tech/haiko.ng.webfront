@@ -314,9 +314,7 @@ export default defineComponent({
          * Vue hook before component is unmounted from the DOM
          */
         onBeforeUnmount(() => {
-
-            // cleaning the event manually added before to the document. Wee need to keep the things as clean as posible
-            window.removeEventListener('keydown', h_keyboardKeyPress)
+            window.removeEventListener('keydown', h_keyboardKeyPress)            // cleaning the event manually added before to the document. Wee need to keep the things as clean as posible
         })
 
         //endregion ===========================================================================

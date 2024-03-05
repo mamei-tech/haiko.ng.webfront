@@ -162,14 +162,13 @@ export default defineComponent({
                 const uomCat = st_uom.entityPage.find(uc => uc.id === +id)        // getting the uom cat from pinia store
 
                 // it is needed here 'cause we keep two collection of the list of uom
+                // ❗❗❗ we have to use the spread operator here to prevent the array of units it's being copied by reference, and reflect the changes in the store
                 if (uomCat != undefined) {
                     iniFormData.value = {
                         ...uomCat,
                         units:         [ ...uomCat.units ],
                         unitsToDelete: []
                     }
-
-                    // ❗❗❗ we have to use the spread operator here to prevent the array of units it's being copied by reference, and reflect the changes in the store
 
                     // this is so the form does not appear as dirty
                     // also, this will sync the 'units' && 'unitsToDelete' fields with 'iniFormData.value.units' and 'iniFormData.value.unitsToDelete' respectively.
@@ -182,17 +181,14 @@ export default defineComponent({
                 }
             }
 
-            // keyboard keys event handler, we need to clean this kind of event when the component are destroyed
-            window.addEventListener('keydown', h_keyboardKeyPress)
+            window.addEventListener('keydown', h_keyboardKeyPress)                              // keyboard keys event handler, we need to clean this kind of event when the component are destroyed
         })
 
         /**
          * Vue hook before component is unmounted from the DOM
          */
         onBeforeUnmount(() => {
-
-            // cleaning the event manually added before to the document. Wee need to keep the things as clean as posible
-            window.removeEventListener('keydown', h_keyboardKeyPress)
+            window.removeEventListener('keydown', h_keyboardKeyPress)            // cleaning the event manually added before to the document. Wee need to keep the things as clean as posible
         })
 
         //endregion ===========================================================================
@@ -309,7 +305,7 @@ export default defineComponent({
          * Runs a set of validations related with the UoM of reference in the category / collection
          * If the set of validations isn't successful, the the submit event doesn't go any further.
          */
-        const hpr_isUoMListValid = (): string | boolean => {
+        const hpr_isUoMListValid = (): boolean => {
 
             let uoReference = undefined
             let uoReferenceCount = 0

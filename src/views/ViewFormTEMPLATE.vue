@@ -80,17 +80,14 @@ export default defineComponent({
          * Manually setting the needed values is way cleaner than the other way around. This is needed mainly because api call is asynchronous.
          */
         onMounted(async () => {
-
-            // keyboard keys event handler, we need to clean this kind of event when the component are destroyed
-            window.addEventListener('keydown', h_keyboardKeyPress)
+            window.addEventListener('keydown', h_keyboardKeyPress)                                    // keyboard keys event handler, we need to clean this kind of event when the component are destroyed
         })
 
         /**
          * Vue hook before component is unmounted from the DOM
          */
         onBeforeUnmount(() => {
-            // cleaning the event manually added before to the document. Wee need to keep the things as clean as posible
-            window.removeEventListener('keydown', h_keyboardKeyPress)
+            window.removeEventListener('keydown', h_keyboardKeyPress)                           // cleaning the event manually added before to the document. Wee need to keep the things as clean as posible
         })
         //#endregion ==========================================================================
 

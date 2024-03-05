@@ -160,7 +160,6 @@ export default defineComponent({
         const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
 
         const iniFormData = reactive<IDtoWarehouse>(mkWarehouse())              // initial form data
-        let formDataFromServer: IDtoWarehouse | undefined = undefined           // aux variable to save entity data requested from the server
 
         //endregion ===========================================================================
 
@@ -180,7 +179,7 @@ export default defineComponent({
 
             if (cpt_fMode.value === FMODE.EDIT as TFormMode) {
                 try {
-                    formDataFromServer = (await ApiWarehouse.reqWarehouseById(+id)).data as IDtoWarehouse
+                    let formDataFromServer = (await ApiWarehouse.reqWarehouseById(+id)).data as IDtoWarehouse
 
                     Object.assign(iniFormData, formDataFromServer)                          // shallow (primitive values only) copy of form data
 
@@ -193,16 +192,14 @@ export default defineComponent({
                 catch (err) {}
             }
 
-            // keyboard keys event handler, we need to clean this kind of event when the component are destroyed
-            window.addEventListener('keydown', h_keyboardKeyPress)
+            window.addEventListener('keydown', h_keyboardKeyPress)                              // keyboard keys event handler, we need to clean this kind of event when the component are destroyed
         })
 
         /**
          * Vue hook before component is unmounted from the DOM
          */
         onBeforeUnmount(() => {
-            // cleaning the event manually added before to the document. Wee need to keep the things as clean as posible
-            window.removeEventListener('keydown', h_keyboardKeyPress)
+            window.removeEventListener('keydown', h_keyboardKeyPress)            // cleaning the event manually added before to the document. Wee need to keep the things as clean as posible
         })
 
         //#endregion ==========================================================================
