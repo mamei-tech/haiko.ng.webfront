@@ -1,9 +1,9 @@
 <template>
-    <component :is="tag"
-               :button-type="tag === 'button' ? nativeType : ''"
-               class="btn"
-               :disabled="disabled || loading"
-               :class="[
+  <component :is="tag"
+             :button-type="tag === 'button' ? nativeType : ''"
+             class="btn"
+             :disabled="disabled || loading"
+             :class="[
                     {'btn-round': round},
                     {'btn-block': block},
                     {'btn-icon btn-fab': icon},
@@ -12,17 +12,17 @@
                     {'btn-simple': simple},
                     {'btn-link': link},
                 ]"
-               @click.prevent="h_Click">
+             @click.prevent="h_Click">
 
-        <!-- loading slot  -->
-        <slot name="loading">
-            <i v-if="loading" class="fas fa-spinner fa-spin" />
-        </slot>
+    <!-- loading slot  -->
+    <slot name="loading">
+      <i v-if="loading" class="fas fa-spinner fa-spin" />
+    </slot>
 
-        <!-- default slot -->
-        <slot></slot>
+    <!-- default slot -->
+    <slot></slot>
 
-    </component>
+  </component>
 </template>
 
 <script lang="ts">

@@ -1,10 +1,10 @@
 <template>
-    <div class="form-check">
-        <label class="form-check-label">
-            <input class="form-check-input" v-bind="$attrs" type="checkbox" @change="h_ChkChange">
-        <span class="form-check-sign"></span>
-        </label>
-    </div>
+  <div class="form-check">
+    <label class="form-check-label">
+      <input class="form-check-input" v-bind="$attrs" type="checkbox" @change="h_ChkChange">
+      <span class="form-check-sign"></span>
+    </label>
+  </div>
 </template>
 
 <script lang="ts">

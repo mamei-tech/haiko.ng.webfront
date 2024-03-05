@@ -1,86 +1,86 @@
 <template>
 
-    <!-- PC MODE -->
-    <div class="row d-sm-none d-md-flex">
+  <!-- PC MODE -->
+  <div class="row d-sm-none d-md-flex">
 
-        <!-- left group -->
-        <div class="col-md-2 text-md-left">
+    <!-- left group -->
+    <div class="col-md-2 text-md-left">
 
-            <!-- delete -->
-            <CmpBaseButton v-if:="showDelete"
-                           @click.prevent="$emit('deleteIntent', $event)"
-                           class="mr-md-2"
-                           buttonType="danger"
-                           :title="$t('btn.tip-remove-entity')">
-                <i class="tim-icons icon-trash-simple" style="padding-bottom: 2px; padding-right: 4px;" />
-                {{ $t( 'btn.val-del' ) }}
-            </CmpBaseButton>
-        </div>
-
-        <!-- right group -->
-        <div class="col-md-10 text-md-right">
-
-            <!-- cancel -->
-            <CmpBaseButton v-if="showCancel"
-                           @click.prevent="$emit('cancelIntent', $event)"
-                           class="mr-sm0 mr-sm-2"
-                           buttonType="default"
-                           :title="$t('btn.tip-cancel')">
-                <i class="tim-icons icon-simple-remove" style="padding-bottom: 2px; padding-right: 4px;" />
-                {{ $t( 'btn.val-cancel' ) }}
-            </CmpBaseButton>
-
-            <!-- save and stay in the form -->
-            <button @click.prevent="$emit('saveIntent', $event, true)"
-                    class="btn btn-primary ml-sm-0 ml-sm-2"
-                    :title="$t('btn.tip-save-stay')">
-                <i class="tim-icons icon-double-right" style="padding-bottom: 2px; padding-right: 4px;" />
-                {{ $t( 'btn.val-apply' ) }}
-            </button>
-
-            <!-- save -->
-            <button @click.prevent="$emit('saveIntent', $event, false)"
-                    class="btn btn-primary ml-sm-0 ml-sm-2"
-                    :title="$t('btn.tip-save')">
-                <i class="tim-icons icon-check-2" style="padding-bottom: 2px; padding-right: 4px;" />
-                {{ $t( 'btn.val-save' ) }}
-            </button>
-        </div>
+      <!-- delete -->
+      <CmpBaseButton v-if:="showDelete"
+                     @click.prevent="$emit('deleteIntent', $event)"
+                     class="mr-md-2"
+                     buttonType="danger"
+                     :title="$t('btn.tip-remove-entity')">
+        <i class="tim-icons icon-trash-simple" style="padding-bottom: 2px; padding-right: 4px;" />
+        {{ $t( 'btn.val-del' ) }}
+      </CmpBaseButton>
     </div>
 
-    <!-- MOBILE MODE -->
-    <div class="row d-md-none d-sm-flex">
-        <div class="col-12 text-center">
+    <!-- right group -->
+    <div class="col-md-10 text-md-right">
 
-            <!-- delete -->
-            <!-- TODO check this title, think it need i18n -->
-            <CmpBaseButton v-if="showDelete"
-                           round
-                           @click.prevent="$emit('deleteIntent', $event)"
-                           class="mr-md-2"
-                           buttonType="danger"
-                           title="Remove the Catalog">
-                <i class="tim-icons icon-trash-simple" style="padding-bottom: 2px; padding-right: 4px;" />
-            </CmpBaseButton>
+      <!-- cancel -->
+      <CmpBaseButton v-if="showCancel"
+                     @click.prevent="$emit('cancelIntent', $event)"
+                     class="mr-sm0 mr-sm-2"
+                     buttonType="default"
+                     :title="$t('btn.tip-cancel')">
+        <i class="tim-icons icon-simple-remove" style="padding-bottom: 2px; padding-right: 4px;" />
+        {{ $t( 'btn.val-cancel' ) }}
+      </CmpBaseButton>
 
-            <!-- TODO check this title, think it need i18n -->
-            <CmpBaseButton v-if="showCancel"
-                           round
-                           @click.prevent="$emit('cancelIntent', $event)"
-                           class="ml-sm-2 mr-sm-2"
-                           buttonType="default"
-                           title="Do nothing">
-                <i class="tim-icons icon-simple-remove" style="padding-bottom: 2px; padding-right: 4px;" />
-            </CmpBaseButton>
+      <!-- save and stay in the form -->
+      <button @click.prevent="$emit('saveIntent', $event, true)"
+              class="btn btn-primary ml-sm-0 ml-sm-2"
+              :title="$t('btn.tip-save-stay')">
+        <i class="tim-icons icon-double-right" style="padding-bottom: 2px; padding-right: 4px;" />
+        {{ $t( 'btn.val-apply' ) }}
+      </button>
 
-            <!-- TODO check this title, think it need i18n -->
-            <button @click.prevent="$emit('saveIntent', $event, false)"
-                    class="btn btn-primary btn-round ml-sm-2"
-                    title="Save the catalog">
-                <i class="tim-icons icon-check-2" style="padding-bottom: 2px; padding-right: 4px;" />
-            </button>
-        </div>
+      <!-- save -->
+      <button @click.prevent="$emit('saveIntent', $event, false)"
+              class="btn btn-primary ml-sm-0 ml-sm-2"
+              :title="$t('btn.tip-save')">
+        <i class="tim-icons icon-check-2" style="padding-bottom: 2px; padding-right: 4px;" />
+        {{ $t( 'btn.val-save' ) }}
+      </button>
     </div>
+  </div>
+
+  <!-- MOBILE MODE -->
+  <div class="row d-md-none d-sm-flex">
+    <div class="col-12 text-center">
+
+      <!-- delete -->
+      <!-- TODO check this title, think it need i18n -->
+      <CmpBaseButton v-if="showDelete"
+                     round
+                     @click.prevent="$emit('deleteIntent', $event)"
+                     class="mr-md-2"
+                     buttonType="danger"
+                     title="Remove the Catalog">
+        <i class="tim-icons icon-trash-simple" style="padding-bottom: 2px; padding-right: 4px;" />
+      </CmpBaseButton>
+
+      <!-- TODO check this title, think it need i18n -->
+      <CmpBaseButton v-if="showCancel"
+                     round
+                     @click.prevent="$emit('cancelIntent', $event)"
+                     class="ml-sm-2 mr-sm-2"
+                     buttonType="default"
+                     title="Do nothing">
+        <i class="tim-icons icon-simple-remove" style="padding-bottom: 2px; padding-right: 4px;" />
+      </CmpBaseButton>
+
+      <!-- TODO check this title, think it need i18n -->
+      <button @click.prevent="$emit('saveIntent', $event, false)"
+              class="btn btn-primary btn-round ml-sm-2"
+              title="Save the catalog">
+        <i class="tim-icons icon-check-2" style="padding-bottom: 2px; padding-right: 4px;" />
+      </button>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">

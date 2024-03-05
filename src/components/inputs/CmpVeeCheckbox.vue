@@ -1,18 +1,18 @@
 <template>
-    <div class="form-group">
+  <div class="form-group">
 
-        <!-- INPUT -->
-        <div class="form-check">
-            <label class="form-check-label">
-                <input class="form-check-input"
-                       type="checkbox"
-                       v-bind="$attrs"
-                       :checked="value"
-                       @change="hdlChange">
-                <span class="form-check-sign"></span>{{ value ? labels[0] : labels[1] }}
-            </label>
-        </div>
+    <!-- INPUT -->
+    <div class="form-check">
+      <label class="form-check-label">
+        <input class="form-check-input"
+               type="checkbox"
+               v-bind="$attrs"
+               :checked="value"
+               @change="hdlChange">
+        <span class="form-check-sign"></span>{{ value ? labels[0] : labels[1] }}
+      </label>
     </div>
+  </div>
 </template>
 
 <script lang="ts">

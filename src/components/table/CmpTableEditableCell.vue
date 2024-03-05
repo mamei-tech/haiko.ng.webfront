@@ -1,30 +1,30 @@
 <template>
 
-    <!-- non edition mode situation -->
-    <td v-show="!isEditionMode" rowspan="1" colspan="1" @click.prevent="h_click" v-bind="$attrs">
-        {{ value }}
-    </td>
+  <!-- non edition mode situation -->
+  <td v-show="!isEditionMode" rowspan="1" colspan="1" @click.prevent="h_click" v-bind="$attrs">
+    {{ value }}
+  </td>
 
-    <!-- edition mode situation -->
-    <!--https://stackoverflow.com/questions/68803137/vue-3-passing-array-warning-extraneous-non-props-attributes-were-passed-to-comp-->
-    <td v-show="isEditionMode" rowspan="1" colspan="1" @click.prevent="h_click" v-bind="$attrs">
-        <!-- input -->
-        <input class="form-control"
-               ref="ref_input"
+  <!-- edition mode situation -->
+  <!--https://stackoverflow.com/questions/68803137/vue-3-passing-array-warning-extraneous-non-props-attributes-were-passed-to-comp-->
+  <td v-show="isEditionMode" rowspan="1" colspan="1" @click.prevent="h_click" v-bind="$attrs">
+    <!-- input -->
+    <input class="form-control"
+           ref="ref_input"
 
-               :name="refField"
-               :value="value"
-               :type="inputType"
+           :name="refField"
+           :value="value"
+           :type="inputType"
 
-               :class="[ { 'text-right': alignTexRight }, { 'text-left': alignTexRight }]"
+           :class="[ { 'text-right': alignTexRight }, { 'text-left': alignTexRight }]"
 
-               @blur.prevent="h_blur"
-               @keydown.enter.prevent="h_keydown"
-        />
+           @blur.prevent="h_blur"
+           @keydown.enter.prevent="h_keydown"
+    />
 
-        <!-- error msg -->
-        <label v-show="errorMessage" class="has-error mt-2">{{ errorMessage }}</label>
-    </td>
+    <!-- error msg -->
+    <label v-show="errorMessage" class="has-error mt-2">{{ errorMessage }}</label>
+  </td>
 </template>
 
 <script lang="ts">

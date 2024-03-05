@@ -1,48 +1,48 @@
 <template>
-    <div
-        class="form-group"
-        :class="{
+  <div
+      class="form-group"
+      :class="{
             'input-group': hasIcon,
             'input-group-focus': isFocused,
             'has-danger': !!errorMessage && type !== 'hidden',
             'has-success': meta.valid && type !== 'hidden',
         }"
-    >
-        <!-- LABEL -->
-        <slot name="label">
-            <label v-if="label" class="control-label">{{ label }}</label>
-        </slot>
+  >
+    <!-- LABEL -->
+    <slot name="label">
+      <label v-if="label" class="control-label">{{ label }}</label>
+    </slot>
 
-        <!-- ADDON LEFT -->
-        <slot name="aleft">
+    <!-- ADDON LEFT -->
+    <slot name="aleft">
             <span v-if="aleftIcon" class="input-group-prepend">
-                <div class="input-group-text"><i :class="aleftIcon"/></div>
+                <div class="input-group-text"><i :class="aleftIcon" /></div>
             </span>
-        </slot>
+    </slot>
 
-        <!-- INPUT -->
-        <!--:v-model.value="value"-->
-        <input class="form-control"
-               :name="name"
-               :value="inputValue"
-               :placeholder="placeholder"
-               :type="type"
-               v-bind="$attrs"
-               @focus="onInputFocused"
-               @input="handleChange"
-               @blur="onInputBlur"
-        />
+    <!-- INPUT -->
+    <!--:v-model.value="value"-->
+    <input class="form-control"
+           :name="name"
+           :value="inputValue"
+           :placeholder="placeholder"
+           :type="type"
+           v-bind="$attrs"
+           @focus="onInputFocused"
+           @input="handleChange"
+           @blur="onInputBlur"
+    />
 
-        <!-- ADDON RIGHT -->
-        <slot name="aright">
+    <!-- ADDON RIGHT -->
+    <slot name="aright">
             <span v-if="arightIcon" class="input-group-append">
                 <div class="input-group-text"><i :class="arightIcon"></i></div>
             </span>
-        </slot>
-    </div>
+    </slot>
+  </div>
 
-    <!-- Error Msg -->
-    <label v-show="errorMessage" class="error">{{ errorMessage }}</label>
+  <!-- Error Msg -->
+  <label v-show="errorMessage" class="error">{{ errorMessage }}</label>
 </template>
 
 <script lang="ts">

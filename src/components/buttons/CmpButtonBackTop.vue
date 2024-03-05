@@ -9,18 +9,18 @@
 <!--(CASE OF USE B: want to listen to the window scroll position) -->
 <!--step.2> set mandatory prop called "global" to true (default case) -->
 <template>
-    <transition name="back2top-bnt-fade">
-        <div v-show="pivot <= infoData.scrollTop">
-            <CmpBaseButton icon
-                           id="back2top-btn"
-                           class="ml-1"
-                           buttonType="primary"
-                           @doClick="hBackToTop"
-                           :title="$t('btn.tip-back-top')">
-                <b-icon-arrow-up />
-            </CmpBaseButton>
-        </div>
-    </transition>
+  <transition name="back2top-bnt-fade">
+    <div v-show="pivot <= infoData.scrollTop">
+      <CmpBaseButton icon
+                     id="back2top-btn"
+                     class="ml-1"
+                     buttonType="primary"
+                     @doClick="hBackToTop"
+                     :title="$t('btn.tip-back-top')">
+        <b-icon-arrow-up />
+      </CmpBaseButton>
+    </div>
+  </transition>
 </template>
 
 <script lang="ts">

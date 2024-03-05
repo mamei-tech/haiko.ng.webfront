@@ -1,25 +1,25 @@
 <template>
 
-    <div class="row" @click.prevent="h_toggleCollapsable">
-        <h5 class="text-sm-left text-md-right col-md-3 col-form-label">
-            {{ title }}
-        </h5>
-        <div class="col-md-9 caret-container-narrow">
-            <i class="tim-icons icon-minimal-down caret-form-section .caret-narrow"
-               :class="rotationCaretClass"
-            />
-        </div>
-        <hr class="collapsable-form-section-divisor hr-50">
+  <div class="row" @click.prevent="h_toggleCollapsable">
+    <h5 class="text-sm-left text-md-right col-md-3 col-form-label">
+      {{ title }}
+    </h5>
+    <div class="col-md-9 caret-container-narrow">
+      <i class="tim-icons icon-minimal-down caret-form-section .caret-narrow"
+         :class="rotationCaretClass"
+      />
     </div>
+    <hr class="collapsable-form-section-divisor hr-50">
+  </div>
 
-    <Transition name="collapsable">
-        <div class="collapsable-div" v-if="doWeShowCollapsable">
+  <Transition name="collapsable">
+    <div class="collapsable-div" v-if="doWeShowCollapsable">
 
-            <!-- slot for custom content | default -->
-            <slot></slot>
+      <!-- slot for custom content | default -->
+      <slot></slot>
 
-        </div>
-    </Transition>
+    </div>
+  </Transition>
 
 </template>
 

@@ -1,29 +1,29 @@
 <template>
-    <div style="text-align: center">
-        <!-- ENABLE -->
-        <button @click.prevent="h_ToggleIsActiveIntent"
-                type="button"
-                class="btn like btn-link btn-icon btn-fab btn-sm"
-                :class="[
+  <div style="text-align: center">
+    <!-- ENABLE -->
+    <button @click.prevent="h_ToggleIsActiveIntent"
+            type="button"
+            class="btn like btn-link btn-icon btn-fab btn-sm"
+            :class="[
                     {'btn-default': !isEnable},
                     {'btn-success': isEnable},
                     {'bnt-status-enable': isEnable}
                 ]">
-            <i class="tim-icons icon-check-2"></i>
-        </button>
+      <i class="tim-icons icon-check-2"></i>
+    </button>
 
-        <!-- DISABLE -->
-        <button @click.prevent="h_DisableIntent"
-                type="button"
-                class="btn edit btn-link btn-icon btn-fab btn-sm"
-                :class="[
+    <!-- DISABLE -->
+    <button @click.prevent="h_DisableIntent"
+            type="button"
+            class="btn edit btn-link btn-icon btn-fab btn-sm"
+            :class="[
                     {'btn-default': isEnable},
                     {'btn-warning': !isEnable},
                     {'bnt-status-disable': !isEnable}
                 ]">
-            <i class="tim-icons icon-simple-remove"></i>
-        </button>
-    </div>
+      <i class="tim-icons icon-simple-remove"></i>
+    </button>
+  </div>
 </template>
 
 <script lang="ts">

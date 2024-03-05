@@ -1,58 +1,58 @@
 <template>
 
-    <!-- LABEL -->
-    <div class="form-group"
-         :class="{
+  <!-- LABEL -->
+  <div class="form-group"
+       :class="{
             'has-danger': !!errorMessage && type !== 'hidden',
             'has-success': meta.valid && type !== 'hidden',
         }">
 
-        <slot name="label">
-            <label v-if="label" class="control-label">{{ label }}</label>
-        </slot>
+    <slot name="label">
+      <label v-if="label" class="control-label">{{ label }}</label>
+    </slot>
 
-        <!-- INPUT -->
-        <!-- Wrap the multiselect component's slots inside our own slots -->
-        <!-- so this component can provide a way to customize the multiselect -->
-        <!-- at the time it provides support for Field forms -->
-        <multiselect :options="options"
-                     :placeholder="placeholder"
-                     :searchable="searchable"
-                     :closeOnSelect="closeOnSelect"
-                     :mode="mode"
-                     :max="max"
+    <!-- INPUT -->
+    <!-- Wrap the multiselect component's slots inside our own slots -->
+    <!-- so this component can provide a way to customize the multiselect -->
+    <!-- at the time it provides support for Field forms -->
+    <multiselect :options="options"
+                 :placeholder="placeholder"
+                 :searchable="searchable"
+                 :closeOnSelect="closeOnSelect"
+                 :mode="mode"
+                 :max="max"
 
-                     v-model="inputValue"
-                     v-bind="$attrs"
+                 v-model="inputValue"
+                 v-bind="$attrs"
 
-                     ref="selectRef"
+                 ref="selectRef"
 
-                     @open="h_onOpenWrap"
-                     @change="h_OnChangeWrap"
-                     @search-change="h_onWriteSearch"
-        >
+                 @open="h_onOpenWrap"
+                 @change="h_OnChangeWrap"
+                 @search-change="h_onWriteSearch"
+    >
 
-            <!-- using 'slots props' features see here https://v3.vuejs.org/guide/component-slots.html#scoped-slots -->
-            <!-- allow us to customize the render front parent component -->
+      <!-- using 'slots props' features see here https://v3.vuejs.org/guide/component-slots.html#scoped-slots -->
+      <!-- allow us to customize the render front parent component -->
 
-            <template :v-if="$slots.customOption !== undefined" #option="{option}">
-                <slot name="customOption" :option="option" />
-            </template>
+      <template :v-if="$slots.customOption !== undefined" #option="{option}">
+        <slot name="customOption" :option="option" />
+      </template>
 
-            <template :v-if="$slots.customTag !== undefined" #tag="{option, handleTagRemove}">
-                <slot name="customTag" :option="option" :handleTagRemove="handleTagRemove" />
-            </template>
+      <template :v-if="$slots.customTag !== undefined" #tag="{option, handleTagRemove}">
+        <slot name="customTag" :option="option" :handleTagRemove="handleTagRemove" />
+      </template>
 
-            <template :v-if="$slots.customSingleLabel !== undefined" #singlelabel="{value}">
-                <slot name="customSingleLabel" :value="value" />
-            </template>
+      <template :v-if="$slots.customSingleLabel !== undefined" #singlelabel="{value}">
+        <slot name="customSingleLabel" :value="value" />
+      </template>
 
-        </multiselect>
+    </multiselect>
 
-        <!-- Error Msg -->
-        <label v-show="errorMessage" class="error">{{ errorMessage }}</label>
+    <!-- Error Msg -->
+    <label v-show="errorMessage" class="error">{{ errorMessage }}</label>
 
-    </div>
+  </div>
 </template>
 
 <script lang="ts">

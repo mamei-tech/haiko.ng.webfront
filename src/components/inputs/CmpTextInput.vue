@@ -1,32 +1,32 @@
 <template>
-    <div class="form-group"
-         :class="{
+  <div class="form-group"
+       :class="{
             'input-group-focus': isFocused,
             'has-danger': !!errorMessage,
             'has-success': meta.valid,
         }"
-    >
-        <!-- LABEL -->
-        <slot name="label">
-            <label v-if="label" class="control-label">{{ label }}</label>
-        </slot>
+  >
+    <!-- LABEL -->
+    <slot name="label">
+      <label v-if="label" class="control-label">{{ label }}</label>
+    </slot>
 
-        <!-- INPUT -->
-        <!--:v-model.value="value"-->
-        <textarea class="form-control"
-                  :name="name"
-                  style="max-height: 100%"
-                  :style=" height > 0 ? 'height: ' + height + 'px !important' : ''"
-                  :value="inputValue"
-                  v-bind="$attrs"
-                  @focus="onInputFocused"
-                  @input="handleChange"
-                  @blur="onInputBlur"
-        />
+    <!-- INPUT -->
+    <!--:v-model.value="value"-->
+    <textarea class="form-control"
+              :name="name"
+              style="max-height: 100%"
+              :style=" height > 0 ? 'height: ' + height + 'px !important' : ''"
+              :value="inputValue"
+              v-bind="$attrs"
+              @focus="onInputFocused"
+              @input="handleChange"
+              @blur="onInputBlur"
+    />
 
-        <!-- Error Msg -->
-        <label v-show="errorMessage" class="error">{{ errorMessage }}</label>
-    </div>
+    <!-- Error Msg -->
+    <label v-show="errorMessage" class="error">{{ errorMessage }}</label>
+  </div>
 </template>
 
 <script lang="ts">

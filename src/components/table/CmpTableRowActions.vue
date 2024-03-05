@@ -1,73 +1,73 @@
 <template>
-    <div style="text-align: right">
+  <div style="text-align: right">
 
-        <!-- DEFAULT -->
-        <template v-if="mode ===  DT_ACTION_BUTTON_MODE.DEFAULT">
+    <!-- DEFAULT -->
+    <template v-if="mode ===  DT_ACTION_BUTTON_MODE.DEFAULT">
 
-            <!-- btn details -->
-            <button @click.prevent="$emit('detailsIntent', identifier)"
-                    type="button"
-                    :title="$t('btn.val-details')"
-                    class="btn like btn-link btn-icon btn-fab btn-info btn-sm"
-            >
-                <i class="tim-icons icon-heart-2"></i>
-            </button>
+      <!-- btn details -->
+      <button @click.prevent="$emit('detailsIntent', identifier)"
+              type="button"
+              :title="$t('btn.val-details')"
+              class="btn like btn-link btn-icon btn-fab btn-info btn-sm"
+      >
+        <i class="tim-icons icon-heart-2"></i>
+      </button>
 
-            <!-- btn edit -->
-            <button @click.prevent="$emit('editIntent', identifier)"
-                    type="button"
-                    :title="$t('btn.val-edit')"
-                    class="btn edit btn-link btn-icon btn-fab btn-warning btn-sm"
-            >
-                <i class="tim-icons icon-pencil"></i>
-            </button>
+      <!-- btn edit -->
+      <button @click.prevent="$emit('editIntent', identifier)"
+              type="button"
+              :title="$t('btn.val-edit')"
+              class="btn edit btn-link btn-icon btn-fab btn-warning btn-sm"
+      >
+        <i class="tim-icons icon-pencil"></i>
+      </button>
 
-            <!-- btn delete -->
-            <button @click.prevent="$emit('deleteIntent', identifier)"
-                    type="button"
-                    :title="$t('btn.val-del')"
-                    class="btn remove btn-link btn-icon btn-fab btn-danger btn-sm"
-            >
-                <i class="tim-icons icon-trash-simple"></i>
-            </button>
-        </template>
+      <!-- btn delete -->
+      <button @click.prevent="$emit('deleteIntent', identifier)"
+              type="button"
+              :title="$t('btn.val-del')"
+              class="btn remove btn-link btn-icon btn-fab btn-danger btn-sm"
+      >
+        <i class="tim-icons icon-trash-simple"></i>
+      </button>
+    </template>
 
-        <!-- JUST EDIT AND DELETE  -->
-        <template v-else-if="mode === DT_ACTION_BUTTON_MODE.JEDINDEL">
+    <!-- JUST EDIT AND DELETE  -->
+    <template v-else-if="mode === DT_ACTION_BUTTON_MODE.JEDINDEL">
 
-            <!-- btn edit -->
-            <button @click.prevent="$emit('editIntent', identifier)"
-                    type="button"
-                    :title="$t('btn.val-edit')"
-                    class="btn edit btn-link btn-icon btn-fab btn-warning btn-sm"
-            >
-                <i class="tim-icons icon-pencil"></i>
-            </button>
+      <!-- btn edit -->
+      <button @click.prevent="$emit('editIntent', identifier)"
+              type="button"
+              :title="$t('btn.val-edit')"
+              class="btn edit btn-link btn-icon btn-fab btn-warning btn-sm"
+      >
+        <i class="tim-icons icon-pencil"></i>
+      </button>
 
-            <!-- btn delete -->
-            <button @click.prevent="$emit('deleteIntent', identifier)"
-                    type="button"
-                    :title="$t('btn.val-del')"
-                    class="btn remove btn-link btn-icon btn-fab btn-danger btn-sm"
-            >
-                <i class="tim-icons icon-trash-simple"></i>
-            </button>
-        </template>
+      <!-- btn delete -->
+      <button @click.prevent="$emit('deleteIntent', identifier)"
+              type="button"
+              :title="$t('btn.val-del')"
+              class="btn remove btn-link btn-icon btn-fab btn-danger btn-sm"
+      >
+        <i class="tim-icons icon-trash-simple"></i>
+      </button>
+    </template>
 
-        <!-- JUST DELETE  -->
-        <template v-else-if="mode === DT_ACTION_BUTTON_MODE.JDEL">
+    <!-- JUST DELETE  -->
+    <template v-else-if="mode === DT_ACTION_BUTTON_MODE.JDEL">
 
-            <!-- btn delete -->
-            <button @click.prevent="$emit('deleteIntent', identifier)"
-                    type="button"
-                    :title="$t('btn.val-del')"
-                    class="btn remove btn-link btn-icon btn-fab btn-danger btn-sm"
-            >
-                <i class="tim-icons icon-trash-simple"></i>
-            </button>
-        </template>
+      <!-- btn delete -->
+      <button @click.prevent="$emit('deleteIntent', identifier)"
+              type="button"
+              :title="$t('btn.val-del')"
+              class="btn remove btn-link btn-icon btn-fab btn-danger btn-sm"
+      >
+        <i class="tim-icons icon-trash-simple"></i>
+      </button>
+    </template>
 
-    </div>
+  </div>
 </template>
 
 <script lang="ts">

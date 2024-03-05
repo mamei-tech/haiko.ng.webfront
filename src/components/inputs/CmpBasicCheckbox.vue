@@ -1,16 +1,16 @@
 <template>
-    <div class="form-group">
-        <!-- INPUT -->
-        <div class="form-check">
-            <label class="form-check-label">
-                <input class="form-check-input"
-                       type="checkbox"
-                       :checked="checked"
-                       @change="h_change">
-                <span class="form-check-sign"></span>{{ labelStatus ? labels[0] : labels[1] }}
-            </label>
-        </div>
+  <div class="form-group">
+    <!-- INPUT -->
+    <div class="form-check">
+      <label class="form-check-label">
+        <input class="form-check-input"
+               type="checkbox"
+               :checked="checked"
+               @change="h_change">
+        <span class="form-check-sign"></span>{{ labelStatus ? labels[0] : labels[1] }}
+      </label>
     </div>
+  </div>
 </template>
 
 <script lang="ts">

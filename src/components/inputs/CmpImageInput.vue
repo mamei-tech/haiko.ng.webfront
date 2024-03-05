@@ -1,36 +1,38 @@
 <template>
 
-    <!-- btn to remove the image -->
-    <!--<div v-if="(previewImg !== null && previewImg !== undefined) || cmp_image !== RELPATH_DEFAULT_AVATAR_IMG">-->
-    <div class="rm-btn-avatar-container" v-if="shallWeShowRmBtn">
-        <button type="button" class="btn btn-round btn-icon btn-fab btn-default"
-                v-on:click="h_removeImage"
-                :title="$t('btn.tip-rm-picture')"
-        >
-            <i class="tim-icons icon-trash-simple"></i>
-        </button>
+  <!-- btn to remove the image -->
+  <!--<div v-if="(previewImg !== null && previewImg !== undefined) || cmp_image !== RELPATH_DEFAULT_AVATAR_IMG">-->
+  <div class="rm-btn-avatar-container" v-if="shallWeShowRmBtn">
+    <button type="button" class="btn btn-round btn-icon btn-fab btn-default"
+            v-on:click="h_removeImage"
+            :title="$t('btn.tip-rm-picture')"
+    >
+      <i class="tim-icons icon-trash-simple"></i>
+    </button>
+  </div>
+
+  <!-- profile image container -->
+  <div class="form-group avatar-profile-container">
+
+    <img v-if="previewImg === undefined" class="avatar-profile" :src="cmp_image" alt="profile avatar"
+         :style="!avatarMode ? 'border-radius: 0% !important;' : ''">
+    <img v-else class="avatar-profile" :src="previewImg" alt="profile avatar"
+         :style="!avatarMode ? 'border-radius: 0% !important;' : ''">
+
+    <!-- INPUT -->
+    <!--:v-model.value="value"-->
+    <input class="form-control" ref="ref_fileInput" :name="name" type="file" @change="h_fileSelection" />
+
+    <div class="avatar-profile-overlay"
+         :class="errorMessage === '' ? 'avatar-profile-overlay-normal' : 'avatar-profile-overlay-fix'"
+         :style="!avatarMode ? 'border-radius: 0% !important;' : ''">
+      <a href="#" class="a-edit-btn-icon"><i class="tim-icons icon-camera-18" /></a>
     </div>
 
-    <!-- profile image container -->
-    <div class="form-group avatar-profile-container">
-
-        <img v-if="previewImg === undefined" class="avatar-profile" :src="cmp_image" alt="profile avatar" :style="!avatarMode ? 'border-radius: 0% !important;' : ''">
-        <img v-else class="avatar-profile" :src="previewImg" alt="profile avatar" :style="!avatarMode ? 'border-radius: 0% !important;' : ''">
-
-        <!-- INPUT -->
-        <!--:v-model.value="value"-->
-        <input class="form-control" ref="ref_fileInput" :name="name" type="file" @change="h_fileSelection"/>
-
-        <div class="avatar-profile-overlay"
-             :class="errorMessage === '' ? 'avatar-profile-overlay-normal' : 'avatar-profile-overlay-fix'"
-             :style="!avatarMode ? 'border-radius: 0% !important;' : ''">
-            <a href="#" class="a-edit-btn-icon"><i class="tim-icons icon-camera-18"/></a>
-        </div>
-
-        <div class="">
-            <label v-show="errorMessage" class="error">{{ errorMessage }}</label>
-        </div>
+    <div class="">
+      <label v-show="errorMessage" class="error">{{ errorMessage }}</label>
     </div>
+  </div>
 
 </template>
 

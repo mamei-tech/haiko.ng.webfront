@@ -1,7 +1,7 @@
 <template>
-    <div class="picture-table-cell" :style="style">
-        <img class="cell-picture" :src="picture" alt="">
-    </div>
+  <div class="picture-table-cell" :style="style">
+    <img class="cell-picture" :src="picture" alt="">
+  </div>
 </template>
 
 <script lang="ts">
