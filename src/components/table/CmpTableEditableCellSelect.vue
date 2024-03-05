@@ -1,33 +1,34 @@
 <template>
 
-    <!-- non edition mode situation -->
-    <td v-show="!isEditionMode" rowspan="1" colspan="1" @click.prevent="h_click" v-bind="$attrs">
-        {{ text }}
-    </td>
+  <!-- non edition mode situation -->
+  <td v-show="!isEditionMode" rowspan="1" colspan="1" @click.prevent="h_click" v-bind="$attrs">
+    {{ text }}
+  </td>
 
-    <!-- edition mode situation -->
-    <!--https://stackoverflow.com/questions/68803137/vue-3-passing-array-warning-extraneous-non-props-attributes-were-passed-to-comp-->
-    <td v-show="isEditionMode" rowspan="1" colspan="1" v-bind="$attrs">
-        <!-- input -->
-        <multiselect
-                :options="options"
-                :placeholder="placeholder"
-                :searchable="searchable"
-                :closeOnSelect="true"
-                :mode="'single'"
+  <!-- edition mode situation -->
+  <!--https://stackoverflow.com/questions/68803137/vue-3-passing-array-warning-extraneous-non-props-attributes-were-passed-to-comp-->
+  <td v-show="isEditionMode" rowspan="1" colspan="1" v-bind="$attrs">
+    <!-- input -->
+    <multiselect
+        :options="options"
+        :placeholder="placeholder"
+        :searchable="searchable"
+        :closeOnSelect="true"
+        :mode="'single'"
 
-                @open="h_onOpenWrap"
-                @change="h_OnChangeWrap"
-                @search-change="h_onWriteSearch"
-        />
+        @open="h_onOpenWrap"
+        @change="h_OnChangeWrap"
+        @search-change="h_onWriteSearch"
+    />
 
-    </td>
+  </td>
 </template>
 
 <script lang="ts">
 import type { SetupContext } from 'vue'
-import { defineComponent, ref, watch } from 'vue'
 import Multiselect from '@vueform/multiselect'
+import { defineComponent, onMounted, ref, watch } from 'vue'
+
 import type { ICellUpdate, IMultiselectBasic } from '@/services/definitions'
 
 
@@ -37,7 +38,7 @@ export default defineComponent({
     props: {
         cellData: {
             type:        [ String, Number ],
-            description: 'The data to be rendered in the cell',
+            description: 'The data to be rendered in the cell. If you want to set to default you have to use -1 or empty-string',
             required:    true
         },
         refId:    {
@@ -80,12 +81,23 @@ export default defineComponent({
         const isEditionMode = ref<boolean>(false)          // tell is the component (cell) should be rendered in edition mode, so the input value for editing should be enabled
         const isEditionLock = ref<boolean>(false)          // a flag value to lock the edition mode until input blur event or until enter (keydown) event, so the input remains on edition mode if an accidental click was made by the user
 
-        const value = ref<string | number>(props.cellData)      // just save the selection made by the user in the select
-        const text = ref<string | number>(props.placeholder)    // default set up for the cell text of the row to be displayed when edit mode isn't on
+        const value = ref<string | number>(props.cellData)       // just save the selection made by the user in the select
+        const text = ref<string | number>(props.placeholder)     // default set up for the cell text of the row to be displayed when edit mode isn't on
 
         //endregion ===========================================================================
 
         //region ======= HOOKS ================================================================
+
+        onMounted(async () => {
+
+            // we try to set the proper string in to the cell data according to the given props from the parent
+            if(props.cellData <= -1 || props.cellData == '') text.value = props.placeholder
+            else {
+                text.value = hpr_findLabelByValue(props.cellData)
+                if(text.value == '') text.value = props.placeholder
+            }
+        })
+
         //endregion ===========================================================================
 
         //#region ======= FETCHING DATA & ACTIONS =============================================
@@ -97,7 +109,7 @@ export default defineComponent({
         //region ======= HELPERS ==============================================================
 
         /**
-         * Search for the correspondent label of the given value.
+         * Search for the correspondent label of the given value, in to the (also) given select option
          * @param search4
          */
         const hpr_findLabelByValue = ( search4: string | number ): string => {
