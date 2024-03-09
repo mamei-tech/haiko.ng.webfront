@@ -81,4 +81,27 @@ export const InventoryRoutes: Array<RouteRecordRaw> = [
     },
 
     //#endregion ==========================================================================
+
+    //#region ======= WAREHOUSE LOCATIONS =================================================
+
+    {
+        path:      RoutePaths.strgcategoryList,
+        name:      RoutePathNames.strgcategoryList,
+        component: () => import('../views/inventory/wlocation/ViewListStorageCat.vue'),
+        meta:      { layout: LayMain, sidebar: SbInventory, reqAuth: true }
+    },
+    {
+        path:      RoutePaths.strgcategoryCreate,
+        name:      RoutePathNames.strgcategoryCreate,
+        component: () => import('../views/inventory/wlocation/ViewFormStrgCat.vue'),
+        meta:      { layout: LayMain, sidebar: SbInventory, reqAuth: true }
+    },
+    {
+        path:      RoutePaths.strgcategoryEdit,
+        name:      RoutePathNames.strgcategoryEdit,
+        component: () => import('../views/inventory/wlocation/ViewFormStrgCat.vue'),
+        meta:      { layout: LayMain, sidebar: SbInventory, reqAuth: true }
+    },
+
+    //#endregion ==========================================================================
 ]

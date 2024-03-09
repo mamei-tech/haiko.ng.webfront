@@ -40,6 +40,16 @@ export enum ENTITY_NAMES {
     PURCHASE = 'purchase',
     PRODUCT = 'product',
     WAREHOUSE = 'warehouse',
+    STRGCATEGORY = 'strgcategory',
     CURRENCY = 'currency',
     PRODUCT_CAT = 'product-cat'
+}
+
+/**
+ * Defines the policies database values to be fallowed when when storing new product in warehouse storage locations
+ */
+export enum STRG_PROD_POLICY {
+    MIXED = 'mixed',
+    ONLYSAME = 'same',
+    IFEMPTY = 'empty'
 }

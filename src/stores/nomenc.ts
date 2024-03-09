@@ -1,19 +1,26 @@
 // Store for nomenclatures data from the backend
 import { defineStore } from 'pinia'
+import { i18n } from '@/services/i18n'
 import { toDicIds } from '@/services/helpers/help-conversion'
-import { ApiNomenclaturesMng } from '@/services/api/api-nomenclatures-manager'
-
 import type {
     ById,
     Function1,
     ICountryBasic,
     ICountryStatesBasic,
-    IMultiselectBasic,
-    IRoleBasic, IStaffBasic,
-    ISuppCatBasic, ISupplierBasic,
-    IProdCatBasic, IUoMBasic,
     ICurrencyBasic,
+    IMultiselectBasic,
+    IProdCatBasic, IProdUoM,
+    IRoleBasic,
+    IStaffBasic,
+    ISuppCatBasic,
+    ISupplierBasic,
+    IUoMBasic
 } from '@/services/definitions'
+import { STRG_PROD_POLICY } from '@/services/definitions'
+import { ApiNomenclaturesMng } from '@/services/api/api-nomenclatures-manager'
+
+
+const { t } = i18n.global
 
 
 // https://pinia.vuejs.org/core-concepts/#setup-stores
@@ -27,6 +34,7 @@ export const useSt_Nomenclatures = defineStore({
         roles:      [] as IRoleBasic[],
         suppCat:    [] as ISuppCatBasic[],
         prodCat:    [] as IProdCatBasic[],
+        prodUoM:    [] as IProdUoM[],
         countries:  [] as ICountryBasic[],
         states:     [] as ICountryStatesBasic[],
         staffs:     [] as IStaffBasic[],
@@ -85,6 +93,19 @@ export const useSt_Nomenclatures = defineStore({
         },
 
         /**
+         * Get the defined policies for storage new products in warehouse storage locations, formatted as a multiselect component format ({value: ___, label: ___})
+         *
+         * @param state
+         */
+        getStrgProdPolicies4Select: ( state ): IMultiselectBasic[] => {
+            return [
+                { value: STRG_PROD_POLICY.MIXED, label: t('data.allow-products-policy.mixed') },
+                { value: STRG_PROD_POLICY.ONLYSAME, label: t('data.allow-products-policy.same') },
+                { value: STRG_PROD_POLICY.IFEMPTY, label: t('data.allow-products-policy.empty') }
+            ]
+        },
+
+        /**
          * Get the country from the state in a multiselect component format ({value: ___, label: ___})
          *
          * @param state Nomenclatures COUNTRIES state
@@ -125,6 +146,16 @@ export const useSt_Nomenclatures = defineStore({
         getSupplier4Select: (state): IMultiselectBasic[] => {
             return state.suppliers.map((stateData: ISupplierBasic) => {
                 return { value: stateData.id, label: stateData.sName }
+            })
+        },
+
+        /**
+         *
+         * @param state Products and its UoMs state
+         */
+        getProdUoM4Select: (state): IMultiselectBasic[] => {
+            return state.prodUoM.map((stateData: IProdUoM) => {
+                return { value: stateData.id, label: stateData.pName }
             })
         },
 
@@ -245,6 +276,38 @@ export const useSt_Nomenclatures = defineStore({
         },
 
         /**
+         * Get a list of at least (tops) 50 products only containing the identifier, uom and the name
+         * @param query Allows a query string to search for specific product
+         */
+        async reqNmcProdUoM (query: string | null = null): Promise<void> {
+
+            return await new Promise<void>((resolve, reject) => {
+                ApiNomenclaturesMng.getProdUoM(query).then(( response: any ) => {
+
+                    this.prodUoM = response.data
+                    resolve()
+
+                }).catch(error => { reject(error) })
+            })
+        },
+
+        /**
+         * Get a filtered list of products only containing the identifier, uom and the name
+         * @param ids products identifiers to filter for
+         */
+        async reqNmcProdUoMById (ids: Array<number>): Promise<void> {
+
+            return await new Promise<void>((resolve, reject) => {
+                ApiNomenclaturesMng.getProdUoMFilteredById(ids).then(( response: any ) => {
+
+                    this.prodUoM = response.data
+                    resolve()
+
+                }).catch(error => { reject(error) })
+            })
+        },
+
+        /**
          * tries to get the uom from the backend
          */
         async reqNmcUoM () : Promise<void> {
@@ -350,6 +413,7 @@ interface IStaffState {
     roles:      Array<IRoleBasic>,
     suppCat:    Array<ISuppCatBasic>,
     prodCat:    Array<IProdCatBasic>,
+    prodUoM:    Array<IProdUoM>,
     countries:  Array<ICountryBasic>,
     states:     Array<ICountryStatesBasic>,                // states belonging to a determined / defined countries
     staffs:     Array<IStaffBasic>,

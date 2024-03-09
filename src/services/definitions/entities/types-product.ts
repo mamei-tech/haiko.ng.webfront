@@ -1,17 +1,24 @@
 import type { IIndexable } from '@/services/definitions'
 
+/**
+ * ❗ the id, is the identifier of the product
+ */
+export interface IProdUoM extends IIndexable {
+    pName: string,
+    pUoMID: number | string
+}
+
 
 /**
  * Interface for describing a Product row on the datatable
  */
-export interface IProductRow extends IIndexable {
-    pName: string,
+export interface IProductRow extends IProdUoM {
+
     pCategoryID: number | string,
     isActive: boolean
     doWeTrackInventory: boolean
     sellPrice: string | number | undefined
     cost: string | number | undefined
-    pUoMID: number | string
 
     pTotalStock: number | undefined
 

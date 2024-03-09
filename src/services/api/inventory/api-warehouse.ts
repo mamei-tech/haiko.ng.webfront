@@ -51,7 +51,7 @@ export class ApiWarehouse {
     }
 
     /**
-     * Get formulary data information from the server about a to a Warehouse given its identifier.
+     * Get a Warehouse formulary data information from the server according to the given identifier.
      * This is mostly used in form population
      * @param warehouseId Warehouse identifier to look for
      */

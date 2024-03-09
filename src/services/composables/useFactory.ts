@@ -7,8 +7,11 @@ import type {
     IDtoWarehouse,
     IDtoSupplierCat,
     IDtoUoMCategory,
-    IDtoProductSupplierL,
+    IDtoStrgCategory,
+    IStrgCatProdLine,
+    IDtoProductSupplierL
 } from '@/services/definitions'
+import { STRG_PROD_POLICY } from '@/services/definitions'
 
 
 /**
@@ -57,7 +60,7 @@ export default function useFactory() {
 
     /**
      * Factory method to create an empty UoM
-     * When this is used in form mode, the form need to manage a list of UoM, the workaround is to work with temporally Id
+     * When this is used in form mode, the form need to manage a list of UoM that some of it may not exist, the workaround is to work with temporally Id
      * for the list of UoM so we allow to pass the UoM identifier to this method.
      *
      * @param uomId UoM identifier*
@@ -69,7 +72,7 @@ export default function useFactory() {
             isActive:    true,
             uName:       '',
             uRatio:      1,
-            uType:       0,
+            uType:       -1,
             uCategoryId: uomCatId
         }
     }
@@ -182,6 +185,29 @@ export default function useFactory() {
         }
     }
 
+    const mkStrgCategory = (): IDtoStrgCategory => {
+        return {
+            id:             0,
+            allowProdType:  STRG_PROD_POLICY.MIXED,
+            sCatName:       '',
+            wLocationCount: undefined,
+
+            prodCapacityLine:     new Array<IStrgCatProdLine>(),
+            prodCapacityToDelete: new Array<number>()
+        }
+    }
+
+    const mkStrgCatProductLine = ( prodLineId: number, strgCatID: number ): IStrgCatProdLine => {
+        return {
+            id: prodLineId,
+            strgCatID: strgCatID,
+            productID: 0,
+
+            maxCapacity: 0,
+            uomLabel: '',
+        }
+    }
+
     //#endregion ==========================================================================
 
     return {
@@ -194,9 +220,12 @@ export default function useFactory() {
         mkSupplier,
         mkSupplierCat,
 
-        mkWarehouse,
         mkProduct,
-        mkProductSupplierLine
+        mkProductSupplierLine,
+
+        mkWarehouse,
+        mkStrgCategory,
+        mkStrgCatProductLine,
     }
 }
 

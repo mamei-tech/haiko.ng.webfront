@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import { h } from 'vue';
 import { mapActions } from 'pinia';
 import { RoutePathNames, RoutePaths } from '@/services/definitions';
 import { useSt_Pagination } from '@/stores/pagination';
@@ -25,6 +26,17 @@ import { useSt_Pagination } from '@/stores/pagination';
 export default {
     name: 'SbInventory',
     data() {
+
+        // separator HR component to be use as line divider on the sidebar
+        const separator = h( 'hr', {
+            style: {
+                borderColor: 'rgba(0, 0, 0, 0.2)',
+                marginLeft:  '10px',
+                marginRight: '10px',
+                width:       '60%',
+            },
+        } )
+
         return {
             menu:       [
                 {
@@ -67,15 +79,12 @@ export default {
                     title: this.$t( 'nav.sb.configs' ).toUpperCase(),
                     icon:  'tim-icons icon-settings-gear-63',
                     child: [
-                        {
-                            href:  { path: RoutePaths.muList },
-                            title: this.$t( 'routes.' + RoutePathNames.munits ).toLowerCase(),
-                            icon: {
-                                element: 'span',
-                                text: 'U',
-                                class: 'sidebar-item-icon-text'
-                            }
-                        },
+                        // {
+                        //     header: this.$t('entities.warehouse.name'),
+                        //     hiddenOnCollapse: true,
+                        //     class: 'sidebar-txt-head'
+                        //     // title: this.$t('nav.sb.inventory').toUpperCase(),
+                        // },
                         {
                             href:  { path: RoutePaths.warehouseList },
                             title: this.$t( 'routes.' + RoutePathNames.warehouseList ).toLowerCase(),
@@ -95,14 +104,31 @@ export default {
                             }
                         },
                         {
-                            // href:  { path: RoutePaths.strgcategory },
+                            href:  { path: RoutePaths.strgcategoryList },
                             title: this.$t( 'routes.' + RoutePathNames.strgcategoryList ).toLowerCase(),
                             icon: {
                                 element: 'span',
                                 text:    'C',
                                 class:   'sidebar-item-icon-text'
                             }
-                        }
+                        },
+                        {
+                            component: separator,
+                        },
+                        // {
+                        //     header: this.$t('entities.product.section-name'),
+                        //     hiddenOnCollapse: true,
+                        //     class: 'sidebar-txt-head'
+                        // },
+                        {
+                            href:  { path: RoutePaths.muList },
+                            title: this.$t( 'routes.' + RoutePathNames.munits ).toLowerCase(),
+                            icon: {
+                                element: 'span',
+                                text: 'U',
+                                class: 'sidebar-item-icon-text'
+                            }
+                        },
                     ],
                 },
             ],

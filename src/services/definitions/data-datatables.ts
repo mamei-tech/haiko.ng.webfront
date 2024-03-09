@@ -1,5 +1,6 @@
 import { VSchemaUoM } from '@/services/definitions/validations/validations-uom'
 import { VSchemaPSL } from '@/services/definitions/validations/validations-product'
+import { VSchemaProdLine } from '@/services/definitions/validations/validations-strgcategory'
 import { SelectDataUoMType } from '@/services/definitions/data-select-options'
 import { HTML_INPUT_TYPE } from '@/services/definitions/enums-common'
 import { i18n } from '@/services/i18n'
@@ -147,6 +148,31 @@ export const HWarehouseTable: Partial<IColumnHeader>[] = [
     { title: 'name', navKey: 'wName', sorting: '' },
     { title: 'code', styleWidth: 30, sorting: '' },
     { title: 'address', navKey: 'suppID' },
+    {
+        title:        '',            // actions buttons
+        styleToRight: true,
+        styleWidth:   40
+    }
+]
+
+export const HStrgCategory: Partial <IColumnHeader>[] = [
+    { title: 'id', hidden: true },
+    { title: 'name', navKey: 'sCatName', sorting: '', styleWidth: 40 },
+    { title: 'count-wlocations', navKey: 'wLocationCount', styleWidth: 10 },
+    { title: 'strg-prod-policy', navKey: 'allowProdType', sorting: '', styleWidth: 20 },
+    {
+        title:        '',            // actions buttons
+        styleToRight: true,
+        styleWidth:   40
+    }
+]
+
+export const HStrgCatProductLine: Partial <IColumnHeader>[] = [
+    { title: 'id', hidden: true },
+    { title: 'products', navKey: 'productID', styleWidth: 35, cellEditableSelect: true, cellEditableSelectSearchable: true, cellEditableSelectPlaceholder: t('form.placeholders.strg-select-product') },
+    { title: 'capacity', navKey: 'maxCapacity', styleToRight: true, styleWidth: 20, cellEditable: true, cellEditableValidation: VSchemaProdLine.maxCapacity, cellEditableInputType: HTML_INPUT_TYPE.TEXT },
+    { title: '', navKey: 'uomID', hidden: true },
+    { title: 'uom', navKey: 'uomLabel', styleToLeft: true, styleWidth: 10 },
     {
         title:        '',            // actions buttons
         styleToRight: true,

@@ -2,7 +2,15 @@ import axios from './api'
 import appConfig from '@/configs/app.conf'
 
 import type { AxiosPromise } from 'axios'
-import type { ICountryBasic, ICountryStatesBasic, IRoleBasic, ISuppCatBasic, IProdCatBasic, IUoMBasic } from '@/services/definitions'
+import type {
+    ICountryBasic,
+    ICountryStatesBasic,
+    IRoleBasic,
+    ISuppCatBasic,
+    IProdCatBasic,
+    IUoMBasic,
+    IProdUoM
+} from '@/services/definitions'
 
 
 const version = appConfig.server.current_version
@@ -49,6 +57,28 @@ export class ApiNomenclaturesMng {
      */
     public static getSuppCat(): AxiosPromise<ISuppCatBasic[]> {
         return axios.get(`${url}/supplier/category/list`)
+    }
+
+    /**
+     * Get a list of at least (tops) 50 products only containing the identifier, uom and the name
+     * @param lookup Allows a query string to search for specific product
+     */
+    public static getProdUoM ( lookup: string | null = null ): AxiosPromise<IProdUoM[]> {
+        return axios.get(`${url}/product/uom/list/${ lookup != null && lookup.length >= 3 ? lookup : ''}`)
+    }
+
+    /**
+     * Get a list of products only containing the identifier, uom and the name. The resulting products list will
+     * only contains the products that match the given list of products identifiers as request parameter
+     *
+     * @param ids Identifiers of the products to look for
+     */
+    public static getProdUoMFilteredById ( ids: Array<number> ) : AxiosPromise<IProdUoM[]> {
+        return axios.get(`${url}/product/uom/byids`, {
+            params: {
+                ids: ids.join(',')
+            }
+        })
     }
 
     /**
