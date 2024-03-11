@@ -15,7 +15,6 @@
                 placeholder="###########"
                 name="id"
                 type="hidden"
-                v-model="iniFormData.id"
             />
 
             <div class="row">
@@ -33,7 +32,6 @@
                         :placeholder="$t('form.placeholders.warehouse-name')"
                         name="wName"
                         type="text"
-                        v-model="iniFormData.wName"
                     />
                   </div>
 
@@ -46,7 +44,6 @@
                         :placeholder="$t('form.placeholders.warehouse-code')"
                         name="code"
                         type="text"
-                        v-model="iniFormData.code"
                     />
                   </div>
 
@@ -159,8 +156,6 @@ export default defineComponent({
         const { mkWarehouse } = useFactory()
         const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
 
-        const iniFormData = reactive<IDtoWarehouse>(mkWarehouse())              // initial form data
-
         //endregion ===========================================================================
 
         //region ======= HOOKS ================================================================
@@ -180,8 +175,6 @@ export default defineComponent({
             if (cpt_fMode.value === FMODE.EDIT as TFormMode) {
                 try {
                     let formDataFromServer = (await ApiWarehouse.reqWarehouseById(+id)).data as IDtoWarehouse
-
-                    Object.assign(iniFormData, formDataFromServer)                          // shallow (primitive values only) copy of form data
 
                     // setValues(formDataFromServer)
                     resetForm({
@@ -267,9 +260,9 @@ export default defineComponent({
         const cpt_fMode: ComputedRef<string | string[]> = computed(() => fmode)
 
         // getting the vee validate method to manipulate the form related actions from the view
-        const { handleSubmit, meta, setFieldValue, resetForm } = useForm<IDtoWarehouse>({
+        const { handleSubmit, meta, setFieldValue, resetForm, values } = useForm<IDtoWarehouse>({
             validationSchema: VSchemaWarehouse,
-            initialValues:    iniFormData,
+            initialValues:    mkWarehouse(),
             initialErrors:    undefined
         })
 
@@ -302,8 +295,8 @@ export default defineComponent({
         const h_delete = async ( evt: any ) => {
             if (cpt_fMode.value !== FMODE.EDIT as TFormMode) return
 
-            const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.WAREHOUSE, iniFormData.wName, t('dialogs.warehouse-remove-warning'))
-            if(wasConfirmed) await a_delete (iniFormData.id, iniFormData.wName)
+            const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.WAREHOUSE, values.wName, t('dialogs.warehouse-remove-warning'))
+            if(wasConfirmed) await a_delete (values.id, values.wName)
         }
 
         const h_keyboardKeyPress = ( evt: any ) => {
@@ -322,7 +315,7 @@ export default defineComponent({
         //endregion ===========================================================================
 
         return {
-            iniFormData,
+            values,
 
             cpt_fMode,
             st_nomenclatures,

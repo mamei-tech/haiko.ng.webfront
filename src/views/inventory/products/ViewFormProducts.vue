@@ -50,7 +50,6 @@
                         :placeholder="$t('form.placeholders.product-name')"
                         name="pName"
                         type="text"
-                        v-model="iniFormData.pName"
                     />
                   </div>
 
@@ -59,8 +58,7 @@
                   </label>
                   <div class="col-md-2">
                     <CmpVeeCheckbox name="isActive"
-                                    :checked="iniFormData.isActive"
-                                    v-model="iniFormData.isActive"
+                                    :checked="values.isActive"
                                     :labels="[$t('others.available'), $t('others.unavailable')]"
                     />
                   </div>
@@ -107,7 +105,6 @@
                         placeholder="... NAM.CODE ..."
                         name="sellCode"
                         type="text"
-                        v-model="iniFormData.sellCode"
                     />
                   </div>
                 </div>
@@ -122,7 +119,6 @@
                         height="150"
                         name="noteSell"
                         type="text"
-                        v-model="iniFormData.noteSell"
                     />
                   </div>
                 </div>
@@ -136,7 +132,7 @@
                       name="productImg"
                       :avatar-mode="false"
                       :statics="configStatic"
-                      :image="iniFormData.picPath ?? ''"
+                      :image="values.picPath ?? ''"
                       :max-size="5"
                       v-on:fileSelected="h_imgChange"
                       v-on:removePicture="h_removePicture"
@@ -182,9 +178,8 @@
                         </label>
                         <div class="col-md-2">
                           <CmpVeeCheckbox name="canBeSold"
-                                          :checked="iniFormData.canBeSold"
+                                          :checked="values.canBeSold"
                                           :labels="[$t('btn.val-yes'), $t('btn.val-no')]"
-                                          v-model="iniFormData.canBeSold"
                                           @chkboxchange="h_changeSoldStatus"
                           />
 
@@ -202,7 +197,6 @@
                               placeholder="0.00"
                               name="sellPrice"
                               type="number"
-                              v-model="iniFormData.sellPrice"
                               :disabled="ls_activateSellPrice"
                           />
                         </div>
@@ -220,7 +214,6 @@
                               placeholder="0.00"
                               name="sellTax"
                               type="number"
-                              v-model="iniFormData.sellTax"
                           />
                         </div>
                       </div>
@@ -316,8 +309,7 @@
                         </label>
                         <div class="col-md-9">
                           <CmpVeeCheckbox name="doWeTrackInventory"
-                                          :checked="iniFormData.doWeTrackInventory"
-                                          v-model="iniFormData.doWeTrackInventory"
+                                          :checked="values.doWeTrackInventory"
                                           :labels="[$t('btn.val-yes'), $t('btn.val-no')]"
                           />
                         </div>
@@ -333,7 +325,6 @@
                               height="150"
                               name="noteTransfer"
                               type="text"
-                              v-model="iniFormData.noteTransfer"
                           />
                         </div>
                       </div>
@@ -386,7 +377,6 @@
                               placeholder="0.00"
                               name="weight"
                               type="number"
-                              v-model="iniFormData.weight"
                           />
                         </div>
                         <div class="col-md-2" style="padding-left: 0 !important; padding-top: 10px;">
@@ -404,7 +394,6 @@
                               placeholder="0.00"
                               name="volume"
                               type="number"
-                              v-model="iniFormData.volume"
                           />
                         </div>
                         <div class="col-md-2" style="padding-left: 0 !important; padding-top: 10px;">
@@ -422,7 +411,6 @@
                           <CmpBasicInput placeholder="0"
                                          name="preDay2Manuf"
                                          type="number"
-                                         v-model="iniFormData.preDay2Manuf"
                           />
                         </div>
                         <div class="col-md-2" style="padding-left: 0 !important; padding-top: 10px;">
@@ -448,8 +436,7 @@
                         </label>
                         <div class="col-md-2">
                           <CmpVeeCheckbox name="canBePurchased"
-                                          :checked="iniFormData.canBePurchased"
-                                          v-model="iniFormData.canBePurchased"
+                                          :checked="values.canBePurchased"
                                           :labels="[$t('btn.val-yes'), $t('btn.val-no')]"
                           />
                         </div>
@@ -469,7 +456,6 @@
                               placeholder="0.00"
                               name="cost"
                               type="number"
-                              v-model="iniFormData.cost"
                               disabled
                           />
                         </div>
@@ -493,7 +479,6 @@
                               height="60"
                               name="notePurchase"
                               type="text"
-                              v-model="iniFormData.notePurchase"
                           />
                         </div>
                       </div>
@@ -509,7 +494,7 @@
                                   :action-btn-mode="abutton_mode"
 
                                   :columns="columns"
-                                  :data="iniFormData.supplierLines"
+                                  :data="values.supplierLines"
 
                                   :has-search="false"
                                   :has-actions="true"
@@ -668,6 +653,14 @@ export default defineComponent({
         const { dfyConfirmation, dfyShowAlert } = useDialogfy()
         const { valUI2Raw, toUIMoney } = useNumeric()
 
+        // getting the vee validate method to manipulate the form related actions from the view
+        const { handleSubmit, meta, setValues, setFieldValue, resetForm, values } = useForm<IDtoProduct>({
+            // validationSchema: fmode === FMODE.CREATE as TFormMode ? VSchemaStaffCreate : VSchemaStaffEdit,
+            validationSchema: VSchemaProduct,
+            initialValues:    mkProduct(),
+            initialErrors:    undefined
+        })
+
         // html references
         const ref_selectUoM = ref<InstanceType<typeof CmpMultiselectField>>()
         const ref_selectUoMPurchase = ref<InstanceType<typeof CmpMultiselectField>>()
@@ -685,8 +678,7 @@ export default defineComponent({
         // form data
         const activeTabId = ref<number>(1)
         const forceImgDelOnCmp = ref<Boolean>(false)                                        // so we can tell to the image component 'CmpImageInput' to remove the image if we need to
-        const iniFormData = reactive<IDtoProduct>(mkProduct())                                    // initial form data
-        const ls_activateSellPrice = ref<boolean>(!iniFormData.canBeSold)
+        const ls_activateSellPrice = ref<boolean>(!values.canBeSold)
         const ls_uomChosenLabel = ref<string | undefined>(undefined)                        // string label located in the buying section, to show the selected UoM that will be used in purchase ops
         const ls_filteredUoM = ref<IMultiselectBasic[]>([])
         const tabs = [                                                                            // form tabs data array
@@ -699,46 +691,46 @@ export default defineComponent({
             {
                 id:       1,
                 title:    !ls_uomChosenLabel.value
-                                  ? `${ iniFormData.pTotalStock?.toString() } ${ t('entities.uom.default') }`
-                                  : `${ iniFormData.pTotalStock?.toString() } ${ ls_uomChosenLabel.value }`,
+                                  ? `${ values.pTotalStock?.toString() } ${ t('entities.uom.default') }`
+                                  : `${ values.pTotalStock?.toString() } ${ ls_uomChosenLabel.value }`,
                 subTitle: t('form.fields.product.stats-stock-ready'),
-                type:     iniFormData.pTotalStock ?? 0 <= 0 ? 'danger' : 'info',
+                type:     values.pTotalStock ?? 0 <= 0 ? 'danger' : 'info',
                 icon:     'tim-icons icon-components'
                 // footer:   `<i class="tim-icons icon-zoom-split"></i></i> Update Now`
             },
             {
                 id:       2,
-                title:    `$ ${ iniFormData.pTotalStockValue }`,
+                title:    `$ ${ values.pTotalStockValue }`,
                 subTitle: t('form.fields.product.stats-stock-value'),
-                type:     iniFormData.pTotalStockValue ?? 0 <= 0 ? 'danger' : 'info',
+                type:     values.pTotalStockValue ?? 0 <= 0 ? 'danger' : 'info',
                 icon:     'tim-icons icon-coins'
             },
             {
                 id:       3,
-                title:    iniFormData.pTotalSalesCountInMonth?.toString(),
+                title:    values.pTotalSalesCountInMonth?.toString(),
                 subTitle: t('form.fields.product.stats-total-sales-month'),
-                type:     iniFormData.pTotalSalesCountInMonth ?? 0 <= 0 ? 'warning' : 'info',
+                type:     values.pTotalSalesCountInMonth ?? 0 <= 0 ? 'warning' : 'info',
                 icon:     'tim-icons icon-cart'
             },
             {
                 id:       4,
-                title:    `$ ${ iniFormData.pTotalSalesValueInMonth }`,
+                title:    `$ ${ values.pTotalSalesValueInMonth }`,
                 subTitle: t('form.fields.product.stats-values-sales-month'),
-                type:     iniFormData.pTotalSalesValueInMonth ?? 0 <= 0 ? 'warning' : 'success',
+                type:     values.pTotalSalesValueInMonth ?? 0 <= 0 ? 'warning' : 'success',
                 icon:     'tim-icons icon-money-coins'
             },
             {
                 id:       5,
                 title:    !ls_uomChosenLabel.value
-                                  ? `${ iniFormData.pTotalPurchasesIn3Month?.toString() } ${ t('entities.uom.default') }`
-                                  : `${ iniFormData.pTotalPurchasesIn3Month?.toString() } ${ ls_uomChosenLabel.value }`,
+                                  ? `${ values.pTotalPurchasesIn3Month?.toString() } ${ t('entities.uom.default') }`
+                                  : `${ values.pTotalPurchasesIn3Month?.toString() } ${ ls_uomChosenLabel.value }`,
                 subTitle: t('form.fields.product.stats-total-uom-purchase-3-mont'),
                 type:     'info',
                 icon:     'fa fa-codepen'
             },
             {
                 id:       6,
-                title:    iniFormData.pCountBoMRecipes?.toString(),
+                title:    values.pCountBoMRecipes?.toString(),
                 subTitle: t('form.fields.product.stats-count-bom'),
                 type:     'info',
                 icon:     'fa fa-sticky-note-o'
@@ -791,8 +783,7 @@ export default defineComponent({
                 formDataFromServer = await ApiProduct.getProductById(+id)
 
                 // we need to sync / update some local vars coming from server so
-                Object.assign(iniFormData, formDataFromServer)                     // shallow (primitive values only) copy of form data
-                ls_activateSellPrice.value = !iniFormData.canBeSold                // this here is a hack, when we are in edition mode, we need to update the ls_activateSellPrice var, so the sell price input status can render accordingly
+                ls_activateSellPrice.value = !formDataFromServer.canBeSold                // this here is a hack, when we are in edition mode, we need to update the ls_activateSellPrice var, so the sell price input status can render accordingly
 
                 statsDataCards[0].title = st_nomenclatures.getUoMByIdMap[+formDataFromServer.pUoMID].uName                  // updating stock info card
                 statsDataCards[4].title = st_nomenclatures.getUoMByIdMap[formDataFromServer.pUoMPurchaseID].uName           // updating purchase info card
@@ -881,14 +872,6 @@ export default defineComponent({
         // compute the form mode: creation mode or edition mode
         const cpt_fMode: ComputedRef<string | string[]> = computed(() => fmode)
 
-        // getting the vee validate method to manipulate the form related actions from the view
-        const { handleSubmit, meta, setValues, setFieldValue, resetForm } = useForm<IDtoProduct>({
-            // validationSchema: fmode === FMODE.CREATE as TFormMode ? VSchemaStaffCreate : VSchemaStaffEdit,
-            validationSchema: VSchemaProduct,
-            initialValues:    iniFormData,
-            initialErrors:    undefined
-        })
-
         //#endregion ==========================================================================
 
         //region ======= HELPERS ==============================================================
@@ -905,20 +888,7 @@ export default defineComponent({
         }
 
         /**
-         * Sync ProductSuppliers lines between vee-validate form data and the local data reference (iniFormData.supplierLines)
-         */
-        const hpr_syncProductSupplierList = () => {
-            setFieldValue('supplierLines', iniFormData.supplierLines)
-
-            if(!iniFormData.suppLinesToDelete) return
-
-            // if we are in edition mode and there are some UoM to delete, then we sync it too
-            if(cpt_fMode.value === FMODE.EDIT && iniFormData.suppLinesToDelete.length > 0 )
-                setFieldValue('suppLinesToDelete', iniFormData.suppLinesToDelete)
-        }
-
-        /**
-         * Update the collection of the SupplierLine object (IDtoProductSupplierL) from the initial form value located in the ref var 'iniFormData.supplierLines'
+         * Update the collection of the SupplierLine object (IDtoProductSupplierL) from the initial
          * then sync the same SupplierLine collection with the actual current form data managed by vee-validate lib
          *
          * ❗ PSL == product supplier line
@@ -926,19 +896,17 @@ export default defineComponent({
          * @param data ProductSupplier line data to be updated in the collection
          */
         const hpr_updatePSLInList = ( data: ICellUpdate ) => {
-            if(!iniFormData.supplierLines) return
+            if(!values.supplierLines) return
 
             // ---- business logic validation -----
 
             // ---- update suppliers list logic -----
-            iniFormData.supplierLines = iniFormData.supplierLines.map(( row: IDtoProductSupplierL ) => {
+            setFieldValue('supplierLines', values.supplierLines?.map(( row: IDtoProductSupplierL ) => {
                 if (row.id === data.entityId)
                     row[ data.entityField as keyof IDtoProductSupplierL ] = data.updatedValue as never
 
                 return row
-            })
-
-            hpr_syncProductSupplierList()
+            }))
         }
 
         /**
@@ -951,11 +919,8 @@ export default defineComponent({
             resetForm({ values: mkProduct(), errors: undefined })
 
             // clearing suppliers
-            iniFormData.supplierLines = []
-            iniFormData.suppLinesToDelete = []
-
-            setFieldValue('supplierLines', iniFormData.supplierLines)
-            setFieldValue('suppLinesToDelete', iniFormData.suppLinesToDelete)
+            setFieldValue('supplierLines', [])
+            setFieldValue('suppLinesToDelete', [])
 
             // clearing selects
             ref_selectUoM.value?.clearSelection()
@@ -971,8 +936,7 @@ export default defineComponent({
          * entire formulary data should remain
          */
         const hpr_clearStateE = () => {
-            iniFormData.suppLinesToDelete = []
-            setFieldValue('suppLinesToDelete', iniFormData.suppLinesToDelete)
+            setFieldValue('suppLinesToDelete', [])
         }
 
         /**
@@ -1092,28 +1056,28 @@ export default defineComponent({
             // This entire logic block here validate 2 things
             // 1 Ensure that all the rows have a selected supplier
             // 2 Ensure that we don't have different associations (rows) with the same suppliers (supplier id) and the same price
-            if(iniFormData.supplierLines && iniFormData.supplierLines.length >= 2)
+            if(values.supplierLines && values.supplierLines.length >= 2)
             {
-                for (let i = 0; i < iniFormData.supplierLines.length; i++)
+                for (let i = 0; i < values.supplierLines.length; i++)
                 {
                     // we can't allow, we need to ensure a supplier selection for each product supplier association
                     // @ts-ignore
-                    if (iniFormData.supplierLines[i].supplierId <= 0)
+                    if (values.supplierLines[i].supplierId <= 0)
                     {
                         dfyShowAlert(t('dialogs.title-alert-not-allowed'), t('dialogs.product-supp-assoc-most-select'), DIALOG_ICON.E)
                         return
                     }
 
                     // seeking if we have different associations (rows) with the same suppliers (supplier id) and the same price
-                    for (let j = i+1; j < iniFormData.supplierLines.length ; j++)
-                        if(iniFormData.supplierLines[i].supplierId == iniFormData.supplierLines[j].supplierId && iniFormData.supplierLines[i].sPrice == iniFormData.supplierLines[j].sPrice) {
+                    for (let j = i+1; j < values.supplierLines.length ; j++)
+                        if(values.supplierLines[i].supplierId == values.supplierLines[j].supplierId && values.supplierLines[i].sPrice == values.supplierLines[j].sPrice) {
                             dfyShowAlert(t('dialogs.title-alert-not-allowed'), t('dialogs.product-invalid-supp-assoc'), DIALOG_ICON.E)
                             return
                         }
                 }
             // @ts-ignore
-            } else if (iniFormData.supplierLines && iniFormData.supplierLines.length == 1 ) {               // if we have just one supplier and it supplierId is lesser than or equal 0, we can't allow, we need to ensure a supplier selection
-                if(iniFormData.supplierLines[0].supplierId <= 0) {
+            } else if (values.supplierLines && values.supplierLines.length == 1 ) {               // if we have just one supplier and it supplierId is lesser than or equal 0, we can't allow, we need to ensure a supplier selection
+                if(values.supplierLines[0].supplierId <= 0) {
                     dfyShowAlert(t('dialogs.title-alert-not-allowed'), t('dialogs.product-supp-assoc-most-select'), DIALOG_ICON.E)
                     return
                 }
@@ -1124,7 +1088,7 @@ export default defineComponent({
             // handling the submission with vee-validate method
             handleSubmit(formData => {
                 if (cpt_fMode.value == (FMODE.CREATE as TFormMode)) a_create(formData, doWeNeedToStay)
-                if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && isCloning.value && meta.value.dirty) console.log('pending cloning mode')
+                if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && isCloning.value && meta.value.dirty) console.log('pending cloning mode')      // TODO pending cloning mode
                 if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && !isCloning.value && meta.value.dirty) a_edit(formData, doWeNeedToStay)
                 if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && !meta.value.dirty) nav_back()
             }).call(this)
@@ -1137,8 +1101,8 @@ export default defineComponent({
         const h_delete = async ( evt: any ) => {
             if (cpt_fMode.value !== FMODE.EDIT as TFormMode) return
 
-            const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.PRODUCT, iniFormData.pName, t('dialogs.prod-remove-warning'))
-            if(wasConfirmed) await a_delete(iniFormData.id, iniFormData.pName)
+            const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.PRODUCT, values.pName, t('dialogs.prod-remove-warning'))
+            if(wasConfirmed) await a_delete(values.id, values.pName)
         }
 
         const h_keyboardKeyPress = ( evt: any ) => {
@@ -1184,7 +1148,7 @@ export default defineComponent({
             // enabling the clone, so we need to clone
 
             // -- resetting the identity identifier
-            iniFormData.id = 0
+            setFieldValue('id', 0)
             isCloning.value = true
 
             // -- resetting the fields that must be uniques
@@ -1220,7 +1184,6 @@ export default defineComponent({
             // actual removing the image
             setFieldValue('productImg', undefined)
             setFieldValue('picPath', undefined)
-            iniFormData.picPath = ''                                                                                    // I don't know if this is needed here
         }
 
         /**
@@ -1274,12 +1237,10 @@ export default defineComponent({
          * This method allows to add new SupplierLine to the Product entity being created / edited in the form
          */
         const h_intentSuppLineCreate = async () => {
-            if(!iniFormData.supplierLines) return
+            if(!values.supplierLines) return
 
-            iniFormData.supplierLines.push(mkProductSupplierLine(auxIdCounter.value))
+            values.supplierLines.push(mkProductSupplierLine(auxIdCounter.value))
             auxIdCounter.value -= 1
-
-            hpr_syncProductSupplierList()
         }
 
         /**
@@ -1297,19 +1258,17 @@ export default defineComponent({
         }
 
         const h_intentRowDelete = ( rowId: number ) => {
-            if(!iniFormData.supplierLines) return
+            if(!values.supplierLines) return
 
-            iniFormData.supplierLines = iniFormData.supplierLines.filter((suppRow) => {
+            setFieldValue('supplierLines', values.supplierLines.filter((suppRow) => {
 
                 if(suppRow.id !== rowId) return suppRow
                 if(suppRow.id === rowId && cpt_fMode.value === FMODE.EDIT)
-                    iniFormData.suppLinesToDelete?.push(suppRow.supplierId)
+                    values.suppLinesToDelete?.push(suppRow.supplierId)
 
                 // this las condition tries to handle the situation of the edit form mode, that we need to record a UoM
                 // that already exist in the database and the user want to deleted. So we write down the 'ProductSupplierL' identifier
-            })
-
-            hpr_syncProductSupplierList()
+            }))
         }
 
         /**
@@ -1335,7 +1294,7 @@ export default defineComponent({
                 let result = await ApiProduct.reqProductSuppliers(+id).catch(err => tfyBasicRqError(err))           // requesting needed data
 
                 //@ts-ignore
-                iniFormData.supplierLines = result.data.map(supplierLine => {                                       // mapping / normalizing the data to be rendered properly in the table
+                setFieldValue('supplierLines', result.data.map(supplierLine => {                              // mapping / normalizing the data to be rendered properly in the table
                     supplierLine.id = auxIdCounter.value                                                            // setting up the local row identifier for each, so we can identify each other when an action take place
                     auxIdCounter.value -= 1
 
@@ -1344,7 +1303,7 @@ export default defineComponent({
                     supplierLine.sPrice = toUIMoney(+supplierLine.sPrice)                                           // transform the raw currency value (recall the scale) into UI value
 
                     return supplierLine
-                })
+                }))
 
                 ls_isSuppliersRequested.value = true
             }
@@ -1362,6 +1321,7 @@ export default defineComponent({
         //endregion ===========================================================================
 
         return {
+            values,
             isCloning,
 
             columns,
@@ -1370,7 +1330,6 @@ export default defineComponent({
 
             tabs,
 
-            iniFormData,
             activeTabId,
             statsDataCards,
             ls_filteredUoM,

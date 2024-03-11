@@ -18,7 +18,6 @@
                         placeholder="###########"
                         name="id"
                         type="hidden"
-                        v-model="iniFormData.id"
                     />
                   </div>
                 </div>
@@ -33,7 +32,6 @@
                         :placeholder="$t('form.placeholders.uom-cat-ucname')"
                         name="ucName"
                         type="text"
-                        v-model="iniFormData.ucName"
                     />
                   </div>
                 </div>
@@ -49,7 +47,7 @@
                               :action-btn-mode="abutton_mode"
 
                               :columns="columns"
-                              :data="iniFormData.units"
+                              :data="values.units"
 
                               :has-actions="true"
                               :has-top-btn-bar="true"
@@ -137,8 +135,6 @@ export default defineComponent({
         const { fmode, id } = route.params                                                  // remember, fmode (form mode) property denotes the mode this form view was called | checkout the type TFormMode in types definitions
         const { mkUoMCategory, mkUoM } = useFactory()
 
-        const iniFormData = ref<IDtoUoMCategory>(mkUoMCategory())                           // initial form data
-
         /**
          * An ID counter auxiliary var for the UoM rows of the table when the creation mode is on. We need that the UoM rows has it own temporal identifier for proper data update when child component emit cell update intents
          * ❗ An important thing, we use negative values so we can diferenciate new associations from the existing ones in edition mode
@@ -163,22 +159,10 @@ export default defineComponent({
 
                 // it is needed here 'cause we keep two collection of the list of uom
                 // ❗❗❗ we have to use the spread operator here to prevent the array of units it's being copied by reference, and reflect the changes in the store
-                if (uomCat != undefined) {
-                    iniFormData.value = {
-                        ...uomCat,
-                        units:         [ ...uomCat.units ],
-                        unitsToDelete: []
-                    }
-
-                    // this is so the form does not appear as dirty
-                    // also, this will sync the 'units' && 'unitsToDelete' fields with 'iniFormData.value.units' and 'iniFormData.value.unitsToDelete' respectively.
-                    // as javascript pass the values as reference
-                    // https://vee-validate.logaretm.com/v4/guide/components/handling-forms/ | resetting the form
-                    resetForm({
-                        values: { ...uomCat, units: iniFormData.value.units, unitsToDelete: iniFormData.value.unitsToDelete },
+                if (uomCat != undefined) resetForm({
+                        values: { ...uomCat, units: uomCat.units, unitsToDelete: uomCat.unitsToDelete },                // this is so the form does not appear as dirty also, this will sync the 'units' && 'unitsToDelete' fields with 'iniFormData.value.units' and 'iniFormData.value.unitsToDelete' respectively. As javascript pass the values as reference hhttps://vee-validate.logaretm.com/v4/guide/components/handling-forms/ | resetting the form
                         errors: {}
                     })
-                }
             }
 
             window.addEventListener('keydown', h_keyboardKeyPress)                              // keyboard keys event handler, we need to clean this kind of event when the component are destroyed
@@ -229,7 +213,7 @@ export default defineComponent({
                 return uom
             })
 
-            st_uom.reqUoMCatUpdate(updatedUoMCategory).then(() => {
+            st_uom.reqUpdUoMCat(updatedUoMCategory).then(() => {
                 tfyCRUDSuccess(ENTITY_NAMES.UOMCATEGORY, OPS_KIND_STR.UPDATE, updatedUoMCategory.ucName)
 
                 // so now what ?
@@ -262,9 +246,9 @@ export default defineComponent({
         const cpt_fMode: ComputedRef<string | string[]> = computed(() => fmode)
 
         // getting the vee validate method to manipulate the form related actions from the view
-        const { handleSubmit, meta, resetForm, setFieldValue } = useForm<IDtoUoMCategory>({
+        const { handleSubmit, meta, resetForm, setFieldValue, values } = useForm<IDtoUoMCategory>({
             validationSchema: VSchemaUoMCat,
-            initialValues:    iniFormData,
+            initialValues:    mkUoMCategory(),
             initialErrors:    undefined
         })
 
@@ -273,32 +257,18 @@ export default defineComponent({
         //region ======= HELPERS ==============================================================
 
         /**
-         * Update the collection of the UoM object from the initial form value located in the ref var 'iniFormData.value.units'
-         * then sync the same UoM collection with the actual current form data managed by vee-validate lib
+         * Update the collection of the UoM object from the initial form value
          *
          * @param data UoM data to be updated in the collection
          */
         const hpr_updateUoMInList = ( data: ICellUpdate ) => {
 
-            iniFormData.value.units = iniFormData.value.units.map(( row: IDtoUoM ) => {
+            values.units = values.units.map(( row: IDtoUoM ) => {
                 if (row.id === data.entityId)
                     row[ data.entityField as keyof IDtoUoM ] = data.updatedValue as never
 
                 return row
             })
-
-            hpr_syncUoMList()
-        }
-
-        /**
-         * Sync uom list between vee-validate form data and the local data reference (iniFormData.value.units)
-         */
-        const hpr_syncUoMList = () => {
-            setFieldValue('units', iniFormData.value.units)
-
-            // if we are in edition mode and there are some UoM to delete, then we sync it too
-            if(cpt_fMode.value === FMODE.EDIT && iniFormData.value.unitsToDelete.length > 0 )
-                setFieldValue('unitsToDelete', iniFormData.value.unitsToDelete)
         }
 
         /**
@@ -313,7 +283,7 @@ export default defineComponent({
             let uoReferenceActiveStatus = false
             let errorMsg = undefined
 
-            iniFormData.value.units.forEach((uom) => {
+            values.units.forEach((uom) => {
                 if (uom.uType == 0) {
                     uoReference = uom.uName
                     uoReferenceCount += 1
@@ -322,7 +292,7 @@ export default defineComponent({
                 }
             })
 
-            if (iniFormData.value.units.length == 0) errorMsg = t('validation.uom-list-min')
+            if (values.units.length == 0) errorMsg = t('validation.uom-list-min')
             else if (uoReference === undefined) errorMsg = t('validation.uom-list-ref-exist')
             else if (!uoReferenceActiveStatus) errorMsg = t('validation.uom-list-active')
             else if (uoReferenceCount >= 2) errorMsg = t('validation.uom-list-one-ref')
@@ -340,7 +310,6 @@ export default defineComponent({
          */
         const hpr_cleanForm = (): void => {
             resetForm({ values: mkUoMCategory() })
-            iniFormData.value = mkUoMCategory()
         }
 
         //endregion ===========================================================================
@@ -377,10 +346,8 @@ export default defineComponent({
          * This method allows to add new UoM to the UoM Category
          */
         const h_intentUoMCreate = async () => {
-            iniFormData.value.units.push(mkUoM(auxIdCounter.value, cpt_fMode.value === FMODE.CREATE ? 0 : +id))
+            values.units.push(mkUoM(auxIdCounter.value, cpt_fMode.value === FMODE.CREATE ? 0 : +id))
             auxIdCounter.value -= 1
-
-            hpr_syncUoMList()
         }
 
         /**
@@ -400,15 +367,13 @@ export default defineComponent({
         }
 
         const h_intentRowDelete = ( rowId: number ) => {
-            iniFormData.value.units = iniFormData.value.units.filter((row) => {
+            values.units = values.units.filter((row) => {
                 if(row.id !== rowId) return row
-                if(row.id === rowId && rowId > 0 && cpt_fMode.value === FMODE.EDIT) iniFormData.value.unitsToDelete.push(rowId)
+                if(row.id === rowId && rowId > 0 && cpt_fMode.value === FMODE.EDIT) values.unitsToDelete.push(rowId)
 
                 // this las condition tries to handle the situation of the edit form mode, that we need to record a UoM
                 // that already exist in the database and the user want to deleted. So we write down the UoM's identifier
             })
-
-            hpr_syncUoMList()
         }
 
         const h_back = () => {
@@ -429,12 +394,13 @@ export default defineComponent({
         //endregion ===========================================================================
 
         return {
+            values,
+
             abar_mode,
             abutton_mode,
 
             columns,
             cpt_fMode,
-            iniFormData,
 
             h_back,
             h_delete,

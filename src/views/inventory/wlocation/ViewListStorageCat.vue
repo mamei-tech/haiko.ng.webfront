@@ -41,7 +41,7 @@ import { ApiStrgCategory } from '@/services/api/inventory/api-strgcategory'
 import { useSt_Pagination } from '@/stores/pagination'
 import { useSt_Nomenclatures } from '@/stores/nomenc'
 
-import type { TFormMode, IColumnHeader, IDataTableQuery, IWarehouseRow, IStrgCategoryRow } from '@/services/definitions'
+import type { TFormMode, IColumnHeader, IDataTableQuery, IStrgCategoryRow } from '@/services/definitions'
 
 
 

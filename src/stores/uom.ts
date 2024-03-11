@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { useSt_Pagination } from '@/stores/pagination'
 import { ApiUoM } from '@/services/api/inventory/api-uom'
 
-import type { IDtoUoMCategory } from '@/services/definitions'
+import type { IDtoUoMCategory, IDtoUoM } from '@/services/definitions'
 
 
 // https://pinia.vuejs.org/core-concepts/#setup-stores
@@ -91,7 +91,7 @@ export const useSt_UoM = defineStore({
          * @param payload UoM Cat entity data to be updated
          * @param doWeNeedToStay This value with come 'doWeNeedToStay' var from , It is use in the UI logic to say if we stay in the form for maybe create another entity.
          */
-        async reqUoMCatUpdate (payload: IDtoUoMCategory, doWeNeedToStay: boolean = false) : Promise<void> {
+        async reqUpdUoMCat (payload: IDtoUoMCategory, doWeNeedToStay: boolean = false) : Promise<void> {
 
             return await new Promise<void>((resolve, reject) => {
                 ApiUoM.reqUpdateUoMCat(payload)

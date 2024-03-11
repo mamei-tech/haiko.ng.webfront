@@ -99,7 +99,7 @@ export default {
                             title: this.$t( 'routes.' + RoutePathNames.wlocationList ).toLowerCase(),
                             icon: {
                                 element: 'span',
-                                text:    'B',
+                                text:    'U',
                                 class:   'sidebar-item-icon-text'
                             }
                         },

@@ -363,7 +363,7 @@
         },
         "warehouse":    {
             "name":         "Almacén {ref}",
-            "section-name": "Lugar d Almacén"
+            "section-name": "Almacenes"
         },
         "wlocation":    {
             "name":         "Ubicación {ref}",

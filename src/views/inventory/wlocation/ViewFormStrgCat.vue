@@ -18,7 +18,6 @@
                         placeholder="###########"
                         name="id"
                         type="hidden"
-                        v-model="iniFormData.id"
                     />
                   </div>
                 </div>
@@ -33,7 +32,6 @@
                         :placeholder="$t('form.placeholders.strg-category-name')"
                         name="sCatName"
                         type="text"
-                        v-model="iniFormData.sCatName"
                     />
                   </div>
                 </div>
@@ -79,7 +77,7 @@
                               :action-btn-mode="abutton_mode"
 
                               :columns="columns"
-                              :data="iniFormData.prodCapacityLine"
+                              :data="values.prodCapacityLine"
 
                               :has-actions="true"
                               :has-top-btn-bar="true"
@@ -188,9 +186,6 @@ export default defineComponent({
          */
         const auxIdCounter = ref<number>(-1)
 
-        // form data
-        const iniFormData = ref<IDtoStrgCategory>(mkStrgCategory())                         // initial form data
-
         //endregion ===========================================================================
 
         //region ======= HOOKS ================================================================
@@ -215,20 +210,17 @@ export default defineComponent({
 
                 await hpr_setUpData(formDataFromServer)
 
-                // it is needed here 'cause we keep two collection of the list of products capacity lines
                 // ❗❗❗ we have to use the spread operator here to prevent the array of units it's being copied by reference, and reflect the changes in the store
-                iniFormData.value = {
-                    ...formDataFromServer,
-                    prodCapacityLine: [ ...formDataFromServer?.prodCapacityLine ?? [] ],
-                    prodCapacityToDelete: []
-                }
 
                 // this is so the form does not appear as dirty
-                // also, this will sync the 'units' && 'unitsToDelete' fields with 'iniFormData.value.units' and 'iniFormData.value.unitsToDelete' respectively.
                 // as javascript pass the values as reference
                 // https://vee-validate.logaretm.com/v4/guide/components/handling-forms/ | resetting the form
                 resetForm({
-                    values: { ...formDataFromServer, prodCapacityLine: iniFormData.value.prodCapacityLine, prodCapacityToDelete: iniFormData.value.prodCapacityToDelete },
+                    values: {
+                        ...formDataFromServer,
+                        prodCapacityLine: [ ...formDataFromServer?.prodCapacityLine ?? [] ],
+                        prodCapacityToDelete: []
+                    },
                     errors: {}
                 })
             }
@@ -289,7 +281,7 @@ export default defineComponent({
          */
         const a_reqDelete = async ( id: number, ref: undefined | string = undefined ): Promise<void> => {
 
-            console.error("not implemented")
+            console.error("not implemented")                      // TODO pending implementation
 
             /*st_uom.reqUoMCatDeletion(id)
             .then(() => {
@@ -309,7 +301,7 @@ export default defineComponent({
         // getting the vee validate method to manipulate the form related actions from the view
         const { handleSubmit, meta, resetForm, setFieldValue, values } = useForm<IDtoStrgCategory>({
             validationSchema: VSchemaStrgCategory,
-            initialValues:    iniFormData,
+            initialValues:    mkStrgCategory(),
             initialErrors:    undefined
         })
 
@@ -326,14 +318,14 @@ export default defineComponent({
         }
 
         /**
-         * Update the collection of the ProUoM object from the initial form value located in the ref var 'iniFormData.value.prodCapacityLine'
+         * Update the collection of the ProUoM object from the initial form value
          * then sync the same ProUoM collection with the actual current form data managed by vee-validate lib
          *
          * @param data UoM data to be updated in the collection
          */
         const hpr_updateProdUoMInList = ( data: ICellUpdate ) => {
 
-            iniFormData.value.prodCapacityLine = iniFormData.value.prodCapacityLine.map(( row: IStrgCatProdLine ) => {
+            setFieldValue('prodCapacityLine', values.prodCapacityLine.map(( row: IStrgCatProdLine ) => {
                 if (row.id === data.entityId)
                 {
                     row[ data.entityField as keyof IStrgCatProdLine ] = data.updatedValue as never
@@ -347,9 +339,7 @@ export default defineComponent({
                 }
 
                 return row
-            })
-
-            hpr_syncProdUoMList()
+            }))
         }
 
         /**
@@ -376,25 +366,14 @@ export default defineComponent({
         }
 
         /**
-         * Sync uom list between vee-validate form data and the local data reference (iniFormData.value.units)
-         */
-        const hpr_syncProdUoMList = () => {
-            setFieldValue('prodCapacityLine', iniFormData.value.prodCapacityLine)
-
-            // if we are in edition mode and there are some UoM to delete, then we sync it too
-            if(cpt_fMode.value === FMODE.EDIT && iniFormData.value.prodCapacityToDelete.length > 0 )
-                setFieldValue('prodCapacityToDelete', iniFormData.value.prodCapacityToDelete)
-        }
-
-        /**
          * Runs a set of validations checks.
          * If the set of validations isn't successful, the the submit event doesn't go any further.
          */
         const hpr_isProdCapacityLineValid = (): boolean => {
             let errorMsg = undefined
 
-            for (let i = 0; i < iniFormData.value.prodCapacityLine.length ; i++) {
-                if (iniFormData.value.prodCapacityLine[i].maxCapacity > 1) continue
+            for (let i = 0; i < values.prodCapacityLine.length ; i++) {
+                if (values.prodCapacityLine[i].maxCapacity > 1) continue
 
                 errorMsg = t('validation.strg-cat-prod-lines-qty')
                 break
@@ -427,7 +406,6 @@ export default defineComponent({
          */
         const hpr_cleanForm = (): void => {
             resetForm({ values: mkStrgCategory() })
-            iniFormData.value = mkStrgCategory()
         }
 
         //endregion ===========================================================================
@@ -464,12 +442,8 @@ export default defineComponent({
          * This method allows to add new UoM to the Storage Category (StrgCategory)
          */
         const h_intentProdLineCreate = async () => {
-            iniFormData.value.allowProdType = values.allowProdType              // FIXME this is a hack, when we get rid of iniformdata, we will not need this.
-
-            iniFormData.value.prodCapacityLine.push(mkStrgCatProductLine(auxIdCounter.value, cpt_fMode.value === FMODE.CREATE ? 0 : +id))
+            values.prodCapacityLine.push(mkStrgCatProductLine(auxIdCounter.value, cpt_fMode.value === FMODE.CREATE ? 0 : +id))
             auxIdCounter.value -= 1
-
-            hpr_syncProdUoMList()
         }
 
         /**
@@ -477,21 +451,18 @@ export default defineComponent({
          * @param data
          */
         const h_updateCell = (data: ICellUpdate) => {
-            iniFormData.value.allowProdType = values.allowProdType              // FIXME this is a hack, when we get rid of iniformdata, we will not need this.
             hpr_updateProdUoMInList(data)
         }
 
         const h_intentRowDelete = ( rowId: number ) => {
-            iniFormData.value.allowProdType = values.allowProdType              // FIXME this is a hack, when we get rid of iniformdata, we will not need this.
-            iniFormData.value.prodCapacityLine = iniFormData.value.prodCapacityLine.filter(( row: IStrgCatProdLine ) => {
+
+            setFieldValue('prodCapacityLine', values.prodCapacityLine.filter(( row: IStrgCatProdLine ) => {
                 if(row.id !== rowId) return row
-                if(row.id === rowId && rowId > 0 && cpt_fMode.value === FMODE.EDIT) iniFormData.value.prodCapacityToDelete.push(row.productID)
+                if(row.id === rowId && rowId > 0 && cpt_fMode.value === FMODE.EDIT) values.prodCapacityToDelete.push(+row.productID)
 
                 // this las condition tries to handle the situation of the edit form mode, that we need to record a Product Capacity Association
                 // that already exist in the database and the user want to deleted. So we write down the its identifier
-            })
-
-            hpr_syncProdUoMList()
+            }))
         }
 
         /**
@@ -522,7 +493,7 @@ export default defineComponent({
 
         const h_back = () => {
             // router.back()
-            router.push({ name: RoutePathNames.strgcategoryList });
+            router.push({ name: RoutePathNames.strgcategoryList })
         }
 
         const h_delete = async ( evt: any ) => {
@@ -532,12 +503,13 @@ export default defineComponent({
         //endregion ===========================================================================
 
         return {
+            values,
+
             abar_mode,
             abutton_mode,
 
             columns,
             cpt_fMode,
-            iniFormData,
 
             h_back,
             h_delete,
