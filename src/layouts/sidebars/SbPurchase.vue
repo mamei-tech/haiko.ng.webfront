@@ -28,13 +28,29 @@ export default {
         return {
             menu:       [
                 {
+                    // module header
+                    disabled: true,
+                    hiddenOnCollapse: true,
+                    class: 'sidebar-cheader',
+                    title: this.$t('nav.sb.purchases').toUpperCase(),
+                    icon: {
+                        element: 'span',
+                    }
+                    // icon: {
+                    //     element: 'span',
+                    // class: 'fa fa-user',
+                    // attributes: {}
+                    // text: 'I'
+                    // }
+                },
+                {
                     href:  { path: RoutePaths.hub },
                     title: this.$t( 'routes.' + RoutePathNames.hub ).toUpperCase(),
                     icon:  'tim-icons icon-app',
                 },
                 {
                     href: { path: RoutePaths.purchaseList },
-                    title: this.$t( 'routes.' + RoutePathNames.purchase ).toUpperCase(),
+                    title: this.$t( 'routes.' + RoutePathNames.supplier ).toUpperCase(),
                     icon: 'tim-icons icon-money-coins',
                     child: [
                         {

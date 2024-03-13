@@ -28,6 +28,22 @@ export default {
         return {
             menu:       [
                 {
+                    // module header
+                    disabled: true,
+                    hiddenOnCollapse: true,
+                    class: 'sidebar-cheader',
+                    title: this.$t('nav.sb.manufacturing').toUpperCase(),
+                    icon: {
+                        element: 'span',
+                    }
+                    // icon: {
+                    //     element: 'span',
+                    // class: 'fa fa-user',
+                    // attributes: {}
+                    // text: 'I'
+                    // }
+                },
+                {
                     href:  { path: RoutePaths.hub },
                     title: this.$t( 'routes.' + RoutePathNames.hub ).toUpperCase(),
                     icon:  'tim-icons icon-app',

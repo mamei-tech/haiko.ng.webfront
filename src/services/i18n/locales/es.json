@@ -36,13 +36,17 @@
         "tip-action-gen-vcard-file": "Genera un fichero VCard para descargar con la información de contacto",
         "tip-action-gen-vcard-qr":   "Genera un QR con la información de contacto"
     },
-    "nav":           {
+    "nav": {
         "sb": {
-            "people":    "Personas",
-            "overview":  "@:{'data.overview'}",
-            "inventory": "Inventario",
-            "ops":       "Operaciones",
-            "configs":   "@:{'hub.modules.configs'}"
+            "people":         "@:{'hub.modules.people'}",
+            "overview":       "@:{'data.overview'}",
+            "purchases":      "@:{'hub.modules.purchases'}",
+            "management":     "@:{'hub.modules.management'}",
+            "manufacturing":  "@:{'hub.modules.manufacturing'}",
+            "dash-n-reports": "Panel Info",
+            "inventory":      "@:{'hub.modules.inventory'}",
+            "ops":            "Operaciones",
+            "configs":        "@:{'hub.modules.configs'}"
         }
     },
     "data": {
