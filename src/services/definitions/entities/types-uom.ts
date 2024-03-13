@@ -20,7 +20,7 @@ export interface IDtoUoMCategory extends IIndexable {
 export interface IDtoUoM extends IIndexable {
     uName: string,
     uCategoryId: number,
-    uType: number,
+    uType: number | null,
     uRatio: number,
     isActive: boolean
 }

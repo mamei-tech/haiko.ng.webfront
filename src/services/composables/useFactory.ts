@@ -72,7 +72,7 @@ export default function useFactory() {
             isActive:    true,
             uName:       '',
             uRatio:      1,
-            uType:       -1,
+            uType:       null,
             uCategoryId: uomCatId
         }
     }

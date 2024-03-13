@@ -91,10 +91,10 @@ export default defineComponent({
         onMounted(async () => {
 
             // we try to set the proper string in to the cell data according to the given props from the parent
-            if(props.cellData <= -1 || props.cellData == '') text.value = props.placeholder
+            if (props.cellData == null) text.value = props.placeholder
             else {
                 text.value = hpr_findLabelByValue(props.cellData)
-                if(text.value == '') text.value = props.placeholder
+                if(text.value == '' || text.value == undefined ) text.value = props.placeholder
             }
         })
 
