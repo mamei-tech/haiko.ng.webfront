@@ -789,7 +789,6 @@ export default defineComponent({
                 statsDataCards[4].title = st_nomenclatures.getUoMByIdMap[formDataFromServer.pUoMPurchaseID].uName           // updating purchase info card
                 ls_uomChosenLabel.value = st_nomenclatures.getUoMByIdMap[formDataFromServer.pUoMPurchaseID].uName           // updating purchase label in purchase tab
 
-                // setValues(formDataFromServer)
                 resetForm({
                     errors: {},
                     values: { ...formDataFromServer }

@@ -14,7 +14,6 @@
                 placeholder="###########"
                 name="id"
                 type="hidden"
-                v-model="iniFormData.id"
             />
 
             <div class="row">
@@ -30,7 +29,6 @@
                         :placeholder="$t('form.placeholders.role-rname')"
                         name="rName"
                         type="text"
-                        v-model="iniFormData.rName"
                     />
                   </div>
                 </div>
@@ -47,7 +45,6 @@
                         :placeholder="$t('form.placeholders.role-description')"
                         name="description"
                         type="text"
-                        v-model="iniFormData.description"
                     />
                   </div>
                 </div>
@@ -164,10 +161,9 @@ export default defineComponent({
         const { fmode, id } = route.params                              // remember, fmode (form mode) property denotes the mode this form view was called | checkout the type TFormMode in types definitions
         const { mkRole } = useFactory()
 
-        const iniFormData = ref<IDtoRole>(mkRole())                     // initial form data
-
-        const permsByGroup = ref<IGroupPermsDict>({})              // permission list grouped by perm group from server data
+        const permsByGroup = ref<IGroupPermsDict>({})             // permission list grouped by perm group from server data
         const perms2mod = ref<{ [ key: number ]: { status: boolean, group: string } }>({})          // a register of permission to modify on the server. This is a dict using the database perm identifier as keys
+
         let withAggregationMode = false                                 // allow to know if either of the two aggregation buttons were clicked, comes in handy in the edition flow to prepare the data
 
         // !!!! we are not using reactivity for `permsToGrant` and `permsToRemove` fields for IDtoRole object.
@@ -226,8 +222,6 @@ export default defineComponent({
                         },
                         errors:{},
                     })
-                    // iniFormData.value = {... role}                                   // this is an alternative, but vee-validate will see the form as dirty
-                    // setValues(role)                                                  // this is an alternative, but vee-validate will see the form as dirty
                 }
             }
 
@@ -351,9 +345,9 @@ export default defineComponent({
         const cpt_fMode: ComputedRef<string | string[]> = computed(() => fmode)
 
         // getting the vee validate method to manipulate the form related actions from the view
-        const { handleSubmit, meta, resetForm } = useForm<IDtoRole>({
+        const { handleSubmit, meta, resetForm, values, setFieldValue } = useForm<IDtoRole>({
             validationSchema: VSchemaRole,
-            initialValues:    iniFormData,
+            initialValues:    mkRole(),
             initialErrors:    undefined
         })
 
@@ -458,7 +452,7 @@ export default defineComponent({
 
         return {
             cpt_fMode,
-            iniFormData,
+
             permsByGroup,
 
             // to delete from return

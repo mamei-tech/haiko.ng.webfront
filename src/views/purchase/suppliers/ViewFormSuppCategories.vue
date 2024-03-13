@@ -14,7 +14,6 @@
                 placeholder="###########"
                 name="id"
                 type="hidden"
-                v-model="iniFormData.id"
             />
 
             <div class="row">
@@ -31,7 +30,6 @@
                         :placeholder="$t('form.placeholders.supplier-cat-name')"
                         name="scName"
                         type="text"
-                        v-model="iniFormData.sDescription"
                     />
                   </div>
                 </div>
@@ -46,7 +44,6 @@
                         placeholder="..."
                         name="sDescription"
                         type="text"
-                        v-model="iniFormData.sDescription"
                     />
                   </div>
                 </div>
@@ -65,7 +62,6 @@
                         :placeholder="$t('data.description')"
                         name="scColor"
                         type="color"
-                        v-model="iniFormData.scColor"
                     />
                   </div>
                 </div>
@@ -134,9 +130,6 @@ export default defineComponent({
         const { dfyConfirmation, dfyShowAlert } = useDialogfy()
         const { mkSupplierCat } = useFactory()
 
-        const iniFormData = reactive<IDtoSupplierCat>(mkSupplierCat())          // initial form data
-        let formDataFromServer: IDtoSupplierCat | undefined = undefined         // aux variable to save entity data requested from the server
-
         //endregion ===========================================================================
 
         //region ======= HOOKS ================================================================
@@ -151,9 +144,7 @@ export default defineComponent({
         onMounted(async () => {
 
             if (cpt_fMode.value === FMODE.EDIT as TFormMode) {
-                formDataFromServer = await ApiSupplier.getSuppCatById(+id)
-
-                Object.assign(iniFormData, formDataFromServer)                          // shallow (primitive values only) copy of form data
+                let formDataFromServer: IDtoSupplierCat | undefined = await ApiSupplier.getSuppCatById(+id)     // aux variable to save entity data requested from the server
 
                 // setValues(formDataFromServer)
                 resetForm( {
@@ -187,17 +178,13 @@ export default defineComponent({
                 return
             }
 
-            // then ...
-            const subject = t('entities.supplier-cat.name')
-
-            ApiSupplier.reqUpdateSupplierCategory(editedSupplierCat)
-            .then(() => {
-                tfyCRUDSuccess(subject, OPS_KIND_STR.UPDATE, editedSupplierCat.scName)
+            ApiSupplier.reqUpdateSupplierCategory(editedSupplierCat).then(() => {
+                tfyCRUDSuccess(ENTITY_NAMES.SUPPLIER_CAT, OPS_KIND_STR.UPDATE, editedSupplierCat.scName)
 
                 // so now what ?
                 if(!doWeNeedToStay) nav_back()                                  // so we are going back to the data table
 
-            }).catch(err => tfyCRUDFail(err, subject, OPS_KIND_STR.UPDATE))
+            }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.SUPPLIER_CAT, OPS_KIND_STR.UPDATE))
         }
 
         /**
@@ -245,7 +232,7 @@ export default defineComponent({
         // getting the vee validate method to manipulate the form related actions from the view
         const { handleSubmit, meta, setValues, setFieldValue, resetForm } = useForm<IDtoSupplierCat>({
             validationSchema: VSchemaSupplierCat,
-            initialValues:    iniFormData,
+            initialValues:    mkSupplierCat(),
             initialErrors:    undefined
         })
 
@@ -306,7 +293,6 @@ export default defineComponent({
         //endregion ===========================================================================
 
         return {
-            iniFormData,
 
             cpt_fMode,
 

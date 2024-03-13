@@ -18,7 +18,6 @@
                         placeholder="###########"
                         name="id"
                         type="hidden"
-                        v-model="iniFormData.id"
                     />
                   </div>
                 </div>
@@ -33,7 +32,6 @@
                         :placeholder="$t('form.placeholders.staff-firstname')"
                         name="firstName"
                         type="text"
-                        v-model="iniFormData.firstName"
                     />
                   </div>
                 </div>
@@ -48,7 +46,6 @@
                         :placeholder="$t('form.placeholders.staff-lastname')"
                         name="lastName"
                         type="text"
-                        v-model="iniFormData.lastName"
                     />
                   </div>
                 </div>
@@ -63,7 +60,6 @@
                         :placeholder="$t('form.placeholders.username')"
                         name="username"
                         type="text"
-                        v-model="iniFormData.username"
                     />
                   </div>
                 </div>
@@ -78,7 +74,6 @@
                         :placeholder="$t('form.placeholders.email')"
                         name="email"
                         type="text"
-                        v-model="iniFormData.email"
                     />
                   </div>
                 </div>
@@ -93,7 +88,6 @@
                         placeholder="### ## ### ## ##"
                         name="cell"
                         type="number"
-                        v-model="iniFormData.cell"
                     />
                   </div>
                 </div>
@@ -133,8 +127,7 @@
                   </label>
                   <div class="col-md-9">
                     <CmpVeeCheckbox name="isActive"
-                                    :checked="iniFormData.isActive"
-                                    v-model="iniFormData.isActive"
+                                    :checked="values.isActive"
                                     :labels="[$t('others.available'), $t('others.unavailable')]"
                     />
                   </div>
@@ -164,7 +157,6 @@
                             placeholder="**************"
                             name="password"
                             type="password"
-                            v-model="iniFormData.password"
                             ref="password"
                         />
                       </div>
@@ -179,7 +171,6 @@
                             placeholder="**************"
                             name="passwordConf"
                             type="password"
-                            v-model="iniFormData.passwordConf"
                             data-vv-as="password"
                         />
                       </div>
@@ -196,7 +187,7 @@
                       name="avatarImg"
                       :avatar-mode="true"
                       :statics="configStatic"
-                      :image="iniFormData.avatarPath"
+                      :image="values.avatarPath"
                       :max-size="5"
                       v-on:fileSelected="h_avatarChange"
                       v-on:removePicture="h_removePicture"
@@ -275,7 +266,6 @@ export default defineComponent({
         const { mkStaff } = useFactory()
 
         const forceImgDelOnCmp = ref<Boolean>(false)                 // so we can tell to the image component 'CmpImageInput' to remove the image if we need to
-        const iniFormData = reactive<IDtoStaff>(mkStaff())                 // initial form data
         let formDataFromServer: IDtoStaff | undefined = undefined          // aux variable to save entity data requested from the server
         // const rolesData = ref<IMultiselectBasic[]>([])                  // I will use ref 'cause is only one nested object
 
@@ -291,19 +281,15 @@ export default defineComponent({
          * Manually setting the needed values is way cleaner than the other way around. This is needed mainly because api call is asynchronous.
          */
         onMounted(async () => {
+
+            // ---- edition mode ----
             if (cpt_fMode.value === FMODE.EDIT as TFormMode) {
                 formDataFromServer = await ApiStaff.getStaffById(+id)
-                setValues(formDataFromServer)               // using setValues from vee-validate for populating the inputs
 
-                // -----
-                // ❗❗ This here is a patch, I'm not proud of this workaround but I'm having troubles to get the current
-                // state of the form data (avatarPath from server specifically), and as we fallow the 'emit events'
-                // approach to update the form data from the CmpImageInput component (i'm not using v-model for that
-                // component) we need a reactive for the edition mode (when de data comes from server), so this.
-                // Perhaps we can try the v-model way
-
-                // iniFormData.avatarPath = formDataFromServer.avatarPath
-                Object.assign(iniFormData, formDataFromServer)                          // shallow (primitive values only) copy of form data
+                resetForm({
+                    errors: {},
+                    values: { ...formDataFromServer }
+                })
             }
 
             // keyboard keys event handler, we need to clean this kind of event when the component are destroyed
@@ -377,9 +363,9 @@ export default defineComponent({
         const cpt_fMode: ComputedRef<string | string[]> = computed(() => fmode)
 
         // getting the vee validate method to manipulate the form related actions from the view
-        const { handleSubmit, meta, setValues, setFieldValue, resetForm } = useForm<IDtoStaff>({
+        const { handleSubmit, meta, setValues, setFieldValue, resetForm, values } = useForm<IDtoStaff>({
             validationSchema: fmode === FMODE.CREATE as TFormMode ? VSchemaStaffCreate : VSchemaStaffEdit,
-            initialValues:    iniFormData,
+            initialValues:    mkStaff(),
             initialErrors:    undefined
         })
 
@@ -463,14 +449,13 @@ export default defineComponent({
             // actual removing the image
             setFieldValue('avatarImg', undefined)                                                                       // I don't know if this is needed here
             setFieldValue('avatarPath', undefined)
-            iniFormData.avatarPath = ''
         }
 
         //endregion ===========================================================================
 
         return {
+            values,
             forceImgDelOnCmp,
-            iniFormData,
 
             hpr_doWeShowCollapsable,
             hpr_rotationCaretClass,

@@ -40,7 +40,6 @@
                 placeholder="###########"
                 name="id"
                 type="hidden"
-                v-model="iniFormData.id"
             />
 
             <div class="row">
@@ -57,7 +56,7 @@
                         :placeholder="$t('form.placeholders.suppliers-company-name')"
                         name="sName"
                         type="text"
-                        v-model="iniFormData.sName"
+
                     />
                   </div>
                 </div>
@@ -72,7 +71,6 @@
                         :placeholder="$t('form.placeholders.supplier-contact')"
                         name="contactName"
                         type="text"
-                        v-model="iniFormData.contactName"
                     />
                   </div>
                 </div>
@@ -87,7 +85,6 @@
                         :placeholder="$t('form.placeholders.supplier-contact-notes')"
                         name="sContactNotes"
                         type="text"
-                        v-model="iniFormData.sContactNotes"
                     />
                   </div>
                 </div>
@@ -102,7 +99,6 @@
                         :placeholder="$t('form.placeholders.address')"
                         name="sAddress"
                         type="text"
-                        v-model="iniFormData.sAddress"
                     />
                   </div>
 
@@ -114,7 +110,6 @@
                         :placeholder="$t('form.placeholders.zip')"
                         name="zip"
                         type="number"
-                        v-model="iniFormData.zip"
                     />
                   </div>
                 </div>
@@ -122,7 +117,7 @@
                 <!-- country & state -->
                 <!-- in edition mode we need to ensure that we have the data of all option for the select before render it, so the Multiselect render the entity selected option properly -->
                 <!-- to assist this logic and make it more simple, make the fetch of the data before calling the router to render this entire view. CHECK h_navEditSuppIntent in ViewFormSuppliers.vue file -->
-                <div class="row" v-if="(cpt_fMode === 'edit' && iniFormData.countryCode !== undefined)">
+                <div class="row" v-if="(cpt_fMode === 'edit' && values.countryCode !== undefined)">
                   <label class="text-sm-left text-md-right col-md-3 col-form-label">
                     {{ $t( 'form.fields-common.country' ) }}
                   </label>
@@ -250,7 +245,6 @@
                         placeholder="### ## ### ## ##"
                         name="cell"
                         type="number"
-                        v-model="iniFormData.cell"
                     />
                   </div>
 
@@ -262,7 +256,6 @@
                         placeholder="### ## ### ## ##"
                         name="sPhone"
                         type="number"
-                        v-model="iniFormData.sPhone"
                     />
                   </div>
                 </div>
@@ -277,7 +270,6 @@
                         :placeholder="$t('form.placeholders.email')"
                         name="sEmail"
                         type="text"
-                        v-model="iniFormData.sEmail"
                     />
                   </div>
                 </div>
@@ -292,7 +284,6 @@
                         :placeholder="$t('form.placeholders.website')"
                         name="sWebSite"
                         type="text"
-                        v-model="iniFormData.sWebSite"
                     />
                   </div>
                 </div>
@@ -333,8 +324,7 @@
                   </label>
                   <div class="col-md-3">
                     <CmpVeeCheckbox name="isActive"
-                                    :checked="iniFormData.isActive"
-                                    v-model="iniFormData.isActive"
+                                    :checked="values.isActive"
                                     :labels="[$t('others.available'), $t('others.unavailable')]"
                     />
                   </div>
@@ -344,8 +334,7 @@
                   </label>
                   <div class="col-md-4">
                     <CmpVeeCheckbox name="isCompany"
-                                    :checked="iniFormData.isCompany"
-                                    v-model="iniFormData.isCompany"
+                                    :checked="values.isCompany"
                                     :labels="[$t('data.company'), $t('data.individual')]"
                     />
                   </div>
@@ -474,7 +463,6 @@
                           height="150"
                           name="sInternalNotes"
                           type="text"
-                          v-model="iniFormData.sInternalNotes"
                       />
                     </div>
                   </div>
@@ -558,12 +546,12 @@ export default defineComponent({
     name: 'ViewFormSuppliers',
     components: {
         Field,
+        CmpTab,
         CmpCard,
         CmpModal,
         CmpCardStats,
         CmpTextInput,
         CmpBasicInput,
-        CmpTab,
         CmpTabContent,
         CmpVeeCheckbox,
         CmpMultiselectField,
@@ -587,6 +575,13 @@ export default defineComponent({
         const { dfyConfirmation, dfyShowAlert } = useDialogfy()
         const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
 
+        // getting the vee validate method to manipulate the form related actions from the view
+        const { handleSubmit, meta, setFieldValue, resetForm, values } = useForm<IDtoSupplier>({
+            validationSchema: VSchemaSupplier,
+            initialValues:    mkSupplier(),
+            initialErrors:    undefined
+        })
+
         // html references
         const ref_selectStates = ref<InstanceType<typeof CmpMultiselectField>>()        // reference to country province / states select field
 
@@ -597,8 +592,7 @@ export default defineComponent({
 
         // form data
         const activeTabId = ref<number>(1)
-        const iniFormData = reactive<IDtoSupplier>(mkSupplier())                        // initial form data
-        const tabs = [                                                          // form tabs data array
+        const tabs = [                                                                  // form tabs data array
             { id: 1, title: t('form.fields-common.info') },
             { id: 2, title: t('form.fields.suppliers.tab-contact-plus') },
             { id: 3, title: t('form.fields.suppliers.tab-purchases') },
@@ -607,35 +601,35 @@ export default defineComponent({
         const statsDataCards = reactive([                                         // form supplier statistics data / information
             {
                 id:       1,
-                title:    iniFormData.pCount.toString(),
+                title:    values.pCount.toString(),
                 subTitle: t('form.fields.suppliers.stat-products'),
-                type:     iniFormData.pCount <= 0 ? 'warning' : 'success',
+                type:     values.pCount <= 0 ? 'warning' : 'success',
                 icon:     'tim-icons icon-components'
                 // footer:   `<i class="tim-icons icon-zoom-split"></i></i> Update Now`
             },
             {
                 id:       2,
-                title:    iniFormData.purchasesCountPend.toString(),
+                title:    values.purchasesCountPend.toString(),
                 subTitle: t('form.fields.suppliers.stat-purchases-pend'),
-                type:     iniFormData.purchasesCountPend <= 0 ? 'warning' : 'success',
+                type:     values.purchasesCountPend <= 0 ? 'warning' : 'success',
                 icon:     'tim-icons icon-watch-time'
             },
             {
                 id:       3,
-                title:    iniFormData.purchasesCountTotal.toString(),
+                title:    values.purchasesCountTotal.toString(),
                 subTitle: t('form.fields.suppliers.stat-purchases-count'),
-                type:     iniFormData.purchasesCountTotal <= 0 ? 'danger' : 'info',
+                type:     values.purchasesCountTotal <= 0 ? 'danger' : 'info',
                 icon:     'tim-icons icon-cart'
             },
             {
                 id:       4,
-                title:    `$ ${ iniFormData.purchasesCountValue }`,
+                title:    `$ ${ values.purchasesCountValue }`,
                 subTitle: t('form.fields.suppliers.stat-purchases-count-value'),
-                type:     iniFormData.purchasesCountValue <= 0 ? 'danger' : 'info',
+                type:     values.purchasesCountValue <= 0 ? 'danger' : 'info',
                 icon:     'tim-icons icon-money-coins'
             }
         ])
-        let formDataFromServer: IDtoSupplier | undefined = undefined                    // aux variable to save entity data requested from the server
+
 
         //endregion ===========================================================================
 
@@ -657,9 +651,7 @@ export default defineComponent({
 
             // edition mode
             if (cpt_fMode.value === FMODE.EDIT as TFormMode) {
-                formDataFromServer = await ApiSupplier.getSuppById(+id)
-
-                Object.assign(iniFormData, formDataFromServer)                          // shallow (primitive values only) copy of form data
+                let formDataFromServer: IDtoSupplier | undefined = await ApiSupplier.getSuppById(+id)                    // aux variable to save entity data requested from the server
 
                 // setValues(formDataFromServer)
                 resetForm({
@@ -754,13 +746,6 @@ export default defineComponent({
 
         const cpt_fMode: ComputedRef<string | string[]> = computed(() => fmode)
 
-        // getting the vee validate method to manipulate the form related actions from the view
-        const { handleSubmit, meta, setFieldValue, resetForm } = useForm<IDtoSupplier>({
-            validationSchema: VSchemaSupplier,
-            initialValues:    iniFormData,
-            initialErrors:    undefined
-        })
-
         //#endregion ==========================================================================
 
         //region ======= HELPERS ==============================================================
@@ -821,8 +806,8 @@ export default defineComponent({
 
             if (cpt_fMode.value !== FMODE.EDIT as TFormMode) return
 
-            const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.SUPPLIER, iniFormData.sName)
-            if (wasConfirmed) await a_delete(iniFormData.id, iniFormData.sName)
+            const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.SUPPLIER, values.sName)
+            if (wasConfirmed) await a_delete(values.id, values.sName)
         }
 
         const h_keyboardKeyPress = ( evt: any ) => {
@@ -842,7 +827,7 @@ export default defineComponent({
                 // restoring the form with the original data
                 resetForm({
                     errors: {},
-                    values: { ...formDataFromServer ?? mkSupplier() }
+                    values: { ...values }
                 })
 
                 return
@@ -851,7 +836,6 @@ export default defineComponent({
             // enabling the clone, so we need to clone
 
             // -- resetting the identity identifier
-            iniFormData.id = 0
             setFieldValue('id', 0)
             isCloning.value = true
 
@@ -867,30 +851,30 @@ export default defineComponent({
          */
         const h_formBtnAction_QR = () => {
             isModalShowing.value = true
-            let names = iniFormData.contactName?.split(' ') ?? []               // stripping the contact name
+            let names = values.contactName?.split(' ') ?? []               // stripping the contact name
 
             qrimage.value = mkVCardQrImg({
                 name:      {
                     givenName:  names[ 0 ] ?? '',
                     familyName: `${ names[ 1 ] ?? '' } ${ names[ 2 ] ?? '' }`
                 },
-                work:      { role: iniFormData.sContactNotes, title: '', organization: iniFormData.sName ?? '' },
-                emails:    [ { type: t('data.work'), text: iniFormData.sEmail ?? '' } ],
+                work:      { role: values.sContactNotes, title: '', organization: values.sName ?? '' },
+                emails:    [ { type: t('data.work'), text: values.sEmail ?? '' } ],
                 phones:    [
-                    { type: t('table-headers.cell'), text: iniFormData.cell ?? undefined },
-                    { type: t('table-headers.land-phone'), text: iniFormData.sPhone ?? '' }
+                    { type: t('table-headers.cell'), text: values.cell ?? undefined },
+                    { type: t('table-headers.land-phone'), text: values.sPhone ?? '' }
                 ],
                 addresses: [
                     {
                         type:     t('data.work'),
-                        street:   iniFormData.sAddress,
-                        code:     iniFormData.zip ?? undefined,
-                        country:  iniFormData.countryCode,
-                        region:   iniFormData.stateCode ?? undefined,
-                        locality: st_nomenclatures.getStatesByCode(!iniFormData.stateCode ? '' : iniFormData.stateCode)
+                        street:   values.sAddress,
+                        code:     values.zip ?? undefined,
+                        country:  values.countryCode,
+                        region:   values.stateCode ?? undefined,
+                        locality: st_nomenclatures.getStatesByCode(!values.stateCode ? '' : values.stateCode)
                     }
                 ],
-                note:      iniFormData.sInternalNotes ? { text: iniFormData.sInternalNotes } : undefined
+                note:      values.sInternalNotes ? { text: values.sInternalNotes } : undefined
             })
         }
 
@@ -984,12 +968,13 @@ export default defineComponent({
         //endregion ===========================================================================
 
         return {
+            values,
+
             qrimage,
             isCloning,
             isModalShowing,
 
             tabs,
-            iniFormData,
             activeTabId,
             statsDataCards,
 
