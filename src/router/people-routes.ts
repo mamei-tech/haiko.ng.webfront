@@ -14,14 +14,8 @@ export const PeopleRoutes: Array<RouteRecordRaw> = [
         meta:      { layout: LayMain, sidebar: SbPeople, reqAuth: true }
     },
     {
-        path:      RoutePaths.rolesEdit,
-        name:      RoutePathNames.rolesEdit,
-        component: () => import('../views/people/rbac/ViewFormRoles.vue'),
-        meta:      { layout: LayMain, sidebar: SbPeople, reqAuth: true }
-    },
-    {
-        path:      RoutePaths.rolesCreate,
-        name:      RoutePathNames.rolesCreate,
+        path:      RoutePaths.rolesForm,
+        name:      RoutePathNames.rolesForm,
         component: () => import('../views/people/rbac/ViewFormRoles.vue'),
         meta:      { layout: LayMain, sidebar: SbPeople, reqAuth: true }
     },
@@ -35,14 +29,8 @@ export const PeopleRoutes: Array<RouteRecordRaw> = [
         meta:      { layout: LayMain, sidebar: SbPeople, reqAuth: true }
     },
     {
-        path:      RoutePaths.staffEdit,
-        name:      RoutePathNames.staffEdit,
-        component: () => import('../views/people/staff/ViewFormStaff.vue'),
-        meta:      { layout: LayMain, sidebar: SbPeople, reqAuth: true }
-    },
-    {
-        path:      RoutePaths.staffCreate,
-        name:      RoutePathNames.staffCreate,
+        path:      RoutePaths.staffForm,
+        name:      RoutePathNames.staffForm,
         component: () => import('../views/people/staff/ViewFormStaff.vue'),
         meta:      { layout: LayMain, sidebar: SbPeople, reqAuth: true }
     },

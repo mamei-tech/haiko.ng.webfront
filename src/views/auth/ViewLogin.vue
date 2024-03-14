@@ -82,7 +82,7 @@ export default defineComponent({
 
         //endregion =============================================================================
 
-        //region ======== NAVIGATION ============================================================
+        //region ======= NAVIGATION =============================================================
 
         const goToModuleHub = () => {
             router.push({ name: RoutePathNames.hub })

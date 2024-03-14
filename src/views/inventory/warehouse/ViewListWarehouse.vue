@@ -136,7 +136,7 @@ export default defineComponent({
         //region ======== HELPERS =============================================================
         //#endregion ==========================================================================
 
-        //region ======== NAVIGATION ==========================================================
+        //region ======= NAVIGATION ===========================================================
 
         const nav_2Hub = () => {
             // router.back()
@@ -145,7 +145,7 @@ export default defineComponent({
 
         const nav_createIntent = (): void => {
             router.push({
-                name:   RoutePathNames.warehouseCreate,
+                name:   RoutePathNames.warehouseForm,
                 params: {
                     fmode: FMODE.CREATE as TFormMode
                     // id   : '', no need for passing ID on creation mode
@@ -159,7 +159,7 @@ export default defineComponent({
          */
         const nav_editIntent = ( rowData: IWarehouseRow ): void => {
             router.push({
-                name:   RoutePathNames.warehouseEdit,
+                name:   RoutePathNames.warehouseForm,
                 params: {
                     fmode: FMODE.EDIT as TFormMode,
                     id   : rowData.id

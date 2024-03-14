@@ -22,14 +22,8 @@ export const InventoryRoutes: Array<RouteRecordRaw> = [
         meta:      { layout: LayMain, sidebar: SbInventory, reqAuth: true }
     },
     {
-        path:      RoutePaths.muEdit,
-        name:      RoutePathNames.muEdit,
-        component: () => import('../views/inventory/munits/ViewFormUoM.vue'),
-        meta:      { layout: LayMain, sidebar: SbInventory, reqAuth: true }
-    },
-    {
-        path:      RoutePaths.muCreate,
-        name:      RoutePathNames.muCreate,
+        path:      RoutePaths.muForm,
+        name:      RoutePathNames.muForm,
         component: () => import('../views/inventory/munits/ViewFormUoM.vue'),
         meta:      { layout: LayMain, sidebar: SbInventory, reqAuth: true }
     },
@@ -45,14 +39,8 @@ export const InventoryRoutes: Array<RouteRecordRaw> = [
         meta:      { layout: LayMain, sidebar: SbInventory, reqAuth: true }
     },
     {
-        path:      RoutePaths.prodEdit,
-        name:      RoutePathNames.prodEdit,
-        component: () => import('../views/inventory/products/ViewFormProducts.vue'),
-        meta:      { layout: LayMain, sidebar: SbInventory, reqAuth: true }
-    },
-    {
-        path:      RoutePaths.prodCreate,
-        name:      RoutePathNames.prodCreate,
+        path:      RoutePaths.prodForm,
+        name:      RoutePathNames.productForm,
         component: () => import('../views/inventory/products/ViewFormProducts.vue'),
         meta:      { layout: LayMain, sidebar: SbInventory, reqAuth: true }
     },
@@ -68,14 +56,8 @@ export const InventoryRoutes: Array<RouteRecordRaw> = [
         meta:      { layout: LayMain, sidebar: SbInventory, reqAuth: true }
     },
     {
-        path:      RoutePaths.warehouseCreate,
-        name:      RoutePathNames.warehouseCreate,
-        component: () => import('../views/inventory/warehouse/ViewFormWarehouse.vue'),
-        meta:      { layout: LayMain, sidebar: SbInventory, reqAuth: true }
-    },
-    {
-        path:      RoutePaths.warehouseEdit,
-        name:      RoutePathNames.warehouseEdit,
+        path:      RoutePaths.warehouseForm,
+        name:      RoutePathNames.warehouseForm,
         component: () => import('../views/inventory/warehouse/ViewFormWarehouse.vue'),
         meta:      { layout: LayMain, sidebar: SbInventory, reqAuth: true }
     },
@@ -91,14 +73,8 @@ export const InventoryRoutes: Array<RouteRecordRaw> = [
         meta:      { layout: LayMain, sidebar: SbInventory, reqAuth: true }
     },
     {
-        path:      RoutePaths.strgcategoryCreate,
-        name:      RoutePathNames.strgcategoryCreate,
-        component: () => import('../views/inventory/wlocation/ViewFormStrgCat.vue'),
-        meta:      { layout: LayMain, sidebar: SbInventory, reqAuth: true }
-    },
-    {
-        path:      RoutePaths.strgcategoryEdit,
-        name:      RoutePathNames.strgcategoryEdit,
+        path:      RoutePaths.strgcategoryForm,
+        name:      RoutePathNames.strgcategoryForm,
         component: () => import('../views/inventory/wlocation/ViewFormStrgCat.vue'),
         meta:      { layout: LayMain, sidebar: SbInventory, reqAuth: true }
     },

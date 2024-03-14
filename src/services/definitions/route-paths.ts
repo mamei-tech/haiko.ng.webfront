@@ -24,25 +24,20 @@ export const RoutePaths = {
 
     inventory: '/inventory',                                            // general inventory view
 
-    muList:   '/inventory/mu/list',                                     // uom = mu = units of measurement
-    muEdit:   '/inventory/mu/:fmode/:id',                               // uom = mu = units of measurement
-    muCreate: '/inventory/mu/:fmode',                                   // uom = mu = units of measurement
+    muList: '/inventory/mu/list',                                     // uom = mu = units of measurement
+    muForm: '/inventory/mu/:fmode/:id?',
 
     prodList:   '/inventory/product/list',
-    prodEdit:   '/inventory/product/:fmode/:id',
-    prodCreate: '/inventory/product/:fmode',
+    prodForm:   '/inventory/product/:fmode/:id?',
 
     warehouseList: '/inventory/warehouse/list',
-    warehouseEdit:   '/inventory/warehouse/:fmode/:id',
-    warehouseCreate: '/inventory/warehouse/:fmode',
+    warehouseForm: '/inventory/warehouse/:fmode/:id?',
 
     wlocationList : '/inventory/wlocation/list',                       // wlocation = warehouse location
-    wlocationEdit : '/inventory/wlocation/:fmode/:id',
-    wlocationCreate : '/inventory/wlocation/:fmode',
+    wlocationForm : '/inventory/wlocation/:fmode/:id?',
 
     strgcategoryList: '/inventory/strgcategory/list',                  // strgcategory = storage location
-    strgcategoryEdit: '/inventory/strgcategory/:fmode/:id',
-    strgcategoryCreate: '/inventory/strgcategory/:fmode',
+    strgcategoryForm: '/inventory/strgcategory/:fmode/:id?',
 
     //#endregion ==========================================================================
 
@@ -55,29 +50,23 @@ export const RoutePaths = {
     //#region ======= PURCHASE ============================================================
 
     purchaseList:   '/purchase/list',
-    purchaseEdit:   '/purchase/:fmode/:id',
-    purchaseCreate: '/purchase/:fmode',
+    purchaseForm:   '/purchase/:fmode/:id?',
 
     supplierCatList:   '/purchase/supplier/category/list',
-    supplierCatEdit:   '/purchase/supplier/category/:fmode/:id',
-    supplierCatCreate: '/purchase/supplier/category/:fmode',
+    supplierCatForm:   '/purchase/supplier/category/:fmode/:id?',
 
     supplierList:   '/purchase/supplier/list',
-    supplierEdit:   '/purchase/supplier/:fmode/:id',
-    supplierCreate: '/purchase/supplier/:fmode',
+    supplierForm:   '/purchase/supplier/:fmode/:id?',
 
     //#endregion ==========================================================================
 
     //#region ======= PEOPLE ==============================================================
 
     rolesLists:  '/people/roles/list',
-    rolesEdit:   '/people/roles/:fmode/:id',
-    rolesCreate: '/people/roles/:fmode',
+    rolesForm:   '/people/roles/:fmode/:id?',
 
     staffList: '/people/staff/list',
-    // staffForm:   '/people/staff/:fmode/:id?',
-    staffEdit:   '/people/staff/:fmode/:id',
-    staffCreate: '/people/staff/:fmode',
+    staffForm:   '/people/staff/:fmode/:id?',
 
     clientsList: '/people/clients/list',
 
@@ -123,25 +112,20 @@ export const RoutePathNames = {
 
     inventory: 'view-inventory',                                        // general inventory view
 
-    munits:   'units',                                                  // uom = mu = units of measurement
-    muCreate: 'units-create',                                           // uom = mu = units of measurement
-    muEdit:   'units-edit',                                             // uom = mu = units of measurement
+    munits: 'units',                                                    // uom = mu = units of measurement
+    muForm: 'units-form',
 
-    product:    'product',
-    prodCreate: 'product-create',
-    prodEdit:   'product-edit',
+    product:     'product',
+    productForm: 'product-form',
 
     warehouseList: 'warehouse',
-    warehouseEdit:   'warehouse-edit',
-    warehouseCreate: 'warehouse-crete',
+    warehouseForm: 'warehouse-form',
 
-    wlocationList : 'wlocation',                                        // wlocation = warehouse location
-    wlocationEdit : 'wlocation-edit',
-    wlocationCreate : 'wlocation-create',
+    wlocationList: 'wlocation',                                        // wlocation = warehouse location
+    wlocationForm: 'wlocation-form',
 
     strgcategoryList: 'strgcategory',                                   // strgcategory = storage location
-    strgcategoryEdit: 'strgcategory-edit',
-    strgcategoryCreate: 'strgcategory-ceate',
+    strgcategoryForm: 'strgcategory-form',
 
     //#endregion ==========================================================================
 
@@ -153,29 +137,24 @@ export const RoutePathNames = {
 
     //#region ======= PURCHASE ============================================================
 
-    purchase:       'purchase',
-    purchaseEdit:   'purchase-create',
-    purchaseCreate: 'purchase-edit',
+    purchase:     'purchase',
+    purchaseForm: 'purchase-form',
 
-    supplierCat:       'supplier-cat',
-    supplierCatEdit:   'supplier-cat-edit',
-    supplierCatCreate: 'supplier-cat-create',
+    supplierCat:     'supplier-cat',
+    supplierCatForm: 'supplier-cat-form',
 
-    supplier:       'supplier',
-    supplierEdit:   'supplier-edit',
-    supplierCreate: 'supplier-create',
+    supplier:     'supplier',
+    supplierForm: 'supplier-form',
 
     //#endregion ==========================================================================
 
     //#region ======= PEOPLE ==============================================================
 
-    roles:       'roles',
-    rolesEdit:   'roles-edit',
-    rolesCreate: 'roles-create',
+    roles:     'roles',
+    rolesForm: 'roles-form',
 
-    staff:       'staff',
-    staffCreate: 'staff-create',
-    staffEdit:   'staff-edit',
+    staff:     'staff',
+    staffForm: 'staff-form',
 
     clients: 'clients',
 

@@ -127,7 +127,7 @@ import { useSt_Auth } from '@/stores/auth'
 import { defineComponent } from 'vue'
 import { mapActions, defineStore, getActivePinia } from 'pinia'
 import { CmpModal, CmpDropdown } from '../components'
-import { RoutePaths} from '@/services/definitions'
+import { RoutePaths, FMODE } from '@/services/definitions'
 import useCommon from '@/services/composables/useCommon'
 
 import type { TFormMode } from '@/services/definitions'
@@ -162,8 +162,12 @@ export default defineComponent({
     },
     computed: {
         routeName(): string {
-            const { name } = this.$route
-            return this.$t('routes.' + String(name))
+            const { name, params } = this.$route
+            const action = params.fmode === FMODE.CREATE as TFormMode
+                ? this.$t('crud-actions.create')
+                : this.$t('crud-actions.edition')
+
+            return this.$t('routes.' + String(name), { action: action })
         }
     },
     methods: {

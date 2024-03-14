@@ -150,7 +150,7 @@ export default defineComponent({
         //region ======= HELPERS ==============================================================
         //#endregion ==========================================================================
 
-        //region ======== NAVIGATION ==========================================================
+        //region ======= NAVIGATION ===========================================================
 
         const nav_2Hub = () => {
             // router.back()
@@ -159,7 +159,7 @@ export default defineComponent({
 
         const nav_createSuppCatIntent = (): void => {
             router.push({
-                name:   RoutePathNames.supplierCatCreate,
+                name:   RoutePathNames.supplierCatForm,
                 params: {
                     fmode: FMODE.CREATE as TFormMode
                     // id   : '', no need for passing ID on creation mode
@@ -173,7 +173,7 @@ export default defineComponent({
          */
         const nav_editSuppCatIntent = ( rowData: ISupplierCatRow ): void => {
             router.push({
-                name:   RoutePathNames.supplierCatEdit,
+                name:   RoutePathNames.supplierCatForm,
                 params: {
                     fmode: FMODE.EDIT as TFormMode,
                     id:    rowData.id

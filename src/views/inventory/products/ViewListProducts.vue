@@ -232,7 +232,7 @@ export default defineComponent({
 
         //#endregion ==========================================================================
 
-        //region ======== NAVIGATION ==========================================================
+        //region ======= NAVIGATION ===========================================================
 
         const nav_2Hub = () => {
             // router.back()
@@ -241,7 +241,7 @@ export default defineComponent({
 
         const nav_createProductIntent = () => {
             router.push({
-                name:   RoutePathNames.prodCreate,
+                name:   RoutePathNames.productForm,
                 params: {
                     fmode: FMODE.CREATE as TFormMode
                     // id   : '', no need for passing ID on creation mode
@@ -255,7 +255,7 @@ export default defineComponent({
          */
         const nav_editProductIntent = ( rowData: IProductRow ) => {
             router.push({
-                name:   RoutePathNames.prodEdit,
+                name:   RoutePathNames.productForm,
                 params: {
                     fmode: FMODE.EDIT as TFormMode,
                     id:    rowData.id,

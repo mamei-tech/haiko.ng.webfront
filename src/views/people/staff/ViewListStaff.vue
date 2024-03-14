@@ -14,11 +14,11 @@
                         :has-actions="true"
                         :headerFilters="headerFilters"
 
-                        @navCreateIntent="h_navCreateStaff"
+                        @navCreateIntent="nav_CreateStaff"
                         @requestIntent="h_reqQuery"
 
                         @deleteIntent="h_intentRowDelete"
-                        @editIntent="h_navRowEdit"
+                        @editIntent="nav_RowEdit"
 
                         @bulkActionIntent="h_intentBulkAction"
 
@@ -168,11 +168,35 @@ export default defineComponent({
         //region ======= HELPERS ==============================================================
         //#endregion ==========================================================================
 
-        //region ======== NAVIGATION ==========================================================
+        //region ======= NAVIGATION ===========================================================
 
         const nav_2Hub = () => {
             // router.back()
             router.push({ name: RoutePathNames.hub });
+        }
+
+        /**
+         * Handler for the intent of edit a record from the table
+         * @param rowData data of the row
+         */
+        function nav_RowEdit( rowData: IStaffRow ) {
+            router.push({
+                name:   RoutePathNames.staffForm,
+                params: {
+                    fmode: FMODE.EDIT as TFormMode,
+                    id:    rowData.id,
+                }
+            })
+        }
+
+        function nav_CreateStaff() {
+            router.push({
+                name  : RoutePathNames.staffForm,
+                params: {
+                    fmode: FMODE.CREATE as TFormMode,
+                    // id   : '', no need for passing ID on creation mode
+                }
+            })
         }
 
         //endregion ===========================================================================
@@ -188,30 +212,6 @@ export default defineComponent({
 
             const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.STAFF, entityReference)
             if (wasConfirmed) a_reqDelete([ entityId ], entityReference)
-        }
-
-        /**
-         * Handler for the intent of edit a record from the table
-         * @param rowData data of the row
-         */
-        function h_navRowEdit( rowData: IStaffRow ) {
-            router.push({
-                name:   RoutePathNames.staffEdit,
-                params: {
-                    fmode: FMODE.EDIT as TFormMode,
-                    id:    rowData.id,
-                }
-            })
-        }
-
-        function h_navCreateStaff() {
-            router.push({
-                name  : RoutePathNames.staffCreate,
-                params: {
-                    fmode: FMODE.CREATE as TFormMode,
-                    // id   : '', no need for passing ID on creation mode
-                }
-            })
         }
 
         function h_reqQuery( _: IDataTableQuery ) {
@@ -274,10 +274,10 @@ export default defineComponent({
             st_pagination,
 
             h_reqQuery,
-            h_navCreateStaff,
+            nav_CreateStaff,
             h_intentBulkAction,
 
-            h_navRowEdit,
+            nav_RowEdit,
             h_intentRowDelete,
             h_intentToggleEnable,
             h_intentToggleDisable

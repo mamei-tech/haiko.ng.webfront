@@ -15,7 +15,7 @@
 
                         @navCreateIntent=""
                         @deleteIntent="h_intentRowDelete"
-                        @editIntent="h_navRowEdit"
+                        @editIntent="nav_RowEdit"
           >
           </CmpDataTable>
         </CmpCard>
@@ -121,11 +121,31 @@ export default defineComponent({
         //region ======= HELPERS ==============================================================
         //#endregion ==========================================================================
 
-        //region ======== NAVIGATION ==========================================================
+        //region ======= NAVIGATION ===========================================================
 
         const nav_2Hub = () => {
             // router.back()
             router.push({ name: RoutePathNames.hub });
+        }
+
+        const nav_CreateRole = (): void => {
+            router.push({
+                name:   RoutePathNames.rolesForm,
+                params: {
+                    fmode: FMODE.CREATE as TFormMode
+                    // id   : '', no need for passing ID on creation mode
+                }
+            })
+        }
+
+        const nav_RowEdit = ( rowData: IDtoRole ): void => {
+            router.push({
+                name:   RoutePathNames.rolesForm,
+                params: {
+                    fmode: FMODE.EDIT as TFormMode,
+                    id:    rowData.id
+                }
+            })
         }
 
         //endregion ===========================================================================
@@ -136,31 +156,11 @@ export default defineComponent({
             if (evt.key === KEYS.ESCAPE) nav_2Hub()
         }
 
-        const h_navCreateRole = (): void => {
-            router.push({
-                name:   RoutePathNames.rolesCreate,
-                params: {
-                    fmode: FMODE.CREATE as TFormMode
-                    // id   : '', no need for passing ID on creation mode
-                }
-            })
-        }
-
         const h_intentRowDelete = async ( entityId: number ): Promise<void> => {
             const entityReference = st_rbac.getRoleByIdFromLocalStorage(entityId)!.rName
 
             const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.ROLE, entityReference)
             if (wasConfirmed) a_reqDelete([ entityId ], entityReference)
-        }
-
-        const h_navRowEdit = ( rowData: IDtoRole ): void => {
-            router.push({
-                name:   RoutePathNames.rolesEdit,
-                params: {
-                    fmode: FMODE.EDIT as TFormMode,
-                    id:    rowData.id
-                }
-            })
         }
 
         //#endregion ==========================================================================
@@ -172,8 +172,8 @@ export default defineComponent({
             columns,
             st_rbac,
 
-            h_navRowEdit,
-            h_navCreateRole,
+            nav_RowEdit,
+            nav_CreateRole,
             h_intentRowDelete
         }
     }

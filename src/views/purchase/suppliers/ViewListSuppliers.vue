@@ -207,24 +207,16 @@ export default defineComponent({
 
         //#endregion ==========================================================================
 
-        //region ======== NAVIGATION ==========================================================
+        //region ======= NAVIGATION ===========================================================
 
         const nav_2Hub = () => {
             // router.back()
-            router.push({ name: RoutePathNames.hub });
+            router.push({ name: RoutePathNames.hub })
         }
-        //endregion ===========================================================================
-
-        //#region ======= EVENTS HANDLERS & WATCHERS ==========================================
-
-        const h_keyboardKeyPress = ( evt: any ) => {
-            if (evt.key === KEYS.ESCAPE) nav_2Hub()
-        }
-
 
         const h_navCreateSuppCatIntent = (): void => {
             router.push({
-                name:   RoutePathNames.supplierCreate,
+                name:   RoutePathNames.supplierForm,
                 params: {
                     fmode: FMODE.CREATE as TFormMode
                     // id   : '', no need for passing ID on creation mode
@@ -246,12 +238,20 @@ export default defineComponent({
                 await st_nomenclatures.reqNmcCountriesStates(rowData.countryCode)
 
             await router.push({
-                name:   RoutePathNames.supplierEdit,
+                name:   RoutePathNames.supplierForm,
                 params: {
                     fmode: FMODE.EDIT as TFormMode,
                     id:    rowData.id
                 }
             })
+        }
+
+        //endregion ===========================================================================
+
+        //#region ======= EVENTS HANDLERS & WATCHERS ==========================================
+
+        const h_keyboardKeyPress = ( evt: any ) => {
+            if (evt.key === KEYS.ESCAPE) nav_2Hub()
         }
 
         function h_reqQuery( _: IDataTableQuery ) {

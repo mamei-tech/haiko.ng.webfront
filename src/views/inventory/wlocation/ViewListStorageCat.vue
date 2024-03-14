@@ -138,7 +138,7 @@ export default defineComponent({
         //region ======== HELPERS =============================================================
         //#endregion ==========================================================================
 
-        //region ======== NAVIGATION ==========================================================
+        //region ======= NAVIGATION ===========================================================
 
         const nav_2Hub = () => {
             // router.back()
@@ -147,7 +147,7 @@ export default defineComponent({
 
         const nav_createIntent = (): void => {
             router.push({
-                name:   RoutePathNames.strgcategoryCreate,
+                name:   RoutePathNames.strgcategoryForm,
                 params: {
                     fmode: FMODE.CREATE as TFormMode
                     // id   : '', no need for passing ID on creation mode
@@ -161,7 +161,7 @@ export default defineComponent({
          */
         const nav_editIntent = ( rowData: IStrgCategoryRow ): void => {
             router.push({
-                name:   RoutePathNames.strgcategoryEdit,
+                name:   RoutePathNames.strgcategoryForm,
                 params: {
                     fmode: FMODE.EDIT as TFormMode,
                     id   : rowData.id

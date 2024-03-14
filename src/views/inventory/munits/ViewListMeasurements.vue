@@ -113,7 +113,7 @@ export default defineComponent({
         //#region ======= COMPUTATIONS & GETTERS ==============================================
         //#endregion ==========================================================================
 
-        //region ======== NAVIGATION ==========================================================
+        //region ======= NAVIGATION ===========================================================
 
         const nav_2Hub = () => {
             // router.back()
@@ -122,7 +122,7 @@ export default defineComponent({
 
         const nav_createUoMCatIntent = (): void => {
             router.push({
-                name:   RoutePathNames.muCreate,
+                name:   RoutePathNames.muForm,
                 params: {
                     fmode: FMODE.CREATE as TFormMode
                     // id   : '', no need for passing ID on creation mode
@@ -136,7 +136,7 @@ export default defineComponent({
          */
         const nav_editUoMCatIntent = ( rowData: IDtoUoMCategory ): void => {
             router.push({
-                name:   RoutePathNames.muEdit,
+                name:   RoutePathNames.muForm,
                 params: {
                     fmode: FMODE.EDIT as TFormMode,
                     id:    rowData.id

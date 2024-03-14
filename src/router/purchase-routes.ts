@@ -15,39 +15,16 @@ export const PurchaseRoutes: Array<RouteRecordRaw> = [
         meta:      { layout: LayMain, sidebar: SbPurchase, reqAuth: true }
     },
     {
-        path:      RoutePaths.purchaseEdit,
-        name:      RoutePathNames.purchaseEdit,
-        component: () => import('../views/purchase/ViewFormPurchase.vue'),
-        meta:      { layout: LayMain, sidebar: SbPurchase, reqAuth: true }
-    },
-    {
-        path:      RoutePaths.purchaseCreate,
-        name:      RoutePathNames.purchaseCreate,
+        path:      RoutePaths.purchaseForm,
+        name:      RoutePathNames.purchaseForm,
         component: () => import('../views/purchase/ViewFormPurchase.vue'),
         meta:      { layout: LayMain, sidebar: SbPurchase, reqAuth: true }
     },
 
-    // --- suppliers categories
-    {
-        path:      RoutePaths.supplierCatList,
-        name:      RoutePathNames.supplierCat,
-        component: () => import('../views/purchase/suppliers/ViewListSuppCategories.vue'),
-        meta:      { layout: LayMain, sidebar: SbPurchase, reqAuth: true }
-    },
-    {
-        path:      RoutePaths.supplierCatEdit,
-        name:      RoutePathNames.supplierCatEdit,
-        component: () => import('../views/purchase/suppliers/ViewFormSuppCategories.vue'),
-        meta:      { layout: LayMain, sidebar: SbPurchase, reqAuth: true }
-    },
-    {
-        path:      RoutePaths.supplierCatCreate,
-        name:      RoutePathNames.supplierCatCreate,
-        component: () => import('../views/purchase/suppliers/ViewFormSuppCategories.vue'),
-        meta:      { layout: LayMain, sidebar: SbPurchase, reqAuth: true }
-    },
+    //#endregion ========================================================================
 
-    // --- suppliers
+    //#region ======= SUPPLIERS =========================================================
+
     {
         path:      RoutePaths.supplierList,
         name:      RoutePathNames.supplier,
@@ -55,15 +32,25 @@ export const PurchaseRoutes: Array<RouteRecordRaw> = [
         meta:      { layout: LayMain, sidebar: SbPurchase, reqAuth: true }
     },
     {
-        path:      RoutePaths.supplierEdit,
-        name:      RoutePathNames.supplierEdit,
+        path:      RoutePaths.supplierForm,
+        name:      RoutePathNames.supplierForm,
         component: () => import('../views/purchase/suppliers/ViewFormSuppliers.vue'),
         meta:      { layout: LayMain, sidebar: SbPurchase, reqAuth: true }
     },
+
+    //#endregion ========================================================================
+
+    //#region ======= SUPPLIERS CATEGORIES ==============================================
     {
-        path:      RoutePaths.supplierCreate,
-        name:      RoutePathNames.supplierCreate,
-        component: () => import('../views/purchase/suppliers/ViewFormSuppliers.vue'),
+        path:      RoutePaths.supplierCatList,
+        name:      RoutePathNames.supplierCat,
+        component: () => import('../views/purchase/suppliers/ViewListSuppCategories.vue'),
+        meta:      { layout: LayMain, sidebar: SbPurchase, reqAuth: true }
+    },
+    {
+        path:      RoutePaths.supplierCatForm,
+        name:      RoutePathNames.supplierCatForm,
+        component: () => import('../views/purchase/suppliers/ViewFormSuppCategories.vue'),
         meta:      { layout: LayMain, sidebar: SbPurchase, reqAuth: true }
     }
 
