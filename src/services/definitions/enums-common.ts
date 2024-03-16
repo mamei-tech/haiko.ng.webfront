@@ -114,3 +114,16 @@ export enum DIALOG_ICON {
     Q = 'question',
     E = 'error'
 }
+
+/**
+ * Warehouse (storage) location types
+ */
+export enum WARE_LOC_TYPE {
+    VIEW = 'view',
+    SUPPLIER = 'supplier',
+    COSTUMER = 'costumer',
+    TRANSIT = 'transit',
+    INTERNAL = 'internal',
+    PRODUCTION = 'production',
+    INVENTORY = 'inventory'
+}

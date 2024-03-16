@@ -2,7 +2,7 @@ import { VSchemaUoM } from '@/services/definitions/validations/validations-uom'
 import { VSchemaPSL } from '@/services/definitions/validations/validations-product'
 import { VSchemaProdLine } from '@/services/definitions/validations/validations-strgcategory'
 import { SelectDataUoMType } from '@/services/definitions/data-select-options'
-import { HTML_INPUT_TYPE } from '@/services/definitions/enums-common'
+import { HTML_INPUT_TYPE, WARE_LOC_TYPE } from '@/services/definitions/enums-common'
 import { i18n } from '@/services/i18n'
 
 import type { IColumnHeader } from '@/services/definitions'
@@ -61,13 +61,14 @@ export const HProductTable: Partial<IColumnHeader>[] = [
 
     { title: 'name', navKey: 'pName', sorting: '', styleWidth: 20 },
     { title: 'active', styleToCenter: true, navKey: 'isActive', fieldSwitch: true, styleWidth: 5, sorting: '' },
-    { title:           'inventory',
+    {
+        title:         'inventory',
         styleToCenter: true,
         navKey:        'doWeTrackInventory',
         styleWidth:    5,
         iconField:     true,
-        sorting: '',
-        iconMapValues: [
+        sorting:       '',
+        iconMapBinary: [
             { icon: 'tim-icons icon-components', val: true },
             { icon: '', val: false }
         ]
@@ -114,6 +115,28 @@ export const HStrgCatProductLine: Partial <IColumnHeader>[] = [
     { title: 'capacity', navKey: 'maxCapacity', styleToRight: true, styleWidth: 20, cellEditable: true, cellEditableValidation: VSchemaProdLine.maxCapacity, cellEditableInputType: HTML_INPUT_TYPE.TEXT },
     { title: '', navKey: 'uomID', hidden: true },
     { title: 'uom', navKey: 'uomLabel', styleToLeft: true, styleWidth: 10 },
+    {
+        title:        '',            // actions buttons
+        styleToRight: true,
+        styleWidth:   40
+    }
+]
+
+export const HWareLocationsTable: Partial<IColumnHeader>[] = [
+    { title: 'id', hidden: true },
+    { title: 'lName', navKey: 'lName', hidden: true },
+    { title: 'name', navKey: 'lFullName', sorting: '', styleWidth: 40 },
+    {
+        title: 'type',
+        navKey: 'lType',
+        sorting: '',
+        styleWidth: 15,
+        styleBold: true,
+        colorMapValues: [
+            { color: 'blue', val: WARE_LOC_TYPE.VIEW },
+            { color: 'green', val: WARE_LOC_TYPE.INTERNAL }
+        ]
+    },
     {
         title:        '',            // actions buttons
         styleToRight: true,

@@ -138,7 +138,7 @@
     <tr v-if="headerFilters.length > 0">
       <template v-for="(header, i) in ls_columns" :key="`filter-${header.title}`" class="text-center">
         <!-- filter cases: checkbox || a fieldSwitch || a iconField with only 2 options -->
-        <th v-if="(header.chk || header.fieldSwitch || (header.iconField && header.iconMapValues?.length === 2 )) && headerFilters.includes(hpr_getNavKey(header))"
+        <th v-if="(header.chk || header.fieldSwitch || (header.iconField && header.iconMapBinary?.length === 2 )) && headerFilters.includes(hpr_getNavKey(header))"
             colspan="1"
             rowspan="1"
             :style="[{ width: header.styleWidth + '%' }]">
@@ -310,7 +310,11 @@
             rowspan="1"
             colspan="1"
             :class="[ { 'text-right': header.styleToRight }, { 'text-left': header.styleToLeft }, { 'text-center': header.styleToCenter } ]"
-            :style="[{ width: header.styleWidth + '%' }]"
+            :style="[
+                { width: header.styleWidth + '%' },
+                { color: h_renderTDColor(rowObj, header) + '!important' },
+                { 'font-weight': header.styleBold ? 600 : '' }
+                ]"
         >
           {{ hpr_getRowValue( rowObj, header ) }}
         </td>
@@ -726,20 +730,40 @@ export default defineComponent({
 
         /**
          * For the IconCells, this tries to render the correct icon according with the
-         * cell value, if the proper that was given in the 'iconMapValues' (IColumnHeader object) header field
+         * cell value, if the proper value was given in the 'iconMapBinary' (IColumnHeader object) header field
          *
          * @param obj entity data used as a row
          * @param column IColumnHeader object
          */
         const h_renderIconCell = ( obj: any, column: IColumnHeader ): string => {
 
-            if(column.iconMapValues?.length === undefined) return ''
+            if(column.iconMapBinary?.length === undefined) return ''
 
             const cellVal = hpr_getRowValue(obj, column)
 
-            for (let i = 0; i < column.iconMapValues?.length; i++)
-                if(cellVal === column.iconMapValues[i].val)
-                    return column.iconMapValues[i].icon
+            for (let i = 0; i < column.iconMapBinary?.length; i++)
+                if(cellVal === column.iconMapBinary[i].val)
+                    return column.iconMapBinary[i].icon
+
+            return ''
+        }
+
+        /**
+         * For normal TD, this tries to render (color css class) a color to colorize the cell text inside the TD
+         * if the proper the value was given in the 'iconMapBinary' (IColumnHeader object) header field
+         *
+         * @param obj entity data used as a row
+         * @param column IColumnHeader object
+         */
+        const h_renderTDColor = ( obj: any, column: IColumnHeader ): string => {
+
+            if(column.colorMapValues?.length === undefined) return ''
+
+            const cellVal = hpr_getRowValue(obj, column)
+
+            for (let i = 0; i < column.colorMapValues?.length; i++)
+                if(cellVal === column.colorMapValues[i].val)
+                    return column.colorMapValues[i].color
 
             return ''
         }
@@ -913,40 +937,42 @@ export default defineComponent({
             abutton_mode,
 
             ls_columns,
+            ls_extFilters,
             ls_selections,
             ls_rootChkBoxState,
-            ls_extFilters,
-            dtFilters,
-            selectFilterListRef,
-            hpr_lastSelectedSelectElemRef,
-            cpt_isAnyFilerActive,
-            pageSizeOptions,
+
             search,
+            dtFilters,
+            pageSizeOptions,
             cpt_searchHasText,
+            selectFilterListRef,
+            cpt_isAnyFilerActive,
+            hpr_lastSelectedSelectElemRef,
 
             hpr_empty,
+            hpr_chkHasId,
             hpr_getNavKey,
             hpr_chkHasValue,
             hpr_getRowValue,
-            hpr_chkHasId,
 
             h_onSrchFocusEvt,
             h_onSrchBlursEvt,
 
+            h_doRequest,
             h_ChkObject,
-            h_ChkAllObjects,
-            h_cleanInputSearch,
-            h_pageSizeChange,
-            h_EnableChkCollection,
-            h_DisableChkCollection,
-            h_RemoveChkCollection,
-            h_computePaginationData,
+            h_extFilter,
             h_changeSort,
             h_searchChange,
-            h_doRequest,
-            h_extFilter,
-            h_clearAllFilters,
+            h_ChkAllObjects,
+            h_renderTDColor,
             h_renderIconCell,
+            h_pageSizeChange,
+            h_clearAllFilters,
+            h_cleanInputSearch,
+            h_RemoveChkCollection,
+            h_EnableChkCollection,
+            h_DisableChkCollection,
+            h_computePaginationData,
 
             h_passCellUpdateEmission,
             h_passSelectOpenEmission,
@@ -954,9 +980,9 @@ export default defineComponent({
 
             // ...useDebaunce(h_searchChange),
 
-            hpr_lastSelectedSelectElem,
-            hpr_setCheckBoxDirty,
             cpt_tableClass,
+            hpr_setCheckBoxDirty,
+            hpr_lastSelectedSelectElem,
 
             cap,
 

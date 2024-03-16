@@ -48,7 +48,6 @@ export interface IExtFilterGroup {
     filters: IExtFilter[]
 }
 
-
 /***
  * Interface to describe object for datatable headers abstraction.
  * This create a flexible configuration for describing how to handle the headers and cell representation.
@@ -75,6 +74,7 @@ export interface IColumnHeader {
     styleToLeft: boolean | undefined
     styleToRight: boolean | undefined
     styleToCenter: boolean | undefined
+    styleBold: boolean | undefined
     /**
      * percent (%)
      */
@@ -142,8 +142,18 @@ export interface IColumnHeader {
     iconField: boolean | undefined
     /**
      * Helps to know how to map actual cells values from entities to the desired icon for a specific row case
+     *
+     * @param val reference value to map the icon to
+     * @param icon CSS icon str to be mapped
      */
-    iconMapValues: Array<{ val: number | string | boolean, icon: string }> | undefined
+    iconMapBinary: Array<{ val: number | string | boolean, icon: string }> | undefined
+    /**
+     * Defines the conversion (or mapping)
+     *
+     * @param val reference value to map the color to
+     * @param color CSS color str to be mapped
+     */
+    colorMapValues: Array<{val: number | string | boolean, color: string}> | undefined
 }
 
 /***
@@ -336,7 +346,6 @@ export interface IDataListBasicResponse {
     totalRecords: number                  // Total entity count on the entire system
 }
 
-
 /**
  * Basic multiselect interface data
  */
@@ -344,7 +353,6 @@ export interface IMultiselectBasic {
     value: number|string,
     label: string
 }
-
 
 /**
  * vCard v4 interface so the necesary props are defined
