@@ -345,7 +345,7 @@
 
 <script lang="ts">
 import appConfig from '@/configs/app.conf'
-import { onBeforeUpdate, computed, defineComponent, toRaw, reactive, ref } from 'vue'
+import { onMounted, onBeforeUpdate, computed, defineComponent, toRaw, reactive, ref } from 'vue'
 import { watch } from '@vue/runtime-core'
 import CmpTablePagination from './CmpTablePagination.vue'
 import CmpCellSwitch from './CmpCellSwitch.vue'
@@ -494,7 +494,7 @@ export default defineComponent({
 
         //region ======== DECLARATIONS & LOCAL STATE ============================================
 
-        const pageSizeOptions = { '10': 10, '25': 25, '50': 50, '100': 100 }                            // pagination size (options) data
+        const pageSizeOptions = { '10': 10, '25': 25, '50': 50, '100': 100 }                             // pagination size (options) data
         const ls_selections = reactive<{ selected: ById<IChecked> }>({ selected: {} })            // ls =  local state
         const ls_rootChkBoxState = ref<boolean>(false)
         const ls_columns = ref<Array<Partial<IColumnHeader>>>([ ...props.columns ])
@@ -522,6 +522,25 @@ export default defineComponent({
         //endregion =============================================================================
 
         //region ======== HOOKS =================================================================
+
+        onMounted(() => {
+
+            // we need to process the extended filters to check if parent component is giving any extended active filter by default
+            if (ls_extFilters.value.length > 0) {
+                const filtersByDefault: Filter = {}                                                        // extended filters by default incoming from parent components
+                let doWeHaveDefaultFilters = false
+
+                for (let i = 0; i < ls_extFilters.value.length; i++)
+                    for (let j = 0; j < ls_extFilters.value[i].filters.length; j++)
+                        if (ls_extFilters.value[i].filters[j].isActive)
+                        {
+                            filtersByDefault[ls_extFilters.value[i].filters[j].entityField] = ls_extFilters.value[i].filters[j].value as string
+                            doWeHaveDefaultFilters = true
+                        }
+
+                if (doWeHaveDefaultFilters) dtFilters.value = { ...filtersByDefault }
+            }
+        })
 
         /***
          * Make sure to reset the refs before each update.
