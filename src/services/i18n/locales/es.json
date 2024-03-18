@@ -70,6 +70,7 @@
         "overview":              "Generales",
         "data":                  "Datos",
         "days":                  "días",
+        "type":                  "tipo",
         "allow-products-policy": {
             "mixed": "Permitir Varios",
             "same":  "Solo mismo tipo",
@@ -292,6 +293,7 @@
         }
     },
     "table-headers": {
+        "type":             "@:data.type",
         "name":             "@:form.fields-common.name",
         "avatar":           "Avatar",
         "id":               "Id",
@@ -370,8 +372,9 @@
             "section-name": "Almacenes"
         },
         "wlocation":    {
-            "name":         "Ubicación {ref}",
-            "section-name": "@:entities.wlocation.name"
+            "name":          "Ubicación {ref}",
+            "section-name":  "@:entities.wlocation.name",
+            "internal-type": "Internas"
         },
         "strgcategory": {
             "name":         "Categoría d @:entities.wlocation.name {ref}",

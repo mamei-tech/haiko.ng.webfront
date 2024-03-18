@@ -121,7 +121,7 @@ export const RoutePathNames = {
     warehouseList: 'warehouse',
     warehouseForm: 'warehouse-form',
 
-    wlocationList: 'wlocation',                                        // wlocation = warehouse location
+    wlocationList: 'wlocation',                                        // wlocation = warehouse location | ware location
     wlocationForm: 'wlocation-form',
 
     strgcategoryList: 'strgcategory',                                   // strgcategory = storage location

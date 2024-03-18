@@ -79,5 +79,12 @@ export const InventoryRoutes: Array<RouteRecordRaw> = [
         meta:      { layout: LayMain, sidebar: SbInventory, reqAuth: true }
     },
 
+    {
+        path:      RoutePaths.wlocationList,
+        name:      RoutePathNames.wlocationList,
+        component: () => import('../views/inventory/wlocation/ViewListWareLocation.vue'),
+        meta:      { layout: LayMain, sidebar: SbInventory, reqAuth: true }
+    },
+
     //#endregion ==========================================================================
 ]

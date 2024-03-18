@@ -95,7 +95,7 @@ export default {
                             }
                         },
                         {
-                            // href:  { path: RoutePaths.wlocation },
+                            href:  { path: RoutePaths.wlocationList },
                             title: this.$t( 'routes.' + RoutePathNames.wlocationList ).toLowerCase(),
                             icon: {
                                 element: 'span',
