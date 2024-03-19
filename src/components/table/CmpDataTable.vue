@@ -329,7 +329,7 @@
                             :identifier="rowObj['id']"
                             v-on:deleteIntent="$emit('deleteIntent', $event)"
                             v-on:detailsIntent="$emit('detailsIntent', $event)"
-                            v-on:editIntent="$emit('editIntent', {...rowObj})"
+                            v-on:editIntent="$emit('editIntent','edit', {...rowObj})"
 
                             :key="'a' + rindex"
         />
@@ -477,7 +477,6 @@ export default defineComponent({
         'detailsIntent',                        // details, rows action event
         'deleteIntent',                         // delete, rows action event
         'editIntent',                           // edit, rows action event
-
         'navCreateIntent',                      // for creating new entity
 
         'enableIntent',

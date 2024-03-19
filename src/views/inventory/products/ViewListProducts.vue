@@ -17,8 +17,8 @@
 
                         @requestIntent="h_reqQuery"
 
-                        @navCreateIntent="nav_createProductIntent"
-                        @editIntent="nav_editProductIntent"
+                        @editIntent="nav_2Form"
+                        @navCreateIntent="nav_2Form"
                         @deleteIntent="h_intentRowDelete"
 
                         @bulkActionIntent="h_intentBulkAction"
@@ -56,7 +56,7 @@ import {
     OPS_KIND_STR, RoutePathNames
 } from '@/services/definitions'
 
-import type { IDataTableQuery, IColumnHeader, IProductRow, IExtFilterGroup, IBulkData,  TOpsKind, TFormMode } from '@/services/definitions'
+import type { IDataTableQuery, IColumnHeader, IProductRow, IExtFilterGroup, IBulkData,  TOpsKind, TFormMode, IIndexable } from '@/services/definitions'
 
 
 //region ======== STATE INTERFACE =======================================================
@@ -239,27 +239,24 @@ export default defineComponent({
             router.push({ name: RoutePathNames.hub });
         }
 
-        const nav_createProductIntent = () => {
-            router.push({
-                name:   RoutePathNames.productForm,
-                params: {
-                    fmode: FMODE.CREATE as TFormMode
-                    // id   : '', no need for passing ID on creation mode
-                }
-            })
-        }
-
         /**
-         * Handler for the intent of edit a record from the table
-         * @param rowData data of the row, intent to be coming form the data table
+         * Navigation handler method to jump to the entity formulary view
+         *
+         * @param mode To setting up the formulary view of the entity. Could be CREATION mode or EDITION mode
+         * @param rowData
          */
-        const nav_editProductIntent = ( rowData: IProductRow ) => {
+        const nav_2Form = (mode: TFormMode = FMODE.CREATE, rowData: IIndexable | undefined = undefined ) => {
+
+            console.warn(mode)
+            console.warn(rowData)
+
+            const params = mode == FMODE.CREATE
+                ? { fmode: mode }
+                : { fmode: mode, id: rowData?.id }
+
             router.push({
                 name:   RoutePathNames.productForm,
-                params: {
-                    fmode: FMODE.EDIT as TFormMode,
-                    id:    rowData.id,
-                }
+                params: params
             })
         }
 
@@ -328,9 +325,9 @@ export default defineComponent({
             headerFilters,
             extFilters,
 
+            nav_2Form,
+
             h_reqQuery,
-            nav_createProductIntent,
-            nav_editProductIntent,
             h_intentRowDelete,
             h_intentBulkAction,
             h_intentToggleEnable,

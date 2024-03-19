@@ -14,8 +14,8 @@
                         :has-actions="true"
 
                         @navCreateIntent=""
+                        @editIntent="nav_2Form"
                         @deleteIntent="h_intentRowDelete"
-                        @editIntent="nav_RowEdit"
           >
           </CmpDataTable>
         </CmpCard>
@@ -35,7 +35,7 @@ import {
     OPS_KIND_STR,
     RoutePathNames,
     HRolesTable,
-    DT_ACTION_BUTTON_MODE, KEYS
+    DT_ACTION_BUTTON_MODE, KEYS,
 } from '@/services/definitions'
 import { useRouter } from 'vue-router'
 import { useSt_Rbac } from '@/stores/rbac'
@@ -44,7 +44,7 @@ import { useToast } from 'vue-toastification'
 import useToastify from '@/services/composables/useToastify'
 import useDialogfy from '@/services/composables/useDialogfy'
 
-import type { IDtoRole, IDataTableQuery, TFormMode } from '@/services/definitions'
+import type { TFormMode, IIndexable } from '@/services/definitions'
 
 
 export default defineComponent({
@@ -128,23 +128,21 @@ export default defineComponent({
             router.push({ name: RoutePathNames.hub });
         }
 
-        const nav_CreateRole = (): void => {
-            router.push({
-                name:   RoutePathNames.rolesForm,
-                params: {
-                    fmode: FMODE.CREATE as TFormMode
-                    // id   : '', no need for passing ID on creation mode
-                }
-            })
-        }
+        /**
+         * Navigation handler method to jump to the entity formulary view
+         *
+         * @param mode To setting up the formulary view of the entity. Could be CREATION mode or EDITION mode
+         * @param rowData
+         */
+        const nav_2Form = (mode: TFormMode = FMODE.CREATE, rowData: IIndexable | undefined = undefined ) => {
 
-        const nav_RowEdit = ( rowData: IDtoRole ): void => {
+            const params = mode == FMODE.CREATE
+                ? { fmode: mode }
+                : { fmode: mode, id: rowData?.id }
+
             router.push({
                 name:   RoutePathNames.rolesForm,
-                params: {
-                    fmode: FMODE.EDIT as TFormMode,
-                    id:    rowData.id
-                }
+                params: params
             })
         }
 
@@ -172,8 +170,8 @@ export default defineComponent({
             columns,
             st_rbac,
 
-            nav_RowEdit,
-            nav_CreateRole,
+            nav_2Form,
+
             h_intentRowDelete
         }
     }

@@ -14,11 +14,11 @@
                         :has-actions="true"
                         :headerFilters="headerFilters"
 
-                        @navCreateIntent="nav_CreateStaff"
-                        @requestIntent="h_reqQuery"
-
+                        @editIntent="nav_2Form"
+                        @navCreateIntent="nav_2Form"
                         @deleteIntent="h_intentRowDelete"
-                        @editIntent="nav_RowEdit"
+
+                        @requestIntent="h_reqQuery"
 
                         @bulkActionIntent="h_intentBulkAction"
 
@@ -48,13 +48,13 @@ import {
     OPS_KIND_STR,
     HStaffTable,
     DT_ACTIONBAR_MODE,
-    RoutePathNames, KEYS
+    RoutePathNames, KEYS,
 } from '@/services/definitions'
 import { CmpCard, CmpDataTable } from '@/components'
 import useDialogfy from '@/services/composables/useDialogfy'
 import useToastify from '@/services/composables/useToastify'
 
-import type { TOpsKind, TFormMode, IDataTableQuery, IBulkData, IStaffRow, IColumnHeader } from '@/services/definitions'
+import type { TOpsKind, TFormMode, IDataTableQuery, IBulkData, IColumnHeader, IIndexable } from '@/services/definitions'
 
 
 export default defineComponent({
@@ -176,26 +176,20 @@ export default defineComponent({
         }
 
         /**
-         * Handler for the intent of edit a record from the table
-         * @param rowData data of the row
+         * Navigation handler method to jump to the entity formulary view
+         *
+         * @param mode To setting up the formulary view of the entity. Could be CREATION mode or EDITION mode
+         * @param rowData
          */
-        function nav_RowEdit( rowData: IStaffRow ) {
+        const nav_2Form = (mode: TFormMode = FMODE.CREATE, rowData: IIndexable | undefined = undefined ) => {
+
+            const params = mode == FMODE.CREATE
+                ? { fmode: mode }
+                : { fmode: mode, id: rowData?.id }
+
             router.push({
                 name:   RoutePathNames.staffForm,
-                params: {
-                    fmode: FMODE.EDIT as TFormMode,
-                    id:    rowData.id,
-                }
-            })
-        }
-
-        function nav_CreateStaff() {
-            router.push({
-                name  : RoutePathNames.staffForm,
-                params: {
-                    fmode: FMODE.CREATE as TFormMode,
-                    // id   : '', no need for passing ID on creation mode
-                }
+                params: params
             })
         }
 
@@ -273,11 +267,11 @@ export default defineComponent({
             st_staff,
             st_pagination,
 
+            nav_2Form,
+
             h_reqQuery,
-            nav_CreateStaff,
             h_intentBulkAction,
 
-            nav_RowEdit,
             h_intentRowDelete,
             h_intentToggleEnable,
             h_intentToggleDisable

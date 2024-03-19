@@ -15,8 +15,8 @@
                         :has-search="false"
                         :has-page-size-selector="false"
 
-                        @navCreateIntent="nav_createIntent"
-                        @editIntent="nav_editIntent"
+                        @editIntent="nav_2Form"
+                        @navCreateIntent="nav_2Form"
                         @deleteIntent="h_intentRowDelete"
           >
           </CmpDataTable>
@@ -41,13 +41,13 @@ import {
     OPS_KIND_STR,
     RoutePathNames,
     HWarehouseTable,
-    DT_ACTION_BUTTON_MODE, KEYS
+    DT_ACTION_BUTTON_MODE, KEYS,
 } from '@/services/definitions'
 import { CmpCard, CmpDataTable } from '@/components'
 import { ApiWarehouse } from '@/services/api/inventory/api-warehouse'
 import { useSt_Pagination } from '@/stores/pagination'
 
-import type { TFormMode, IColumnHeader, IDataTableQuery, IWarehouseRow } from '@/services/definitions'
+import type { TFormMode, IColumnHeader, IDataTableQuery, IWarehouseRow, IIndexable } from '@/services/definitions'
 
 
 //region ======== STATE INTERFACE =======================================================
@@ -143,27 +143,21 @@ export default defineComponent({
             router.push({ name: RoutePathNames.hub });
         }
 
-        const nav_createIntent = (): void => {
-            router.push({
-                name:   RoutePathNames.warehouseForm,
-                params: {
-                    fmode: FMODE.CREATE as TFormMode
-                    // id   : '', no need for passing ID on creation mode
-                }
-            })
-        }
-
         /**
-         * Handler for the intent of edit a record from the table
-         * @param rowData data of the row
+         * Navigation handler method to jump to the entity formulary view
+         *
+         * @param mode To setting up the formulary view of the entity. Could be CREATION mode or EDITION mode
+         * @param rowData
          */
-        const nav_editIntent = ( rowData: IWarehouseRow ): void => {
+        const nav_2Form = (mode: TFormMode = FMODE.CREATE, rowData: IIndexable | undefined = undefined ) => {
+
+            const params = mode == FMODE.CREATE
+                ? { fmode: mode }
+                : { fmode: mode, id: rowData?.id }
+
             router.push({
                 name:   RoutePathNames.warehouseForm,
-                params: {
-                    fmode: FMODE.EDIT as TFormMode,
-                    id   : rowData.id
-                }
+                params: params
             })
         }
 
@@ -190,8 +184,7 @@ export default defineComponent({
 
             h_intentRowDelete,
 
-            nav_editIntent,
-            nav_createIntent
+            nav_2Form
         }
     }
 

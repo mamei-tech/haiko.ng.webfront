@@ -15,8 +15,8 @@
                         :has-search="false"
                         :has-page-size-selector="false"
 
-                        @navCreateIntent="nav_createUoMCatIntent"
-                        @editIntent="nav_editUoMCatIntent"
+                        @editIntent="nav_2Form"
+                        @navCreateIntent="nav_2Form"
                         @deleteIntent="h_intentRowDelete"
           >
           </CmpDataTable>
@@ -42,11 +42,11 @@ import {
     OPS_KIND_STR,
     HUoMCatTable,
     RoutePathNames,
-    DT_ACTION_BUTTON_MODE, KEYS
+    DT_ACTION_BUTTON_MODE, KEYS,
 } from '@/services/definitions'
 import { CmpCard, CmpDataTable } from '@/components'
 
-import type { IColumnHeader, TFormMode, IDtoUoMCategory } from '@/services/definitions'
+import type { IColumnHeader, TFormMode, IIndexable } from '@/services/definitions'
 
 
 export default defineComponent({
@@ -120,27 +120,21 @@ export default defineComponent({
             router.push({ name: RoutePathNames.hub });
         }
 
-        const nav_createUoMCatIntent = (): void => {
-            router.push({
-                name:   RoutePathNames.muForm,
-                params: {
-                    fmode: FMODE.CREATE as TFormMode
-                    // id   : '', no need for passing ID on creation mode
-                }
-            })
-        }
-
         /**
-         * Handler for the intent of edit a record from the table
-         * @param rowData data of the row
+         * Navigation handler method to jump to the entity formulary view
+         *
+         * @param mode To setting up the formulary view of the entity. Could be CREATION mode or EDITION mode
+         * @param rowData
          */
-        const nav_editUoMCatIntent = ( rowData: IDtoUoMCategory ): void => {
+        const nav_2Form = (mode: TFormMode = FMODE.CREATE, rowData: IIndexable | undefined = undefined ) => {
+
+            const params = mode == FMODE.CREATE
+                ? { fmode: mode }
+                : { fmode: mode, id: rowData?.id }
+
             router.push({
                 name:   RoutePathNames.muForm,
-                params: {
-                    fmode: FMODE.EDIT as TFormMode,
-                    id:    rowData.id
-                }
+                params: params
             })
         }
 
@@ -172,9 +166,9 @@ export default defineComponent({
             st_uom,
             columns,
 
-            h_intentRowDelete,
-            nav_editUoMCatIntent,
-            nav_createUoMCatIntent
+            nav_2Form,
+
+            h_intentRowDelete
         }
     }
 
