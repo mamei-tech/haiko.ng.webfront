@@ -16,8 +16,8 @@
 
                         @requestIntent="h_reqQuery"
 
-                        @navCreateIntent="h_navCreateSuppCatIntent"
-                        @editIntent="h_navEditSuppIntent"
+                        @navCreateIntent="nav_2Form"
+                        @editIntent="nav_2Form"
                         @deleteIntent="h_intentRowDelete"
 
                         @bulkActionIntent="h_intentBulkAction"
@@ -53,7 +53,7 @@ import {
     RoutePathNames
 } from '@/services/definitions'
 
-import type { IBulkData, TOpsKind, IDataTableQuery, IColumnHeader, TFormMode, ISupplierRow } from '@/services/definitions'
+import type { IBulkData, TOpsKind, IDataTableQuery, IColumnHeader, TFormMode, ISupplierRow, IIndexable } from '@/services/definitions'
 
 
 //region ======== STATE INTERFACE =======================================================
@@ -214,35 +214,34 @@ export default defineComponent({
             router.push({ name: RoutePathNames.hub })
         }
 
-        const h_navCreateSuppCatIntent = (): void => {
-            router.push({
-                name:   RoutePathNames.supplierForm,
-                params: {
-                    fmode: FMODE.CREATE as TFormMode
-                    // id   : '', no need for passing ID on creation mode
-                }
-            })
-        }
-
         /**
-         * Handler for the intent of edit a record from the table
-         * @param rowData data of the row
+         * Navigation handler method to jump to the entity formulary view
+         *
+         * @param mode To setting up the formulary view of the entity. Could be CREATION mode or EDITION mode
+         * @param rowData
          */
-        const h_navEditSuppIntent = async ( rowData: ISupplierRow ): Promise<void> => {
+        const nav_2Form = async ( mode: TFormMode = FMODE.CREATE, rowData: IIndexable | undefined = undefined ) => {
 
-            // in edition mode the country & state Multiselect components present in ViewFormSuppliers need to have the data before the component can render the entity selected option according with the entity data
-            // so we call the data before tell the router to show de edit. An alternative to this could be having reactive vars in the form template to tell when to render (render after the data of the Multiselect option is present) and get the data in the OnMount hook in the form.
-            // ... so, getting needed data in edition form
-            st_nomenclatures.reqNmcCountries().catch(err => tfyCRUDFail(err, ENTITY_NAMES.COUNTRY, OPS_KIND_STR.REQUEST))
-            if (rowData.countryCode)
-                await st_nomenclatures.reqNmcCountriesStates(rowData.countryCode)
+            const params = mode == FMODE.CREATE
+                ? { fmode: mode }
+                : { fmode: mode, id: rowData?.id }
+
+            if (mode == FMODE.EDIT)
+            {
+                // in edition mode the country & state Multiselect components present in ViewFormSuppliers need to have the data before the component can render the entity selected option according with the entity data
+                // so we call the data before tell the router to show de edit. An alternative to this could be having reactive vars in the form template to tell when to render (render after the data of the Multiselect option is present) and get the data in the OnMount hook in the form.
+                // ... so, getting needed data in edition form
+                st_nomenclatures.reqNmcCountries().catch(err => tfyCRUDFail(err, ENTITY_NAMES.COUNTRY, OPS_KIND_STR.REQUEST))
+                const countryCode = (rowData as ISupplierRow).countryCode
+                if (countryCode != undefined)
+                    await st_nomenclatures.reqNmcCountriesStates(countryCode)
+
+                // TIP I think this could be moved from here to a hook in the form so this kind of methods remains consistent among all the list views
+            }
 
             await router.push({
                 name:   RoutePathNames.supplierForm,
-                params: {
-                    fmode: FMODE.EDIT as TFormMode,
-                    id:    rowData.id
-                }
+                params: params
             })
         }
 
@@ -316,11 +315,11 @@ export default defineComponent({
             columns,
             headerFilters,
 
+            nav_2Form,
+
             h_reqQuery,
             h_intentRowDelete,
             h_intentBulkAction,
-            h_navEditSuppIntent,
-            h_navCreateSuppCatIntent,
 
             h_intentToggleEnable,
             h_intentToggleDisable
