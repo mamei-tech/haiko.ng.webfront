@@ -133,8 +133,8 @@ export const HWareLocationsTable: Partial<IColumnHeader>[] = [
         styleWidth: 15,
         styleBold: true,
         colorMapValues: [
-            { color: '#3358f4', val: WARE_LOC_TYPE.VIEW },
-            { color: 'green', val: WARE_LOC_TYPE.INTERNAL }
+            { color: '#3358f4', val: t('entities.wlocation.types.view') },
+            { color: 'green', val: t('entities.wlocation.types.internal') }
         ]
     },
     {

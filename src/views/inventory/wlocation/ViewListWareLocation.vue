@@ -17,8 +17,8 @@
 
                         @requestIntent="h_reqQuery"
 
-                        @navCreateIntent="nav_createIntent"
-                        @editIntent="nav_editIntent"
+                        @navCreateIntent="nav_2Form"
+                        @editIntent="nav_2Form"
                         @deleteIntent="h_intentRowDelete"
           >
           </CmpDataTable>
@@ -36,22 +36,22 @@ import { useRouter } from 'vue-router'
 import useToastify from '@/services/composables/useToastify'
 import useDialogfy from '@/services/composables/useDialogfy'
 import {
-    ENTITY_NAMES,
+    DT_ACTION_BUTTON_MODE,
     DT_ACTIONBAR_MODE,
+    ENTITY_NAMES,
     FMODE,
+    HWareLocationsTable,
+    KEYS,
     OPS_KIND_STR,
     RoutePathNames,
-    DT_ACTION_BUTTON_MODE,
-    KEYS,
-    HWareLocationsTable,
-    WARE_LOC_TYPE
+    WARE_LOC_TYPE,
 } from '@/services/definitions'
 import { CmpCard, CmpDataTable } from '@/components'
 import { ApiWareLocation } from '@/services/api/inventory/api-warelocation'
 import { useSt_Pagination } from '@/stores/pagination'
 import { useSt_Nomenclatures } from '@/stores/nomenc'
 
-import type { TFormMode, IColumnHeader, IDataTableQuery, IWareLocationRow, IExtFilterGroup } from '@/services/definitions'
+import type { IIndexable, IColumnHeader, IDataTableQuery, IExtFilterGroup, IWareLocationRow, TFormMode } from '@/services/definitions'
 
 
 //region ======== STATE INTERFACE =======================================================
@@ -83,7 +83,7 @@ export default defineComponent({
         const abutton_mode: DT_ACTION_BUTTON_MODE = DT_ACTION_BUTTON_MODE.JEDINDEL          // datatable button mode
         const abar_mode: DT_ACTIONBAR_MODE = DT_ACTIONBAR_MODE.COMMON                       // datatable action bar mode
         const columns = ref<Partial<IColumnHeader>[]>(HWareLocationsTable)                  // entity customized datatable header | As here the data for the filter is dynamically (side-effect) obtained, we need to use ref so we can fill the datas
-        // const headerFilters = [ 'allowProdType' ]                                           // datatable filters  !!! you must use the real field names (nav keys in the HStaffTable object)
+        // const headerFilters = [ 'allowProdType' ]                                         // datatable filters  !!! you must use the real field names (nav keys in the HStaffTable object)
         const extFilters: IExtFilterGroup[] =
             [
                 {
@@ -137,7 +137,7 @@ export default defineComponent({
             .then(( response: any ) => {
 
                 ls_locations.value.entityPage = response.data.entityList.map(( entity: IWareLocationRow ) => {
-                    // entity.allowProdType = t(`data.allow-products-policy.${entity.allowProdType}`)
+                    entity.lType = t(`entities.wlocation.types.${entity.lType}`)
                     return entity
                 })
                 st_pagination.mutUpdateOnRequest(response.data.totalRecords, response.data.entityList.length, st_pagination.Offset)
@@ -166,30 +166,22 @@ export default defineComponent({
             router.push({ name: RoutePathNames.hub });
         }
 
-        const nav_createIntent = (): void => {
-            console.warn('create intent not implemented')
-            /*router.push({
-                name:   RoutePathNames.strgcategoryForm,
-                params: {
-                    fmode: FMODE.CREATE as TFormMode
-                    // id   : '', no need for passing ID on creation mode
-                }
-            })*/
-        }
-
         /**
-         * Handler for the intent of edit a record from the table
-         * @param rowData data of the row
+         * Navigation handler method to jump to the entity formulary view
+         *
+         * @param mode To setting up the formulary view of the entity. Could be CREATION mode or EDITION mode
+         * @param rowData
          */
-        const nav_editIntent = ( rowData: IWareLocationRow ): void => {
-            console.warn('edit intent not implemented')
-            /*router.push({
-                name:   RoutePathNames.strgcategoryForm,
-                params: {
-                    fmode: FMODE.EDIT as TFormMode,
-                    id   : rowData.id
-                }
-            })*/
+        const nav_2Form = (mode: TFormMode = FMODE.CREATE, rowData: IIndexable | undefined = undefined ) => {
+
+            const params = mode == FMODE.CREATE
+                ? { fmode: mode }
+                : { fmode: mode, id: rowData?.id }
+
+            router.push({
+                name:   RoutePathNames.wlocationForm,
+                params: params,
+            })
         }
 
         //endregion ===========================================================================
@@ -222,8 +214,7 @@ export default defineComponent({
             h_reqQuery,
             h_intentRowDelete,
 
-            nav_editIntent,
-            nav_createIntent
+            nav_2Form
         }
     }
 })
