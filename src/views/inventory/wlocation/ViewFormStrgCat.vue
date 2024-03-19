@@ -255,7 +255,7 @@ export default defineComponent({
                 tfyCRUDSuccess(ENTITY_NAMES.STRGCATEGORY, OPS_KIND_STR.ADDITION, newStrgCategory.sCatName)
 
                 // so now what ?
-                if(!doWeNeedToStay) h_back()            // so we are going back to the data table
+                if(!doWeNeedToStay) n_back()            // so we are going back to the data table
                 else hpr_cleanForm()                    // so wee need to clean the entire form and stay in it
 
             }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.STRGCATEGORY, OPS_KIND_STR.ADDITION))
@@ -268,7 +268,7 @@ export default defineComponent({
                 tfyCRUDSuccess(ENTITY_NAMES.STRGCATEGORY, OPS_KIND_STR.UPDATE, updatedStrgCategory.sCatName)
 
                 // so now what ?
-                if (!doWeNeedToStay) h_back()            // so we are going back to the data table
+                if (!doWeNeedToStay) n_back()            // so we are going back to the data table
 
             }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.STRGCATEGORY, OPS_KIND_STR.UPDATE))
         }
@@ -434,7 +434,7 @@ export default defineComponent({
         }
 
         const h_keyboardKeyPress = (evt: any) => {
-            if(evt.key === KEYS.ESCAPE) h_back()                       // going back if SCAPE is pressed
+            if(evt.key === KEYS.ESCAPE) n_back()                       // going back if SCAPE is pressed
         }
 
         /**
@@ -491,13 +491,17 @@ export default defineComponent({
 
         }, 1500)
 
-        const h_back = () => {
-            // router.back()
-            router.push({ name: RoutePathNames.strgcategoryList })
-        }
-
         const h_delete = async ( evt: any ) => {
             // TODO
+        }
+
+        //endregion ===========================================================================
+
+        //region ======= NAVIGATION ===========================================================
+
+        const n_back = () => {
+            // router.back()
+            router.push({ name: RoutePathNames.strgcategoryList })
         }
 
         //endregion ===========================================================================
@@ -511,7 +515,7 @@ export default defineComponent({
             columns,
             cpt_fMode,
 
-            h_back,
+            n_back,
             h_delete,
             h_updateCell,
             h_beforeSubmit,
