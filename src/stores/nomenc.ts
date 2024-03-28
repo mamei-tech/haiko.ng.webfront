@@ -2,6 +2,9 @@
 import { defineStore } from 'pinia'
 import { i18n } from '@/services/i18n'
 import { toDicIds } from '@/services/helpers/help-conversion'
+import { STRG_PROD_POLICY } from '@/services/definitions'
+import { ApiNomenclaturesMng } from '@/services/api/api-nomenclatures-manager'
+
 import type {
     ById,
     Function1,
@@ -14,10 +17,10 @@ import type {
     IStaffBasic,
     ISuppCatBasic,
     ISupplierBasic,
-    IUoMBasic
+    IUoMBasic,
+    IWareLocationBasic, IWarehouseBasic, IWareLocationType,
+    IStrgCategoryBasic,
 } from '@/services/definitions'
-import { STRG_PROD_POLICY } from '@/services/definitions'
-import { ApiNomenclaturesMng } from '@/services/api/api-nomenclatures-manager'
 
 
 const { t } = i18n.global
@@ -30,16 +33,28 @@ export const useSt_Nomenclatures = defineStore({
     id: 'nomenc',
 
     state: (): IStaffState => ({
-        uom:        [] as IUoMBasic[],
-        roles:      [] as IRoleBasic[],
-        suppCat:    [] as ISuppCatBasic[],
-        prodCat:    [] as IProdCatBasic[],
-        prodUoM:    [] as IProdUoM[],
-        countries:  [] as ICountryBasic[],
-        states:     [] as ICountryStatesBasic[],
-        staffs:     [] as IStaffBasic[],
-        suppliers:  [] as ISupplierBasic[],
-        currencies: [] as ICurrencyBasic[]
+        uom:            [] as IUoMBasic[],
+        roles:          [] as IRoleBasic[],
+        suppCat:        [] as ISuppCatBasic[],
+        prodCat:        [] as IProdCatBasic[],
+        prodUoM:        [] as IProdUoM[],
+        countries:      [] as ICountryBasic[],
+        states:         [] as ICountryStatesBasic[],
+        staffs:         [] as IStaffBasic[],
+        suppliers:      [] as ISupplierBasic[],
+        currencies:     [] as ICurrencyBasic[],
+        wlocations:     [] as IWareLocationBasic[],
+        warehouses:     [] as IWarehouseBasic[],
+        strgCategories: [] as IStrgCategoryBasic[],
+        wlocationsTypes:  [
+            { id: 'internal' },
+            { id: 'view' },
+            { id: 'supplier' },
+            { id: 'costumer' },
+            { id: 'transit' },
+            { id: 'inventory' },
+            { id: 'production' }
+        ]
     }),
 
     /**
@@ -51,7 +66,7 @@ export const useSt_Nomenclatures = defineStore({
         /**
          * Get the roles from the state in a multiselect component format ({value: ___, label: ___})
          *
-         * @param state Nomenclatures ROLES state
+         * @param state Nomenclatures state
          */
         getRoles4Select: ( state ): IMultiselectBasic[] => {
             return state.roles.map((roleData: IRoleBasic) => {
@@ -62,7 +77,7 @@ export const useSt_Nomenclatures = defineStore({
         /**
          * Get the supplier categories from the state in a multiselect component format ({value: ___, label: ___})
          *
-         * @param state Nomenclatures Supplier Categories state
+         * @param state Nomenclatures state
          */
         getSuppCat4Select: ( state ): IMultiselectBasic[] => {
             return state.suppCat.map((suppCatData: ISuppCatBasic) => {
@@ -84,7 +99,7 @@ export const useSt_Nomenclatures = defineStore({
         /**
          * Get the product categories from the state in a multiselect component format ({value: ___, label: ___})
          *
-         * @param state Nomenclatures Supplier Categories state
+         * @param state Nomenclatures state
          */
         getProdCat4Select: ( state ): IMultiselectBasic[] => {
             return state.prodCat.map((prodCatData: IProdCatBasic) => {
@@ -108,7 +123,7 @@ export const useSt_Nomenclatures = defineStore({
         /**
          * Get the country from the state in a multiselect component format ({value: ___, label: ___})
          *
-         * @param state Nomenclatures COUNTRIES state
+         * @param state Nomenclatures state
          */
         getCountry4Select: ( state ): IMultiselectBasic[] => {
             return state.countries.map((countryData: ICountryBasic) => {
@@ -119,7 +134,7 @@ export const useSt_Nomenclatures = defineStore({
         /**
          * Get the country provinces / states in a multiselect component format ({value: ___, label: ___})
          *
-         * @param state Nomenclatures COUNTRIES state
+         * @param state Nomenclatures state
          */
         getCountryStates4Select: ( state ): IMultiselectBasic[] => {
             return state.states.map((stateData: ICountryStatesBasic) => {
@@ -130,7 +145,7 @@ export const useSt_Nomenclatures = defineStore({
         /**
          * Get the staff from the state in a multiselect component format ({value: ___, label: ___})
          *
-         * @param state Nomenclatures Staff state
+         * @param state Nomenclatures state
          */
         getStaffs4Select: ( state ): IMultiselectBasic[] => {
             return state.staffs.map((stateData: IStaffBasic) => {
@@ -141,7 +156,7 @@ export const useSt_Nomenclatures = defineStore({
         /**
          * Get the suppliers from the state in a multiselect component format ({value: ___, label: ___})
          *
-         * @param state Nomenclatures Supplier state
+         * @param state Nomenclatures state
          */
         getSupplier4Select: (state): IMultiselectBasic[] => {
             return state.suppliers.map((stateData: ISupplierBasic) => {
@@ -162,11 +177,44 @@ export const useSt_Nomenclatures = defineStore({
         /**
          * Get the currencies from the state in a multiselect component format ({value: ___, label: ___})
          *
-         * @param state Nomenclatures Supplier state
+         * @param state Nomenclatures state
          */
         getCurrencies4Select: (state): IMultiselectBasic[] => {
             return state.currencies.map((stateData: ICurrencyBasic) => {
                 return { value: stateData.id, label: stateData.cDenomination }
+            })
+        },
+
+        /**
+         * Get the Warehouses (storage) locations from the state in a multiselect component format ({value: ___, label: ___})
+         *
+         * @param state Nomenclatures state
+         */
+        getWareLocations4Select: (state): IMultiselectBasic[] => {
+            return state.wlocations.map((stateData: IWareLocationBasic) => {
+                return { value: stateData.id, label: stateData.lFullName }
+            })
+        },
+
+        /**
+         * Get the Warehouses (storage) locations from the state in a multiselect component format ({value: ___, label: ___})
+         *
+         * @param state Nomenclatures state
+         */
+        getStrgCategories4Select: (state): IMultiselectBasic[] => {
+            return state.strgCategories.map((stateData: IStrgCategoryBasic) => {
+                return { value: stateData.id, label: stateData.sCatName }
+            })
+        },
+
+        /**
+         * Get the Warehouses from the state in a multiselect component format ({value: ___, label: ___})
+         *
+         * @param state Nomenclatures state
+         */
+        getWarehouses4Select: (state): IMultiselectBasic[] => {
+            return state.warehouses.map((stateData: IWarehouseBasic) => {
+                return { value: stateData.id, label: stateData.wName }
             })
         },
 
@@ -184,28 +232,28 @@ export const useSt_Nomenclatures = defineStore({
         /**
          * Map the roles to a dictionary where the RoleId is the key of the role value (rName, role name)
          *
-         * @param state Nomenclatures ROLES state
+         * @param state Nomenclatures state
          */
         getRolesByIdMap: ( state ): ById<IRoleBasic> => toDicIds(state.roles),
 
         /**
          * Map the suppliers category to a dictionary where the sCategoryID is the key of the category values
          *
-         * @param state Nomenclatures SUPPLIER CATEGORIES state
+         * @param state Nomenclatures state
          */
         getSuppCatByIdMap: ( state ): ById<ISuppCatBasic> => toDicIds(state.suppCat),
 
         /**
          * Map the product category to a dictionary where the pCategoryID is the key of the category value
          *
-         * @param state Nomenclatures SUPPLIER CATEGORIES state
+         * @param state Nomenclatures state
          */
         getProdCatByIdMap: ( state ): ById<IProdCatBasic> => toDicIds(state.prodCat),
 
         /**
          * Map the unit of measurement (UoM) to a dictionary where the uomId is the key of the uom value
          *
-         * @param state Nomenclatures UoM state
+         * @param state Nomenclatures state
          */
         getUoMByIdMap: ( state ): ById<IUoMBasic> => toDicIds(state.uom),
 
@@ -225,7 +273,7 @@ export const useSt_Nomenclatures = defineStore({
         // --- server async calls actions ---
 
         /**
-         * tries to get the defines system users roles from the backend
+         * Tries to get the defines system users roles from the backend
          */
         async reqNmcRoles () : Promise<void> {
 
@@ -242,7 +290,7 @@ export const useSt_Nomenclatures = defineStore({
         },
 
         /**
-         * tries to get the supplier categories from the backend
+         * Tries to get the supplier categories from the backend
          */
         async reqNmcSuppCat () : Promise<void> {
 
@@ -259,7 +307,7 @@ export const useSt_Nomenclatures = defineStore({
         },
 
         /**
-         * tries to get the product categories from the backend
+         * Tries to get the product categories from the backend
          */
         async reqNmcProdCat () : Promise<void> {
 
@@ -308,7 +356,7 @@ export const useSt_Nomenclatures = defineStore({
         },
 
         /**
-         * tries to get the uom from the backend
+         * Tries to get the uom from the backend
          */
         async reqNmcUoM () : Promise<void> {
 
@@ -324,7 +372,7 @@ export const useSt_Nomenclatures = defineStore({
         },
 
         /**
-         * tries to get the countries from the backend
+         * Tries to get the countries from the backend
          */
         async reqNmcCountries () : Promise<void> {
 
@@ -340,7 +388,7 @@ export const useSt_Nomenclatures = defineStore({
         },
 
         /**
-         * tries to get the countries from the backend
+         * Tries to get the countries from the backend
          * @param countryId Identifier of the country we want to look for
          */
         async reqNmcCountriesStates (countryId: string) : Promise<void> {
@@ -403,22 +451,75 @@ export const useSt_Nomenclatures = defineStore({
                 }).catch(error => { reject(error) })
             })
         },
+
+        /**
+         * Tries to get the Warehouse Storage Location Category defined on the system. The list will have only minimum data.
+         */
+        async reqNmcStrgCategoriesM(): Promise<void> {
+
+            return await new Promise<void>((resolve, reject) => {
+                ApiNomenclaturesMng.getStrgCategoriesM()
+                .then((response:any) => {
+
+                    this.strgCategories = response.data
+                    resolve()
+
+                }).catch(error => { reject(error) })
+            })
+        },
+
+        /**
+         * Tries to get the Warehouse storage locations defined on the system, to be used as parent location for another location.
+         * The list will have only minimum data.
+         */
+        async reqNmcWareLocations(): Promise<void> {
+
+            return await new Promise<void>((resolve, reject) => {
+                ApiNomenclaturesMng.getWareLocationsM()
+                .then((response:any) => {
+
+                    this.wlocations = response.data
+                    resolve()
+
+                }).catch(error => { reject(error) })
+            })
+        },
+
+        /**
+         * Tries to get the Warehouse defined on the system. The list will have only minimum data.
+         */
+        async reqNmcWarehouses(): Promise<void> {
+
+            return await new Promise<void>((resolve, reject) => {
+                ApiNomenclaturesMng.getWarehousesM()
+                .then((response:any) => {
+
+                    this.warehouses = response.data
+                    resolve()
+
+                }).catch(error => { reject(error) })
+            })
+        },
     }
 })
 
 //region ======== STATE INTERFACE =======================================================
 
 interface IStaffState {
-    uom:        Array<IUoMBasic>,
-    roles:      Array<IRoleBasic>,
-    suppCat:    Array<ISuppCatBasic>,
-    prodCat:    Array<IProdCatBasic>,
-    prodUoM:    Array<IProdUoM>,
-    countries:  Array<ICountryBasic>,
-    states:     Array<ICountryStatesBasic>,                // states belonging to a determined / defined countries
-    staffs:     Array<IStaffBasic>,
-    suppliers:  Array<ISupplierBasic>,
-    currencies: Array<ICurrencyBasic>
+    uom:                Array<IUoMBasic>,
+    roles:              Array<IRoleBasic>,
+    suppCat:            Array<ISuppCatBasic>,
+    prodCat:            Array<IProdCatBasic>,
+    prodUoM:            Array<IProdUoM>,
+    countries:          Array<ICountryBasic>,
+    states:             Array<ICountryStatesBasic>,                // states belonging to a determined / defined countries
+    staffs:             Array<IStaffBasic>,
+    suppliers:          Array<ISupplierBasic>,
+    currencies:         Array<ICurrencyBasic>,
+    wlocations:         Array<IWareLocationBasic>
+    warehouses:         Array<IWarehouseBasic>,
+    wlocationsTypes:    Array<IWareLocationType>,
+    strgCategories:     Array<IStrgCategoryBasic>
 }
 
 //endregion =============================================================================

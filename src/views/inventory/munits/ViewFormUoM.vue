@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-12">
 
-        <CmpCard :hasFormBackBtn="true" v-on:doClick="h_back">
+        <CmpCard :hasFormBackBtn="true" v-on:doClick="n_back">
 
           <!-- FORM -->
           <form class="form">
@@ -72,7 +72,7 @@
                 :show-delete="cpt_fMode === 'edit'"
                 v-on:saveIntent="h_beforeSubmit"
                 v-on:deleteIntent="h_delete"
-                v-on:cancelIntent="h_back"
+                v-on:cancelIntent="n_back"
             />
           </template>
         </CmpCard>
@@ -200,7 +200,7 @@ export default defineComponent({
                 tfyCRUDSuccess(ENTITY_NAMES.UOMCATEGORY, OPS_KIND_STR.ADDITION, newUoMCategory.ucName)
 
                 // so now what ?
-                if(!doWeNeedToStay) h_back()        // so we are going back to the data table
+                if(!doWeNeedToStay) n_back()        // so we are going back to the data table
                 else hpr_cleanForm()                    // so wee need to clean the entire form and stay in it
 
             }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.UOMCATEGORY, OPS_KIND_STR.ADDITION))
@@ -217,7 +217,7 @@ export default defineComponent({
                 tfyCRUDSuccess(ENTITY_NAMES.UOMCATEGORY, OPS_KIND_STR.UPDATE, updatedUoMCategory.ucName)
 
                 // so now what ?
-                if (!doWeNeedToStay) h_back()               // so we are going back to the data table
+                if (!doWeNeedToStay) n_back()               // so we are going back to the data table
 
             }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.UOMCATEGORY, OPS_KIND_STR.UPDATE))
         }
@@ -233,7 +233,7 @@ export default defineComponent({
             st_uom.reqUoMCatDeletion(id)
             .then(() => {
                 tfyCRUDSuccess(ENTITY_NAMES.UOMCATEGORY, OPS_KIND_STR.DELETION, ref)
-                h_back()
+                n_back()
             })
             .catch(err => tfyCRUDFail(err, ENTITY_NAMES.UOMCATEGORY, OPS_KIND_STR.DELETION, ref))
         }
@@ -333,12 +333,12 @@ export default defineComponent({
             handleSubmit(formData => {
                 if (cpt_fMode.value == (FMODE.CREATE as TFormMode)) a_create(formData, meta.value.dirty, doWeNeedToStay)
                 if (cpt_fMode.value == (FMODE.EDIT as TFormMode)) a_edit(formData, meta.value.dirty, doWeNeedToStay)
-                // if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && !meta.value.dirty) h_back()
+                // if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && !meta.value.dirty) n_back()
             }).call(this)
         }
 
         const h_keyboardKeyPress = (evt: any) => {
-            if(evt.key === KEYS.ESCAPE) h_back()                       // going back if SCAPE is pressed
+            if(evt.key === KEYS.ESCAPE) n_back()                       // going back if SCAPE is pressed
         }
 
         /**
@@ -376,11 +376,6 @@ export default defineComponent({
             })
         }
 
-        const h_back = () => {
-            // router.back()
-            router.push({ name: RoutePathNames.munits });
-        }
-
         const h_delete = async ( evt: any ) => {
             // we don't allow to delete the default categories, so we proceed only for above the 6th uom category
             if (+id > 6) {
@@ -389,6 +384,15 @@ export default defineComponent({
                 if (wasConfirmed) a_reqDelete(+id, '')
             }
             else dfyShowAlert(t('dialogs.title-alert-not-allowed'),  t('dialogs.cant-delete-default'))          // telling the user
+        }
+
+        //endregion ===========================================================================
+
+        //region ======= NAVIGATION ===========================================================
+
+        const n_back = () => {
+            // router.back()
+            router.push({ name: RoutePathNames.munits });
         }
 
         //endregion ===========================================================================
@@ -402,7 +406,7 @@ export default defineComponent({
             columns,
             cpt_fMode,
 
-            h_back,
+            n_back,
             h_delete,
             h_updateCell,
             h_beforeSubmit,

@@ -1,11 +1,13 @@
 import type { IIndexable } from '@/services/definitions/types-common'
 
+export interface IStrgCategoryBasic extends IIndexable {
+    sCatName: string,
+}
 
 /**
  * Interface for describing a Storage Category row on the datatable
  */
-export interface IStrgCategoryRow extends IIndexable {
-    sCatName: string,
+export interface IStrgCategoryRow extends IStrgCategoryBasic {
     wLocationCount: number | undefined,
     allowProdType: string
 }

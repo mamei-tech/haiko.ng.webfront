@@ -2,7 +2,7 @@ import axios from '../api'
 import appConfig from '@/configs/app.conf'
 
 import type { AxiosPromise } from 'axios'
-import type { IDataTableQuery, IDataTablePage, IWareLocationRow } from '@/services/definitions'
+import type { IDataTableQuery, IDataTablePage, IWareLocationRow, IDtoWareLocation } from '@/services/definitions'
 
 
 const version = appConfig.server.current_version
@@ -31,6 +31,16 @@ export class ApiWareLocation {
         }
 
         return axios.get(`${url}/page`, { params: payload })
+    }
+
+    /**
+     * Create / insert a new storage category on the system
+     *
+     * @param wareLocation new entity to be created
+     * @returns Promise with the identifier of the just created entity
+     */
+    public static reqInsWareLocation (wareLocation: IDtoWareLocation): AxiosPromise<number> {
+        return axios.post(url, wareLocation)
     }
 
     //endregion ===========================================================================

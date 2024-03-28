@@ -6,6 +6,11 @@ import { regOnlyAlphanumericNoSpaces, VSchemaCommon } from '@/services/definitio
 const { t } = i18n.global
 
 
+// This validation file / logic is related to the warehouse (storage) category
+
+/**
+ * Warehouse Storage Category
+ */
 export const VSchemaStrgCategory = {
     sCatName: ( value: string ): boolean | string => {
         return VSchemaCommon.nameValidation(value, 3, 30, true, regOnlyAlphanumericNoSpaces, t('validation.only-alpha-digits-no-spaces'))
@@ -13,7 +18,7 @@ export const VSchemaStrgCategory = {
 }
 
 /**
- * Storage Category -> Product capacity line validations scheme
+ * Warehouse Storage Category -> Product capacity line validations scheme
  */
 export const VSchemaProdLine = {
     maxCapacity: ( value: string ): boolean | string => {

@@ -43,7 +43,7 @@
                 <!-- name / status -->
                 <div class="row">
                   <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                    {{ $t( 'form.fields.product.name' ) }}
+                    {{ $t( 'entities.product.name' ) }}
                   </label>
                   <div class="col-md-5">
                     <CmpBasicInput
@@ -97,7 +97,7 @@
                 <!-- sell code -->
                 <div class="row" v-if="cpt_fMode === 'edit'">
                   <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                    {{ $t( 'form.fields.product.sell-code' ) }}
+                    {{ $t( 'entities.product.sell-code' ) }}
                   </label>
                   <div class="col-md-5">
                     <CmpBasicInput
@@ -112,7 +112,7 @@
                 <!-- notes sell -->
                 <div class="row">
                   <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                    {{ $t( 'form.fields.product.note-sell' ) }}
+                    {{ $t( 'entities.product.note-sell' ) }}
                   </label>
                   <div class="col-md-9">
                     <CmpTextInput
@@ -174,7 +174,7 @@
                       <!-- can be sold -->
                       <div class="row">
                         <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                          {{ $t( 'form.fields.product.cbe-sold' ) }}
+                          {{ $t( 'entities.product.cbe-sold' ) }}
                         </label>
                         <div class="col-md-2">
                           <CmpVeeCheckbox name="canBeSold"
@@ -189,7 +189,7 @@
                       <!-- sell price -->
                       <div class="row">
                         <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                          {{ $t( 'form.fields.product.sell-price' ) }}
+                          {{ $t( 'entities.product.sell-price' ) }}
                         </label>
                         <div class="col-md-6">
                           <CmpBasicInput
@@ -205,8 +205,8 @@
                       <!-- sell tax -->
                       <div class="row">
                         <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                          {{ $t( 'form.fields.product.sell-tax' ) }}
-                          <CmpTooltip is-form-label-mode :tip="$t('form.fields.product.tool-tips.sell-tax')" />
+                          {{ $t( 'entities.product.sell-tax' ) }}
+                          <CmpTooltip is-form-label-mode :tip="$t('entities.product.tool-tips.sell-tax')" />
                         </label>
                         <div class="col-md-6">
                           <CmpBasicInput
@@ -226,8 +226,8 @@
                       <!-- product uom stock / sell -->
                       <div class="row">
                         <label class="text-sm-left text-md-right col-md-4 col-form-label">
-                          {{ $t( 'form.fields.product.uom' ) }}
-                          <CmpTooltip is-form-label-mode :tip="$t('form.fields.product.tool-tips.uom')" />
+                          {{ $t( 'entities.product.uom' ) }}
+                          <CmpTooltip is-form-label-mode :tip="$t('entities.product.tool-tips.uom')" />
                         </label>
                         <div class="col-md-7">
                           <CmpMultiselectField
@@ -260,8 +260,8 @@
                       <!-- product uom purchase -->
                       <div class="row">
                         <label class="text-sm-left text-md-right col-md-4 col-form-label">
-                          {{ $t( 'form.fields.product.uom-purchase' ) }}
-                          <CmpTooltip is-form-label-mode :tip="$t('form.fields.product.tool-tips.uom-purchase')" />
+                          {{ $t( 'entities.product.uom-purchase' ) }}
+                          <CmpTooltip is-form-label-mode :tip="$t('entities.product.tool-tips.uom-purchase')" />
                         </label>
                         <div class="col-md-7">
                           <CmpMultiselectField
@@ -304,8 +304,8 @@
                       <!-- track inventory -->
                       <div class="row">
                         <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                          {{ $t( 'form.fields.product.track-inventory' ) }}
-                          <CmpTooltip is-form-label-mode :tip="$t('form.fields.product.tool-tips.track-inventory')" />
+                          {{ $t( 'entities.product.track-inventory' ) }}
+                          <CmpTooltip is-form-label-mode :tip="$t('entities.product.tool-tips.track-inventory')" />
                         </label>
                         <div class="col-md-9">
                           <CmpVeeCheckbox name="doWeTrackInventory"
@@ -318,7 +318,7 @@
                       <!-- notes internal transfer -->
                       <div class="row">
                         <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                          {{ $t( 'form.fields.product.note-transfer' ) }}
+                          {{ $t( 'entities.product.note-transfer' ) }}
                         </label>
                         <div class="col-md-9">
                           <CmpTextInput
@@ -337,9 +337,9 @@
                       <!-- logistics - responsible -->
                       <div class="row">
                         <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                          {{ $t( 'form.fields.product.logistic-responsible' ) }}
+                          {{ $t( 'entities.product.logistic-responsible' ) }}
                           <CmpTooltip is-form-label-mode
-                                      :tip="$t('form.fields.product.tool-tips.logistic-responsible')" />
+                                      :tip="$t('entities.product.tool-tips.logistic-responsible')" />
                         </label>
                         <div class="col-md-6">
                           <CmpMultiselectField :placeholder="$t('form.placeholders.staffs').toLowerCase()"
@@ -370,7 +370,7 @@
                       <!-- logistics - weight -->
                       <div class="row">
                         <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                          {{ $t( 'form.fields.product.logistic-weight' ) }}
+                          {{ $t( 'entities.product.logistic-weight' ) }}
                         </label>
                         <div class="col-md-6">
                           <CmpBasicInput
@@ -387,7 +387,7 @@
                       <!-- logistics - volume -->
                       <div class="row">
                         <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                          {{ $t( 'form.fields.product.logistic-volume' ) }}
+                          {{ $t( 'entities.product.logistic-volume' ) }}
                         </label>
                         <div class="col-md-6">
                           <CmpBasicInput
@@ -404,8 +404,8 @@
                       <!-- logistics - preparation manufacturing lead time -->
                       <div class="row">
                         <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                          {{ $t( 'form.fields.product.logistic-prep-manuf' ) }}
-                          <CmpTooltip is-form-label-mode :tip="$t('form.fields.product.tool-tips.manuf-prep-l-time')" />
+                          {{ $t( 'entities.product.logistic-prep-manuf' ) }}
+                          <CmpTooltip is-form-label-mode :tip="$t('entities.product.tool-tips.manuf-prep-l-time')" />
                         </label>
                         <div class="col-md-6">
                           <CmpBasicInput placeholder="0"
@@ -432,7 +432,7 @@
                       <!-- can be purchased -->
                       <div class="row">
                         <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                          {{ $t( 'form.fields.product.cbe-purchased' ) }}
+                          {{ $t( 'entities.product.cbe-purchased' ) }}
                         </label>
                         <div class="col-md-2">
                           <CmpVeeCheckbox name="canBePurchased"
@@ -447,7 +447,7 @@
                       <!-- TIP from Odoo In Standard Price & AVCO: value of the product (automatically computed in AVCO).\n        In FIFO: value of the next unit that will leave the stock (automatically computed).\n        Used to value the product when the purchase cost is not known (e.g. inventory adjustment).\n        Used to compute margins on sale orders.-->
                       <div class="row">
                         <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                          {{ $t( 'form.fields.product.cost' ) }}
+                          {{ $t( 'entities.product.cost' ) }}
                           <CmpTooltip is-form-label-mode tip="todo" />
                         </label>
                         <div class="col-md-5">
@@ -472,7 +472,7 @@
                       <!-- notes purchase -->
                       <div class="row">
                         <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                          {{ $t( 'form.fields.product.note-purchase' ) }}
+                          {{ $t( 'entities.product.note-purchase' ) }}
                         </label>
                         <div class="col-md-9">
                           <CmpTextInput
@@ -587,6 +587,7 @@ import { useForm } from 'vee-validate'
 import { i18n } from '@/services/i18n'
 import { useToast } from 'vue-toastification'
 import { useRoute, useRouter } from 'vue-router'
+import { useSt_Nomenclatures } from '@/stores/nomenc'
 import {
     ACTION_KIND_STR,
     DIALOG_ICON,
@@ -605,7 +606,7 @@ import useToastify from '@/services/composables/useToastify'
 import useDialogfy from '@/services/composables/useDialogfy'
 import useNumeric from '@/services/composables/useNumeric'
 import { ApiProduct } from '@/services/api/inventory/api-product'
-import { useSt_Nomenclatures } from '@/stores/nomenc'
+
 
 import type { ComputedRef } from 'vue'
 import type { IColumnHeader, IDtoProduct, TFormMode, IMultiselectBasic, ICellUpdate, IDtoProductSupplierL } from '@/services/definitions'
@@ -687,36 +688,36 @@ export default defineComponent({
             { id: 3, title: t('form.fields.suppliers.tab-purchases') },
             { id: 4, title: t('data.data') }
         ]
-        const statsDataCards = reactive([                                                    // form supplier statistics data / information
+        const statsDataCards = reactive([                                                  // form supplier statistics data / information
             {
                 id:       1,
                 title:    !ls_uomChosenLabel.value
                                   ? `${ values.pTotalStock?.toString() } ${ t('entities.uom.default') }`
                                   : `${ values.pTotalStock?.toString() } ${ ls_uomChosenLabel.value }`,
-                subTitle: t('form.fields.product.stats-stock-ready'),
-                type:     values.pTotalStock ?? 0 <= 0 ? 'danger' : 'info',
+                subTitle: t('form.fields-common.cards.stock-ready'),
+                type:     values.pTotalStock == undefined || values.pTotalStock <= 0 ? 'danger' : 'info',
                 icon:     'tim-icons icon-components'
                 // footer:   `<i class="tim-icons icon-zoom-split"></i></i> Update Now`
             },
             {
                 id:       2,
                 title:    `$ ${ values.pTotalStockValue }`,
-                subTitle: t('form.fields.product.stats-stock-value'),
-                type:     values.pTotalStockValue ?? 0 <= 0 ? 'danger' : 'info',
+                subTitle: t('form.fields-common.cards.stock-value'),
+                type:     values.pTotalStockValue == undefined || values.pTotalStockValue <= 0 ? 'danger' : 'info',
                 icon:     'tim-icons icon-coins'
             },
             {
                 id:       3,
                 title:    values.pTotalSalesCountInMonth?.toString(),
-                subTitle: t('form.fields.product.stats-total-sales-month'),
-                type:     values.pTotalSalesCountInMonth ?? 0 <= 0 ? 'warning' : 'info',
+                subTitle: t('form.fields-common.cards.total-sales-month'),
+                type:     values.pTotalSalesCountInMonth == undefined || values.pTotalSalesCountInMonth <= 0 ? 'warning' : 'info',
                 icon:     'tim-icons icon-cart'
             },
             {
                 id:       4,
                 title:    `$ ${ values.pTotalSalesValueInMonth }`,
-                subTitle: t('form.fields.product.stats-values-sales-month'),
-                type:     values.pTotalSalesValueInMonth ?? 0 <= 0 ? 'warning' : 'success',
+                subTitle: t('form.fields-common.cards.values-sales-month'),
+                type:     values.pTotalSalesValueInMonth == undefined || values.pTotalSalesValueInMonth <= 0 ? 'warning' : 'success',
                 icon:     'tim-icons icon-money-coins'
             },
             {
@@ -724,14 +725,14 @@ export default defineComponent({
                 title:    !ls_uomChosenLabel.value
                                   ? `${ values.pTotalPurchasesIn3Month?.toString() } ${ t('entities.uom.default') }`
                                   : `${ values.pTotalPurchasesIn3Month?.toString() } ${ ls_uomChosenLabel.value }`,
-                subTitle: t('form.fields.product.stats-total-uom-purchase-3-mont'),
+                subTitle: t('form.fields-common.cards.total-uom-purchase-3-mont'),
                 type:     'info',
                 icon:     'fa fa-codepen'
             },
             {
                 id:       6,
                 title:    values.pCountBoMRecipes?.toString(),
-                subTitle: t('form.fields.product.stats-count-bom'),
+                subTitle: t('form.fields-common.cards.count-bom'),
                 type:     'info',
                 icon:     'fa fa-sticky-note-o'
             }

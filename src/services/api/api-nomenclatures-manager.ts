@@ -9,7 +9,8 @@ import type {
     ISuppCatBasic,
     IProdCatBasic,
     IUoMBasic,
-    IProdUoM
+    IProdUoM,
+    IWareLocationBasic, IWarehouseBasic, IStrgCategoryBasic
 } from '@/services/definitions'
 
 
@@ -123,5 +124,32 @@ export class ApiNomenclaturesMng {
      */
     public static getCurrenciesM(): AxiosPromise<IUoMBasic[]> {
         return axios.get(`${url}/currency/list`)
+    }
+
+    /**
+     * Get a list of warehouse storage locations categories defined on the system
+     * - The retrieve list just will have minimum data (sCatName) Check IStrgCategoryBasic
+     * - M == minimum / basic information
+     */
+    public static getStrgCategoriesM(): AxiosPromise<IStrgCategoryBasic[]> {
+        return axios.get(`${url}/warehouse/location/categories/list`)
+    }
+
+    /**
+     * Get a list of warehouse storage locations defined on the system
+     * - The retrieve list just will have minimum data (lFullName) Check IWareLocationBasic
+     * - M == minimum / basic information
+     */
+    public static getWareLocationsM(): AxiosPromise<IWareLocationBasic[]> {
+        return axios.get(`${url}/warehouse/location/list`)
+    }
+
+    /**
+     * Get a list of warehouses defined on the system
+     * - The retrieve list just will have minimum data (wName) Check IWarehouseBasic
+     * - M == minimum / basic information
+     */
+    public static getWarehousesM(): AxiosPromise<IWarehouseBasic[]> {
+        return axios.get(`${url}/warehouse/list`)
     }
 }

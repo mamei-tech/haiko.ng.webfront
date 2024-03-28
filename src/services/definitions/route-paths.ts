@@ -124,7 +124,7 @@ export const RoutePathNames = {
     wlocationList: 'wlocation',                                        // wlocation = warehouse location | ware location
     wlocationForm: 'wlocation-form',
 
-    strgcategoryList: 'strgcategory',                                   // strgcategory = storage location
+    strgcategoryList: 'strgcategory',                                  // strgcategory = storage location
     strgcategoryForm: 'strgcategory-form',
 
     //#endregion ==========================================================================

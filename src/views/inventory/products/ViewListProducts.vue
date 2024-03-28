@@ -93,8 +93,8 @@ export default defineComponent({
                     {
                         label:   '',
                         filters: [
-                            { label: t('form.fields.product.cbe-sold'), entityField: 'CanBeSold', isActive: false, value: true },
-                            { label: t('form.fields.product.cbe-purchased'), entityField: 'CanBePurchased', isActive: false, value: true },
+                            { label: t('entities.product.cbe-sold'), entityField: 'CanBeSold', isActive: false, value: true },
+                            { label: t('entities.product.cbe-purchased'), entityField: 'CanBePurchased', isActive: false, value: true },
                         ]
                     },
                 ]
@@ -245,10 +245,7 @@ export default defineComponent({
          * @param mode To setting up the formulary view of the entity. Could be CREATION mode or EDITION mode
          * @param rowData
          */
-        const nav_2Form = (mode: TFormMode = FMODE.CREATE, rowData: IIndexable | undefined = undefined ) => {
-
-            console.warn(mode)
-            console.warn(rowData)
+        const nav_2Form = ( mode: TFormMode = FMODE.CREATE, rowData: IIndexable | undefined = undefined ) => {
 
             const params = mode == FMODE.CREATE
                 ? { fmode: mode }

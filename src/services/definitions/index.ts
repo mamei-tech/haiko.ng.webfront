@@ -18,13 +18,14 @@ import { VSchemaCommon } from '@/services/definitions/validations/validations-co
 import { VSchemaSupplier } from '@/services/definitions/validations/validations-suppliers'
 import { VSchemaPSL, VSchemaProduct } from '@/services/definitions/validations/validations-product'
 import { VSchemaWarehouse } from '@/services/definitions/validations/validations-warehouse'
+import { VSchemaWareLocation } from '@/services/definitions/validations/validations-warelocations'
 import { VSchemaStrgCategory } from '@/services/definitions/validations/validations-strgcategory'
 import { VSchemaStaffCreate, VSchemaStaffEdit } from '@/services/definitions/validations/validations-people'
 
 import type { Problem, ErrorDictionary } from '@/services/definitions/types-errors'
-import type { IWarehouseRow, IDtoWarehouse } from '@/services/definitions/entities/types-warehouse'
-import type { IWareLocationRow } from '@/services/definitions/entities/types-warelocation'
-import type { IStrgCategoryRow, IDtoStrgCategory, IStrgCatProdLine } from '@/services/definitions/entities/types-strgcategory'
+import type { IWarehouseRow, IDtoWarehouse, IWarehouseBasic } from '@/services/definitions/entities/types-warehouse'
+import type { IWareLocationRow, IDtoWareLocation, IWareLocationBasic, IWareLocationType } from '@/services/definitions/entities/types-warelocation'
+import type { IStrgCategoryRow, IDtoStrgCategory, IStrgCatProdLine, IStrgCategoryBasic } from '@/services/definitions/entities/types-strgcategory'
 import type { TOpsKind, Function0, Function1, IColumnHeader, IDataTableQuery, ITableChkEmit, TBulkAction, ById, IIndexable, IChecked, Filter, IDataListBasicResponse, TFormMode, TActionKind, IdsArray, IBulkData, IMultiselectBasic, IShell, IScrollInfo, IDataTablePage, ICellUpdate, IvCard, IExtFilter, IExtFilterGroup } from './types-common'
 import type { IStaffRow, IDtoStaff, IStaffBasic } from '@/services/definitions/entities/types-staff'
 import type { IRoleBasic, IDtoRole, IPermAssocId, IPermAssoc, IGroupPermsDict } from '@/services/definitions/entities/types-rbac'
@@ -97,18 +98,18 @@ export {
     ALIGN_POSITION,
 
     // Validations ... VSchema == validations schema
-    VSchemaStrgCategory, VSchemaAuth, VSchemaCommon, VSchemaStaffCreate, VSchemaStaffEdit, VSchemaRole, VSchemaWarehouse, VSchemaSupplier, VSchemaUoM, VSchemaUoMCat, VSchemaPSL, VSchemaProduct,
+    VSchemaStrgCategory, VSchemaAuth, VSchemaCommon, VSchemaStaffCreate, VSchemaStaffEdit, VSchemaRole, VSchemaWarehouse, VSchemaSupplier, VSchemaUoM, VSchemaUoMCat, VSchemaPSL, VSchemaProduct, VSchemaWareLocation,
 
     // =====  ENTITIES =====
 
     // warehouse (storage) locations
-    IWareLocationRow,
+    IWareLocationRow, IDtoWareLocation, IWareLocationBasic, IWareLocationType,
 
     // warehouse
-    IWarehouseRow, IDtoWarehouse,
+    IWarehouseRow, IDtoWarehouse, IWarehouseBasic,
 
     // storage category
-    IStrgCategoryRow, IDtoStrgCategory, IStrgCatProdLine,
+    IStrgCategoryRow, IDtoStrgCategory, IStrgCatProdLine, IStrgCategoryBasic,
 
     // staff
     IStaffRow, IDtoStaff, IStaffBasic,

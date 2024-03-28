@@ -200,7 +200,17 @@
             "month-pass-min":    "m. pasado",
             "month-current-min": "m. corriente",
             "year-pass-min":     "a. pasado",
-            "year-current-min":  "a. actual"
+            "year-current-min":  "a. actual",
+            "cards": {
+                "stock-ready":               "Stock",
+                "stock-value":               "Valor act. del Inventario",
+                "stock-value-in":            "Valor Inventario Ent.",
+                "stock-value-out":           "Valor Inventario Sal.",
+                "total-sales-month":         "Total de ventas este mes",
+                "values-sales-month":        "Valor de venta este mes",
+                "total-uom-purchase-3-mont": "Compras ult. 3 meses",
+                "count-bom":                 "Recetas"
+            }
         },
         "fields":        {
             "staff":     {
@@ -216,39 +226,6 @@
                 "stat-purchases-pend":        "Compras pendientes",
                 "stat-purchases-count":       "Total de compras",
                 "stat-purchases-count-value": "Valor total de compras"
-            },
-            "product":   {
-                "cbe-sold":                        "Puede ser vendido",
-                "cbe-purchased":                   "Puede ser comprado",
-                "name":                            "@:form.fields-common.firstname del @:entities.product.name",
-                "sell-code":                       "Código de Venta",
-                "track-inventory":                 "Llevar Inventario",
-                "note-transfer":                   "Nota movimientos internos",
-                "note-purchase":                   "Nota de Compra",
-                "note-sell":                       "Nota de Venta",
-                "sell-price":                      "Precio de venta",
-                "sell-tax":                        "Impuesto",
-                "uom":                             "Unidad de Medida (U.M)",
-                "uom-purchase":                    "U.M en Compras",
-                "cost":                            "costo",
-                "stats-stock-ready":               "Stock",
-                "stats-stock-value":               "Valor del Inventario",
-                "stats-total-sales-month":         "Total de ventas este mes",
-                "stats-values-sales-month":        "Valor de venta este mes",
-                "stats-total-uom-purchase-3-mont": "Compras ult. 3 meses",
-                "stats-count-bom":                 "Recetas",
-                "logistic-responsible":            "Responsible",
-                "logistic-weight":                 "Peso",
-                "logistic-volume":                 "Volumen",
-                "logistic-prep-manuf":             "TP de Prep para Fabric",
-                "tool-tips":                       {
-                    "track-inventory":      "Si esta marcado significa que es un producto almacenale y se gestionará inventario para el mismo. Si no está marcado se interpreta que el producto siempre esta disponible (siempre tiene stock)",
-                    "sell-tax":             "Porciento de impuesto cargado al cliente en el momento de la venta.",
-                    "uom":                  "Unidad de medida por defecto utilizada para todas las operaciones de stock y ventas",
-                    "uom-purchase":         "Unidad de medida por defecto utilizada para las compras y los proveedores. Debe pertenecer a la misma categoría que la UM seleccionada para las operaciones de stock.",
-                    "logistic-responsible": "La persona del staff responsable respecto a las operaciones de logística del producto en cuestión.",
-                    "manuf-prep-l-time":    "- Tiempo Promedio de Preparación para la Fabricación -. Plazo medio para preparar las órdenes de fabricación. Crear y confirmar las Órdenes de Fabricación con estos días de antelación como promedio, para disponer de tiempo suficiente para reponer materiales o fabricar productos semi-acabados."
-                }
             },
             "warehouse": {
                 "code": "@:form.fields-common.name corto"
@@ -290,7 +267,11 @@
             "strg-category-policy":   "- política d productos -",
             "strg-category-name":     "Líquidos...",
             "strg-select-product":    "- @:entities.product.name -",
-            "wlocation-name":         "Nevera # 5"
+            "wlocation-name":         "Nevera-5",
+            "wlocation-parent":       "- slecc. ubicación padre -",
+            "wlocation-warehouse":    "- slecc. @:entities.warehouse.name -",
+            "wlocation-category":     "- slecc. @:table-headers.category -",
+            "wlocation-type":         "- slecc. tipo -"
         }
     },
     "table-headers": {
@@ -337,9 +318,33 @@
             "name":         "Staff {ref}",
             "section-name": "@:entities.staff.name"
         },
-        "product":      {
-            "name":         "Producto {ref}",
-            "section-name": "@:table-headers.products"
+        "product": {
+            "name":                 "Producto {ref}",
+            "section-name":         "@:table-headers.products",
+            "cbe-sold":             "Puede ser vendido",
+            "cbe-purchased":        "Puede ser comprado",
+            "sell-code":            "Código de Venta",
+            "track-inventory":      "Llevar Inventario",
+            "note-transfer":        "Nota movimientos internos",
+            "note-purchase":        "Nota de Compra",
+            "note-sell":            "Nota de Venta",
+            "sell-price":           "Precio de venta",
+            "sell-tax":             "Impuesto",
+            "uom":                  "Unidad de Medida (U.M)",
+            "uom-purchase":         "U.M en Compras",
+            "cost":                 "costo",
+            "logistic-responsible": "Responsible",
+            "logistic-weight":      "Peso",
+            "logistic-volume":      "Volumen",
+            "logistic-prep-manuf":  "TP de Prep para Fabric",
+            "tool-tips":            {
+                "track-inventory":      "Si esta marcado significa que es un producto almacenale y se gestionará inventario para el mismo. Si no está marcado se interpreta que el producto siempre esta disponible (siempre tiene stock)",
+                "sell-tax":             "Porciento de impuesto cargado al cliente en el momento de la venta.",
+                "uom":                  "Unidad de medida por defecto utilizada para todas las operaciones de stock y ventas",
+                "uom-purchase":         "Unidad de medida por defecto utilizada para las compras y los proveedores. Debe pertenecer a la misma categoría que la UM seleccionada para las operaciones de stock.",
+                "logistic-responsible": "La persona del staff responsable respecto a las operaciones de logística del producto en cuestión.",
+                "manuf-prep-l-time":    "- Tiempo Promedio de Preparación para la Fabricación -. Plazo medio para preparar las órdenes de fabricación. Crear y confirmar las Órdenes de Fabricación con estos días de antelación como promedio, para disponer de tiempo suficiente para reponer materiales o fabricar productos semi-acabados."
+            }
         },
         "role":         {
             "name":         "Rol {ref}",
@@ -373,11 +378,13 @@
             "section-name": "Almacenes"
         },
         "wlocation": {
-            "name":          "Ubicación {ref}",
-            "section-name":  "@:entities.wlocation.name",
-            "internal-type": "Internas",
-            "full-name":     "Nombre Completo",
-            "types":         {
+            "name":              "Ubicación {ref}",
+            "section-name":      "@:entities.wlocation.name",
+            "internal-type":     "Internas",
+            "full-name":         "Nombre Completo",
+            "parent-id":         "Ubicación Padre",
+            "is-scrap-location": "Para Desechos ?",
+            "types":             {
                 "internal":   "interna",
                 "view":       "vista",
                 "supplier":   "proveedores",

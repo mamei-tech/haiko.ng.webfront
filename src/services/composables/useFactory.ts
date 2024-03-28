@@ -1,17 +1,18 @@
+import { STRG_PROD_POLICY, WARE_LOC_TYPE } from '@/services/definitions'
 import type {
     IDtoUoM,
     IDtoRole,
     IDtoStaff,
     IDtoProduct,
     IDtoSupplier,
+    IDtoWareLocation,
     IDtoWarehouse,
-    IDtoSupplierCat,
     IDtoUoMCategory,
+    IDtoSupplierCat,
     IDtoStrgCategory,
     IStrgCatProdLine,
     IDtoProductSupplierL
 } from '@/services/definitions'
-import { STRG_PROD_POLICY } from '@/services/definitions'
 
 
 /**
@@ -208,6 +209,29 @@ export default function useFactory() {
         }
     }
 
+    const mkWareLocation = (): IDtoWareLocation => {
+        return {
+            id: 0,
+
+            lName:     '',
+            lFullName: '',
+            lType:     WARE_LOC_TYPE.INTERNAL,
+            lNotes:    '',
+
+            parentID:    undefined,
+            warehouseID: 0,
+            strgCatID:  undefined,
+
+            isActive:        true,
+            isScrapLocation: false,
+
+            pCount:           0,
+            stockValInCount:  0,
+            stockValOutCount: 0,
+            stockValCurrent:  0
+        }
+    }
+
     //#endregion ==========================================================================
 
     return {
@@ -224,9 +248,9 @@ export default function useFactory() {
         mkProductSupplierLine,
 
         mkWarehouse,
-        mkStrgCategory,
+        mkWareLocation,
+
+        mkStrgCategory,                 // warehouse storage location category
         mkStrgCatProductLine,
     }
 }
-
-
