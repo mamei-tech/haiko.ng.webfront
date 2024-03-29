@@ -218,9 +218,9 @@ export default function useFactory() {
             lType:     WARE_LOC_TYPE.INTERNAL,
             lNotes:    '',
 
-            parentID:    undefined,
             warehouseID: 0,
-            strgCatID:  undefined,
+            parentID:    0,
+            strgCatID:   0,
 
             isActive:        true,
             isScrapLocation: false,

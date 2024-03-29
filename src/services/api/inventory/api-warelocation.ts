@@ -34,6 +34,15 @@ export class ApiWareLocation {
     }
 
     /**
+     * Get a Warehouse Storage Location formulary data information from the server according to the given entity identifier.
+     *
+     * @param wLocationId Warehouse Storage Location identifier
+     */
+    public static reqLocationById( wLocationId: number ): AxiosPromise<IDtoWareLocation> {
+        return axios.get(`${ url }/${ wLocationId }`)
+    }
+
+    /**
      * Create / insert a new storage category on the system
      *
      * @param wareLocation new entity to be created

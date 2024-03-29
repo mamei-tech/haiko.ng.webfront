@@ -289,7 +289,7 @@ import {
     ENTITY_NAMES, FMODE,
     KEYS,
     OPS_KIND_STR,
-    RoutePathNames, VSchemaProduct,
+    RoutePathNames,
     VSchemaWareLocation
 } from '@/services/definitions'
 import { CmpCardStats, CmpTextInput, CmpCard, CmpFormActionsButton, CmpBasicInput, CmpCollapseItem, CmpBasicCheckbox, CmpBaseButton, CmpMultiselectField, CmpVeeCheckbox } from '@/components'
@@ -387,6 +387,24 @@ export default defineComponent({
 
             st_nomenclatures.reqNmcStrgCategoriesM()
             .catch(err => tfyCRUDFail(err, t(`entities.${ENTITY_NAMES.STRGCATEGORY}`), OPS_KIND_STR.REQUEST))
+
+            if (cpt_fMode.value === FMODE.CREATE as TFormMode) return
+
+            let formDataFromServer: IDtoWareLocation | undefined = undefined
+            try {
+                await st_nomenclatures.reqNmcWareLocations()
+
+                formDataFromServer = (await ApiWareLocation.reqLocationById(+id)).data as IDtoWareLocation
+                if(formDataFromServer.id == undefined) return
+
+                resetForm({
+                    values: {
+                        ...formDataFromServer,
+                    },
+                    errors: {}
+                })
+            }
+            catch (err) {tfyCRUDFail(err, ENTITY_NAMES.WARELOCATION, OPS_KIND_STR.REQUEST)}
 
             window.addEventListener('keydown', h_keyboardKeyPress)                               // keyboard keys event handler, we need to clean this kind of event when the component are destroyed
         })
