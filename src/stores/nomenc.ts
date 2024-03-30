@@ -2,7 +2,7 @@
 import { defineStore } from 'pinia'
 import { i18n } from '@/services/i18n'
 import { toDicIds } from '@/services/helpers/help-conversion'
-import { STRG_PROD_POLICY } from '@/services/definitions'
+import { WARE_LOC_TYPE, STRG_PROD_POLICY } from '@/services/definitions'
 import { ApiNomenclaturesMng } from '@/services/api/api-nomenclatures-manager'
 
 import type {
@@ -47,13 +47,13 @@ export const useSt_Nomenclatures = defineStore({
         warehouses:     [] as IWarehouseBasic[],
         strgCategories: [] as IStrgCategoryBasic[],
         wlocationsTypes:  [
-            { id: 'internal' },
-            { id: 'view' },
-            { id: 'supplier' },
-            { id: 'costumer' },
-            { id: 'transit' },
-            { id: 'inventory' },
-            { id: 'production' }
+            { id: WARE_LOC_TYPE.INTERNAL },
+            { id: WARE_LOC_TYPE.VIEW },
+            { id: WARE_LOC_TYPE.SUPPLIER },
+            { id: WARE_LOC_TYPE.COSTUMER },
+            { id: WARE_LOC_TYPE.TRANSIT },
+            { id: WARE_LOC_TYPE.INVENTORY },
+            { id: WARE_LOC_TYPE.PRODUCTION }
         ]
     }),
 
@@ -190,9 +190,9 @@ export const useSt_Nomenclatures = defineStore({
          *
          * @param state Nomenclatures state
          */
-        getWareLocations4Select: (state): IMultiselectBasic[] => {
-            return state.wlocations.map((stateData: IWareLocationBasic) => {
-                return { value: stateData.id, label: stateData.lFullName }
+        getWareLocations4Select: ( state ): IMultiselectBasic[] => {
+            return state.wlocations.map(( stateData: IWareLocationBasic ) => {
+                return { value: stateData.id, label: stateData.lFullName ?? '' }
             })
         },
 

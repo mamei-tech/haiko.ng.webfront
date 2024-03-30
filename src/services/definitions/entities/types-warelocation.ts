@@ -1,7 +1,7 @@
 import type { IIndexable } from '@/services/definitions/types-common'
 
 export interface IWareLocationBasic extends IIndexable {
-    lFullName: string,
+    lFullName: string | undefined,
 }
 
 /**

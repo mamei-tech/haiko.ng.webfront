@@ -185,7 +185,7 @@
                 </div>
 
                 <!-- lFullName -->
-                <div class="row">
+                <div v-if="cpt_fMode === 'edit'" class="row">
                   <label class="text-sm-left text-md-right col-md-3 col-form-label">
                     {{ $t( 'entities.wlocation.full-name' ) }}
                   </label>
@@ -456,6 +456,8 @@ export default defineComponent({
         //region ======= HELPERS ==============================================================
 
         const hpr_sanitation = ( location: IDtoWareLocation ): void => {
+            delete location.lFullName
+
             delete location.pCount
             delete location.stockValCurrent
             delete location.stockValInCount
