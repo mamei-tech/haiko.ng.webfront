@@ -2,7 +2,7 @@
   <transition appear name="page-fade">
     <div class="row">
       <div class="col-12">
-        <CmpCard :hasFormBackBtn="true" v-on:doClick="n_back">
+        <CmpCard :hasFormBackBtn="true" v-on:doClick="nav_back">
 
           <!-- FORM -->
           <form class="form-horizontal">
@@ -207,7 +207,7 @@
                 :show-delete="cpt_fMode === 'edit'"
                 v-on:saveIntent="h_beforeSubmit"
                 v-on:deleteIntent="h_delete"
-                v-on:cancelIntent="n_back"
+                v-on:cancelIntent="nav_back"
             />
           </template>
         </CmpCard>
@@ -320,7 +320,7 @@ export default defineComponent({
                 tfyCRUDSuccess(ENTITY_NAMES.STAFF, OPS_KIND_STR.ADDITION, newStaff.firstName)
 
                 // so now what ?
-                if(!doWeNeedToStay) n_back()                                  // so we are going back to the data table
+                if(!doWeNeedToStay) nav_back()                                  // so we are going back to the data table
                 else {                                                        // so wee need to clean the entire form and stay in it
                     resetForm({ values: mkStaff() })
                     h_removePicture(true)                               // forcing image deletion no matter what
@@ -342,7 +342,7 @@ export default defineComponent({
                 tfyCRUDSuccess(ENTITY_NAMES.STAFF, OPS_KIND_STR.UPDATE, editedStaff.firstName)
 
                 // so now what ?
-                if(!doWeNeedToStay) n_back()                                  // so we are going back to the data table
+                if(!doWeNeedToStay) nav_back()                                  // so we are going back to the data table
 
             }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.UPDATE))
         }
@@ -351,7 +351,7 @@ export default defineComponent({
             st_staff.reqStaffDeletion({ ids: [ staffId ] })
             .then(() => {
                 tfyCRUDSuccess(ENTITY_NAMES.STAFF, OPS_KIND_STR.DELETION, entityReference)
-                n_back()
+                nav_back()
             }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.DELETION))
         }
 
@@ -400,7 +400,7 @@ export default defineComponent({
             handleSubmit(formData => {
                 if (cpt_fMode.value == (FMODE.CREATE as TFormMode)) a_create(formData, doWeNeedToStay)
                 if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && meta.value.dirty) a_edit(formData, doWeNeedToStay)
-                if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && !meta.value.dirty) n_back()               // was no changes (no dirty) with the data, so going back normally
+                if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && !meta.value.dirty) nav_back()               // was no changes (no dirty) with the data, so going back normally
             }).call(this)
         }
 
@@ -414,7 +414,7 @@ export default defineComponent({
 
         // const h_keyboardKeyPress = (event: Event) => {
         const h_keyboardKeyPress = ( evt: any ) => {
-            if(evt.key === KEYS.ESCAPE) n_back()                       // going back if SCAPE is pressed
+            if(evt.key === KEYS.ESCAPE) nav_back()                       // going back if SCAPE is pressed
         }
 
         // TIP ❗❗ perhaps we can replace this with the v-model way (two-way data binding) as you do with the other inputs see the note around line 297 in the 'onMounted' method. If so I think we don't need the others image method around this
@@ -450,7 +450,7 @@ export default defineComponent({
 
         //region ======= NAVIGATION ===========================================================
 
-        const n_back = () => {
+        const nav_back = () => {
             // router.back()
             router.push({ name: RoutePathNames.staff });
         }
@@ -467,7 +467,7 @@ export default defineComponent({
             cpt_fMode,
             st_nomenclatures,
 
-            n_back,
+            nav_back,
 
             h_delete,
             h_beforeSubmit,

@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-12">
 
-        <CmpCard :hasFormBackBtn="true" v-on:doClick="n_back">
+        <CmpCard :hasFormBackBtn="true" v-on:doClick="nav_back">
 
           <!-- FORM -->
           <form class="form">
@@ -98,7 +98,7 @@
                 :show-delete="cpt_fMode === 'edit'"
                 v-on:saveIntent="h_beforeSubmit"
                 v-on:deleteIntent="h_delete"
-                v-on:cancelIntent="n_back"
+                v-on:cancelIntent="nav_back"
             />
           </template>
         </CmpCard>
@@ -279,7 +279,7 @@ export default defineComponent({
             // in other words: checking the 'dirtiness' of the form
             if (formData.permsToGrant.length == 0 && formData.permsToRemove.length == 0 && !isFormDirty) {
                 // nothing change, so there is nothing to submit
-                if(!doWeNeedToStay) n_back()
+                if(!doWeNeedToStay) nav_back()
                 return
             }
 
@@ -292,7 +292,7 @@ export default defineComponent({
                 tfyCRUDSuccess(ENTITY_NAMES.ROLE, OPS_KIND_STR.UPDATE, formData.rName)
 
                 // so now what ?
-                if(!doWeNeedToStay) n_back()                // so we are going back to the data table
+                if(!doWeNeedToStay) nav_back()                // so we are going back to the data table
                 else hpr_cleanForm(formData)                //
 
             }).catch(err => tfyBasicRqError(err))
@@ -323,7 +323,7 @@ export default defineComponent({
                 tfyCRUDSuccess(ENTITY_NAMES.ROLE, OPS_KIND_STR.ADDITION, formData.rName)
 
                 // so now what ?
-                if (!doWeNeedToStay) n_back()                                 // so we are going back to the data table
+                if (!doWeNeedToStay) nav_back()                                 // so we are going back to the data table
                 else hpr_cleanForm()                                          // so wee need to clean the entire form and stay in it
 
             }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.ADDITION))
@@ -333,7 +333,7 @@ export default defineComponent({
             st_rbac.reqRoleDeletion({ ids: [ staffId ] })
             .then(() => {
                 tfyCRUDSuccess(ENTITY_NAMES.ROLE, OPS_KIND_STR.DELETION, entityReference)
-                n_back()
+                nav_back()
             }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.ROLE, OPS_KIND_STR.DELETION))
         }
 
@@ -393,12 +393,12 @@ export default defineComponent({
             handleSubmit(formData => {
                 if (cpt_fMode.value == (FMODE.CREATE as TFormMode)) a_create(formData, meta.value.dirty, doWeNeedToStay)
                 if (cpt_fMode.value == (FMODE.EDIT as TFormMode)) a_edit(formData, meta.value.dirty, doWeNeedToStay)
-                // if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && !meta.value.dirty) n_back()
+                // if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && !meta.value.dirty) nav_back()
             }).call(this)
         }
 
         const h_keyboardKeyPress = ( evt: any ) => {
-            if (evt.key === KEYS.ESCAPE) n_back()                       // going back if SCAPE is pressed
+            if (evt.key === KEYS.ESCAPE) nav_back()                       // going back if SCAPE is pressed
         }
 
         /**
@@ -447,7 +447,7 @@ export default defineComponent({
 
         //region ======= NAVIGATION ===========================================================
 
-        const n_back = () => {
+        const nav_back = () => {
             // router.back()
             router.push({ name: RoutePathNames.roles });
         }
@@ -462,7 +462,7 @@ export default defineComponent({
             // to delete from return
             perms2mod,
 
-            n_back,
+            nav_back,
             h_delete,
             h_permMod,
             h_beforeSubmit,

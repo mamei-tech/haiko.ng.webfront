@@ -53,7 +53,7 @@ export default defineComponent({
 
         //region ======= NAVIGATION ===========================================================
 
-        const n_back = () => {
+        const nav_back = () => {
             // router.back()
             router.push({ name: RoutePathNames.hub });
         }
@@ -63,7 +63,7 @@ export default defineComponent({
         //#region ======= EVENTS HANDLERS & WATCHERS ==========================================
 
         const h_keyboardKeyPress = ( evt: any ) => {
-            if (evt.key === KEYS.ESCAPE) n_back()
+            if (evt.key === KEYS.ESCAPE) nav_back()
         }
 
         //#endregion ==========================================================================

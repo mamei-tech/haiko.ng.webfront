@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-12">
 
-        <CmpCard :hasFormBackBtn="true" v-on:doClick="n_back">
+        <CmpCard :hasFormBackBtn="true" v-on:doClick="nav_back">
 
           <!-- FORM -->
           <form class="form">
@@ -102,7 +102,7 @@
                 :show-delete="cpt_fMode === 'edit'"
                 v-on:saveIntent="h_beforeSubmit"
                 v-on:deleteIntent="h_delete"
-                v-on:cancelIntent="n_back"
+                v-on:cancelIntent="nav_back"
             />
           </template>
         </CmpCard>
@@ -255,7 +255,7 @@ export default defineComponent({
                 tfyCRUDSuccess(ENTITY_NAMES.STRGCATEGORY, OPS_KIND_STR.ADDITION, newStrgCategory.sCatName)
 
                 // so now what ?
-                if(!doWeNeedToStay) n_back()            // so we are going back to the data table
+                if(!doWeNeedToStay) nav_back()            // so we are going back to the data table
                 else hpr_cleanForm()                    // so wee need to clean the entire form and stay in it
 
             }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.STRGCATEGORY, OPS_KIND_STR.ADDITION))
@@ -268,7 +268,7 @@ export default defineComponent({
                 tfyCRUDSuccess(ENTITY_NAMES.STRGCATEGORY, OPS_KIND_STR.UPDATE, updatedStrgCategory.sCatName)
 
                 // so now what ?
-                if (!doWeNeedToStay) n_back()            // so we are going back to the data table
+                if (!doWeNeedToStay) nav_back()            // so we are going back to the data table
 
             }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.STRGCATEGORY, OPS_KIND_STR.UPDATE))
         }
@@ -286,7 +286,7 @@ export default defineComponent({
             /*st_uom.reqUoMCatDeletion(id)
             .then(() => {
                 tfyCRUDSuccess(ENTITY_NAMES.UOMCATEGORY, OPS_KIND_STR.DELETION, ref)
-                n_back()
+                nav_back()
             })
             .catch(err => tfyCRUDFail(err, ENTITY_NAMES.UOMCATEGORY, OPS_KIND_STR.DELETION, ref))*/
         }
@@ -429,12 +429,12 @@ export default defineComponent({
             handleSubmit(formData => {
                 if (cpt_fMode.value == (FMODE.CREATE as TFormMode)) a_create(formData, meta.value.dirty, doWeNeedToStay)
                 if (cpt_fMode.value == (FMODE.EDIT as TFormMode)) a_edit(formData, meta.value.dirty, doWeNeedToStay)
-                // if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && !meta.value.dirty) n_back()
+                // if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && !meta.value.dirty) nav_back()
             }).call(this)
         }
 
         const h_keyboardKeyPress = (evt: any) => {
-            if(evt.key === KEYS.ESCAPE) n_back()                       // going back if SCAPE is pressed
+            if(evt.key === KEYS.ESCAPE) nav_back()                       // going back if SCAPE is pressed
         }
 
         /**
@@ -499,7 +499,7 @@ export default defineComponent({
 
         //region ======= NAVIGATION ===========================================================
 
-        const n_back = () => {
+        const nav_back = () => {
             // router.back()
             router.push({ name: RoutePathNames.strgcategoryList })
         }
@@ -515,7 +515,7 @@ export default defineComponent({
             columns,
             cpt_fMode,
 
-            n_back,
+            nav_back,
             h_delete,
             h_updateCell,
             h_beforeSubmit,
