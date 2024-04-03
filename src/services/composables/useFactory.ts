@@ -228,7 +228,11 @@ export default function useFactory() {
             pCount:           0,
             stockValInCount:  0,
             stockValOutCount: 0,
-            stockValCurrent:  0
+            stockValCurrent:  0,
+
+            created: undefined,
+            updated: undefined,
+            deleted: undefined
         }
     }
 

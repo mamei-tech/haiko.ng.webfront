@@ -9,7 +9,7 @@ export interface IWarehouseBasic extends IIndexable {
  */
 export interface IWarehouseRow extends IWarehouseBasic {
     code: string,
-    suppID: number | string ,
+    suppID: number | string
 }
 
 /**

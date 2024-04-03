@@ -52,6 +52,10 @@ export class ApiWareLocation {
         return axios.post(url, wareLocation)
     }
 
+    public static reqUpdateWareLocation( wareLocation: IDtoWareLocation ): Promise<void> {
+        return axios.put(`${ url }`, wareLocation)
+    }
+
     //endregion ===========================================================================
 
     //#region ======= DATA READY METHODS ==================================================

@@ -29,7 +29,11 @@ export interface IDtoWareLocation extends IWareLocationRow {
     pCount: number | undefined,
     stockValCurrent: number | undefined,
     stockValInCount: number | undefined,
-    stockValOutCount: number | undefined
+    stockValOutCount: number | undefined,
+
+    created: Date | undefined,
+    updated: Date | undefined,
+    deleted: Date | undefined,
 }
 
 export interface IWareLocationType {

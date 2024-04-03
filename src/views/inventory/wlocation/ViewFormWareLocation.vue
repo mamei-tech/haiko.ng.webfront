@@ -444,6 +444,19 @@ export default defineComponent({
             }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.WARELOCATION, OPS_KIND_STR.ADDITION))
         }
 
+        const a_edit = (updatedLocation: IDtoWareLocation, isFormDirty: boolean, doWeNeedToStay: boolean ): void => {
+            hpr_sanitation(updatedLocation)
+
+            // making the request
+            ApiWareLocation.reqUpdateWareLocation(updatedLocation).then(() => {
+                tfyCRUDSuccess(ENTITY_NAMES.WARELOCATION, OPS_KIND_STR.UPDATE, updatedLocation.lName)
+
+                // so now what ?
+                if (!doWeNeedToStay) nav_back()            // so we are going back to the data table
+
+            }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.WARELOCATION, OPS_KIND_STR.UPDATE))
+        }
+
         //#endregion ==========================================================================
 
         //region ======= COMPUTATIONS & GETTERS ===============================================
@@ -456,6 +469,10 @@ export default defineComponent({
         //region ======= HELPERS ==============================================================
 
         const hpr_sanitation = ( location: IDtoWareLocation ): void => {
+            delete location.created
+            delete location.updated
+            delete location.deleted
+
             delete location.lFullName
 
             delete location.pCount
@@ -505,8 +522,8 @@ export default defineComponent({
 
             handleSubmit(formData => {
                 if (cpt_fMode.value == (FMODE.CREATE as TFormMode)) a_create(formData, meta.value.dirty, doWeNeedToStay)
-                // if (cpt_fMode.value == (FMODE.EDIT as TFormMode)) a_edit(formData, meta.value.dirty, doWeNeedToStay)
-                // if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && !meta.value.dirty) n_back()
+                if (cpt_fMode.value == (FMODE.EDIT as TFormMode)) a_edit(formData, meta.value.dirty, doWeNeedToStay)
+                if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && !meta.value.dirty) nav_back()
             }).call(this)
         }
 
@@ -592,6 +609,7 @@ export default defineComponent({
             cap,
 
             nav_back,
+
             h_delete,
             h_statGoCheck,
             h_beforeSubmit,
