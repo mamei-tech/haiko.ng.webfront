@@ -18,7 +18,7 @@ export const VSchemaWareLocation = {
     },
     parentID:    ( value: string ): boolean | string => {return VSchemaCommon.numerical(value, 1, 10000, true, true)},
     warehouseID: ( value: string ): boolean | string => {return VSchemaCommon.numerical(value, 1, 10000, true, true)},
-    strgCatID:   ( value: string ): boolean | string => {return VSchemaCommon.numerical(value, 1, 10000, true, true)},
+    strgCatID:   ( value: string ): boolean | string => {return VSchemaCommon.numerical(value, 1, 10000, true, false)},
 
     lType:       ( value: string ): boolean | string => {
 
@@ -28,7 +28,7 @@ export const VSchemaWareLocation = {
             case WARE_LOC_TYPE.TRANSIT:
             case WARE_LOC_TYPE.INTERNAL:
             case WARE_LOC_TYPE.SUPPLIER:
-            case WARE_LOC_TYPE.COSTUMER:
+            case WARE_LOC_TYPE.CUSTOMER:
             case WARE_LOC_TYPE.INVENTORY:
             case WARE_LOC_TYPE.PRODUCTION:
                 return true

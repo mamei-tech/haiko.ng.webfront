@@ -146,6 +146,7 @@ export const VSchemaCommon = {
      * @param isThisRequired tells if the field / property is required
      */
     numerical:  ( value: string, minVal = 0, maxVal = 500000000, int: boolean = false, isThisRequired: boolean = true ): boolean | string => {
+        if (!isThisRequired && (+value == 0 || value == undefined)) return true
         if (isThisRequired && !required(value)) return t('validation.required')
 
         if (int)

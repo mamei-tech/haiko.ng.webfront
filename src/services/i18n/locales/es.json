@@ -388,7 +388,7 @@
                 "internal":   "interna",
                 "view":       "vista",
                 "supplier":   "proveedores",
-                "costumer":   "clientes",
+                "customer":   "clientes",
                 "transit":    "tránsito",
                 "inventory":  "inventario",
                 "production": "producción"

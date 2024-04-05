@@ -121,7 +121,7 @@ export enum DIALOG_ICON {
 export enum WARE_LOC_TYPE {
     VIEW = 'view',
     SUPPLIER = 'supplier',
-    COSTUMER = 'costumer',
+    CUSTOMER = 'customer',
     TRANSIT = 'transit',
     INTERNAL = 'internal',
     PRODUCTION = 'production',

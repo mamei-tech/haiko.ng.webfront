@@ -98,19 +98,19 @@
                   </div>
                 </div>
 
-                <!-- Storage Category -->
+                <!-- Warehouse Location Type -->
                 <div class="row">
                   <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                    {{ $t( 'table-headers.category' ) }}
+                    {{ cap($t( 'data.type' )) }}
                   </label>
                   <div class="col-md-9">
-                    <CmpMultiselectField :placeholder="$t('form.placeholders.wlocation-category')"
-                                         :options="st_nomenclatures.getStrgCategories4Select"
+                    <CmpMultiselectField :placeholder="$t('form.placeholders.wlocation-type')"
+                                         :options="wLocationTypes"
                                          searchable
-                                         name="strgCatID"
+                                         name="lType"
                                          class="mb-2"
-                                         ref="ref_selectLocCategory"
                                          closeOnSelect
+                                         v-on:changehapend="h_LTypeChange"
                     >
 
                       <!--option coming from slot child component ('slots props') [option] -->
@@ -128,17 +128,18 @@
                   </div>
                 </div>
 
-                <!-- Warehouse Location Type -->
-                <div class="row">
+                <!-- Storage Category -->
+                <div v-if="lType === WARE_LOC_TYPE.INTERNAL" class="row">
                   <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                    {{ cap($t( 'data.type' )) }}
+                    {{ $t( 'table-headers.category' ) }}
                   </label>
                   <div class="col-md-9">
-                    <CmpMultiselectField :placeholder="$t('form.placeholders.wlocation-type')"
-                                         :options="wLocationTypes"
+                    <CmpMultiselectField :placeholder="$t('form.placeholders.wlocation-category')"
+                                         :options="st_nomenclatures.getStrgCategories4Select"
                                          searchable
-                                         name="lType"
+                                         name="strgCatID"
                                          class="mb-2"
+                                         ref="ref_selectLocCategory"
                                          closeOnSelect
                     >
 
@@ -173,10 +174,10 @@
                     />
                   </div>
 
-                  <label class="text-sm-left text-md-right col-md-4 col-form-label">
+                  <label v-if="lType === WARE_LOC_TYPE.INTERNAL || lType === WARE_LOC_TYPE.INVENTORY" class="text-sm-left text-md-right col-md-4 col-form-label">
                     {{ $t( 'entities.wlocation.is-scrap-location' ) }}
                   </label>
-                  <div class="col-md-3">
+                  <div v-if="lType === WARE_LOC_TYPE.INTERNAL || lType === WARE_LOC_TYPE.INVENTORY" class="col-md-3">
                     <CmpVeeCheckbox name="isScrapLocation"
                                     :checked="values.isScrapLocation"
                                     :labels="[$t('btn.val-yes'), $t('btn.val-no')]"
@@ -215,9 +216,9 @@
 
               </div>
 
-              <hr class="collapsable-form-section-divisor mt-4">
+              <hr v-if="lType === WARE_LOC_TYPE.INTERNAL || lType === WARE_LOC_TYPE.INVENTORY || lType === WARE_LOC_TYPE.PRODUCTION || lType === WARE_LOC_TYPE.TRANSIT" class="collapsable-form-section-divisor mt-4">
 
-              <div class="col-lg-3 col-md-12 mt-2" v-for="(card, i) in statsDataCards" :key="card.id">
+              <div v-if="lType === WARE_LOC_TYPE.INTERNAL || lType === WARE_LOC_TYPE.INVENTORY || lType === WARE_LOC_TYPE.PRODUCTION || lType === WARE_LOC_TYPE.TRANSIT" class="col-lg-3 col-md-12 mt-2" v-for="(card, i) in statsDataCards" :key="card.id">
                 <CmpCardStats :title="card.title"
                               :subTitle="card.subTitle"
                               :type="card.type"
@@ -290,7 +291,7 @@ import {
     KEYS,
     OPS_KIND_STR,
     RoutePathNames,
-    VSchemaWareLocation
+    VSchemaWareLocation, WARE_LOC_TYPE
 } from '@/services/definitions'
 import { CmpCardStats, CmpTextInput, CmpCard, CmpFormActionsButton, CmpBasicInput, CmpCollapseItem, CmpBasicCheckbox, CmpBaseButton, CmpMultiselectField, CmpVeeCheckbox } from '@/components'
 
@@ -337,6 +338,7 @@ export default defineComponent({
         })
 
         // html references
+        const lType = ref<WARE_LOC_TYPE>(WARE_LOC_TYPE.INTERNAL)
         const ref_selectWLocations = ref<InstanceType<typeof CmpMultiselectField>>()        // reference to warehouse storage locations
         const ref_selectLocCategory = ref<InstanceType<typeof CmpMultiselectField>>()       // reference to warehouse storage category
         const statsDataCards = reactive([
@@ -390,6 +392,7 @@ export default defineComponent({
 
             if (cpt_fMode.value === FMODE.CREATE as TFormMode) return
 
+            // ---- the following code is the edition conditional section
             let formDataFromServer: IDtoWareLocation | undefined = undefined
             try {
                 await st_nomenclatures.reqNmcWareLocations()
@@ -397,6 +400,7 @@ export default defineComponent({
                 formDataFromServer = (await ApiWareLocation.reqLocationById(+id)).data as IDtoWareLocation
                 if(formDataFromServer.id == undefined) return
 
+                lType.value = formDataFromServer.lType as WARE_LOC_TYPE
                 resetForm({
                     values: {
                         ...formDataFromServer,
@@ -552,6 +556,16 @@ export default defineComponent({
             else setFieldValue('isScrapLocation', false)
         }
 
+        const h_LTypeChange = ( type: WARE_LOC_TYPE ): void => {
+            lType.value = type
+
+            if (type === WARE_LOC_TYPE.VIEW || type === WARE_LOC_TYPE.SUPPLIER || type === WARE_LOC_TYPE.CUSTOMER || type === WARE_LOC_TYPE.PRODUCTION || type === WARE_LOC_TYPE.TRANSIT || type === WARE_LOC_TYPE.INVENTORY )
+                setFieldValue('strgCatID', 0)
+
+            if (type === WARE_LOC_TYPE.VIEW || type === WARE_LOC_TYPE.SUPPLIER || type === WARE_LOC_TYPE.CUSTOMER || type === WARE_LOC_TYPE.PRODUCTION || type === WARE_LOC_TYPE.TRANSIT)
+                setFieldValue('isScrapLocation', false)
+        }
+
         /**
          * Go to an entity list (depends on the statistics card of the event) filtered by the current supplier
          * @param cardId card identifier
@@ -600,6 +614,7 @@ export default defineComponent({
 
         return {
             values,
+            lType,
             statsDataCards,
             wLocationTypes,
 
@@ -608,11 +623,14 @@ export default defineComponent({
             ref_selectWLocations,
             ref_selectLocCategory,
 
+            WARE_LOC_TYPE,
+
             cap,
 
             nav_back,
 
             h_delete,
+            h_LTypeChange,
             h_statGoCheck,
             h_beforeSubmit,
             h_warehouseChange,

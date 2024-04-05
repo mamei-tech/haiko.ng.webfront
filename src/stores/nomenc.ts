@@ -50,7 +50,7 @@ export const useSt_Nomenclatures = defineStore({
             { id: WARE_LOC_TYPE.INTERNAL },
             { id: WARE_LOC_TYPE.VIEW },
             { id: WARE_LOC_TYPE.SUPPLIER },
-            { id: WARE_LOC_TYPE.COSTUMER },
+            { id: WARE_LOC_TYPE.CUSTOMER },
             { id: WARE_LOC_TYPE.TRANSIT },
             { id: WARE_LOC_TYPE.INVENTORY },
             { id: WARE_LOC_TYPE.PRODUCTION }
