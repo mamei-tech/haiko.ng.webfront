@@ -5,12 +5,12 @@ import type {
     IDtoStaff,
     IDtoProduct,
     IDtoSupplier,
-    IDtoWareLocation,
     IDtoWarehouse,
     IDtoUoMCategory,
     IDtoSupplierCat,
     IDtoStrgCategory,
     IStrgCatProdLine,
+    IDtoWareLocation,
     IDtoProductSupplierL
 } from '@/services/definitions'
 
@@ -216,7 +216,7 @@ export default function useFactory() {
             lName:     '',
             lFullName: '',
             lType:     WARE_LOC_TYPE.INTERNAL,
-            lNotes:    '',
+            lNotes:    undefined,
 
             warehouseID: 0,
             parentID:    0,

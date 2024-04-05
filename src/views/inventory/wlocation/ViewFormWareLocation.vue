@@ -469,6 +469,8 @@ export default defineComponent({
         //region ======= HELPERS ==============================================================
 
         const hpr_sanitation = ( location: IDtoWareLocation ): void => {
+            if (location.lNotes == undefined || location.lNotes.length == 0) delete location.lNotes
+
             delete location.created
             delete location.updated
             delete location.deleted

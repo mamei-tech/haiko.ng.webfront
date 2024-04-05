@@ -20,7 +20,7 @@ export interface IDtoWareLocation extends IWareLocationRow {
     warehouseID: number,
     strgCatID: number | undefined,
 
-    lNotes: string,
+    lNotes: string | undefined,
 
     isActive: boolean,
     isScrapLocation: boolean,

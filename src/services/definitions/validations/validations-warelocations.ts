@@ -40,5 +40,4 @@ export const VSchemaWareLocation = {
         // return true                  | unreachable in this situation
     },
     lNotes: ( value: string ): boolean | string => {return VSchemaCommon.notes(value, 3, 200, false)},
-
 }
