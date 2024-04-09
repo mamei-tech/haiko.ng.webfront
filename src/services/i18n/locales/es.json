@@ -312,13 +312,13 @@
         "strg-prod-policy": "Política Productos",
         "capacity":         "Capacidad"
     },
-    "entities":      {
+    "entities": {
         "default":      "entidades",
         "staff":        {
             "name":         "Staff {ref}",
             "section-name": "@:entities.staff.name"
         },
-        "product": {
+        "product":      {
             "name":                 "Producto {ref}",
             "section-name":         "@:table-headers.products",
             "cbe-sold":             "Puede ser vendido",
@@ -377,7 +377,7 @@
             "name":         "Almacén {ref}",
             "section-name": "Almacenes"
         },
-        "wlocation": {
+        "wlocation":    {
             "name":              "Ubicación {ref}",
             "section-name":      "@:entities.wlocation.name",
             "internal-type":     "Internas",
@@ -392,6 +392,9 @@
                 "transit":    "tránsito",
                 "inventory":  "inventario",
                 "production": "producción"
+            },
+            "tool-tips":         {
+                "location-type": "<strong>Proveedores</strong>: ubicación virtual que representa la ubicación de origen de los productos provenientes de sus proveedores<br /><br /> <strong>Vista</strong>: ubicación virtual utilizada para crear estructuras jerárquicas para su almacén, agregando sus ubicaciones secundarias; no puede contener productos directamente<br /><br /> <strong>Interna</strong>: ubicaciones físicas dentro de sus propios almacenes.<br /><br /> <strong>Clientes</strong>: ubicación virtual que representa la ubicación de destino de los productos enviados a sus clientes.<br /><br /> <strong>Inventario</strong>: ubicación virtual que sirve como contraparte de las operaciones de inventario utilizadas para corregir los niveles de stock (Inventarios físicos)<br /><br />  <strong>Producción</strong>: contraparte virtual para operaciones de producción: esta ubicación consume los componentes y produce productos terminados.<br /><br /> <strong>Tránsito</strong>: contraparte que debe usarse en operaciones entre compañías o entre almacenes."
             }
         },
         "strgcategory": {

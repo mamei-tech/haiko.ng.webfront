@@ -102,6 +102,7 @@
                 <div class="row">
                   <label class="text-sm-left text-md-right col-md-3 col-form-label">
                     {{ cap($t( 'data.type' )) }}
+                    <CmpTooltip use-v-html is-form-label-mode :tip="$t('entities.wlocation.tool-tips.location-type')" />
                   </label>
                   <div class="col-md-9">
                     <CmpMultiselectField :placeholder="$t('form.placeholders.wlocation-type')"
@@ -293,7 +294,7 @@ import {
     RoutePathNames,
     VSchemaWareLocation, WARE_LOC_TYPE
 } from '@/services/definitions'
-import { CmpCardStats, CmpTextInput, CmpCard, CmpFormActionsButton, CmpBasicInput, CmpCollapseItem, CmpBasicCheckbox, CmpBaseButton, CmpMultiselectField, CmpVeeCheckbox } from '@/components'
+import { CmpCardStats, CmpTextInput, CmpCard, CmpFormActionsButton, CmpBasicInput, CmpCollapseItem, CmpBasicCheckbox, CmpBaseButton, CmpMultiselectField, CmpVeeCheckbox, CmpTooltip } from '@/components'
 
 import type { ComputedRef } from 'vue'
 import type { IDtoWareLocation, IWareLocationType, IMultiselectBasic, TFormMode } from '@/services/definitions'
@@ -303,6 +304,7 @@ export default defineComponent({
     name: 'ViewFormWareLocation',
     components: {
         CmpCard,
+        CmpTooltip,
         CmpCardStats,
         CmpTextInput,
         CmpBasicInput,
