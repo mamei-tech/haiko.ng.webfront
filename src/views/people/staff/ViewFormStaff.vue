@@ -95,7 +95,7 @@
                 <!-- role -->
                 <div class="row">
                   <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                    {{ $t( 'form.fields.staff.system-role' ) }}
+                    {{ $t( 'entities.role.name' ) }}
                   </label>
                   <div class="col-md-9">
                     <CmpMultiselectField placeholder="- rol - "

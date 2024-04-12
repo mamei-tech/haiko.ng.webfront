@@ -387,10 +387,10 @@ export default defineComponent({
         onMounted(async () => {
 
             st_nomenclatures.reqNmcWarehouses()
-            .catch(err => tfyCRUDFail(err, t(`entities.${ENTITY_NAMES.WAREHOUSE}`), OPS_KIND_STR.REQUEST))
+            .catch(err => tfyCRUDFail(err, ENTITY_NAMES.WAREHOUSE, OPS_KIND_STR.REQUEST))
 
             st_nomenclatures.reqNmcStrgCategoriesM()
-            .catch(err => tfyCRUDFail(err, t(`entities.${ENTITY_NAMES.STRGCATEGORY}`), OPS_KIND_STR.REQUEST))
+            .catch(err => tfyCRUDFail(err, ENTITY_NAMES.STRGCATEGORY, OPS_KIND_STR.REQUEST))
 
             if (cpt_fMode.value === FMODE.CREATE as TFormMode) return
 
@@ -550,7 +550,7 @@ export default defineComponent({
             }
 
             st_nomenclatures.reqNmcWareLocations()
-            .catch(err => tfyCRUDFail(err, t(`entities.${ENTITY_NAMES.WARELOCATION}`), OPS_KIND_STR.REQUEST))
+            .catch(err => tfyCRUDFail(err, ENTITY_NAMES.WARELOCATION, OPS_KIND_STR.REQUEST))
         }
 
         const h_parentLocChange = async (parentLocId: string): Promise<void> => {

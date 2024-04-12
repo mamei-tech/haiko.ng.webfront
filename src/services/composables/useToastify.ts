@@ -112,19 +112,20 @@ export default function useToastify( toast: ToastInterface ) {
     const tfyCRUDFail = ( error: any, subject: ENTITY_NAMES | string, ops: TOpsKind, ref: undefined | string = undefined ): void => {
 
         let kind = _geTOpsKind(ops, true)
+        let tSubject = t('entities.' + subject + '.name')
         let subjectRef = ref !== undefined && typeof ref === 'string' ? ref : ''
 
         // internal backend error with no return
         if (!error.response) {
-            _mkError(t('toasts.ops-fail', { subject: subject, opsKind: kind }))
+            _mkError(t('toasts.ops-fail', { subject: tSubject, opsKind: kind }))
             return
         }
 
         // backend error return with details
-        let details = _getDetails(error, subject, subjectRef)
+        let details = _getDetails(error, tSubject, subjectRef)
         _mkError(
             t('toasts.ops-fail-details', {
-                subject: subject,
+                subject: tSubject,
                 opsKind: kind,
                 name: subjectRef,
                 status: error.response.status,

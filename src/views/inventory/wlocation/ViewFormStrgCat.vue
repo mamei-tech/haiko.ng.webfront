@@ -39,7 +39,7 @@
                 <!-- category -->
                 <div class="row">
                   <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                    {{ $t( 'form.fields.strg-cat.strgcategory-prod-policy' ) }}
+                    {{ $t( 'entities.strgcategory.prod-policy' ) }}
                   </label>
                   <div class="col-md-9">
                     <CmpMultiselectField :placeholder="$t('form.placeholders.strg-category-policy').toLowerCase()"

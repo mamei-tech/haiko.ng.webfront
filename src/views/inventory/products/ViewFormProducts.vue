@@ -685,7 +685,7 @@ export default defineComponent({
         const tabs = [                                                                            // form tabs data array
             { id: 1, title: t('data.overview') },
             { id: 2, title: t('table-headers.inventory') },
-            { id: 3, title: t('form.fields.suppliers.tab-purchases') },
+            { id: 3, title: t('entities.supplier.tab-purchases') },
             { id: 4, title: t('data.data') }
         ]
         const statsDataCards = reactive([                                                  // form supplier statistics data / information

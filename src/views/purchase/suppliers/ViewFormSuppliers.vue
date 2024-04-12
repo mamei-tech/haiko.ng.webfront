@@ -78,7 +78,7 @@
                 <!-- contact notes -->
                 <div class="row">
                   <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                    {{ $t( 'form.fields.suppliers.sContactNotes' ) }}
+                    {{ $t( 'entities.supplier.sContactNotes' ) }}
                   </label>
                   <div class="col-md-9">
                     <CmpBasicInput
@@ -330,7 +330,7 @@
                   </div>
 
                   <label class="text-sm-left text-md-right col-md-2 col-form-label">
-                    {{ $t( 'form.fields.suppliers.isCompany' ) }}
+                    {{ $t( 'entities.supplier.isCompany' ) }}
                   </label>
                   <div class="col-md-4">
                     <CmpVeeCheckbox name="isCompany"
@@ -456,7 +456,7 @@
                   <!-- notes -->
                   <div class="row">
                     <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                      {{ $t( 'form.fields.suppliers.sInternalNotes' ) }}
+                      {{ $t( 'entities.supplier.sInternalNotes' ) }}
                     </label>
                     <div class="col-md-9">
                       <CmpTextInput
@@ -594,15 +594,15 @@ export default defineComponent({
         const activeTabId = ref<number>(1)
         const tabs = [                                                                  // form tabs data array
             { id: 1, title: t('form.fields-common.info') },
-            { id: 2, title: t('form.fields.suppliers.tab-contact-plus') },
-            { id: 3, title: t('form.fields.suppliers.tab-purchases') },
+            { id: 2, title: t('entities.supplier.tab-contact-plus') },
+            { id: 3, title: t('entities.supplier.tab-purchases') },
             { id: 4, title: t('form.fields-common.notes') }
         ]
         const statsDataCards = reactive([                                         // form supplier statistics data / information
             {
                 id:       1,
                 title:    values.pCount.toString(),
-                subTitle: t('form.fields.suppliers.stat-products'),
+                subTitle: t('entities.supplier.stat-products'),
                 type:     values.pCount <= 0 ? 'warning' : 'success',
                 icon:     'tim-icons icon-components'
                 // footer:   `<i class="tim-icons icon-zoom-split"></i></i> Update Now`
@@ -610,21 +610,21 @@ export default defineComponent({
             {
                 id:       2,
                 title:    values.purchasesCountPend.toString(),
-                subTitle: t('form.fields.suppliers.stat-purchases-pend'),
+                subTitle: t('entities.supplier.stat-purchases-pend'),
                 type:     values.purchasesCountPend <= 0 ? 'warning' : 'success',
                 icon:     'tim-icons icon-watch-time'
             },
             {
                 id:       3,
                 title:    values.purchasesCountTotal.toString(),
-                subTitle: t('form.fields.suppliers.stat-purchases-count'),
+                subTitle: t('entities.supplier.stat-purchases-count'),
                 type:     values.purchasesCountTotal <= 0 ? 'danger' : 'info',
                 icon:     'tim-icons icon-cart'
             },
             {
                 id:       4,
                 title:    `$ ${ values.purchasesCountValue }`,
-                subTitle: t('form.fields.suppliers.stat-purchases-count-value'),
+                subTitle: t('entities.supplier.stat-purchases-count-value'),
                 type:     values.purchasesCountValue <= 0 ? 'danger' : 'info',
                 icon:     'tim-icons icon-money-coins'
             }

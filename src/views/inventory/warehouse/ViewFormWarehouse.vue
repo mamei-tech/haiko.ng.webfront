@@ -37,7 +37,7 @@
 
                   <!-- Warehouse code / short name / denomination -->
                   <label class="text-sm-left text-md-right col-md-1 col-form-label">
-                    {{ $t( 'form.fields.warehouse.code' ) }}
+                    {{ $t( 'entities.warehouse.code' ) }}
                   </label>
                   <div class="col-md-4">
                     <CmpBasicInput

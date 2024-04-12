@@ -212,28 +212,6 @@
                 "count-bom":                 "Recetas"
             }
         },
-        "fields":        {
-            "staff":     {
-                "system-role": "Rol"
-            },
-            "suppliers": {
-                "sContactNotes":              "Notas de Contacto",
-                "sInternalNotes":             "Notas Internas",
-                "isCompany":                  "@:data.company / @:data.individual",
-                "tab-purchases":              "@:entities.purchase.name",
-                "tab-contact-plus":           "+ Info d' Contacto",
-                "stat-products":              "@:table-headers.products",
-                "stat-purchases-pend":        "Compras pendientes",
-                "stat-purchases-count":       "Total de compras",
-                "stat-purchases-count-value": "Valor total de compras"
-            },
-            "warehouse": {
-                "code": "@:form.fields-common.name corto"
-            },
-            "strg-cat": {
-                "strgcategory-prod-policy": "@:table-headers.strg-prod-policy"
-            }
-        },
         "placeholders": {
             "website":                "www.elsitiowebaqui.com",
             "username":               "nickname__78",
@@ -314,6 +292,9 @@
     },
     "entities": {
         "default":      "entidades",
+        "country":      {
+            "name": "@:form.fields-common.country"
+        },
         "staff":        {
             "name":         "Staff {ref}",
             "section-name": "@:entities.staff.name"
@@ -367,7 +348,16 @@
         },
         "supplier":     {
             "name":         "Proveedor {ref}",
-            "section-name": "@:{'entities.supplier.name'}"
+            "section-name": "@:{'entities.supplier.name'}",
+            "sContactNotes":              "Notas de Contacto",
+            "sInternalNotes":             "Notas Internas",
+            "isCompany":                  "@:data.company / @:data.individual",
+            "tab-purchases":              "@:entities.purchase.name",
+            "tab-contact-plus":           "+ Info d' Contacto",
+            "stat-products":              "@:table-headers.products",
+            "stat-purchases-pend":        "Compras pendientes",
+            "stat-purchases-count":       "Total de compras",
+            "stat-purchases-count-value": "Valor total de compras"
         },
         "supplier-cat": {
             "name":         "Categorías de Proveedor {ref}",
@@ -375,7 +365,8 @@
         },
         "warehouse":    {
             "name":         "Almacén {ref}",
-            "section-name": "Almacenes"
+            "section-name": "Almacenes",
+            "code": "@:form.fields-common.name corto"
         },
         "wlocation":    {
             "name":              "Ubicación {ref}",
@@ -399,10 +390,11 @@
         },
         "strgcategory": {
             "name":         "Categoría d @:entities.wlocation.name {ref}",
-            "section-name": "@:entities.strgcategory.name"
+            "section-name": "@:entities.strgcategory.name",
+            "prod-policy": "@:table-headers.strg-prod-policy"
         }
     },
-    "hub":           {
+    "hub":      {
         "modules": {
             "pos":           "POS",
             "dash":          "Dashboard & Reports",
