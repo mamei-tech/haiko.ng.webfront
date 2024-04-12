@@ -58,10 +58,27 @@
       <!-- ALWAYS SHOWED -->
       <div class="col-6 p-0" style="text-align: end">
 
+        <!-- tag buttons for extended filters  -->
+        <template v-for="(fg, i) in $props.extendedFilters" :key="fg.label+i">
+          <template v-for="(filter, j) in fg.filters" :key="filter.label+i+j">
+
+            <CmpButtonTag v-if="filter.isActive"
+                          class="mr-md-2"
+                          buttonType="info"
+                          v-on:doClick.prevent="$emit('extFilClick', i, j)"
+            >
+              {{ filter.label }}
+            </CmpButtonTag>
+
+          </template>
+        </template>
+
+        <!-- dropdown 4 extended filters -->
         <div v-if="extendedFilters.length > 0" style="display: inline-flex">
           <CmpDropdown title-classes="dropdown-toggle btn btn-default" :title="$t('form.placeholders.filters')"
                        menu-classes="dropdown-black" menuOnRight>
 
+            <!-- fg == filter group -->
             <template v-for="(fg, i) in $props.extendedFilters" :key="fg.label+i">
               <h6 v-if="fg.label !== undefined && fg.label !== ''" class="dropdown-header">{{ fg.label }}</h6>
 
@@ -135,18 +152,17 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { i18n } from '@/services/i18n'
-import { CmpBaseButton, CmpDropdown } from '@/components'
+import { CmpButtonTag, CmpBaseButton, CmpDropdown  } from '@/components'
 import { DT_ACTIONBAR_MODE } from '@/services/definitions'
 
 import type { SetupContext, PropType } from 'vue'
 import type { IExtFilterGroup } from '@/services/definitions'
 
 
-    export default defineComponent({
+export default defineComponent({
         name: 'CmpTableActionBar',
-        components: { CmpBaseButton, CmpDropdown },
+        components: { CmpButtonTag, CmpBaseButton, CmpDropdown },
         props: {
-
             subject:    {
                 type:        String,
                 description: 'This should be the translation (❗means the translated string) value string for a specific entity of the business. This value could be used for contextualization in the actions button bar.',

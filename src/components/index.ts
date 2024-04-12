@@ -1,4 +1,5 @@
 import CmpBaseButton from '@/components/buttons/CmpBaseButton.vue'
+import CmpButtonTag from '@/components/buttons/CmpButtonTag.vue'
 import CmpTab from '@/components/tabs/CmpTab.vue'
 import CmpModal from '@/components/CmpModal.vue'
 import CmpTooltip from '@/components/CmpTooltip.vue'
@@ -21,6 +22,7 @@ import CmpTabContent from '@/components/tabs/CmpTabContent.vue'
 
 export {
     // buttons
+    CmpButtonTag,
     CmpBaseButton,
     CmpButtonBackTop,
     CmpFormActionsButton,
