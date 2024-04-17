@@ -524,18 +524,28 @@ export default defineComponent({
 
         onMounted(() => {
 
-            // we need to process the extended filters to check if parent component is giving any extended active filter by default
-            if (ls_extFilters.value.length > 0) {
+            // looking to react to default filters (headers-filters or extended filters)
+            if(ls_extFilters.value.length > 0 || props.headerFilters.length > 0)
+            {
                 const filtersByDefault: Filter = {}                                                        // extended filters by default incoming from parent components
                 let doWeHaveDefaultFilters = false
 
-                for (let i = 0; i < ls_extFilters.value.length; i++)
-                    for (let j = 0; j < ls_extFilters.value[i].filters.length; j++)
-                        if (ls_extFilters.value[i].filters[j].isActive)
-                        {
-                            filtersByDefault[ls_extFilters.value[i].filters[j].entityField] = ls_extFilters.value[i].filters[j].value as string
-                            doWeHaveDefaultFilters = true
-                        }
+                if (ls_extFilters.value.length > 0) {                                                      // checking the EXTENDED d filters to find  if parent component is giving any extended ACTIVE filter by default
+                    for (let i = 0; i < ls_extFilters.value.length; i++)
+                        for (let j = 0; j < ls_extFilters.value[ i ].filters.length; j++)
+                            if (ls_extFilters.value[ i ].filters[ j ].isActive) {
+                                filtersByDefault[ ls_extFilters.value[ i ].filters[ j ].entityField ] = ls_extFilters.value[ i ].filters[ j ].value as string
+                                doWeHaveDefaultFilters = true
+                            }
+                }
+
+                if (props.headerFilters.length > 0)                                                         // checking the HEADER filters to find  if parent component is giving any extended ACTIVE filter by default
+                    for (let i = 0; i < props.headerFilters.length; i++)
+                        for (let j = 0; j < props.columns?.length; j++)
+                            if (props.columns[ j ].navKey == props.headerFilters[ i ] && props.columns[ j ]?.fieldSwitch == true && props.columns[ j ]?.defStatus == true) {
+                                filtersByDefault[ props.headerFilters[ i ] ] = 'true'                        // we already check the value was TRUE so we need to set it up to TRUE
+                                doWeHaveDefaultFilters = true
+                            }
 
                 if (doWeHaveDefaultFilters) dtFilters.value = { ...filtersByDefault }
             }
