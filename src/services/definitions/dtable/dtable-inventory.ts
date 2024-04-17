@@ -2,7 +2,7 @@ import { VSchemaUoM } from '@/services/definitions/validations/validations-uom'
 import { VSchemaPSL } from '@/services/definitions/validations/validations-product'
 import { VSchemaProdLine } from '@/services/definitions/validations/validations-strgcategory'
 import { SelectDataUoMType } from '@/services/definitions/data-select-options'
-import { HTML_INPUT_TYPE, WARE_LOC_TYPE } from '@/services/definitions/enums-common'
+import { HTML_INPUT_TYPE } from '@/services/definitions/enums-common'
 import { i18n } from '@/services/i18n'
 
 import type { IColumnHeader } from '@/services/definitions'
@@ -137,6 +137,18 @@ export const HWareLocationsTable: Partial<IColumnHeader>[] = [
             { color: 'green', val: t('entities.wlocation.types.internal') }
         ]
     },
+    {
+        title:        '',            // actions buttons
+        styleToRight: true,
+        styleWidth:   40
+    }
+]
+
+export const HPickingTypeTable: Partial<IColumnHeader>[] = [
+    { title: 'id', hidden: true },
+    { title: 'name', navKey: 'tName', sorting: ''},
+    { title: 'color', navKey: 'tColor', fieldColor: true },
+    { title: 'active', styleToCenter: true, navKey: 'isActive', defStatus:true, fieldSwitch: true, sorting: '' },
     {
         title:        '',            // actions buttons
         styleToRight: true,

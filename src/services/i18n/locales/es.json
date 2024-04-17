@@ -347,8 +347,8 @@
             "section-name": "Solicitudes de Compras"
         },
         "supplier":     {
-            "name":         "Proveedor {ref}",
-            "section-name": "@:{'entities.supplier.name'}",
+            "name":                       "Proveedor {ref}",
+            "section-name":               "@:{'entities.supplier.name'}",
             "sContactNotes":              "Notas de Contacto",
             "sInternalNotes":             "Notas Internas",
             "isCompany":                  "@:data.company / @:data.individual",
@@ -366,7 +366,7 @@
         "warehouse":    {
             "name":         "Almacén {ref}",
             "section-name": "Almacenes",
-            "code": "@:form.fields-common.name corto"
+            "code":         "@:form.fields-common.name corto"
         },
         "wlocation":    {
             "name":              "Ubicación {ref}",
@@ -391,7 +391,11 @@
         "strgcategory": {
             "name":         "Categoría d @:entities.wlocation.name {ref}",
             "section-name": "@:entities.strgcategory.name",
-            "prod-policy": "@:table-headers.strg-prod-policy"
+            "prod-policy":  "@:table-headers.strg-prod-policy"
+        },
+        "pickingtype":  {
+            "name":         "Tipo d Movimiento",
+            "section-name": "@:entities.pickingtype.name"
         }
     },
     "hub":      {

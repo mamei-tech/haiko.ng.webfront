@@ -58,6 +58,11 @@ export interface IColumnHeader {
      * Define a checkbox cell / header
      */
     chk: boolean | undefined
+    /**
+     * Designed to be used optional with a boolean header filter header when whe need to set the header to true by default, and doing so filter the data starting from the first (hence default) load
+     * defStatus = default status
+     */
+    defStatus : boolean
     title: string
     /**
      * To be uses as tips / hints / help right int the UI. Right now, we have not components making uses of that.

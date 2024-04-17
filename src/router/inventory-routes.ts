@@ -93,4 +93,21 @@ export const InventoryRoutes: Array<RouteRecordRaw> = [
     },
 
     //#endregion ==========================================================================
+
+    //#region ======= PICKING ============================================================
+
+    {
+        path:      RoutePaths.pickigtypeList,
+        name:      RoutePathNames.pickigtypeList,
+        component: () => import('../views/inventory/picking/ViewListPickingType.vue'),
+        meta:      { layout: LayMain, sidebar: SbInventory, reqAuth: true }
+    },
+    {
+        path:      RoutePaths.pickigtypeForm,
+        name:      RoutePathNames.pickigtypeForm,
+        component: () => import('../views/inventory/picking/ViewFormPickingType.vue'),
+        meta:      { layout: LayMain, sidebar: SbInventory, reqAuth: true }
+    },
+
+    //#endregion ==========================================================================
 ]

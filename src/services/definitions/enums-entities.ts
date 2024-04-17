@@ -43,7 +43,8 @@ export enum ENTITY_NAMES {
     STRGCATEGORY = 'strgcategory',
     WARELOCATION = 'wlocation',
     CURRENCY = 'currency',
-    PRODUCT_CAT = 'product-cat'
+    PRODUCT_CAT = 'product-cat',
+    PICKINGTYPE = 'pickingtype'
 }
 
 /**

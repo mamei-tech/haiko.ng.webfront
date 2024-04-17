@@ -4,7 +4,7 @@ import { RoutePaths, RoutePathNames } from './route-paths'
 import { PAGE_SIZE } from './dtable/dtable-common'
 import { HRolesTable, HStaffTable } from './dtable/dtable-people'
 import { HSupplierCatTable, HSupplierTable } from './dtable/dtable-purchase'
-import { HUoMCatTable, HUoMTable, HProductTable, HProductSupplierLine, HWarehouseTable, HStrgCategory, HStrgCatProductLine, HWareLocationsTable } from './dtable/dtable-inventory'
+import { HUoMCatTable, HUoMTable, HProductTable, HProductSupplierLine, HWarehouseTable, HStrgCategory, HStrgCatProductLine, HWareLocationsTable, HPickingTypeTable } from './dtable/dtable-inventory'
 
 import { SelectDataUoMType } from './data-select-options'
 import { HTTP_HEADER_FORM_DATA, HTTP_HEADER_FORM_URLENCODED,RELPATH_DEFAULT_AVATAR_IMG, RELPATH_DEFAULT_PRODUCT_IMG, IMG_ORG_AVATAR_NAME, IMG_AVATAR_SMALL_THUMBNAIL, IMG_ORG_PRODUCT_NAM } from './data-strs'
@@ -24,6 +24,7 @@ import { VSchemaStaffCreate, VSchemaStaffEdit } from '@/services/definitions/val
 
 import type { Problem, ErrorDictionary } from '@/services/definitions/types-errors'
 import type { IWarehouseRow, IDtoWarehouse, IWarehouseBasic } from '@/services/definitions/entities/types-warehouse'
+import type { IPickingTypeBasic, IPickingTypeRow, IDtoPickingType } from '@/services/definitions/entities/types-picking'
 import type { IWareLocationRow, IDtoWareLocation, IWareLocationBasic, IWareLocationType } from '@/services/definitions/entities/types-warelocation'
 import type { IStrgCategoryRow, IDtoStrgCategory, IStrgCatProdLine, IStrgCategoryBasic } from '@/services/definitions/entities/types-strgcategory'
 import type { TOpsKind, Function0, Function1, IColumnHeader, IDataTableQuery, ITableChkEmit, TBulkAction, ById, IIndexable, IChecked, Filter, IDataListBasicResponse, TFormMode, TActionKind, IdsArray, IBulkData, IMultiselectBasic, IShell, IScrollInfo, IDataTablePage, ICellUpdate, IvCard, IExtFilter, IExtFilterGroup } from './types-common'
@@ -54,6 +55,7 @@ export {
     HSupplierTable,
     HWarehouseTable,
     HSupplierCatTable,
+    HPickingTypeTable,
     HWareLocationsTable,
     HStrgCatProductLine,
     HProductSupplierLine,
@@ -64,16 +66,16 @@ export {
     KEYS,
     FMODE,
     DIALOG_ICON,
-    OPS_KIND_STR,
     ENTITY_NAMES,
     BULK_ACTIONS,
+    OPS_KIND_STR,
     WARE_LOC_TYPE,
     HTTP_RESPONSES,
     ACTION_KIND_STR,
     HTML_INPUT_TYPE,
+    STRG_PROD_POLICY,
     PICTURE_TYPE_CELL,
     DT_ACTIONBAR_MODE,
-    STRG_PROD_POLICY,
     DT_ACTION_BUTTON_MODE,
 
     // strings constants
@@ -101,6 +103,9 @@ export {
     VSchemaStrgCategory, VSchemaAuth, VSchemaCommon, VSchemaStaffCreate, VSchemaStaffEdit, VSchemaRole, VSchemaWarehouse, VSchemaSupplier, VSchemaUoM, VSchemaUoMCat, VSchemaPSL, VSchemaProduct, VSchemaWareLocation,
 
     // =====  ENTITIES =====
+
+    // inventory picking
+    IPickingTypeBasic, IPickingTypeRow, IDtoPickingType,
 
     // warehouse (storage) locations
     IWareLocationRow, IDtoWareLocation, IWareLocationBasic, IWareLocationType,

@@ -24,7 +24,7 @@ export const RoutePaths = {
 
     inventory: '/inventory',                                            // general inventory view
 
-    muList: '/inventory/mu/list',                                     // uom = mu = units of measurement
+    muList: '/inventory/mu/list',                                       // uom = mu = units of measurement
     muForm: '/inventory/mu/:fmode/:id?',
 
     prodList:   '/inventory/product/list',
@@ -38,6 +38,9 @@ export const RoutePaths = {
 
     strgcategoryList: '/inventory/strgcategory/list',                  // strgcategory = storage location
     strgcategoryForm: '/inventory/strgcategory/:fmode/:id?',
+
+    pickigtypeList: '/inventory/pickingtype/list',
+    pickigtypeForm: '/inventory/pickingtype/:fmode/:id?',
 
     //#endregion ==========================================================================
 
@@ -126,6 +129,9 @@ export const RoutePathNames = {
 
     strgcategoryList: 'strgcategory',                                  // strgcategory = storage location
     strgcategoryForm: 'strgcategory-form',
+
+    pickigtypeList: 'pickingtype',
+    pickigtypeForm: 'pickingtype-form',
 
     //#endregion ==========================================================================
 

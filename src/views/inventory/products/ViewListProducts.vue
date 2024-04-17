@@ -87,7 +87,7 @@ export default defineComponent({
         const abutton_mode: DT_ACTION_BUTTON_MODE = DT_ACTION_BUTTON_MODE.JEDINDEL          // datatable button mode
         const abar_mode: DT_ACTIONBAR_MODE = DT_ACTIONBAR_MODE.COMMON                       // datatable action bar mode
         const columns = ref<Partial<IColumnHeader>[]>(HProductTable)                        // entity customized data-table
-        const headerFilters = [ 'pCategoryID', 'isActive', 'doWeTrackInventory' ]           // datatable filters  !!! you must use the real field names (nav keys in the HStaffTable object)
+        const headerFilters = [ 'pCategoryID', 'isActive', 'doWeTrackInventory' ]           // datatable filters  !!! you must use the real field names (nav keys in the HProductTable object)
         const extFilters: IExtFilterGroup[] =
                 [
                     {
@@ -119,7 +119,7 @@ export default defineComponent({
             st_nomenclatures.reqNmcProdCat()
             .then(() => {
                 columns.value[6].filterSelectOptions = st_nomenclatures.getProdCat4Select
-                // the 5th column is 'category' / 'sCategoryID' column. In this datatable this is a (column header) filter
+                // the 6th column is 'category' / 'sCategoryID' column. In this datatable this is a (column header) filter
                 // (see filters in the declaration section). So, rather define the 'select options' filter data statically in the
                 // data-datable.ts file, we weed to do it dynamically. Hence this here and no the conventionally
                 // definition in data-datable.ts.

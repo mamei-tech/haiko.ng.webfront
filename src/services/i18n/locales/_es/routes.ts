@@ -46,6 +46,9 @@ export default {
     [ RoutePathNames.strgcategoryList ]: '@:{\'entities.strgcategory.section-name\'}',
     [ RoutePathNames.strgcategoryForm ]: '{action} @:entities.strgcategory.section-name',
 
+    [ RoutePathNames.pickigtypeList ]: '@:{\'entities.pickingtype.section-name\'}',
+    [ RoutePathNames.pickigtypeForm ]: '{action} @:{\'entities.pickingtype.section-name\'}',
+
     //#endregion ==========================================================================
 
     //#region ======= PRODUCTION ==========================================================

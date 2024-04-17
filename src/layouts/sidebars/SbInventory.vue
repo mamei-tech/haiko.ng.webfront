@@ -113,6 +113,15 @@ export default {
                             }
                         },
                         {
+                            href:  { path: RoutePaths.pickigtypeList },
+                            title: this.$t( 'routes.' + RoutePathNames.pickigtypeList ).toLowerCase(),
+                            icon: {
+                                element: 'span',
+                                text:    'P',
+                                class:   'sidebar-item-icon-text'
+                            }
+                        },
+                        {
                             component: separator,
                         },
                         // {
