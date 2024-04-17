@@ -5,16 +5,57 @@
     <!-- DEFAULT MODE | JC -->
     <!-- Action bar with only the create btn -->
     <template v-if="mode === DT_ACTIONBAR_MODE.JC">
-      <div class="col-11 p-0">
+      <div class="col-6 p-0">
         <!-- nothing here in this mode -->
       </div>
 
       <!-- ALWAYS SHOWED -->
-      <div class="col-1 p-0" style="text-align: end">
+      <div class="col-6 p-0" style="text-align: end">
+
+        <!-- tag buttons for extended filters  -->
+        <template v-for="(fg, i) in $props.extendedFilters" :key="fg.label+i">
+          <template v-for="(filter, j) in fg.filters" :key="filter.label+i+j">
+
+            <CmpButtonTag v-if="filter.isActive"
+                          class="mr-md-2"
+                          buttonType="info"
+                          v-on:doClick.prevent="$emit('extFilClick', i, j)"
+            >
+              {{ filter.label }}
+            </CmpButtonTag>
+
+          </template>
+        </template>
+
+        <!-- dropdown 4 extended filters -->
+        <div v-if="extendedFilters.length > 0" style="display: inline-flex">
+          <CmpDropdown title-classes="dropdown-toggle btn btn-default" :title="$t('form.placeholders.filters')"
+                       menu-classes="dropdown-black" menuOnRight>
+
+            <!-- fg == filter group -->
+            <template v-for="(fg, i) in $props.extendedFilters" :key="fg.label+i">
+              <h6 v-if="fg.label !== undefined && fg.label !== ''" class="dropdown-header">{{ fg.label }}</h6>
+
+              <template v-for="(filter, j) in fg.filters" :key="filter.label+i+j">
+                <a class="dropdown-item" @click.prevent="$emit('extFilClick', i, j)">
+                  {{ filter.label }} <i v-if="filter.isActive" class="tim-icons icon-check-2 drop-icon-primary"
+                                        style="padding-left: 2em" />
+                </a>
+              </template>
+
+              <div v-if="$props.extendedFilters.length > 1 && i !== $props.extendedFilters.length - 1"
+                   class="dropdown-divider"></div>
+            </template>
+            <!--<a class="dropdown-item" href="#"><i class="tim-icons icon-trash-simple"></i> Action</a>-->
+
+          </CmpDropdown>
+        </div>
+
         <CmpBaseButton
             icon
             buttonType="primary"
             :title="$t('btn.tip-create-new')"
+            class="ml-2"
             @doClick="$emit('navCreateIntent')">
           <i class="tim-icons icon-simple-add"></i>
         </CmpBaseButton>
@@ -110,7 +151,7 @@
 
     <!-- JUST TOGGLE STATUS -->
     <template v-else-if="mode === DT_ACTIONBAR_MODE.TOGSTATUS">
-      <div class="col-11 p-0">
+      <div class="col-6 p-0">
         <transition name="slide-fade">
           <div v-show="chkCount > 1">
             <CmpBaseButton
@@ -135,11 +176,52 @@
       </div>
 
       <!-- ALWAYS SHOWED -->
-      <div class="col-1 p-0" style="text-align: end">
+      <div class="col-6 p-0" style="text-align: end">
+
+        <!-- tag buttons for extended filters  -->
+        <template v-for="(fg, i) in $props.extendedFilters" :key="fg.label+i">
+          <template v-for="(filter, j) in fg.filters" :key="filter.label+i+j">
+
+            <CmpButtonTag v-if="filter.isActive"
+                          class="mr-md-2"
+                          buttonType="info"
+                          v-on:doClick.prevent="$emit('extFilClick', i, j)"
+            >
+              {{ filter.label }}
+            </CmpButtonTag>
+
+          </template>
+        </template>
+
+        <!-- dropdown 4 extended filters -->
+        <div v-if="extendedFilters.length > 0" style="display: inline-flex">
+          <CmpDropdown title-classes="dropdown-toggle btn btn-default" :title="$t('form.placeholders.filters')"
+                       menu-classes="dropdown-black" menuOnRight>
+
+            <!-- fg == filter group -->
+            <template v-for="(fg, i) in $props.extendedFilters" :key="fg.label+i">
+              <h6 v-if="fg.label !== undefined && fg.label !== ''" class="dropdown-header">{{ fg.label }}</h6>
+
+              <template v-for="(filter, j) in fg.filters" :key="filter.label+i+j">
+                <a class="dropdown-item" @click.prevent="$emit('extFilClick', i, j)">
+                  {{ filter.label }} <i v-if="filter.isActive" class="tim-icons icon-check-2 drop-icon-primary"
+                                        style="padding-left: 2em" />
+                </a>
+              </template>
+
+              <div v-if="$props.extendedFilters.length > 1 && i !== $props.extendedFilters.length - 1"
+                   class="dropdown-divider"></div>
+            </template>
+            <!--<a class="dropdown-item" href="#"><i class="tim-icons icon-trash-simple"></i> Action</a>-->
+
+          </CmpDropdown>
+        </div>
+
         <CmpBaseButton
             icon
             buttonType="primary"
             :title="$t('btn.tip-create-new')"
+            class="ml-2"
             @doClick="$emit('navCreateIntent')">
           <i class="tim-icons icon-simple-add"></i>
         </CmpBaseButton>

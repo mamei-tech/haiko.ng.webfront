@@ -393,7 +393,7 @@ export default defineComponent({
         actionBarMode:       {
             type:        Number,
             description: 'Tells in which mode should the action bar most be rendered',
-            required:    true
+            required:    false
         },
         actionBtnMode:       {
             type:        Number,
