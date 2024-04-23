@@ -8,7 +8,7 @@
           <form class="form-horizontal">
             <div class="row">
               <div class="col-xm-12 col-md-6">
-                <h3 class="text">{{ $t( 'form.section.staff-information' ) }}</h3>
+                <h4 class="text">{{ $t( 'form.section.staff-information' ) }}</h4>
 
                 <!-- id -->
                 <div class="row">

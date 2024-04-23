@@ -169,13 +169,18 @@ export default defineComponent({
             if (selectRef.value !== null) selectRef.value.select(option)
         }
 
+        const getValue = (): string => {
+            return inputValue.value as string
+        }
+
 
         return {
+            meta,
             selectRef,
             inputValue,
             errorMessage,
-            meta,
 
+            getValue,
             clearSelection,
             setSelectedValue,
 

@@ -397,8 +397,6 @@ export default defineComponent({
             // ---- the following code is the edition conditional section
             let formDataFromServer: IDtoWareLocation | undefined = undefined
             try {
-                await st_nomenclatures.reqNmcWareLocations()
-
                 formDataFromServer = (await ApiWareLocation.reqLocationById(+id)).data as IDtoWareLocation
                 if(formDataFromServer.id == undefined) return
 
