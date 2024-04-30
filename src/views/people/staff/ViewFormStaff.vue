@@ -13,7 +13,7 @@
                 <!-- id -->
                 <div class="row">
                   <div class="col-md-9">
-                    <CmpBasicInput
+                    <CmpBaseInput
                         disabled
                         placeholder="###########"
                         name="id"
@@ -28,7 +28,7 @@
                     {{ $t( 'form.fields-common.firstname' ) }}
                   </label>
                   <div class="col-md-9">
-                    <CmpBasicInput
+                    <CmpBaseInput
                         :placeholder="$t('form.placeholders.staff-firstname')"
                         name="firstName"
                         type="text"
@@ -42,7 +42,7 @@
                     {{ $t( 'form.fields-common.lastname' ) }}
                   </label>
                   <div class="col-md-9">
-                    <CmpBasicInput
+                    <CmpBaseInput
                         :placeholder="$t('form.placeholders.staff-lastname')"
                         name="lastName"
                         type="text"
@@ -56,7 +56,7 @@
                     {{ $t( 'form.fields-common.username' ) }}
                   </label>
                   <div class="col-md-9">
-                    <CmpBasicInput
+                    <CmpBaseInput
                         :placeholder="$t('form.placeholders.username')"
                         name="username"
                         type="text"
@@ -70,7 +70,7 @@
                     {{ $t( 'form.fields-common.email' ) }}
                   </label>
                   <div class="col-md-9">
-                    <CmpBasicInput
+                    <CmpBaseInput
                         :placeholder="$t('form.placeholders.email')"
                         name="email"
                         type="text"
@@ -84,7 +84,7 @@
                     {{ $t( 'form.fields-common.cell' ) }}
                   </label>
                   <div class="col-md-9">
-                    <CmpBasicInput
+                    <CmpBaseInput
                         placeholder="### ## ### ## ##"
                         name="cell"
                         type="number"
@@ -153,7 +153,7 @@
                         {{ $t( 'form.fields-common.password' ) }}
                       </label>
                       <div class="col-md-9">
-                        <CmpBasicInput
+                        <CmpBaseInput
                             placeholder="**************"
                             name="password"
                             type="password"
@@ -167,7 +167,7 @@
                         {{ $t( 'form.fields-common.password-confirm' ) }}
                       </label>
                       <div class="col-md-9">
-                        <CmpBasicInput
+                        <CmpBaseInput
                             placeholder="**************"
                             name="passwordConf"
                             type="password"
@@ -230,7 +230,7 @@ import useDialogfy from '@/services/composables/useDialogfy'
 import { computed, onMounted, ref, defineComponent, reactive } from 'vue'
 import { Field, useForm } from 'vee-validate'
 import { useRoute, useRouter } from 'vue-router'
-import { CmpCard, CmpFormActionsButton, CmpBasicInput, CmpVeeCheckbox, CmpMultiselectField, CmpImageInput } from '@/components'
+import { CmpCard, CmpFormActionsButton, CmpBaseInput, CmpVeeCheckbox, CmpMultiselectField, CmpImageInput } from '@/components'
 import { FMODE, RoutePathNames, VSchemaStaffCreate, VSchemaStaffEdit, ENTITY_NAMES, OPS_KIND_STR, ACTION_KIND_STR, KEYS } from '@/services/definitions'
 
 import type { ComputedRef } from 'vue'
@@ -242,7 +242,7 @@ export default defineComponent({
     components: {
         Field,
         CmpCard,
-        CmpBasicInput,
+        CmpBaseInput,
         CmpImageInput,
         CmpVeeCheckbox,
         CmpMultiselectField,

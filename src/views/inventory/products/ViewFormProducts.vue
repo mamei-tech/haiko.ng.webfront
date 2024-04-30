@@ -46,7 +46,7 @@
                     {{ $t( 'entities.product.name' ) }}
                   </label>
                   <div class="col-md-5">
-                    <CmpBasicInput
+                    <CmpBaseInput
                         :placeholder="$t('form.placeholders.product-name')"
                         name="pName"
                         type="text"
@@ -100,7 +100,7 @@
                     {{ $t( 'entities.product.sell-code' ) }}
                   </label>
                   <div class="col-md-5">
-                    <CmpBasicInput
+                    <CmpBaseInput
                         disabled
                         placeholder="... NAM.CODE ..."
                         name="sellCode"
@@ -192,7 +192,7 @@
                           {{ $t( 'entities.product.sell-price' ) }}
                         </label>
                         <div class="col-md-6">
-                          <CmpBasicInput
+                          <CmpBaseInput
                               aleftIcon="fa fa-usd"
                               placeholder="0.00"
                               name="sellPrice"
@@ -209,7 +209,7 @@
                           <CmpTooltip is-form-label-mode :tip="$t('entities.product.tool-tips.sell-tax')" />
                         </label>
                         <div class="col-md-6">
-                          <CmpBasicInput
+                          <CmpBaseInput
                               aleftIcon="fa fa-percent"
                               placeholder="0.00"
                               name="sellTax"
@@ -373,7 +373,7 @@
                           {{ $t( 'entities.product.logistic-weight' ) }}
                         </label>
                         <div class="col-md-6">
-                          <CmpBasicInput
+                          <CmpBaseInput
                               placeholder="0.00"
                               name="weight"
                               type="number"
@@ -390,7 +390,7 @@
                           {{ $t( 'entities.product.logistic-volume' ) }}
                         </label>
                         <div class="col-md-6">
-                          <CmpBasicInput
+                          <CmpBaseInput
                               placeholder="0.00"
                               name="volume"
                               type="number"
@@ -408,7 +408,7 @@
                           <CmpTooltip is-form-label-mode :tip="$t('entities.product.tool-tips.manuf-prep-l-time')" />
                         </label>
                         <div class="col-md-6">
-                          <CmpBasicInput placeholder="0"
+                          <CmpBaseInput placeholder="0"
                                          name="preDay2Manuf"
                                          type="number"
                           />
@@ -451,7 +451,7 @@
                           <CmpTooltip is-form-label-mode tip="todo" />
                         </label>
                         <div class="col-md-5">
-                          <CmpBasicInput
+                          <CmpBaseInput
                               aleftIcon="fa fa-usd"
                               placeholder="0.00"
                               name="cost"
@@ -600,7 +600,7 @@ import {
     OPS_KIND_STR,
     RoutePathNames, VSchemaProduct
 } from '@/services/definitions'
-import { CmpCard, CmpFormActionsButton, CmpBasicInput, CmpCollapseItem, CmpBasicCheckbox, CmpBaseButton, CmpVeeCheckbox, CmpMultiselectField, CmpTabContent, CmpTab, CmpTooltip, CmpTextInput, CmpImageInput, CmpCardStats, CmpDataTable } from '@/components'
+import { CmpCard, CmpFormActionsButton, CmpBaseInput, CmpCollapseItem, CmpBaseCheckbox, CmpBaseButton, CmpVeeCheckbox, CmpMultiselectField, CmpTabContent, CmpTab, CmpTooltip, CmpTextInput, CmpImageInput, CmpCardStats, CmpDataTable } from '@/components'
 import useFactory from '@/services/composables/useFactory'
 import useToastify from '@/services/composables/useToastify'
 import useDialogfy from '@/services/composables/useDialogfy'
@@ -621,13 +621,13 @@ export default defineComponent({
         CmpCardStats,
         CmpTextInput,
         CmpDataTable,
-        CmpBasicInput,
+        CmpBaseInput,
         CmpBaseButton,
         CmpTabContent,
         CmpImageInput,
         CmpVeeCheckbox,
         CmpCollapseItem,
-        CmpBasicCheckbox,
+        CmpBaseCheckbox,
         CmpMultiselectField,
         CmpFormActionsButton
     },

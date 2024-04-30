@@ -9,7 +9,7 @@
           <form class="form-horizontal">
 
             <!-- id -->
-            <CmpBasicInput
+            <CmpBaseInput
                 disabled
                 placeholder="###########"
                 name="id"
@@ -26,7 +26,7 @@
                     {{ $t( 'form.fields-common.firstname' ) }}
                   </label>
                   <div class="col-md-9">
-                    <CmpBasicInput
+                    <CmpBaseInput
                         :placeholder="$t('form.placeholders.supplier-cat-name')"
                         name="scName"
                         type="text"
@@ -40,7 +40,7 @@
                     {{ $t( 'data.description' ) }}
                   </label>
                   <div class="col-md-9">
-                    <CmpBasicInput
+                    <CmpBaseInput
                         placeholder="..."
                         name="sDescription"
                         type="text"
@@ -58,7 +58,7 @@
                     {{ $t( 'data.color' ) }}
                   </label>
                   <div class="col-md-9">
-                    <CmpBasicInput
+                    <CmpBaseInput
                         :placeholder="$t('data.description')"
                         name="scColor"
                         type="color"
@@ -99,7 +99,7 @@ import useDialogfy from '@/services/composables/useDialogfy'
 import { ApiSupplier } from '@/services/api/purchase/api-supplier'
 import { ACTION_KIND_STR, ENTITY_NAMES, FMODE, KEYS, OPS_KIND_STR, RoutePathNames } from '@/services/definitions'
 import { VSchemaSupplierCat } from '@/services/definitions/validations/validations-suppliers'
-import { CmpCard, CmpFormActionsButton, CmpBasicInput, CmpCollapseItem, CmpBasicCheckbox, CmpBaseButton } from '@/components'
+import { CmpCard, CmpFormActionsButton, CmpBaseInput, CmpCollapseItem, CmpBaseCheckbox, CmpBaseButton } from '@/components'
 
 import type { ComputedRef } from 'vue'
 import type { IDtoSupplierCat, TFormMode } from '@/services/definitions'
@@ -109,10 +109,10 @@ export default defineComponent({
     name: 'ViewFormSuppCategories',
     components: {
         CmpCard,
-        CmpBasicInput,
+        CmpBaseInput,
         CmpBaseButton,
         CmpCollapseItem,
-        CmpBasicCheckbox,
+        CmpBaseCheckbox,
         CmpFormActionsButton
     },
     setup() {

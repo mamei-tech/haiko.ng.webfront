@@ -35,7 +35,7 @@
           <form class="form form-horizontal">
 
             <!-- id -->
-            <CmpBasicInput
+            <CmpBaseInput
                 disabled
                 placeholder="###########"
                 name="id"
@@ -52,7 +52,7 @@
                     {{ $t( 'form.fields-common.firstname' ) }}
                   </label>
                   <div class="col-md-9">
-                    <CmpBasicInput
+                    <CmpBaseInput
                         :placeholder="$t('form.placeholders.suppliers-company-name')"
                         name="sName"
                         type="text"
@@ -67,7 +67,7 @@
                     {{ $t( 'table-headers.contact' ) }}
                   </label>
                   <div class="col-md-9">
-                    <CmpBasicInput
+                    <CmpBaseInput
                         :placeholder="$t('form.placeholders.supplier-contact')"
                         name="contactName"
                         type="text"
@@ -81,7 +81,7 @@
                     {{ $t( 'entities.supplier.sContactNotes' ) }}
                   </label>
                   <div class="col-md-9">
-                    <CmpBasicInput
+                    <CmpBaseInput
                         :placeholder="$t('form.placeholders.supplier-contact-notes')"
                         name="sContactNotes"
                         type="text"
@@ -95,7 +95,7 @@
                     {{ $t( 'form.fields-common.address' ) }}
                   </label>
                   <div class="col-md-6">
-                    <CmpBasicInput
+                    <CmpBaseInput
                         :placeholder="$t('form.placeholders.address')"
                         name="sAddress"
                         type="text"
@@ -106,7 +106,7 @@
                     Zip
                   </label>
                   <div class="col-md-2">
-                    <CmpBasicInput
+                    <CmpBaseInput
                         :placeholder="$t('form.placeholders.zip')"
                         name="zip"
                         type="number"
@@ -241,7 +241,7 @@
                     {{ $t( 'form.fields-common.cell' ) }}
                   </label>
                   <div class="col-md-4">
-                    <CmpBasicInput
+                    <CmpBaseInput
                         placeholder="### ## ### ## ##"
                         name="cell"
                         type="number"
@@ -252,7 +252,7 @@
                     {{ $t( 'form.fields-common.phone' ) }}
                   </label>
                   <div class="col-md-4">
-                    <CmpBasicInput
+                    <CmpBaseInput
                         placeholder="### ## ### ## ##"
                         name="sPhone"
                         type="number"
@@ -266,7 +266,7 @@
                     {{ $t( 'form.fields-common.email' ) }}
                   </label>
                   <div class="col-md-9">
-                    <CmpBasicInput
+                    <CmpBaseInput
                         :placeholder="$t('form.placeholders.email')"
                         name="sEmail"
                         type="text"
@@ -280,7 +280,7 @@
                     {{ $t( 'form.fields-common.website' ) }}
                   </label>
                   <div class="col-md-9">
-                    <CmpBasicInput
+                    <CmpBaseInput
                         :placeholder="$t('form.placeholders.website')"
                         name="sWebSite"
                         type="text"
@@ -527,7 +527,7 @@ import useFactory from '@/services/composables/useFactory'
 import useToastify from '@/services/composables/useToastify'
 import useQrCodes from '@/services/composables/useQrCodes'
 import useDialogfy from '@/services/composables/useDialogfy'
-import { CmpCard, CmpCardStats, CmpFormActionsButton, CmpBasicInput, CmpMultiselectField, CmpVeeCheckbox, CmpTab, CmpTabContent, CmpTextInput, CmpModal } from '@/components'
+import { CmpCard, CmpCardStats, CmpFormActionsButton, CmpBaseInput, CmpMultiselectField, CmpVeeCheckbox, CmpTab, CmpTabContent, CmpTextInput, CmpModal } from '@/components'
 import {
     ACTION_KIND_STR,
     ENTITY_NAMES,
@@ -551,7 +551,7 @@ export default defineComponent({
         CmpModal,
         CmpCardStats,
         CmpTextInput,
-        CmpBasicInput,
+        CmpBaseInput,
         CmpTabContent,
         CmpVeeCheckbox,
         CmpMultiselectField,

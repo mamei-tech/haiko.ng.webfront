@@ -1,4 +1,5 @@
 import type { IIndexable } from '@/services/definitions/types-common'
+import type { WARE_LOC_TYPE } from '@/services/definitions'
 
 export interface IWareLocationBasic extends IIndexable {
     lFullName: string | undefined,
@@ -9,7 +10,7 @@ export interface IWareLocationBasic extends IIndexable {
  */
 export interface IWareLocationRow extends IWareLocationBasic {
     lName: string,
-    lType: string,
+    lType: WARE_LOC_TYPE | string,
 }
 
 /**

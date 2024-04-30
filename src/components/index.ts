@@ -8,16 +8,17 @@ import CmpCardStats from '@/components/cards/CmpCardStats.vue'
 import CmpDropdown from '@/components/CmpDropdown.vue'
 import CmpDataTable from '@/components/table/CmpDataTable.vue'
 import CmpTextInput from '@/components/inputs/CmpTextInput.vue'
-import CmpBasicInput from '@/components/inputs/CmpBasicInput.vue'
+import CmpBaseInput from '@/components/inputs/CmpBaseInput.vue'
 import CmpImageInput from '@/components/inputs/CmpImageInput.vue'
 import CmpTableCellPicture from '@/components/table/CmpDataTable.vue'
 import CmpVeeCheckbox from '@/components/inputs/CmpVeeCheckbox.vue'
-import CmpBasicCheckbox from '@/components/inputs/CmpBasicCheckbox.vue'
+import CmpBaseCheckbox from '@/components/inputs/CmpBaseCheckbox.vue'
 import CmpButtonBackTop from '@/components/buttons/CmpButtonBackTop.vue'
 import CmpCollapseItem from '@/components/collapsable/CmpCollapseItem.vue'
 import CmpMultiselectField from '@/components/inputs/CmpMultiselectField.vue'
 import CmpFormActionsButton from '@/components/buttons/CmpFormActionsButton.vue'
 import CmpTabContent from '@/components/tabs/CmpTabContent.vue'
+import CmpBaseRadio from '@/components/inputs/CmpBaseRadio.vue'
 
 
 export {
@@ -29,10 +30,11 @@ export {
 
     // inputs
     CmpTextInput,
-    CmpBasicInput,
+    CmpBaseInput,
+    CmpBaseRadio,
     CmpImageInput,
     CmpVeeCheckbox,
-    CmpBasicCheckbox,
+    CmpBaseCheckbox,
     CmpMultiselectField,
 
     // cards

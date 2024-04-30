@@ -3,7 +3,7 @@ import { max, min, regex, required, integer, length } from '@vee-validate/rules'
 import {
     regHTMLColorNoAlpha,
     regOnlyAlphanumNSpacesWithDots,
-    VSchemaCommon, regWebSiteURL, regOnlyAlphanumAndSpaces
+    VSchemaCommon, regWebSiteURL, regOnlyAlphanumNSpaces
 } from '@/services/definitions/validations/validations-commons'
 
 const { t } = i18n.global
@@ -32,7 +32,7 @@ export const VSchemaSupplier = {
     contactName:    ( value: string ): boolean | string => {
         if (!min(value, { length: 4 })) return t('validation.min-length', { length: 4 })
         if (!max(value, { length: 80 })) return t('validation.max-length', { length: 80 })
-        if (!regex(value, { regex: regOnlyAlphanumAndSpaces })) return t('validation.only-html-color')
+        if (!regex(value, { regex: regOnlyAlphanumNSpaces })) return t('validation.only-html-color')
 
         return true
     },

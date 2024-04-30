@@ -10,7 +10,7 @@ import { WARE_LOC_TYPE } from '@/services/definitions'
 const { t } = i18n.global
 
 /**
- * UoM validation schema
+ * Inventory Warehouse Location validation schema
  */
 export const VSchemaWareLocation = {
     lName:       ( value: string ): boolean | string => {

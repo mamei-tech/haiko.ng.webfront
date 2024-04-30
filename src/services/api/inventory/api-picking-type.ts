@@ -50,6 +50,17 @@ export class ApiPickingType {
         return axios.post(`${ url }/toggle`, ids)
     }
 
+
+    /**
+     * Create / insert a new storage category on the system
+     *
+     * @param pickType new inventory picking type to be created
+     * @returns Promise with the identifier of the just created entity
+     */
+    public static reqInsPickingType( pickType: IDtoPickingType ): AxiosPromise<number> {
+        return axios.post(url, pickType)
+    }
+
     //endregion ===========================================================================
 
     //#region ======= DATA READY METHODS ==================================================

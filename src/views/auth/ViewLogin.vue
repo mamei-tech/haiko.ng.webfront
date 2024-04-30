@@ -8,7 +8,7 @@
   <CmpCard card-type="auto-margin">
     <form>
       <div class="form-group">
-        <CmpBasicInput
+        <CmpBaseInput
             id="user"
             name="username"
             type="text"
@@ -16,7 +16,7 @@
         />
       </div>
       <div class="form-group has-label">
-        <CmpBasicInput
+        <CmpBaseInput
             id="password"
             name="password"
             type="password"
@@ -40,7 +40,7 @@ import { defineComponent } from 'vue'
 import { useRouter } from 'vue-router'
 import { useForm } from 'vee-validate'
 import { useToast } from 'vue-toastification'
-import { CmpBaseButton, CmpBasicInput, CmpCard } from '@/components'
+import { CmpBaseButton, CmpBaseInput, CmpCard } from '@/components'
 import { VSchemaAuth } from '@/services/definitions'
 import { RoutePathNames } from '@/services/definitions/route-paths'
 import { useSt_Auth } from '@/stores/auth'
@@ -56,7 +56,7 @@ export default defineComponent({
     components: {
         CmpCard,
         CmpBaseButton,
-        CmpBasicInput
+        CmpBaseInput
     },
     setup() {
 

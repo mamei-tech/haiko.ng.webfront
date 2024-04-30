@@ -9,7 +9,7 @@
           <form class="form">
 
             <!-- id -->
-            <CmpBasicInput
+            <CmpBaseInput
                 disabled
                 placeholder="###########"
                 name="id"
@@ -25,7 +25,7 @@
                     {{ $t( 'entities.role.name' ) }}
                   </label>
                   <div class="col-md-9">
-                    <CmpBasicInput
+                    <CmpBaseInput
                         :placeholder="$t('form.placeholders.role-rname')"
                         name="rName"
                         type="text"
@@ -41,7 +41,7 @@
                     {{ $t( 'data.description' ) }}
                   </label>
                   <div class="col-md-9">
-                    <CmpBasicInput
+                    <CmpBaseInput
                         :placeholder="$t('form.placeholders.role-description')"
                         name="description"
                         type="text"
@@ -77,7 +77,7 @@
                       <p style="font-weight: 900">{{ perm.pName }} | </p> {{ perm.description }}
                     </label>
                     <div class="col-md-8">
-                      <CmpBasicCheckbox :checked="perm.isAssociated"
+                      <CmpBaseCheckbox :checked="perm.isAssociated"
                                         :name="perm.pName"
                                         :identifier_a="permId + ''"
                                         :identifier_b="perm.group"
@@ -115,7 +115,7 @@ import { useToast } from 'vue-toastification'
 import { useRoute, useRouter } from 'vue-router'
 import { useForm } from 'vee-validate'
 import { useSt_Rbac } from '@/stores/rbac'
-import { CmpCard, CmpFormActionsButton, CmpBasicInput, CmpCollapseItem, CmpBasicCheckbox, CmpBaseButton } from '@/components'
+import { CmpCard, CmpFormActionsButton, CmpBaseInput, CmpCollapseItem, CmpBaseCheckbox, CmpBaseButton } from '@/components'
 import useFactory from '@/services/composables/useFactory'
 import useToastify from '@/services/composables/useToastify'
 import useDialogfy from '@/services/composables/useDialogfy'
@@ -138,10 +138,10 @@ export default defineComponent({
 
     components: {
         CmpCard,
-        CmpBasicInput,
+        CmpBaseInput,
         CmpBaseButton,
         CmpCollapseItem,
-        CmpBasicCheckbox,
+        CmpBaseCheckbox,
         CmpFormActionsButton
     },
 
@@ -403,7 +403,7 @@ export default defineComponent({
 
         /**
          * Update the the register of permission to be modified on the server. This is the method that
-         * handles the callback when the the 'statusChanged' event of CmpBasicCheckbox if fired.
+         * handles the callback when the the 'statusChanged' event of CmpBaseCheckbox if fired.
          *
          * @param permName The name of the permission. This name can serve as unique key as it is unique on the database
          * @param isCheck The estatus fo the checkbox component, saying if the perm need to be active or not

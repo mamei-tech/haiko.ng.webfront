@@ -9,7 +9,7 @@ import { HUoMCatTable, HUoMTable, HProductTable, HProductSupplierLine, HWarehous
 import { SelectDataUoMType } from './data-select-options'
 import { HTTP_HEADER_FORM_DATA, HTTP_HEADER_FORM_URLENCODED,RELPATH_DEFAULT_AVATAR_IMG, RELPATH_DEFAULT_PRODUCT_IMG, IMG_ORG_AVATAR_NAME, IMG_AVATAR_SMALL_THUMBNAIL, IMG_ORG_PRODUCT_NAM } from './data-strs'
 import { DT_ACTIONBAR_MODE, ENTITY_NAMES, DT_ACTION_BUTTON_MODE, STRG_PROD_POLICY } from '@/services/definitions/enums-entities'
-import { HTTP_RESPONSES, OPS_KIND_STR, ACTION_KIND_STR, FMODE, BULK_ACTIONS, KEYS, PICTURE_TYPE_CELL, HTML_INPUT_TYPE, DIALOG_ICON, WARE_LOC_TYPE } from '@/services/definitions/enums-common'
+import { HTTP_RESPONSES, OPS_KIND_STR, ACTION_KIND_STR, FMODE, BULK_ACTIONS, KEYS, PICTURE_TYPE_CELL, HTML_INPUT_TYPE, DIALOG_ICON, WARE_LOC_TYPE, CORE_PICKING_TYPE, RESERVATION_METHODS } from '@/services/definitions/enums-common'
 
 import { VSchemaAuth } from '@/services/definitions/validations/validations-auth'
 import { VSchemaRole } from '@/services/definitions/validations/validations-rbac'
@@ -19,12 +19,13 @@ import { VSchemaSupplier } from '@/services/definitions/validations/validations-
 import { VSchemaPSL, VSchemaProduct } from '@/services/definitions/validations/validations-product'
 import { VSchemaWarehouse } from '@/services/definitions/validations/validations-warehouse'
 import { VSchemaWareLocation } from '@/services/definitions/validations/validations-warelocations'
+import { VSchemaPicking } from '@/services/definitions/validations/validations-picking'
 import { VSchemaStrgCategory } from '@/services/definitions/validations/validations-strgcategory'
 import { VSchemaStaffCreate, VSchemaStaffEdit } from '@/services/definitions/validations/validations-people'
 
 import type { Problem, ErrorDictionary } from '@/services/definitions/types-errors'
 import type { IWarehouseRow, IDtoWarehouse, IWarehouseBasic } from '@/services/definitions/entities/types-warehouse'
-import type { IPickingTypeBasic, IPickingTypeRow, IDtoPickingType } from '@/services/definitions/entities/types-picking'
+import type { IPickingTypeBasic, IPickingTypeRow, IDtoPickingType, ICorePickingType } from '@/services/definitions/entities/types-picking'
 import type { IWareLocationRow, IDtoWareLocation, IWareLocationBasic, IWareLocationType } from '@/services/definitions/entities/types-warelocation'
 import type { IStrgCategoryRow, IDtoStrgCategory, IStrgCatProdLine, IStrgCategoryBasic } from '@/services/definitions/entities/types-strgcategory'
 import type { TOpsKind, Function0, Function1, IColumnHeader, IDataTableQuery, ITableChkEmit, TBulkAction, ById, IIndexable, IChecked, Filter, IDataListBasicResponse, TFormMode, TActionKind, IdsArray, IBulkData, IMultiselectBasic, IShell, IScrollInfo, IDataTablePage, ICellUpdate, IvCard, IExtFilter, IExtFilterGroup } from './types-common'
@@ -62,7 +63,7 @@ export {
 
     PAGE_SIZE,
 
-    // Enums
+    // Commons Enums
     KEYS,
     FMODE,
     DIALOG_ICON,
@@ -74,8 +75,10 @@ export {
     ACTION_KIND_STR,
     HTML_INPUT_TYPE,
     STRG_PROD_POLICY,
+    CORE_PICKING_TYPE,
     PICTURE_TYPE_CELL,
     DT_ACTIONBAR_MODE,
+    RESERVATION_METHODS,
     DT_ACTION_BUTTON_MODE,
 
     // strings constants
@@ -100,12 +103,12 @@ export {
     ALIGN_POSITION,
 
     // Validations ... VSchema == validations schema
-    VSchemaStrgCategory, VSchemaAuth, VSchemaCommon, VSchemaStaffCreate, VSchemaStaffEdit, VSchemaRole, VSchemaWarehouse, VSchemaSupplier, VSchemaUoM, VSchemaUoMCat, VSchemaPSL, VSchemaProduct, VSchemaWareLocation,
+    VSchemaStrgCategory, VSchemaAuth, VSchemaCommon, VSchemaStaffCreate, VSchemaStaffEdit, VSchemaRole, VSchemaWarehouse, VSchemaSupplier, VSchemaUoM, VSchemaUoMCat, VSchemaPSL, VSchemaProduct, VSchemaWareLocation, VSchemaPicking,
 
     // =====  ENTITIES =====
 
     // inventory picking
-    IPickingTypeBasic, IPickingTypeRow, IDtoPickingType,
+    IPickingTypeBasic, IPickingTypeRow, IDtoPickingType, ICorePickingType,
 
     // warehouse (storage) locations
     IWareLocationRow, IDtoWareLocation, IWareLocationBasic, IWareLocationType,

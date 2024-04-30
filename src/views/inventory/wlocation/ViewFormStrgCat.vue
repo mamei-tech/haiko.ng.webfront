@@ -13,7 +13,7 @@
                 <!-- id -->
                 <div class="row">
                   <div class="col-md-9">
-                    <CmpBasicInput
+                    <CmpBaseInput
                         disabled
                         placeholder="###########"
                         name="id"
@@ -28,7 +28,7 @@
                     {{ $t( 'entities.uomcatetgory.name' ) }}
                   </label>
                   <div class="col-md-9">
-                    <CmpBasicInput
+                    <CmpBaseInput
                         :placeholder="$t('form.placeholders.strg-category-name')"
                         name="sCatName"
                         type="text"
@@ -120,7 +120,7 @@ import { useSt_Nomenclatures } from '@/stores/nomenc'
 import { useRoute, useRouter } from 'vue-router'
 import { useForm } from 'vee-validate'
 import { i18n } from '@/services/i18n'
-import { CmpCard, CmpFormActionsButton, CmpBasicInput, CmpBaseButton, CmpDataTable, CmpMultiselectField } from '@/components'
+import { CmpCard, CmpFormActionsButton, CmpBaseInput, CmpBaseButton, CmpDataTable, CmpMultiselectField } from '@/components'
 import { ApiStrgCategory } from '@/services/api/inventory/api-strgcategory'
 import useFactory from '@/services/composables/useFactory'
 import useToastify from '@/services/composables/useToastify'
@@ -143,7 +143,7 @@ export default defineComponent({
     components: {
         CmpCard,
         CmpDataTable,
-        CmpBasicInput,
+        CmpBaseInput,
         CmpBaseButton,
         CmpMultiselectField,
         CmpFormActionsButton

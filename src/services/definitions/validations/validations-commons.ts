@@ -8,8 +8,12 @@ const { t } = i18n.global
 /** Just permit words with just letters and spaces. Not allows spaces at the end.
  * The value hast to end with letters.
  */
+export const regOnlyAlphaNOSpacesCaps: RegExp = /^([A-Z|À-ÿ])+$/
+export const regOnlyAlphaNOSpaces: RegExp = /^([a-z|A-Z|À-ÿ])+$/
+export const regAlphaNHyphens: RegExp = /^([a-z|A-Z|À-ÿ]+([-|_]){0,1})+[a-z|A-Z|À-ÿ]$/
+export const regAlphanumNHyphensLowerCaps: RegExp = /^([a-z|0-9]+([-|_]){0,1})+[a-z|0-9]$/
 export const regAlphaNSpaces: RegExp = /^([a-z|A-Z|À-ÿ]+( ){0,1})+[a-z|A-Z|À-ÿ]$/
-export const regOnlyAlphanumAndSpaces: RegExp = /^([a-z|A-Z|À-ÿ|0-9]+( ){0,1})+[a-z|A-Z|À-ÿ|0-9]$/
+export const regOnlyAlphanumNSpaces: RegExp = /^([a-z|A-Z|À-ÿ|0-9]+( ){0,1})+[a-z|A-Z|À-ÿ|0-9]$/
 export const regOnlyAlphanumNSpacesWithDots: RegExp = /^([a-z|A-Z|À-ÿ|0-9|\.]+( ){0,1})+[a-z|A-Z|À-ÿ|0-9|\.]$/
 export const regOnlyAlphanumNSpacesWithDotsNHyphen: RegExp = /^([a-zA-ZÀ-ÿ0-9\._-]+( )?)+[a-zA-ZÀ-ÿ0-9_-](?!.*\.$)$/         // can takes dots but it can't finish with dots.
 export const regOnlyAlphanumericNoSpaces: RegExp = /^[a-zA-ZÀ-ÿ]+(\d*[a-zA-ZÀ-ÿ]*)*$/
@@ -117,7 +121,7 @@ export const VSchemaCommon = {
 
     /**
      * A common description or note field validation
-     * allowed: regOnlyAlphanumAndSpaces
+     * allowed: regOnlyAlphanumNSpaces
      *
      * @param value str to be validated
      * @param minLength minimum string length allowed

@@ -2,7 +2,7 @@
 import { defineStore } from 'pinia'
 import { i18n } from '@/services/i18n'
 import { toDicIds } from '@/services/helpers/help-conversion'
-import { WARE_LOC_TYPE, STRG_PROD_POLICY } from '@/services/definitions'
+import { WARE_LOC_TYPE, STRG_PROD_POLICY, CORE_PICKING_TYPE } from '@/services/definitions'
 import { ApiNomenclaturesMng } from '@/services/api/api-nomenclatures-manager'
 
 import type {
@@ -20,6 +20,7 @@ import type {
     IUoMBasic,
     IWareLocationBasic, IWarehouseBasic, IWareLocationType,
     IStrgCategoryBasic,
+    ICorePickingType,
 } from '@/services/definitions'
 
 
@@ -54,6 +55,12 @@ export const useSt_Nomenclatures = defineStore({
             { id: WARE_LOC_TYPE.TRANSIT },
             { id: WARE_LOC_TYPE.INVENTORY },
             { id: WARE_LOC_TYPE.PRODUCTION }
+        ],
+        corePickingType: [
+            { id: CORE_PICKING_TYPE.INCOMING },
+            { id: CORE_PICKING_TYPE.OUTGOING },
+            { id: CORE_PICKING_TYPE.TRANSFER },
+            { id: CORE_PICKING_TYPE.MNFACTRN }
         ]
     }),
 
@@ -109,7 +116,6 @@ export const useSt_Nomenclatures = defineStore({
 
         /**
          * Get the defined policies for storage new products in warehouse storage locations, formatted as a multiselect component format ({value: ___, label: ___})
-         *
          * @param state
          */
         getStrgProdPolicies4Select: ( state ): IMultiselectBasic[] => {
@@ -117,6 +123,19 @@ export const useSt_Nomenclatures = defineStore({
                 { value: STRG_PROD_POLICY.MIXED, label: t('data.allow-products-policy.mixed') },
                 { value: STRG_PROD_POLICY.ONLYSAME, label: t('data.allow-products-policy.same') },
                 { value: STRG_PROD_POLICY.IFEMPTY, label: t('data.allow-products-policy.empty') }
+            ]
+        },
+
+        /**
+         * Get the definitions for core inventory picking types
+         * @param state
+         */
+        getCorePickingType: ( state ): IMultiselectBasic[] => {
+            return [
+                { value: CORE_PICKING_TYPE.INCOMING, label: t(`entities.pickingtype.core-types.${CORE_PICKING_TYPE.INCOMING}`) },
+                { value: CORE_PICKING_TYPE.OUTGOING, label: t(`entities.pickingtype.core-types.${CORE_PICKING_TYPE.OUTGOING}`) },
+                { value: CORE_PICKING_TYPE.TRANSFER, label: t(`entities.pickingtype.core-types.${CORE_PICKING_TYPE.TRANSFER}`) },
+                { value: CORE_PICKING_TYPE.MNFACTRN, label: t(`entities.pickingtype.core-types.${CORE_PICKING_TYPE.MNFACTRN}`) },
             ]
         },
 
@@ -500,6 +519,7 @@ export const useSt_Nomenclatures = defineStore({
                 }).catch(error => { reject(error) })
             })
         },
+
     }
 })
 
@@ -519,7 +539,8 @@ interface IStaffState {
     wlocations:         Array<IWareLocationBasic>
     warehouses:         Array<IWarehouseBasic>,
     wlocationsTypes:    Array<IWareLocationType>,
-    strgCategories:     Array<IStrgCategoryBasic>
+    strgCategories:     Array<IStrgCategoryBasic>,
+    corePickingType:    Array<ICorePickingType>,
 }
 
 //endregion =============================================================================

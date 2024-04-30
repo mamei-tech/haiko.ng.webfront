@@ -40,7 +40,6 @@ import { useToast } from 'vue-toastification'
 import useToastify from '@/services/composables/useToastify'
 import { useSt_Pagination } from '@/stores/pagination'
 import {
-    ACTION_KIND_STR,
     DT_ACTION_BUTTON_MODE,
     DT_ACTIONBAR_MODE,
     ENTITY_NAMES, FMODE,
@@ -48,8 +47,7 @@ import {
     OPS_KIND_STR, RoutePathNames
 } from '@/services/definitions'
 
-import type { IPickingTypeRow, IDataTableQuery, IColumnHeader, IProductRow, IExtFilterGroup, IBulkData,  TOpsKind, TFormMode, IIndexable } from '@/services/definitions'
-
+import type { IPickingTypeRow, IDataTableQuery, IColumnHeader, TOpsKind, TFormMode, IIndexable } from '@/services/definitions'
 
 
 //region ======== STATE INTERFACE =======================================================

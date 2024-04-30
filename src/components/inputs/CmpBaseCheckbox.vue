@@ -20,7 +20,7 @@ import type { SetupContext } from 'vue'
 
 
 export default defineComponent({
-    name:  'CmpBasicCheckbox',
+    name:  'CmpBaseCheckbox',
     props: {
         name:         {
             type:        String,

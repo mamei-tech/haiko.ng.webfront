@@ -117,7 +117,7 @@ export default {
                             title: this.$t( 'routes.' + RoutePathNames.pickigtypeList ).toLowerCase(),
                             icon: {
                                 element: 'span',
-                                text:    'P',
+                                text:    'M',
                                 class:   'sidebar-item-icon-text'
                             }
                         },

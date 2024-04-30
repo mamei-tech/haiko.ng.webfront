@@ -36,7 +36,7 @@
         "tip-action-gen-vcard-file": "Genera un fichero VCard para descargar con la información de contacto",
         "tip-action-gen-vcard-qr":   "Genera un QR con la información de contacto"
     },
-    "nav": {
+    "nav":           {
         "sb": {
             "people":         "@:{'hub.modules.people'}",
             "overview":       "@:{'data.overview'}",
@@ -49,7 +49,7 @@
             "configs":        "@:{'hub.modules.configs'}"
         }
     },
-    "data": {
+    "data":          {
         "status":                "Estado",
         "_id":                   "ID",
         "id":                    "@:data._id",
@@ -127,19 +127,21 @@
         "prod-remove-warning":            "❗ Otros datos relacionados también serán eliminados (ej. asociación con proveedores, ...)",
         "warehouse-remove-warning":       "❗ No podrá eliminar el almacén si tiene operaciones asociadas"
     },
-    "toasts":        {
-        "auth-fail-4xx":         "Credenciales inválidas.",
-        "auth-fail-unknown":     "Algo no fue bien en la autenticación.",
-        "e404-client-side":      "No se pudo encontrar la entidad {subject} con el identificador entregado",
-        "e404":                  "Uno o varios identificadores de {subject} no fueron encontrados en el servidor.",
-        "e404-single":           "Identifier de {subject} {name} no fue encontrado en el servidor.",
-        "e401":                  "No autenticado o la autenticación ha expirado.",
-        "ops-fail":              "Operación {opsKind} falló para {subject}. Algo ocurrió en el servidor.",
-        "ops-fail-details":      "Operación {opsKind} falló para {subject} {ref}. Error {status}. {details}",
-        "ops-ok":                "{subject} {ref} {opsKind} correctamente",
-        "empty-categories":      "No se encontraron categorías para la tienda.",
-        "empty-stores":          "No se encontraron tiendas de acuerda con tipo establecido.",
-        "no-item-type-selected": "El producto no puede ser creado, debe seleccionar un tipo de producto."
+    "toasts": {
+        "auth-fail-4xx":          "Credenciales inválidas.",
+        "auth-fail-unknown":      "Algo no fue bien en la autenticación.",
+        "e404-client-side":       "No se pudo encontrar la entidad {subject} con el identificador entregado",
+        "e404":                   "Uno o varios identificadores de {subject} no fueron encontrados en el servidor.",
+        "e404-single":            "Identifier de {subject} {name} no fue encontrado en el servidor.",
+        "e401":                   "No autenticado o la autenticación ha expirado.",
+        "ops-fail":               "Operación {opsKind} falló para {subject}. Algo ocurrió en el servidor.",
+        "ops-fail-details":       "Operación {opsKind} falló para {subject} {ref}. Error {status}. {details}",
+        "ops-ok":                 "{subject} {ref} {opsKind} correctamente",
+        "empty-categories":       "No se encontraron categorías para la tienda.",
+        "empty-stores":           "No se encontraron tiendas de acuerda con tipo establecido.",
+        "no-item-type-selected":  "El producto no puede ser creado, debe seleccionar un tipo de producto.",
+        "wlocs-cant-be-same":     "Las ubicaciones de origen y destino no pueden ser las mismas.",
+        "wlocs-must-be-selected": "Se debe seleccionar al menos una ubicación de origen o una ubicación de destino"
     },
     "validation":    {
         "invalid":                                  "El campo no contiene valores válidos. ",
@@ -157,10 +159,13 @@
         "password-confirmation":                    "El campo no coincide con la contraseña definida",
         "only-alpha-spaces":                        "El campo solo debe contener caracteres y espacios, terminando solo en caracteres",
         "only-html-color":                          "El campo debe contener un valor de color HTML válido (ej. #cc1919)",
+        "only-alpha-no-spaces":                     "Se permiten solo letras sin espacios",
         "only-alpha-digits-spaces":                 "El campo solo debe contener letras, números y espacios, comenzado solo en caracteres",
         "only-alpha-digits-underscore-dots":        "El campo solo debe contener letras, guion bajo, puntos y números, sin espacios",
         "only-alpha-digits-underscore-dots-spaces": "El campo solo debe contener letras, guion bajo, puntos, números y sin espacios",
         "only-alpha-digits-no-spaces":              "El campo debe comenzar con letras y puede contener números sin espacios",
+        "only-alpha-digist-nospc-hyphen-lowcaps":   "Solo alfanuméricos (sin mayúsculas o tildes) y guiones sin espacios",
+        "only-alpha-caps":                          "Solo secuencias de letras en mayúsculas",
         "upload-file-max-size":                     "El archivo a utilizar debe tener un tamaño menor de {size} MB",
         "avatar-invalid-extension":                 "La extensión de la imagen utilizada no esta permitida",
         "uom-list-one-ref":                         "Solo debe existir una sola unidad de referencia",
@@ -201,7 +206,7 @@
             "month-current-min": "m. corriente",
             "year-pass-min":     "a. pasado",
             "year-current-min":  "a. actual",
-            "cards": {
+            "cards":             {
                 "stock-ready":               "Stock",
                 "stock-value":               "Valor act. del Inventario",
                 "stock-value-in":            "Valor Inventario Ent.",
@@ -212,44 +217,52 @@
                 "count-bom":                 "Recetas"
             }
         },
-        "placeholders": {
-            "website":                "www.elsitiowebaqui.com",
-            "username":               "nickname__78",
-            "select":                 " - selección - ",
-            "address":                "Prado #34 Apt 2, e/ Gervasio y Escobar, Centro Habana",
-            "zip":                    "######",
-            "staff-firstname":        "escriba el @:form.fields-common.name del empleado",
-            "staff-lastname":         "escriba los apellidos del empleado",
-            "role-rname":             "@:form.fields-common.name del rol",
-            "role-description":       "describe aspectos relevantes del rol",
-            "filters":                "Filtros",
-            "reset-filters":          "Restablecer filtros",
-            "uom-cat-ucname":         "@:form.fields-common.name de la nueva categoría para unidades medida",
-            "user":                   "usuario",
-            "pass":                   "contraseña",
-            "search":                 "buscar",
-            "email":                  "correo.{'@'}.dominio.que",
-            "uom-type-select":        "ratio de conversión",
-            "suppliers-company-name": "ej. La Primordial",
-            "supplier-cat-name":      "@:form.fields-common.name para la categoría de proveedores",
-            "supplier-contact":       "Nombre de contacto con el proveedor, ej. Pepe Bouza",
-            "supplier-contact-notes": "Notas acerca del nombre del contacto",
-            "supplier-category":      " - @:table-headers.category - ",
-            "staffs":                 " - @:entities.staff.name - ",
-            "product-uom":            " - @:entities.uom.name - ",
-            "product-name":           "... helado de chocolate ??",
-            "product-supplier":       " - Selecciona @:entities.supplier.name - ",
-            "product-currency":       "- moneda -",
-            "warehouse-name":         "MiNegocio",
-            "warehouse-code":         "A",
-            "strg-category-policy":   "- política d productos -",
-            "strg-category-name":     "Líquidos...",
-            "strg-select-product":    "- @:entities.product.name -",
-            "wlocation-name":         "Nevera-5",
-            "wlocation-parent":       "- slecc. ubicación padre -",
-            "wlocation-warehouse":    "- slecc. @:entities.warehouse.name -",
-            "wlocation-category":     "- slecc. @:table-headers.category -",
-            "wlocation-type":         "- slecc. tipo -"
+        "placeholders":  {
+            "website":                       "www.elsitiowebaqui.com",
+            "username":                      "nickname__78",
+            "select":                        " - selección - ",
+            "address":                       "Prado #34 Apt 2, e/ Gervasio y Escobar, Centro Habana",
+            "zip":                           "######",
+            "staff-firstname":               "escriba el @:form.fields-common.name del empleado",
+            "staff-lastname":                "escriba los apellidos del empleado",
+            "role-rname":                    "@:form.fields-common.name del rol",
+            "role-description":              "describe aspectos relevantes del rol",
+            "filters":                       "Filtros",
+            "reset-filters":                 "Restablecer filtros",
+            "uom-cat-ucname":                "@:form.fields-common.name de la nueva categoría para unidades medida",
+            "user":                          "usuario",
+            "pass":                          "contraseña",
+            "search":                        "buscar",
+            "email":                         "correo.{'@'}.dominio.que",
+            "uom-type-select":               "ratio de conversión",
+            "suppliers-company-name":        "ej. La Primordial",
+            "supplier-cat-name":             "@:form.fields-common.name para la categoría de proveedores",
+            "supplier-contact":              "Nombre de contacto con el proveedor, ej. Pepe Bouza",
+            "supplier-contact-notes":        "Notas acerca del nombre del contacto",
+            "supplier-category":             " - @:table-headers.category - ",
+            "staffs":                        " - @:entities.staff.name - ",
+            "product-uom":                   " - @:entities.uom.name - ",
+            "product-name":                  "... helado de chocolate ??",
+            "product-supplier":              " - Selecciona @:entities.supplier.name - ",
+            "product-currency":              "- moneda -",
+            "warehouse-name":                "MiNegocio",
+            "warehouse-code":                "A",
+            "strg-category-policy":          "- política d productos -",
+            "strg-category-name":            "Líquidos...",
+            "strg-select-product":           "- @:entities.product.name -",
+            "wlocation-name":                "Nevera-5",
+            "wlocation-parent":              "- slecc. ubicación padre -",
+            "wlocation-warehouse":           "- slecc. @:entities.warehouse.name -",
+            "wlocation-category":            "- slecc. @:table-headers.category -",
+            "wlocation-type":                "- slecc. tipo -",
+            "picking-type-name":             "ej. Orden de Entrega",
+            "picking-type-iname":            "ej. orden-entrega",
+            "picking-seqcode":               "ej. OE",
+            "picking-type-core":             "- slecc. de tipo -",
+            "picking-type-wlocation-src":    "- slecc. origen -",
+            "picking-type-wlocation-des":    "- slecc. destino -",
+            "picking-type-days-before":      "...6 días con antelación",
+            "picking-type-days-before-info": "días antes"
         }
     },
     "table-headers": {
@@ -290,7 +303,7 @@
         "strg-prod-policy": "Política Productos",
         "capacity":         "Capacidad"
     },
-    "entities": {
+    "entities":      {
         "default":      "entidades",
         "country":      {
             "name": "@:form.fields-common.country"
@@ -393,12 +406,34 @@
             "section-name": "@:entities.strgcategory.name",
             "prod-policy":  "@:table-headers.strg-prod-policy"
         },
-        "pickingtype":  {
-            "name":         "Tipo d Movimiento",
-            "section-name": "@:entities.pickingtype.name"
+        "pickingtype": {
+            "name":                  "Tipo d Movimiento",
+            "iname":                 "Nombre Interno",
+            "section-name":          "@:entities.pickingtype.name",
+            "seqcode":               "Prefijo",
+            "def-src-wlocation-id":  "@:entities.wlocation.name Origen",
+            "def-dest-wlocation-id": "@:entities.wlocation.name Destino",
+            "res-method":            "Reserva",
+            "res-days-before":       "Reserva de antelación",
+            "tool-tips":             {
+                "res-days-before": "Número máximo de días que se debe reservar el producto, antes de la fecha establecida en los movimientos de este tipo",
+                "res-method":      "Cómo debe realizarse la reserva de los productos bajo este tipo de movimiento",
+                "iname":           "Nombre que define cómo el sistema identifica internametne este tipo de movimiento de inventario"
+            },
+            "core-types":            {
+                "incoming":      "entrada",
+                "outgoing":      "salida",
+                "transfer":      "transferencia",
+                "manufacturing": "producción"
+            },
+            "reservation-options":   {
+                "at-confirmation":  "Al Confirmar",
+                "manually":         "Manual",
+                "before-sche-date": "Días de Antelación"
+            }
         }
     },
-    "hub":      {
+    "hub":           {
         "modules": {
             "pos":           "POS",
             "dash":          "Dashboard & Reports",

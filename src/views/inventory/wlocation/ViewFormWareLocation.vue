@@ -12,7 +12,7 @@
               <!-- id -->
               <div class="row">
                 <div class="col-md-9">
-                  <CmpBasicInput
+                  <CmpBaseInput
                       disabled
                       placeholder="###########"
                       name="id"
@@ -29,7 +29,7 @@
                     {{ $t( 'form.fields-common.name' ) }}
                   </label>
                   <div class="col-md-9">
-                    <CmpBasicInput
+                    <CmpBaseInput
                         :placeholder="$t('form.placeholders.wlocation-name')"
                         name="lName"
                         type="text"
@@ -192,7 +192,7 @@
                     {{ $t( 'entities.wlocation.full-name' ) }}
                   </label>
                   <div class="col-md-9">
-                    <CmpBasicInput
+                    <CmpBaseInput
                         placeholder="..."
                         name="lFullName"
                         type="text"
@@ -294,7 +294,7 @@ import {
     RoutePathNames,
     VSchemaWareLocation, WARE_LOC_TYPE
 } from '@/services/definitions'
-import { CmpCardStats, CmpTextInput, CmpCard, CmpFormActionsButton, CmpBasicInput, CmpCollapseItem, CmpBasicCheckbox, CmpBaseButton, CmpMultiselectField, CmpVeeCheckbox, CmpTooltip } from '@/components'
+import { CmpCardStats, CmpTextInput, CmpCard, CmpFormActionsButton, CmpBaseInput, CmpCollapseItem, CmpBaseButton, CmpMultiselectField, CmpVeeCheckbox, CmpTooltip } from '@/components'
 
 import type { ComputedRef } from 'vue'
 import type { IDtoWareLocation, IWareLocationType, IMultiselectBasic, TFormMode } from '@/services/definitions'
@@ -307,11 +307,10 @@ export default defineComponent({
         CmpTooltip,
         CmpCardStats,
         CmpTextInput,
-        CmpBasicInput,
+        CmpBaseInput,
         CmpBaseButton,
         CmpVeeCheckbox,
         CmpCollapseItem,
-        CmpBasicCheckbox,
         CmpMultiselectField,
         CmpFormActionsButton
     },
@@ -331,7 +330,6 @@ export default defineComponent({
         const { mkWareLocation } = useFactory()
         const { cap } = useCommon()
 
-        // getting the vee validate method to manipulate the form related actions from the view
         // getting the vee validate method to manipulate the form related actions from the view
         const { handleSubmit, meta, resetForm, setFieldValue, values } = useForm<IDtoWareLocation>({
             validationSchema: VSchemaWareLocation,

@@ -34,7 +34,7 @@ import { KEYS, RoutePathNames } from '@/services/definitions'
 import { useToast } from 'vue-toastification'
 import useFactory from '@/services/composables/useFactory'
 import useToastify from '@/services/composables/useToastify'
-import { CmpCard, CmpFormActionsButton, CmpBasicInput, CmpCollapseItem, CmpBasicCheckbox, CmpBaseButton } from '@/components'
+import { CmpCard, CmpFormActionsButton, CmpBaseInput, CmpCollapseItem, CmpBaseCheckbox, CmpBaseButton } from '@/components'
 
 import type { ComputedRef } from 'vue'
 
@@ -42,10 +42,10 @@ export default defineComponent({
     name: 'ViewFormSuppCategories',
     components: {
         CmpCard,
-        CmpBasicInput,
+        CmpBaseInput,
         CmpBaseButton,
         CmpCollapseItem,
-        CmpBasicCheckbox,
+        CmpBaseCheckbox,
         CmpFormActionsButton
     },
     setup() {

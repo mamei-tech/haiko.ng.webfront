@@ -1,4 +1,5 @@
 import type { IIndexable } from '@/services/definitions/types-common'
+import type { STRG_PROD_POLICY } from '@/services/definitions'
 
 export interface IStrgCategoryBasic extends IIndexable {
     sCatName: string,
@@ -9,7 +10,7 @@ export interface IStrgCategoryBasic extends IIndexable {
  */
 export interface IStrgCategoryRow extends IStrgCategoryBasic {
     wLocationCount: number | undefined,
-    allowProdType: string
+    allowProdType: STRG_PROD_POLICY
 }
 
 export interface IDtoStrgCategory extends IStrgCategoryRow {

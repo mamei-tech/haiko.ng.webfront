@@ -127,3 +127,22 @@ export enum WARE_LOC_TYPE {
     PRODUCTION = 'production',
     INVENTORY = 'inventory'
 }
+
+/**
+ * Inventory stock pick reservation methods
+ */
+export enum RESERVATION_METHODS {
+    AT_CONFIRMATION = 'at-confirmation',
+    MANUALLY = 'manually',
+    BEFORE_SCHEDULE_DATE = 'before-sche-date'
+}
+
+/**
+ * picking core operation types definitions
+ */
+export enum CORE_PICKING_TYPE {
+    INCOMING = 'incoming',
+    OUTGOING = 'outgoing',
+    TRANSFER = 'transfer',                  // internal
+    MNFACTRN = 'manufacturing'
+}

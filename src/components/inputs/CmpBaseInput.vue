@@ -51,7 +51,7 @@ import { useField } from 'vee-validate'
 import type { SetupContext } from 'vue'
 
 export default defineComponent({
-    name: "CmpBasicInput",
+    name: "CmpBaseInput",
     props: {
         name: {
             type: String,

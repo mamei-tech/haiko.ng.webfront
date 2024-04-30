@@ -13,7 +13,7 @@
                 <!-- id -->
                 <div class="row">
                   <div class="col-md-9">
-                    <CmpBasicInput
+                    <CmpBaseInput
                         disabled
                         placeholder="###########"
                         name="id"
@@ -28,7 +28,7 @@
                     {{ $t( 'entities.uomcatetgory.name' ) }}
                   </label>
                   <div class="col-md-9">
-                    <CmpBasicInput
+                    <CmpBaseInput
                         :placeholder="$t('form.placeholders.uom-cat-ucname')"
                         name="ucName"
                         type="text"
@@ -88,7 +88,7 @@ import { onMounted, defineComponent } from 'vue'
 import { useToast } from 'vue-toastification'
 import { useRoute, useRouter } from 'vue-router'
 import { useForm } from 'vee-validate'
-import { CmpCard, CmpFormActionsButton, CmpBasicInput, CmpBaseButton, CmpDataTable } from '@/components'
+import { CmpCard, CmpFormActionsButton, CmpBaseInput, CmpBaseButton, CmpDataTable } from '@/components'
 import { useSt_UoM } from '@/stores/uom'
 import useFactory from '@/services/composables/useFactory'
 import useToastify from '@/services/composables/useToastify'
@@ -111,7 +111,7 @@ export default defineComponent({
     components: {
         CmpCard,
         CmpDataTable,
-        CmpBasicInput,
+        CmpBaseInput,
         CmpBaseButton,
         CmpFormActionsButton
     },

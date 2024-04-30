@@ -10,7 +10,7 @@
           <form class="form-horizontal">
 
             <!-- id -->
-            <CmpBasicInput
+            <CmpBaseInput
                 disabled
                 placeholder="###########"
                 name="id"
@@ -28,7 +28,7 @@
                     {{ $t( 'form.fields-common.name' ) }}
                   </label>
                   <div class="col-md-4">
-                    <CmpBasicInput
+                    <CmpBaseInput
                         :placeholder="$t('form.placeholders.warehouse-name')"
                         name="wName"
                         type="text"
@@ -40,7 +40,7 @@
                     {{ $t( 'entities.warehouse.code' ) }}
                   </label>
                   <div class="col-md-4">
-                    <CmpBasicInput
+                    <CmpBaseInput
                         :placeholder="$t('form.placeholders.warehouse-code')"
                         name="code"
                         type="text"
@@ -120,7 +120,7 @@ import {
     RoutePathNames,
     VSchemaWarehouse
 } from '@/services/definitions'
-import { CmpCard, CmpFormActionsButton, CmpBasicInput, CmpCollapseItem, CmpBasicCheckbox, CmpBaseButton, CmpMultiselectField } from '@/components'
+import { CmpCard, CmpFormActionsButton, CmpBaseInput, CmpCollapseItem, CmpBaseCheckbox, CmpBaseButton, CmpMultiselectField } from '@/components'
 
 import type { ComputedRef } from 'vue'
 import type { IDtoWarehouse, TFormMode } from '@/services/definitions'
@@ -130,10 +130,10 @@ export default defineComponent({
     name: 'ViewFormWarehouse',
     components: {
         CmpCard,
-        CmpBasicInput,
+        CmpBaseInput,
         CmpBaseButton,
         CmpCollapseItem,
-        CmpBasicCheckbox,
+        CmpBaseCheckbox,
         CmpMultiselectField,
         CmpFormActionsButton
     },
