@@ -61,6 +61,10 @@ export class ApiPickingType {
         return axios.post(url, pickType)
     }
 
+    public static reqUpdatePickingType ( pickType: IDtoPickingType): Promise<void> {
+        return axios.put(`${ url }`, pickType)
+    }
+
     //endregion ===========================================================================
 
     //#region ======= DATA READY METHODS ==================================================

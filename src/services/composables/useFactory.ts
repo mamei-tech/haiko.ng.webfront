@@ -251,9 +251,9 @@ export default function useFactory() {
             resMethod:     RESERVATION_METHODS.AT_CONFIRMATION,
             resDaysBefore: undefined,
 
-            warehouseID:        undefined,
-            defSrcWLocationID:  undefined,
-            defDestWLocationID: undefined
+            warehouseID:        0,
+            defSrcWLocationID:  0,
+            defDestWLocationID: 0
         }
     }
 

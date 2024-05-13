@@ -287,7 +287,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, defineComponent } from 'vue'
 import { useForm } from 'vee-validate'
 import { i18n } from '@/services/i18n'
 import { useRoute, useRouter } from 'vue-router'
@@ -384,6 +384,26 @@ export default defineComponent({
             st_nomenclatures.reqNmcWarehouses()
             .catch(err => tfyCRUDFail(err, ENTITY_NAMES.WAREHOUSE, OPS_KIND_STR.REQUEST))
 
+            if (cpt_fMode.value === FMODE.CREATE as TFormMode) return
+
+            // ---- the following code is the edition conditional section
+
+            st_nomenclatures.reqNmcWareLocations()
+            .catch(err => tfyCRUDFail(err, ENTITY_NAMES.WARELOCATION, OPS_KIND_STR.REQUEST))
+
+            let formDataFromServer: IDtoPickingType | undefined = undefined
+            try {
+                formDataFromServer = (await ApiPickingType.reqPickingTypeById(+id)).data as IDtoPickingType
+                if(formDataFromServer.id == undefined) return
+
+                resetForm({
+                    values: { ...formDataFromServer, },
+                    errors: {}
+                })
+                // ref_selectWarehouse.value.setSelectedValue({value: formDataFromServer.warehouseID ?? 0, label: 'asda'})
+            }
+            catch (err) {tfyCRUDFail(err, ENTITY_NAMES.PICKINGTYPE, OPS_KIND_STR.REQUEST)}
+
             window.addEventListener('keydown', h_keyboardKeyPress)                                    // keyboard keys event handler, we need to clean this kind of event when the component are destroyed
         })
 
@@ -403,23 +423,35 @@ export default defineComponent({
          * doWeNeedToStay => This value is related to the * type of save button in the CmpFormActionsButton:
          * APPLY or SAVE (and exit) normally
          *
-         * @param pickType new inventory picking type to be created.
+         * @param newPickType new inventory picking type to be created.
          * @param isFormDirty tells is form is dirty (has change in the vee-validate controlled inputs)
          * @param doWeNeedToStay Tell us where to go after the successfully creation of the entity
          */
-        const a_create = ( pickType: IDtoPickingType, isFormDirty: boolean, doWeNeedToStay: boolean ): void => {
-
-            hpr_sanitation(pickType)
+        const a_create = ( newPickType: IDtoPickingType, isFormDirty: boolean, doWeNeedToStay: boolean ): void => {
+            hpr_sanitation(newPickType)
 
             // making the request
-            ApiPickingType.reqInsPickingType(pickType).then(() => {
-                tfyCRUDSuccess(ENTITY_NAMES.PICKINGTYPE, OPS_KIND_STR.ADDITION, pickType.tName)
+            ApiPickingType.reqInsPickingType(newPickType).then(() => {
+                tfyCRUDSuccess(ENTITY_NAMES.PICKINGTYPE, OPS_KIND_STR.ADDITION, newPickType.tName)
 
                 // so now what ?
                 if(!doWeNeedToStay) nav_back()              // so we are going back to the data table
                 else hpr_cleanForm()                        // so wee need to clean the entire form and stay in it
 
             }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.PICKINGTYPE, OPS_KIND_STR.ADDITION))
+        }
+
+        const a_edit = ( updatedPickType: IDtoPickingType, isFormDirty: boolean, doWeNeedToStay: boolean ): void => {
+            hpr_sanitation(updatedPickType)
+
+            // making the request
+            ApiPickingType.reqUpdatePickingType(updatedPickType).then(() => {
+                tfyCRUDSuccess(ENTITY_NAMES.PICKINGTYPE, OPS_KIND_STR.UPDATE, updatedPickType.tName)
+
+                // so now what ?
+                if(!doWeNeedToStay) nav_back()              // so we are going back to the data table
+
+            }).catch(err => tfyCRUDFail(err, ENTITY_NAMES.PICKINGTYPE, OPS_KIND_STR.UPDATE))
         }
 
         //#endregion ==========================================================================
@@ -537,7 +569,7 @@ export default defineComponent({
 
             handleSubmit(formData => {
                 if (cpt_fMode.value == (FMODE.CREATE as TFormMode)) a_create(formData, meta.value.dirty, doWeNeedToStay)
-                if (cpt_fMode.value == (FMODE.EDIT as TFormMode)) console.warn('not implemented yet')
+                if (cpt_fMode.value == (FMODE.EDIT as TFormMode)) a_edit(formData, meta.value.dirty, doWeNeedToStay)
                 if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && !meta.value.dirty) nav_back()
             }).call(this)
         }
