@@ -491,10 +491,10 @@ export const useSt_Nomenclatures = defineStore({
          * Tries to get the Warehouse storage locations defined on the system, to be used as parent location for another location.
          * The list will have only minimum data.
          */
-        async reqNmcWareLocations(): Promise<void> {
+        async reqNmcWareLocations( wareID: number = 0 ): Promise<void> {
 
             return await new Promise<void>((resolve, reject) => {
-                ApiNomenclaturesMng.getWareLocationsM()
+                ApiNomenclaturesMng.getWareLocationsM(wareID)
                 .then((response:any) => {
 
                     this.wlocations = response.data

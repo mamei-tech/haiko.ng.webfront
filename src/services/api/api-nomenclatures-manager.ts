@@ -140,8 +140,10 @@ export class ApiNomenclaturesMng {
      * - The retrieve list just will have minimum data (lFullName) Check IWareLocationBasic
      * - M == minimum / basic information
      */
-    public static getWareLocationsM(): AxiosPromise<IWareLocationBasic[]> {
-        return axios.get(`${url}/warehouse/location/list`)
+    public static getWareLocationsM( wareID: number = 0 ): AxiosPromise<IWareLocationBasic[]> {
+        return wareID <= 0
+            ? axios.get(`${ url }/warehouse/location/list`)                         // filtered, LFullname (field) = name of the warehouse + warelocation full name
+            : axios.get(`${ url }/warehouse/${ wareID }/location/list`)
     }
 
     /**

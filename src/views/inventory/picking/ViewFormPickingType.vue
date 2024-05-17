@@ -88,36 +88,6 @@
                   <hr class="collapsable-form-section-divisor" style="padding-left: 50px">
                 </div>
                   <div>
-                    <!-- Warehouse Id -->
-                    <div class="row">
-                      <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                        {{ $t( 'entities.warehouse.name' ) }}
-                      </label>
-                      <div class="col-md-9">
-                        <CmpMultiselectField :placeholder="$t('form.placeholders.wlocation-warehouse')"
-                                             :options="st_nomenclatures.getWarehouses4Select"
-                                             searchable
-                                             name="warehouseID"
-                                             class="mb-2"
-                                             closeOnSelect
-                                             ref="ref_selectWarehouse"
-                                             v-on:changehapend="h_warehouseChange"
-                        >
-
-                          <!--option coming from slot child component ('slots props') [option] -->
-                          <template #customOption="{option}">
-                            {{ option.label }}
-                          </template>
-
-                          <!-- option coming from slot child component ('slots props') [value] -->
-                          <template #customSingleLabel="{value}">
-                            <div class="multiselect-placeholder">
-                              {{ value.label }}
-                            </div>
-                          </template>
-                        </CmpMultiselectField>
-                      </div>
-                    </div>
 
                     <!-- defSrcWLocationID -->
                     <div class="row">
@@ -381,15 +351,12 @@ export default defineComponent({
          */
         onMounted(async () => {
 
-            st_nomenclatures.reqNmcWarehouses()
-            .catch(err => tfyCRUDFail(err, ENTITY_NAMES.WAREHOUSE, OPS_KIND_STR.REQUEST))
+            st_nomenclatures.reqNmcWareLocations()
+            .catch(err => tfyCRUDFail(err, ENTITY_NAMES.WARELOCATION, OPS_KIND_STR.REQUEST))
 
             if (cpt_fMode.value === FMODE.CREATE as TFormMode) return
 
             // ---- the following code is the edition conditional section
-
-            st_nomenclatures.reqNmcWareLocations()
-            .catch(err => tfyCRUDFail(err, ENTITY_NAMES.WARELOCATION, OPS_KIND_STR.REQUEST))
 
             let formDataFromServer: IDtoPickingType | undefined = undefined
             try {
@@ -397,7 +364,7 @@ export default defineComponent({
                 if(formDataFromServer.id == undefined) return
 
                 resetForm({
-                    values: { ...formDataFromServer, },
+                    values: { ...formDataFromServer },
                     errors: {}
                 })
                 // ref_selectWarehouse.value.setSelectedValue({value: formDataFromServer.warehouseID ?? 0, label: 'asda'})
@@ -511,17 +478,8 @@ export default defineComponent({
 
         //region ======= EVENTS HANDLERS & WATCHERS ===========================================
 
-        const h_warehouseChange = async (warehouseId: string): Promise<void> => {
-            if (!warehouseId) {                                                    // warehouse selector got cleared
-                hpr_clearStateSelect()
-                return
-            }
-
-            if (st_nomenclatures.wlocations.length > 0) return                      // we have the locations list already, so no ned to fetch it
-
-            st_nomenclatures.reqNmcWareLocations()
-            .catch(err => tfyCRUDFail(err, ENTITY_NAMES.WARELOCATION, OPS_KIND_STR.REQUEST))
-        }
+        // st_nomenclatures.reqNmcWareLocations()
+        // .catch(err => tfyCRUDFail(err, ENTITY_NAMES.WARELOCATION, OPS_KIND_STR.REQUEST))
 
         const h_coreTypeChange = ( type: CORE_PICKING_TYPE ) => {
             type == CORE_PICKING_TYPE.INCOMING
@@ -616,7 +574,6 @@ export default defineComponent({
             h_checkNoSame,
             h_beforeSubmit,
             h_coreTypeChange,
-            h_warehouseChange,
             h_keyboardKeyPress,
             h_reservationSelection,
         }

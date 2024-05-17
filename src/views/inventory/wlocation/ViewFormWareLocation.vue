@@ -398,6 +398,9 @@ export default defineComponent({
                 formDataFromServer = (await ApiWareLocation.reqLocationById(+id)).data as IDtoWareLocation
                 if(formDataFromServer.id == undefined) return
 
+                await st_nomenclatures.reqNmcWareLocations(formDataFromServer.warehouseID)            // seeking for the warehouses locations
+                .catch(err => tfyCRUDFail(err, ENTITY_NAMES.WARELOCATION, OPS_KIND_STR.REQUEST))
+
                 lType.value = formDataFromServer.lType as WARE_LOC_TYPE
                 resetForm({
                     values: {
@@ -545,7 +548,7 @@ export default defineComponent({
                 return
             }
 
-            st_nomenclatures.reqNmcWareLocations()
+            st_nomenclatures.reqNmcWareLocations(+warehouseId)
             .catch(err => tfyCRUDFail(err, ENTITY_NAMES.WARELOCATION, OPS_KIND_STR.REQUEST))
         }
 

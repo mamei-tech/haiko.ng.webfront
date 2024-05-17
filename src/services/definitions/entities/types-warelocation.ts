@@ -1,5 +1,17 @@
 import type { IIndexable } from '@/services/definitions/types-common'
-import type { WARE_LOC_TYPE } from '@/services/definitions'
+
+/**
+ * Warehouse (storage) location types
+ */
+export enum WARE_LOC_TYPE {
+    VIEW = 'view',
+    SUPPLIER = 'supplier',
+    CUSTOMER = 'customer',
+    TRANSIT = 'transit',
+    INTERNAL = 'internal',
+    PRODUCTION = 'production',
+    INVENTORY = 'inventory'
+}
 
 export interface IWareLocationBasic extends IIndexable {
     lFullName: string | undefined,

@@ -1,5 +1,16 @@
 import type { IIndexable } from '@/services/definitions/types-common'
-import type { CORE_PICKING_TYPE, RESERVATION_METHODS } from '@/services/definitions'
+import type { RESERVATION_METHODS } from '@/services/definitions'
+
+/**
+ * picking core operation types definitions
+ */
+export enum CORE_PICKING_TYPE {
+    INCOMING = 'incoming',
+    OUTGOING = 'outgoing',
+    TRANSFER = 'internal',                  // internal | transfer
+    MNFACTRN = 'manufacturing'
+}
+
 
 export interface IPickingTypeBasic extends IIndexable {
     tName: string | undefined,
@@ -19,7 +30,6 @@ export interface IDtoPickingType extends IPickingTypeRow {
     pCoreType: CORE_PICKING_TYPE,               // internal code
     resMethod: RESERVATION_METHODS,
     resDaysBefore: number | undefined,
-    warehouseID: number | undefined,
     defSrcWLocationID: number | undefined,      // default warehouse location as source for the picking operation
     defDestWLocationID: number | undefined      // default warehouse location as destination for the picking operation
 }

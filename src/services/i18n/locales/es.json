@@ -423,7 +423,7 @@
             "core-types":            {
                 "incoming":      "entrada",
                 "outgoing":      "salida",
-                "transfer":      "transferencia",
+                "internal":      "transferencia",
                 "manufacturing": "producción"
             },
             "reservation-options":   {
