@@ -2,7 +2,7 @@
   <transition appear name="page-fade">
     <div class="row">
       <div class="col-12">
-        <h2>Transfer operation view</h2>
+        <h2>Replenishments operation view</h2>
       </div>
     </div>
   </transition>
@@ -14,7 +14,7 @@ import { useRouter } from 'vue-router'
 import { KEYS, RoutePathNames } from '@/services/definitions'
 
 export default defineComponent({
-    name: 'ViewTransfer',
+    name: 'ViewListScrap',
     components: {},
     setup() {
 

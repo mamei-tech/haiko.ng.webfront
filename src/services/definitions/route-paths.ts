@@ -42,10 +42,10 @@ export const RoutePaths = {
     pickigtypeList: '/inventory/pickingtype/list',
     pickigtypeForm: '/inventory/pickingtype/:fmode/:id?',
 
-    invReplenishment: '/inventory/ops/replenishment',                  // inventory operation replenishment
-    invTransfer: '/inventory/ops/transfer',                            // inventory operation transfer
-    invAdjustment: '/inventory/ops/adjustment',                        // inventory operation adjustments
-    invScrap: '/inventory/ops/scrapping',                              // inventory operation scrapping
+    invReplenishment: '/inventory/ops/replenishment',                  // inventory operations replenishment
+    invTransfer: '/inventory/ops/transfer',                            // inventory operations transfer
+    invAdjustment: '/inventory/ops/adjustment',                        // inventory operations adjustments
+    invScrap: '/inventory/ops/scrapping',                              // inventory operations scrapping
 
     //#endregion ==========================================================================
 
