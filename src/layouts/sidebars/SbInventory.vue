@@ -73,7 +73,44 @@ export default {
                 {
                     title: this.$t('nav.sb.ops').toUpperCase(),
                     icon:  'tim-icons icon-world',
-                    child: [],
+                    child: [
+                        {
+                            href:  { path: RoutePaths.invReplenishment },
+                            title: this.$t( 'routes.' + RoutePathNames.invReplenishment ).toLowerCase(),
+                            icon: {
+                                element: 'span',
+                                text: 'R',
+                                class: 'sidebar-item-icon-text'
+                            }
+                        },
+                        {
+                            href:  { path: RoutePaths.invTransfer },
+                            title: this.$t( 'routes.' + RoutePathNames.invTransfer ).toLowerCase(),
+                            icon: {
+                                element: 'span',
+                                text: 'T',
+                                class: 'sidebar-item-icon-text'
+                            }
+                        },
+                        {
+                            href:  { path: RoutePaths.invAdjustment },
+                            title: this.$t( 'routes.' + RoutePathNames.invAdjustment ).toLowerCase(),
+                            icon: {
+                                element: 'span',
+                                text: 'A',
+                                class: 'sidebar-item-icon-text'
+                            }
+                        },
+                        {
+                            href:  { path: RoutePaths.invScrap },
+                            title: this.$t( 'routes.' + RoutePathNames.invScrap ).toLowerCase(),
+                            icon: {
+                                element: 'span',
+                                text: 'M',
+                                class: 'sidebar-item-icon-text'
+                            }
+                        },
+                    ],
                 },
                 {
                     title: this.$t( 'nav.sb.configs' ).toUpperCase(),

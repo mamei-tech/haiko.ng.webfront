@@ -49,6 +49,11 @@ export default {
     [ RoutePathNames.pickigtypeList ]: '@:{\'entities.pickingtype.section-name\'}',
     [ RoutePathNames.pickigtypeForm ]: '{action} @:{\'entities.pickingtype.section-name\'}',
 
+    [ RoutePathNames.invTransfer ]:      '@:{\'entities.transfer.section-name\'}',
+    [ RoutePathNames.invReplenishment ]: '@:{\'entities.replenishment.section-name\'}',
+    [ RoutePathNames.invAdjustment ]:    '@:{\'entities.scrapping.section-name\'}',
+    [ RoutePathNames.invScrap ]:         '@:{\'entities.adjustment.section-name\'}',
+
     //#endregion ==========================================================================
 
     //#region ======= PRODUCTION ==========================================================

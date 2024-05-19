@@ -110,4 +110,33 @@ export const InventoryRoutes: Array<RouteRecordRaw> = [
     },
 
     //#endregion ==========================================================================
+
+    //#region ======= OPERATIONS ==========================================================
+
+    {
+        path:      RoutePaths.invReplenishment,
+        name:      RoutePathNames.invReplenishment,
+        component: () => import('../views/inventory/operations/ViewReplenishment.vue'),
+        meta:      { layout: LayMain, sidebar: SbInventory, reqAuth: true }
+    },
+    {
+        path:      RoutePaths.invTransfer,
+        name:      RoutePathNames.invTransfer,
+        component: () => import('../views/inventory/operations/ViewTransfer.vue'),
+        meta:      { layout: LayMain, sidebar: SbInventory, reqAuth: true }
+    },
+    {
+        path:      RoutePaths.invAdjustment,
+        name:      RoutePathNames.invAdjustment,
+        component: () => import('../views/inventory/operations/ViewAdjustment.vue'),
+        meta:      { layout: LayMain, sidebar: SbInventory, reqAuth: true }
+    },
+    {
+        path:      RoutePaths.invScrap,
+        name:      RoutePathNames.invScrap,
+        component: () => import('../views/inventory/operations/ViewScrap.vue'),
+        meta:      { layout: LayMain, sidebar: SbInventory, reqAuth: true }
+    },
+
+    //#endregion ==========================================================================
 ]
