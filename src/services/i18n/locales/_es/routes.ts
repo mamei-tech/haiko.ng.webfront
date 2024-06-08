@@ -1,11 +1,12 @@
 import { RoutePathNames } from '@/services/definitions'
 
+
 export default {
     //region ======== ROOTS ===============================================================
 
     // [ RoutePathNames.dashboard ]: RoutePathNames.dashboard,
     [ RoutePathNames.hub ]: 'Módulos',
-    logout: 'salir',
+    logout:                 'salir',
 
     //#endregion  =========================================================================
 
@@ -49,10 +50,12 @@ export default {
     [ RoutePathNames.pickigtypeList ]: '@:{\'entities.pickingtype.section-name\'}',
     [ RoutePathNames.pickigtypeForm ]: '{action} @:{\'entities.pickingtype.section-name\'}',
 
-    [ RoutePathNames.invTransfer ]:      '@:{\'entities.transfer.section-name\'}',
-    [ RoutePathNames.invReplenishment ]: '@:{\'entities.replenishment.section-name\'}',
-    [ RoutePathNames.invAdjustment ]:    '@:{\'entities.adjustment.section-name\'}',
-    [ RoutePathNames.invScrap ]:         '@:{\'entities.scrapping.section-name\'}',
+    [ RoutePathNames.invTransferList ]: '@:{\'entities.transfer.section-name\'}',
+    [ RoutePathNames.invTransferForm ]: '{action} @:{\'entities.transfer.section-name\'}',
+
+    [ RoutePathNames.invReplenishmentList ]: '@:{\'entities.replenishment.section-name\'}',
+    [ RoutePathNames.invAdjustmentList ]:    '@:{\'entities.adjustment.section-name\'}',
+    [ RoutePathNames.invScrapList ]:         '@:{\'entities.scrapping.section-name\'}',
 
     //#endregion ==========================================================================
 
@@ -93,7 +96,7 @@ export default {
 
     //#region ======= GALLERY =============================================================
 
-    [ RoutePathNames.gallery ]: 'Galería',
+    [ RoutePathNames.gallery ]: 'Galería'
 
     //#endregion ==========================================================================
 

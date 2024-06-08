@@ -75,8 +75,8 @@ export default {
                     icon:  'tim-icons icon-world',
                     child: [
                         {
-                            href:  { path: RoutePaths.invReplenishment },
-                            title: this.$t( 'routes.' + RoutePathNames.invReplenishment ).toLowerCase(),
+                            href:  { path: RoutePaths.invReplenishmentList },
+                            title: this.$t( 'routes.' + RoutePathNames.invReplenishmentList ).toLowerCase(),
                             icon: {
                                 element: 'span',
                                 text: 'R',
@@ -84,8 +84,8 @@ export default {
                             }
                         },
                         {
-                            href:  { path: RoutePaths.invTransfer },
-                            title: this.$t( 'routes.' + RoutePathNames.invTransfer ).toLowerCase(),
+                            href:  { path: RoutePaths.invTransferList },
+                            title: this.$t( 'routes.' + RoutePathNames.invTransferList ).toLowerCase(),
                             icon: {
                                 element: 'span',
                                 text: 'T',
@@ -93,8 +93,8 @@ export default {
                             }
                         },
                         {
-                            href:  { path: RoutePaths.invAdjustment },
-                            title: this.$t( 'routes.' + RoutePathNames.invAdjustment ).toLowerCase(),
+                            href:  { path: RoutePaths.invAdjustmentList },
+                            title: this.$t( 'routes.' + RoutePathNames.invAdjustmentList ).toLowerCase(),
                             icon: {
                                 element: 'span',
                                 text: 'A',
@@ -102,8 +102,8 @@ export default {
                             }
                         },
                         {
-                            href:  { path: RoutePaths.invScrap },
-                            title: this.$t( 'routes.' + RoutePathNames.invScrap ).toLowerCase(),
+                            href:  { path: RoutePaths.invScrapList },
+                            title: this.$t( 'routes.' + RoutePathNames.invScrapList ).toLowerCase(),
                             icon: {
                                 element: 'span',
                                 text: 'M',

@@ -114,29 +114,35 @@ export const InventoryRoutes: Array<RouteRecordRaw> = [
     //#region ======= OPERATIONS ==========================================================
 
     {
-        path:      RoutePaths.invReplenishment,
-        name:      RoutePathNames.invReplenishment,
+        path:      RoutePaths.invReplenishmentList,
+        name:      RoutePathNames.invReplenishmentList,
         component: () => import('../views/inventory/operations/ViewListReplenishment.vue'),
         meta:      { layout: LayMain, sidebar: SbInventory, reqAuth: true }
     },
 
     {
-        path:      RoutePaths.invTransfer,
-        name:      RoutePathNames.invTransfer,
+        path:      RoutePaths.invTransferList,
+        name:      RoutePathNames.invTransferList,
         component: () => import('../views/inventory/operations/ViewListTransfer.vue'),
+        meta:      { layout: LayMain, sidebar: SbInventory, reqAuth: true }
+    },
+    {
+        path:      RoutePaths.invTransferListForm,
+        name:      RoutePathNames.invTransferForm,
+        component: () => import('../views/inventory/operations/ViewFormTransfer.vue'),
         meta:      { layout: LayMain, sidebar: SbInventory, reqAuth: true }
     },
 
     {
-        path:      RoutePaths.invAdjustment,
-        name:      RoutePathNames.invAdjustment,
+        path:      RoutePaths.invAdjustmentList,
+        name:      RoutePathNames.invAdjustmentList,
         component: () => import('../views/inventory/operations/ViewListAdjustment.vue'),
         meta:      { layout: LayMain, sidebar: SbInventory, reqAuth: true }
     },
 
     {
-        path:      RoutePaths.invScrap,
-        name:      RoutePathNames.invScrap,
+        path:      RoutePaths.invScrapList,
+        name:      RoutePathNames.invScrapList,
         component: () => import('../views/inventory/operations/ViewListScrap.vue'),
         meta:      { layout: LayMain, sidebar: SbInventory, reqAuth: true }
     },

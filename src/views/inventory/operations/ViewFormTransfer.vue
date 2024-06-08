@@ -6,10 +6,10 @@
         <CmpCard :hasFormBackBtn="true" v-on:doClick="nav_back">
 
           <!-- FORM -->
-          <form class="form">
+          <form class="form-horizontal">
             <div class="row">
 
-              <p>formulario de transferencia de inventario</p>
+
 
             </div>
           </form>
@@ -135,7 +135,7 @@ export default defineComponent({
 
         const nav_back = () => {
             // router.back()
-            router.push({ name: RoutePathNames.invReplenishmentList });
+            router.push({ name: RoutePathNames.invTransferList });
         }
 
         //endregion ===========================================================================
