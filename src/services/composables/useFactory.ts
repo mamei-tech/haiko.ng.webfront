@@ -1,4 +1,10 @@
-import { STRG_PROD_POLICY, WARE_LOC_TYPE, CORE_PICKING_TYPE, RESERVATION_METHODS } from '@/services/definitions'
+import {
+    STRG_PROD_POLICY,
+    WARE_LOC_TYPE,
+    CORE_PICKING_TYPE,
+    RESERVATION_METHODS,
+
+} from '@/services/definitions'
 import type {
     IDtoUoM,
     IDtoRole,
@@ -6,6 +12,7 @@ import type {
     IDtoProduct,
     IDtoSupplier,
     IDtoWarehouse,
+    IDtoPickingNew,
     IDtoUoMCategory,
     IDtoPickingType,
     IDtoSupplierCat,
@@ -256,6 +263,21 @@ export default function useFactory() {
         }
     }
 
+    const mkPicking = (): IDtoPickingNew => {
+        return {
+            id:                  0,
+            pFromSupplierId:     0,
+            pickingTypeId:       0,
+            pSrcWareLocationId:  0,
+            pDestWareLocationId: 0,
+            pSrcDocument:        undefined,
+            pScheduleDate:       undefined,
+            pShippingPolicy:     '',
+            pResponsibleId:      0,
+            pNotes:              undefined
+        }
+    }
+
     //#endregion ==========================================================================
 
     return {
@@ -277,6 +299,7 @@ export default function useFactory() {
         mkStrgCategory,                 // warehouse storage location category
         mkStrgCatProductLine,
 
+        mkPicking,
         mkPickType,
     }
 }

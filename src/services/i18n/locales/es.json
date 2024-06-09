@@ -185,6 +185,7 @@
     "fields-common": {
       "name":              "Nombre",
       "cloning-state":     "[ CLONANDO ]",
+      "contact":           "Contacto",
       "country":           "País",
       "country-state":     "Prov/Est",
       "website":           "Web",
@@ -220,7 +221,7 @@
     "placeholders":  {
       "website":                       "www.elsitiowebaqui.com",
       "username":                      "nickname__78",
-      "select":                        " - selección - ",
+      "select":                        " - seleccionar - ",
       "address":                       "Prado #34 Apt 2, e/ Gervasio y Escobar, Centro Habana",
       "zip":                           "######",
       "staff-firstname":               "escriba el @:form.fields-common.name del empleado",
@@ -243,7 +244,7 @@
       "staffs":                        " - @:entities.staff.name - ",
       "product-uom":                   " - @:entities.uom.name - ",
       "product-name":                  "... helado de chocolate ??",
-      "product-supplier":              " - Selecciona @:entities.supplier.name - ",
+      "product-supplier":              " - selecconar @:entities.supplier.name - ",
       "product-currency":              "- moneda -",
       "warehouse-name":                "MiNegocio",
       "warehouse-code":                "A",
@@ -434,7 +435,10 @@
     },
     "transfer":      {
       "name":         "Transferencia",
-      "section-name": "@:entities.transfer.name"
+      "section-name": "@:entities.transfer.name",
+      "tool-tips":    {
+        "contact" : "Contacto del proveedor para esta transferencia. Si aplica, pude ser el propio negocio"
+      }
     },
     "replenishment": {
       "name":         "Reabastecimiento",

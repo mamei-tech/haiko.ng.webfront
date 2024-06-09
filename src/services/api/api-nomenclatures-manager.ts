@@ -10,7 +10,7 @@ import type {
     IProdCatBasic,
     IUoMBasic,
     IProdUoM,
-    IWareLocationBasic, IWarehouseBasic, IStrgCategoryBasic
+    IWareLocationBasic, IWarehouseBasic, IStrgCategoryBasic, IPickingTypeBasic
 } from '@/services/definitions'
 
 
@@ -115,6 +115,10 @@ export class ApiNomenclaturesMng {
      */
     public static getSuppliersM(): AxiosPromise<IUoMBasic[]> {
         return axios.get(`${url}/supplier/list`)
+    }
+
+    public static getPickingTypeM(): AxiosPromise<IPickingTypeBasic[]> {
+        return axios.get(`${url}/picking/type/list`)
     }
 
     /**

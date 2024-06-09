@@ -40,3 +40,19 @@ export interface IDtoPickingType extends IPickingTypeRow {
 export interface ICorePickingType {
     id:string
 }
+
+
+/**
+ * Represent a inventory Picking data transfer object on its creation
+ */
+export interface IDtoPickingNew extends IIndexable {
+    pFromSupplierId: number,                     // TODO check inventory_picking ContactId field 'fixme' (on backend) (migr_240412.1426_create_picking.sql file)
+    pickingTypeId: number,
+    pSrcWareLocationId: number,
+    pDestWareLocationId: number,
+    pSrcDocument: string | undefined,
+    pScheduleDate: Date | undefined,
+    pShippingPolicy: string,
+    pResponsibleId: number,
+    pNotes: string | undefined
+}

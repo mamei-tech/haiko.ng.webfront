@@ -28,7 +28,7 @@ import { VSchemaStaffCreate, VSchemaStaffEdit } from '@/services/definitions/val
 
 import type { Problem, ErrorDictionary } from '@/services/definitions/types-errors'
 import type { IWarehouseRow, IDtoWarehouse, IWarehouseBasic } from '@/services/definitions/entities/types-warehouse'
-import type { IPickingTypeBasic, IPickingTypeRow, IDtoPickingType, ICorePickingType } from '@/services/definitions/entities/types-picking'
+import type { IPickingTypeBasic, IPickingTypeRow, IDtoPickingType, ICorePickingType, IDtoPickingNew } from '@/services/definitions/entities/types-picking'
 import type { IWareLocationRow, IDtoWareLocation, IWareLocationBasic, IWareLocationType } from '@/services/definitions/entities/types-warelocation'
 import type { IStrgCategoryRow, IDtoStrgCategory, IStrgCatProdLine, IStrgCategoryBasic } from '@/services/definitions/entities/types-strgcategory'
 import type { TOpsKind, Function0, Function1, IColumnHeader, IDataTableQuery, ITableChkEmit, TBulkAction, ById, IIndexable, IChecked, Filter, IDataListBasicResponse, TFormMode, TActionKind, IdsArray, IBulkData, IMultiselectBasic, IShell, IScrollInfo, IDataTablePage, ICellUpdate, IvCard, IExtFilter, IExtFilterGroup } from './types-common'
@@ -111,7 +111,7 @@ export {
     // =====  ENTITIES =====
 
     // inventory picking
-    IPickingTypeBasic, IPickingTypeRow, IDtoPickingType, ICorePickingType,
+    IPickingTypeBasic, IPickingTypeRow, IDtoPickingType, ICorePickingType, IDtoPickingNew,
 
     // warehouse (storage) locations
     IWareLocationRow, IDtoWareLocation, IWareLocationBasic, IWareLocationType,

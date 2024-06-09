@@ -21,6 +21,7 @@ import type {
     IWareLocationBasic, IWarehouseBasic, IWareLocationType,
     IStrgCategoryBasic,
     ICorePickingType,
+    IPickingTypeBasic
 } from '@/services/definitions'
 
 
@@ -34,20 +35,21 @@ export const useSt_Nomenclatures = defineStore({
     id: 'nomenc',
 
     state: (): IStaffState => ({
-        uom:            [] as IUoMBasic[],
-        roles:          [] as IRoleBasic[],
-        suppCat:        [] as ISuppCatBasic[],
-        prodCat:        [] as IProdCatBasic[],
-        prodUoM:        [] as IProdUoM[],
-        countries:      [] as ICountryBasic[],
-        states:         [] as ICountryStatesBasic[],
-        staffs:         [] as IStaffBasic[],
-        suppliers:      [] as ISupplierBasic[],
-        currencies:     [] as ICurrencyBasic[],
-        wlocations:     [] as IWareLocationBasic[],
-        warehouses:     [] as IWarehouseBasic[],
-        strgCategories: [] as IStrgCategoryBasic[],
-        wlocationsTypes:  [
+        uom:                [] as IUoMBasic[],
+        roles:              [] as IRoleBasic[],
+        suppCat:            [] as ISuppCatBasic[],
+        prodCat:            [] as IProdCatBasic[],
+        prodUoM:            [] as IProdUoM[],
+        countries:          [] as ICountryBasic[],
+        states:             [] as ICountryStatesBasic[],
+        staffs:             [] as IStaffBasic[],
+        suppliers:          [] as ISupplierBasic[],
+        pickingTypes:       [] as IPickingTypeBasic[],
+        currencies:         [] as ICurrencyBasic[],
+        wlocations:         [] as IWareLocationBasic[],
+        warehouses:         [] as IWarehouseBasic[],
+        strgCategories:     [] as IStrgCategoryBasic[],
+        wlocationsTypes:    [
             { id: WARE_LOC_TYPE.INTERNAL },
             { id: WARE_LOC_TYPE.VIEW },
             { id: WARE_LOC_TYPE.SUPPLIER },
@@ -56,7 +58,7 @@ export const useSt_Nomenclatures = defineStore({
             { id: WARE_LOC_TYPE.INVENTORY },
             { id: WARE_LOC_TYPE.PRODUCTION }
         ],
-        corePickingType: [
+        corePickingType:    [
             { id: CORE_PICKING_TYPE.INCOMING },
             { id: CORE_PICKING_TYPE.OUTGOING },
             { id: CORE_PICKING_TYPE.TRANSFER },
@@ -180,6 +182,17 @@ export const useSt_Nomenclatures = defineStore({
         getSupplier4Select: (state): IMultiselectBasic[] => {
             return state.suppliers.map((stateData: ISupplierBasic) => {
                 return { value: stateData.id, label: stateData.sName }
+            })
+        },
+
+        /**
+         * Get pickings types from the state in a multiselect component format ({value: ___, label: ___})
+         *
+         * @param state Nomenclatures state
+         */
+        getPickingTypes4Select: (state): IMultiselectBasic[] => {
+            return state.pickingTypes.map((stateData: IPickingTypeBasic) => {
+                return { value: stateData.id, label: stateData.tName ?? '' }
             })
         },
 
@@ -456,6 +469,22 @@ export const useSt_Nomenclatures = defineStore({
         },
 
         /**
+         * Tries to get the inventory picking types defined on the system. The picking type list will have only minimum data
+         */
+        async reqNmcPickingTypes(): Promise<void> {
+
+            return await new Promise<void>((resolve, reject) => {
+                ApiNomenclaturesMng.getPickingTypeM()
+                .then((response:any) => {
+
+                    this.pickingTypes = response.data
+                    resolve()
+
+                }).catch(error => { reject(error) })
+            })
+        },
+
+        /**
          * Tries to get the currency defined on the system. The currency list will have only minimum data
          */
         async reqNmcCurrency(): Promise<void> {
@@ -535,6 +564,7 @@ interface IStaffState {
     states:             Array<ICountryStatesBasic>,                // states belonging to a determined / defined countries
     staffs:             Array<IStaffBasic>,
     suppliers:          Array<ISupplierBasic>,
+    pickingTypes:       Array<IPickingTypeBasic>,
     currencies:         Array<ICurrencyBasic>,
     wlocations:         Array<IWareLocationBasic>
     warehouses:         Array<IWarehouseBasic>,
