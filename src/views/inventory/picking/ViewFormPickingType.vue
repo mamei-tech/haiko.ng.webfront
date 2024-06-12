@@ -93,6 +93,7 @@
                     <div class="row">
                       <label class="text-sm-left text-md-right col-md-3 col-form-label">
                         {{ $t( 'entities.pickingtype.def-src-wlocation-id' ) }}
+                        <CmpTooltip use-v-html is-form-label-mode :tip="$t('entities.pickingtype.tool-tips.default-src-loc')" />
                       </label>
                       <div class="col-md-9">
                         <CmpMultiselectField :placeholder="$t('form.placeholders.picking-type-wlocation-src')"
@@ -102,7 +103,6 @@
                                              class="mb-2"
                                              closeOnSelect
                                              ref="ref_selectSrcWLocation"
-                                             v-on:changehapend="h_checkNoSame('src')"
                         >
 
                           <!--option coming from slot child component ('slots props') [option] -->
@@ -124,6 +124,7 @@
                     <div class="row">
                       <label class="text-sm-left text-md-right col-md-3 col-form-label">
                         {{ $t( 'entities.pickingtype.def-dest-wlocation-id' ) }}
+                        <CmpTooltip use-v-html is-form-label-mode :tip="$t('entities.pickingtype.tool-tips.default-src-loc')" />
                       </label>
                       <div class="col-md-9">
                         <CmpMultiselectField :placeholder="$t('form.placeholders.picking-type-wlocation-des')"
@@ -133,7 +134,6 @@
                                              class="mb-2"
                                              closeOnSelect
                                              ref="ref_selectDestWLocation"
-                                             v-on:changehapend="h_checkNoSame('dest')"
                         >
 
                           <!--option coming from slot child component ('slots props') [option] -->
@@ -257,7 +257,8 @@
 </template>
 
 <script lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, defineComponent } from 'vue'
+import type { ComputedRef } from 'vue'
+import { computed, defineComponent, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useForm } from 'vee-validate'
 import { i18n } from '@/services/i18n'
 import { useRoute, useRouter } from 'vue-router'
@@ -266,7 +267,17 @@ import { useToast } from 'vue-toastification'
 import useFactory from '@/services/composables/useFactory'
 import useToastify from '@/services/composables/useToastify'
 import { ApiPickingType } from '@/services/api/inventory/api-picking-type'
-import { CORE_PICKING_TYPE, ENTITY_NAMES, FMODE, KEYS, OPS_KIND_STR, RESERVATION_METHODS, RoutePathNames, VSchemaPicking } from '@/services/definitions'
+import type { IDtoPickingType, IMultiselectBasic, TFormMode } from '@/services/definitions'
+import {
+    CORE_PICKING_TYPE,
+    ENTITY_NAMES,
+    FMODE,
+    KEYS,
+    OPS_KIND_STR,
+    RESERVATION_METHODS,
+    RoutePathNames,
+    VSchemaPicking
+} from '@/services/definitions'
 import {
     CmpBaseButton,
     CmpBaseCheckbox,
@@ -279,9 +290,6 @@ import {
     CmpTooltip,
     CmpVeeCheckbox
 } from '@/components'
-
-import type { ComputedRef } from 'vue'
-import type { IDtoPickingType, TFormMode } from '@/services/definitions'
 
 
 export default defineComponent({
@@ -314,12 +322,17 @@ export default defineComponent({
 
         // html references
         const ref_selectWarehouse = ref<InstanceType<typeof CmpMultiselectField>>()          // reference to warehouse
-        const ref_selectSrcWLocation = ref<InstanceType<typeof CmpMultiselectField>>()       // reference to warehouse storage locations
-        const ref_selectDestWLocation = ref<InstanceType<typeof CmpMultiselectField>>()      // reference to warehouse storage locations
+        const ref_selectSrcWLocation = ref<InstanceType<typeof CmpMultiselectField>>()       // reference to warehouse storage source locations
+        const ref_selectDestWLocation = ref<InstanceType<typeof CmpMultiselectField>>()      // reference to warehouse storage destination locations
 
         // helpers & flags
         const { mkPickType } = useFactory()
         const { tfyCRUDSuccess, tfyCRUDFail, tfyBasicWarning } = useToastify(toast)
+
+        let noCheckTheSame: boolean = false
+        let defaultStockLocSelectValue: IMultiselectBasic = { value: 0, label: '' }
+        let defaultCustomerLocSelectValue: IMultiselectBasic = { value: 0, label: '' }
+        let defaultSuppliersLocSelectValue: IMultiselectBasic = { value: 0, label: '' }
 
         // form data
         const doWeNeed2ShowResMethod = ref<boolean>(false);                            // do we need to show products reservations methods form fields ?
@@ -353,6 +366,8 @@ export default defineComponent({
 
             st_nomenclatures.reqNmcWareLocations()
             .catch(err => tfyCRUDFail(err, ENTITY_NAMES.WARELOCATION, OPS_KIND_STR.REQUEST))
+
+            hpr_fillLoc4Select()
 
             if (cpt_fMode.value === FMODE.CREATE as TFormMode) return
 
@@ -474,6 +489,21 @@ export default defineComponent({
             })
         }
 
+        /**
+         * Intents to fill default locations holders compliant with the select ui component value structure
+         *
+         * TIP this method is heavily dependable of the **default** location identifiers of the backend. So, if the seeder for the default location change the current orders of them, we have to update this method.
+         *     Otherwise, this may malfunction the desired logic.
+         */
+        const hpr_fillLoc4Select = () => {
+
+            st_nomenclatures.getWareLocations4Select.map(( selectValue: IMultiselectBasic ) => {
+                if (selectValue.value == 4) defaultSuppliersLocSelectValue = selectValue
+                if (selectValue.value == 5) defaultCustomerLocSelectValue = selectValue
+                if (selectValue.value == 8) defaultStockLocSelectValue = selectValue
+            })
+        }
+
         //#endregion ==========================================================================
 
         //region ======= EVENTS HANDLERS & WATCHERS ===========================================
@@ -482,17 +512,38 @@ export default defineComponent({
         // .catch(err => tfyCRUDFail(err, ENTITY_NAMES.WARELOCATION, OPS_KIND_STR.REQUEST))
 
         const h_coreTypeChange = ( type: CORE_PICKING_TYPE ) => {
-            type == CORE_PICKING_TYPE.INCOMING
-                ? doWeNeed2ShowResMethod.value = false
-                : doWeNeed2ShowResMethod.value = true
+            // type == CORE_PICKING_TYPE.INCOMING
+            //     ? doWeNeed2ShowResMethod.value = false
+            //     : doWeNeed2ShowResMethod.value = true
+
+            if (ref_selectSrcWLocation.value === undefined || ref_selectDestWLocation.value === undefined) return
+
+            if (type == CORE_PICKING_TYPE.INCOMING)
+            {
+                ref_selectSrcWLocation.value.setSelectedValue(defaultSuppliersLocSelectValue)
+                ref_selectDestWLocation.value.setSelectedValue(defaultStockLocSelectValue)
+
+                doWeNeed2ShowResMethod.value = false
+                return
+            }
+            else if (type == CORE_PICKING_TYPE.OUTGOING)
+            {
+                ref_selectSrcWLocation.value.setSelectedValue(defaultStockLocSelectValue)
+                ref_selectDestWLocation.value.setSelectedValue(defaultCustomerLocSelectValue)
+            }
+            else {
+                ref_selectSrcWLocation.value.clearSelection()
+                ref_selectDestWLocation.value.clearSelection()
+            }
+
+            doWeNeed2ShowResMethod.value = true
         }
 
         /**
          * We cant allow that the inventory warehouse locations be the same, so we check that when the selection
          * event happened in each inventory locations component
-         * @param triggerCmp the trigger multiselect component of the inventory location (we hace 2: source location and destination location)
          */
-        const h_checkNoSame = ( triggerCmp: string ) => {
+        const h_checkNoSame = () => {
 
             if(ref_selectWarehouse.value && ref_selectWarehouse.value.getValue() == null) return                                // warehouse selection got cleared
             if (ref_selectSrcWLocation.value == undefined || ref_selectDestWLocation.value == undefined) return                 // are selectors not undefined
@@ -502,10 +553,10 @@ export default defineComponent({
                     if (ref_selectSrcWLocation.value.getValue() == null && ref_selectDestWLocation.value.getValue()) return     // yes they are the same, but are the same cuz both were cleared (null / no selection)
 
                     tfyBasicWarning(t('toasts.wlocs-cant-be-same'))
-                    triggerCmp == 'src'
-                        ? ref_selectSrcWLocation.value.clearSelection()
-                        : ref_selectDestWLocation.value.clearSelection()
+                    return false
                 }
+
+            return true
         }
 
         /**
@@ -518,6 +569,8 @@ export default defineComponent({
          */
         const h_beforeSubmit = (evt: Event, doWeNeedToStay: boolean) => {
             evt.preventDefault()
+
+            if(!h_checkNoSame()) return
 
             // validating we have at least one location selected, either source or destination location
             if(!hpr_isLocationsValid()) {

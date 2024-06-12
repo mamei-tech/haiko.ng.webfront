@@ -5,7 +5,8 @@ import type { RESERVATION_METHODS } from '@/services/definitions'
  * picking core operation types definitions
  */
 export enum CORE_PICKING_TYPE {
-    INCOMING = 'incoming',
+    EMPTY = '',
+    INCOMING = 'incoming',                  // receipt
     OUTGOING = 'outgoing',
     TRANSFER = 'internal',                  // internal | transfer
     MNFACTRN = 'manufacturing'

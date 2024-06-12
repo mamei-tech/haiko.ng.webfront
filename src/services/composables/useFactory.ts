@@ -248,12 +248,12 @@ export default function useFactory() {
         return {
             id: 0,
 
-            tName:    '',
-            iName:    '',
-            seqCode:  '',
-            pCoreType:    CORE_PICKING_TYPE.INCOMING,
-            isActive: true,
-            tColor:   '#000000',
+            tName:     '',
+            iName:     '',
+            seqCode:   '',
+            pCoreType: CORE_PICKING_TYPE.EMPTY,
+            isActive:  true,
+            tColor:    '#000000',
 
             resMethod:     RESERVATION_METHODS.AT_CONFIRMATION,
             resDaysBefore: undefined,

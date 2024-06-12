@@ -407,7 +407,7 @@
       "section-name": "@:entities.strgcategory.name",
       "prod-policy":  "@:table-headers.strg-prod-policy"
     },
-    "pickingtype":   {
+    "pickingtype": {
       "name":                  "Tipo d Movimiento",
       "section-name":          "@:entities.pickingtype.name",
       "iname":                 "Nombre Interno",
@@ -419,7 +419,9 @@
       "tool-tips":             {
         "res-days-before": "Número máximo de días que se debe reservar el producto, antes de la fecha establecida en los movimientos de este tipo",
         "res-method":      "Cómo debe realizarse la reserva de los productos bajo este tipo de movimiento",
-        "iname":           "Nombre que define cómo el sistema identifica internametne este tipo de movimiento de inventario"
+        "iname":           "Nombre que define cómo el sistema identifica internamente este tipo de movimiento de inventario",
+        "default-src-loc": "Esta es la ubicación de origen predeterminada cuando se crea un picking (trasferencia de inventario) manualmente con este tipo de operación. Sin embargo, es posible cambiarla o que las rutas pongan otra ubicación. Si está vacía, se buscará la ubicación del proveedor en el socio.",
+        "default-dst-loc": "Esta es la ubicación de destino predeterminada cuando se crea un picking (trasferencia de inventario) manualmente con este tipo de operación. Sin embargo, es posible cambiarla o que las rutas pongan otra ubicación. Si está vacía, se buscará la ubicación del cliente en el socio."
       },
       "core-types":            {
         "incoming":      "entrada",
