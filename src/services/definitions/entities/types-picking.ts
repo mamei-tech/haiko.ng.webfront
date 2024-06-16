@@ -15,6 +15,9 @@ export enum CORE_PICKING_TYPE {
 
 export interface IPickingTypeBasic extends IIndexable {
     tName: string | undefined,
+
+    defSrcWLocationID: number | undefined,      // default warehouse location as source for the picking operation
+    defDestWLocationID: number | undefined      // default warehouse location as destination for the picking operation
 }
 
 /**
@@ -31,8 +34,6 @@ export interface IDtoPickingType extends IPickingTypeRow {
     pCoreType: CORE_PICKING_TYPE,               // internal code
     resMethod: RESERVATION_METHODS,
     resDaysBefore: number | undefined,
-    defSrcWLocationID: number | undefined,      // default warehouse location as source for the picking operation
-    defDestWLocationID: number | undefined      // default warehouse location as destination for the picking operation
 }
 
 /**

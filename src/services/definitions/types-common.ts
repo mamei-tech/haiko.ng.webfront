@@ -165,7 +165,7 @@ export interface IColumnHeader {
  * Describe a dictionary mapped by the object ids or keys
  */
 export type ById<T> = {
-    [ id: number ]: T
+    [ id: number | string ]: T
 }
 
 /***

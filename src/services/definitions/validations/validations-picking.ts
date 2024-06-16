@@ -8,8 +8,6 @@ import {
 } from '@/services/definitions/validations/validations-commons'
 
 
-
-
 const { t } = i18n.global
 
 /**
