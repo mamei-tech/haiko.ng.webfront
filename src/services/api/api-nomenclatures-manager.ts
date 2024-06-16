@@ -146,7 +146,7 @@ export class ApiNomenclaturesMng {
      */
     public static getWareLocationsM( wareID: number = 0 ): AxiosPromise<IWareLocationBasic[]> {
         return wareID <= 0
-            ? axios.get(`${ url }/warehouse/location/list`)                         // filtered, LFullname (field) = name of the warehouse + warelocation full name
+            ? axios.get(`${ url }/warehouse/location/list`)                         // filtered, LFullname (field) = warehouse name  + warelocation full name
             : axios.get(`${ url }/warehouse/${ wareID }/location/list`)
     }
 

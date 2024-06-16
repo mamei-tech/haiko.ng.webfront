@@ -262,6 +262,20 @@ export const useSt_Nomenclatures = defineStore({
         },
 
         /**
+         * Map the Picking Types to a dictionary where the 'identifier' is the key(index) of the IPickingTypeBasic object
+         *
+         * @param state Nomenclatures state
+         */
+        getPickingTypeByIdMap: (state): ById<IPickingTypeBasic> => toDicIds(state.pickingTypes),
+
+        /**
+         * Map the inventory warehouse location to a dictionary where the 'identifier' is the key(index) of the IWareLocationBasic object
+         *
+         * @param state Nomenclatures state
+         */
+        getWareLocByIdMap: (state): ById<IWareLocationBasic> => toDicIds(state.wlocations),
+
+        /**
          * Map the roles to a dictionary where the RoleId is the key of the role value (rName, role name)
          *
          * @param state Nomenclatures state
