@@ -33,6 +33,7 @@ export enum ENTITY_NAMES {
     STAFF = 'staff',
     ROLE = 'role',
     COUNTRY = 'country',
+    COMPANY = 'company',
     UOMCATEGORY = 'uomcatetgory',
     UOM = 'unit',
     SUPPLIER_CAT = 'supplier-cat',

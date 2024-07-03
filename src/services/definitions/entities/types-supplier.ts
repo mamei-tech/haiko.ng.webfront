@@ -21,13 +21,12 @@ export interface IDtoSupplierCat extends ISupplierCatRow {
  * Interface for describing a Supplier Category row on the datatable
  */
 export interface ISupplierRow extends IIndexable {
-    sName: string,
-    contactName: string | undefined,
-    sPhone: string | undefined,
+    pName: string,
+    phone: string | undefined,
     cell: string,
     isActive: boolean,
-    sCategoryID: number | string
-    pCount: number
+    suppCategoryID: number | string
+    pCount: number | undefined
     countryCode: string | undefined,
 }
 
@@ -35,22 +34,23 @@ export interface ISupplierRow extends IIndexable {
  * Supplier DTO
  */
 export interface IDtoSupplier extends ISupplierRow {
-    sName: string,
-    sContactNotes: string | undefined,
-    sInternalNotes: string | undefined,
-    sCategoryID: number | string,
+    internalNotes: string | undefined,
+    suppCategoryID: number | string,
 
-    sEmail: string | undefined,
-    sWebSite: string | undefined,
-    sAddress: string | undefined,
-    stateCode: string | undefined,
+    email: string | undefined,
+    website: string | undefined,
+    street: string | undefined,
+    city: string | undefined,
     zip?: number,
+    stateCode: string | undefined,
+    jobPosition: string | undefined,
+    parentID: number | string,
 
     isCompany: boolean,
 
-    purchasesCountPend: number,
-    purchasesCountTotal: number,
-    purchasesCountValue: number
+    purchasesCountPend: number | undefined,
+    purchasesCountTotal: number | undefined,
+    purchasesCountValue: number | undefined
 }
 
 /**
@@ -70,7 +70,7 @@ export interface ISuppCatBasic extends IIndexable {
  */
 export interface ISupplierBasic extends IIndexable {
     /**
-     * Supplier Name
+     * Supplier [display] Name
      */
-    sName: string
+    cmpDisplayName: string,
 }

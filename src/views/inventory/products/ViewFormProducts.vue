@@ -971,7 +971,7 @@ export default defineComponent({
                 delete supplier.id                                                              // only relevant in the front, it will not be needed in the backend
 
                 if (supplier.supplierId)                                                        // seeking for the name of the supplier
-                    supplier.sName = st_nomenclatures.getSuppByMapId[ supplier.supplierId ].sName
+                    supplier.sName = st_nomenclatures.getSuppByMapId[ supplier.supplierId ].cmpDisplayName
 
                 // returning modifier supplier
                 return supplier

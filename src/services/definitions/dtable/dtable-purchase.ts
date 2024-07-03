@@ -20,12 +20,11 @@ export const HSupplierCatTable: Partial <IColumnHeader>[] = [
 export const HSupplierTable: Partial <IColumnHeader>[] = [
     { title: '', chk: true, styleWidth: 2 },
     { title: 'id', hidden: true },
-    { title: 'name', navKey: 'sName', sorting: '' },
-    { title: 'contact', navKey: 'contactName', sorting: '', forceEmptyRender: true },
+    { title: 'name', navKey: 'pName', sorting: '' },
     { title: 'cell', navKey: 'cell', sorting: '', forceEmptyRender: true, styleWidth: 10 },
     { title: 'phone', navKey: 'sPhone', sorting: '', forceEmptyRender: true, styleWidth: 10 },
     { title: 'active', styleToCenter: true, navKey: 'isActive', fieldSwitch: true, styleWidth: 5 },
-    { title: 'category', styleToCenter: true, navKey: 'sCategoryID', sorting: '' },
+    { title: 'category', styleToCenter: true, navKey: 'suppCategoryID', sorting: '' },
     { title: 'products', navKey: 'pCount',  sorting: '', styleToCenter: true, styleWidth: 8 },
     { title: 'countryCode', hidden: true },
     {

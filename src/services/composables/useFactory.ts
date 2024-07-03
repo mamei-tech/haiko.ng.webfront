@@ -120,18 +120,20 @@ export default function useFactory() {
 
     const mkSupplier = (): IDtoSupplier => {
         return {
-            id:             0,
-            sName:          '',
-            contactName:    undefined,
-            sContactNotes:  undefined,
-            sInternalNotes: undefined,
-            sCategoryID:    '',
 
-            sEmail:      undefined,
-            sPhone:      undefined,
+            id:             0,
+            pName:          '',
+            internalNotes:  undefined,
+            suppCategoryID: '',
+            parentID:       '',
+
+            email:       undefined,
+            phone:       undefined,
             cell:        '',
-            sWebSite:    undefined,
-            sAddress:    undefined,
+            website:     undefined,
+            jobPosition: undefined,
+            street:      undefined,
+            city:        undefined,
             countryCode: undefined,
             stateCode:   undefined,
             zip:         undefined,

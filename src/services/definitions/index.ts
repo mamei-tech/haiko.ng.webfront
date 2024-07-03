@@ -36,6 +36,7 @@ import type { IStaffRow, IDtoStaff, IStaffBasic } from '@/services/definitions/e
 import type { IRoleBasic, IDtoRole, IPermAssocId, IPermAssoc, IGroupPermsDict } from '@/services/definitions/entities/types-rbac'
 import type { IDtoUoM, IDtoUoMCategory, IUoMBasic } from '@/services/definitions/entities/types-uom'
 import type { ISupplierCatRow, IDtoSupplierCat, ISupplierRow, ISuppCatBasic, IDtoSupplier, ISupplierBasic } from '@/services/definitions/entities/types-supplier'
+import type { ICompanyBasic } from '@/services/definitions/entities/types-company'
 import type { ICountryBasic, ICountryStatesBasic } from '@/services/definitions/entities/types-location'
 import type { IProdUoM, IProductRow, IProdCatBasic, IDtoProduct, IDtoProductSupplierL } from '@/services/definitions/entities/types-product'
 import type { ICurrencyBasic } from '@/services/definitions/entities/types-currency'
@@ -133,6 +134,9 @@ export {
 
     // supplier
     ISupplierCatRow, IDtoSupplierCat, ISupplierRow, ISuppCatBasic, IDtoSupplier, ISupplierBasic,
+
+    // company
+    ICompanyBasic,
 
     // location
     ICountryBasic, ICountryStatesBasic,

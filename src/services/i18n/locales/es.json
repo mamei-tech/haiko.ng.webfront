@@ -189,6 +189,7 @@
       "country":           "País",
       "country-state":     "Prov/Est",
       "website":           "Web",
+      "city":              "Ciudad",
       "address":           "Dirección",
       "change-password":   "Cambiar password",
       "set-password":      "Definir password",
@@ -222,7 +223,8 @@
       "website":                       "www.elsitiowebaqui.com",
       "username":                      "nickname__78",
       "select":                        " - seleccionar - ",
-      "address":                       "Prado #34 Apt 2, e/ Gervasio y Escobar, Centro Habana",
+      "address":                       "Prado #34 Apt 2, e/ Gervasio y Escobar",
+      "city":                          "Albuquerque",
       "zip":                           "######",
       "staff-firstname":               "escriba el @:form.fields-common.name del empleado",
       "staff-lastname":                "escriba los apellidos del empleado",
@@ -236,7 +238,9 @@
       "search":                        "buscar",
       "email":                         "correo.{'@'}.dominio.que",
       "uom-type-select":               "ratio de conversión",
-      "suppliers-company-name":        "ej. La Primordial",
+      "suppliers-company-name":        "ej. A.C.M.E",
+      "suppliers-individual-name":     "ej. Jhon Doe",
+      "suppliers-job-position":        "ej. Gestor de Ventas",
       "supplier-cat-name":             "@:form.fields-common.name para la categoría de proveedores",
       "supplier-contact":              "Nombre de contacto con el proveedor, ej. Pepe Bouza",
       "supplier-contact-notes":        "Notas acerca del nombre del contacto",
@@ -360,11 +364,11 @@
       "name":         "Compras {ref}",
       "section-name": "Solicitudes de Compras"
     },
-    "supplier":      {
+    "supplier": {
       "name":                       "Proveedor {ref}",
+      "job-position":               "Cargo",
       "section-name":               "@:{'entities.supplier.name'}",
-      "sContactNotes":              "Notas de Contacto",
-      "sInternalNotes":             "Notas Internas",
+      "internal-notes":             "Notas Internas",
       "isCompany":                  "@:data.company / @:data.individual",
       "tab-purchases":              "@:entities.purchase.name",
       "tab-contact-plus":           "+ Info d' Contacto",
@@ -372,6 +376,9 @@
       "stat-purchases-pend":        "Compras pendientes",
       "stat-purchases-count":       "Total de compras",
       "stat-purchases-count-value": "Valor total de compras"
+    },
+    "company":  {
+      "name": "@:data.company"
     },
     "supplier-cat":  {
       "name":         "Categorías de Proveedor {ref}",

@@ -8,20 +8,21 @@ import { ApiNomenclaturesMng } from '@/services/api/api-nomenclatures-manager'
 import type {
     ById,
     Function1,
-    ICountryBasic,
-    ICountryStatesBasic,
-    ICurrencyBasic,
-    IMultiselectBasic,
-    IProdCatBasic, IProdUoM,
+    IUoMBasic,
     IRoleBasic,
     IStaffBasic,
+    ICountryBasic,
     ISuppCatBasic,
+    ICompanyBasic,
+    ICurrencyBasic,
     ISupplierBasic,
-    IUoMBasic,
-    IWareLocationBasic, IWarehouseBasic, IWareLocationType,
-    IStrgCategoryBasic,
     ICorePickingType,
-    IPickingTypeBasic
+    IPickingTypeBasic,
+    IMultiselectBasic,
+    IStrgCategoryBasic,
+    ICountryStatesBasic,
+    IProdCatBasic, IProdUoM,
+    IWareLocationBasic, IWarehouseBasic, IWareLocationType
 } from '@/services/definitions'
 
 
@@ -49,6 +50,7 @@ export const useSt_Nomenclatures = defineStore({
         wlocations:         [] as IWareLocationBasic[],
         warehouses:         [] as IWarehouseBasic[],
         strgCategories:     [] as IStrgCategoryBasic[],
+        companies:          [] as ICompanyBasic[],
         wlocationsTypes:    [
             { id: WARE_LOC_TYPE.INTERNAL },
             { id: WARE_LOC_TYPE.VIEW },
@@ -181,7 +183,18 @@ export const useSt_Nomenclatures = defineStore({
          */
         getSupplier4Select: (state): IMultiselectBasic[] => {
             return state.suppliers.map((stateData: ISupplierBasic) => {
-                return { value: stateData.id, label: stateData.sName }
+                return { value: stateData.id, label: stateData.cmpDisplayName }
+            })
+        },
+
+        /**
+         * Get defined companies from the state in a multiselect component format ({value: ___, label: ___})
+         *
+         * @param state Nomenclatures state
+         */
+        getCompanies4Select: (state): IMultiselectBasic[] => {
+            return state.companies.map((stateData: ICompanyBasic) => {
+                return { value: stateData.id, label: stateData.cmpDisplayName }
             })
         },
 
@@ -418,6 +431,23 @@ export const useSt_Nomenclatures = defineStore({
         },
 
         /**
+         * Tries to fetch the defined companies list from the backend
+         */
+        async reqNmcCompanies (): Promise<void> {
+
+            return await new Promise<void>((resolve, reject) => {
+                ApiNomenclaturesMng.getCompanyM()
+                .then((response:any) => {
+
+                    this.companies = response.data
+                    resolve()
+
+                }).catch(error => { reject(error) })
+            })
+
+        },
+
+        /**
          * Tries to get the countries from the backend
          */
         async reqNmcCountries () : Promise<void> {
@@ -582,6 +612,7 @@ interface IStaffState {
     currencies:         Array<ICurrencyBasic>,
     wlocations:         Array<IWareLocationBasic>
     warehouses:         Array<IWarehouseBasic>,
+    companies:          Array<ICompanyBasic>,
     wlocationsTypes:    Array<IWareLocationType>,
     strgCategories:     Array<IStrgCategoryBasic>,
     corePickingType:    Array<ICorePickingType>,

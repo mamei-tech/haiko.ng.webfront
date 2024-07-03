@@ -10,7 +10,7 @@ import type {
     IProdCatBasic,
     IUoMBasic,
     IProdUoM,
-    IWareLocationBasic, IWarehouseBasic, IStrgCategoryBasic, IPickingTypeBasic
+    IWareLocationBasic, IWarehouseBasic, IStrgCategoryBasic, IPickingTypeBasic, ICompanyBasic
 } from '@/services/definitions'
 
 
@@ -115,6 +115,15 @@ export class ApiNomenclaturesMng {
      */
     public static getSuppliersM(): AxiosPromise<IUoMBasic[]> {
         return axios.get(`${url}/supplier/list`)
+    }
+
+    /**
+     * Get a list of Company defined on the system
+     * - The retrieve list just will have minimum data (sName) Check ISupplierBasic
+     * - M == minimum / basic information
+     */
+    public static getCompanyM(): AxiosPromise<ICompanyBasic[]> {
+        return axios.get(`${url}/company/list`)
     }
 
     public static getPickingTypeM(): AxiosPromise<IPickingTypeBasic[]> {

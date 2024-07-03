@@ -40,7 +40,7 @@ import { useToast } from 'vue-toastification'
 import useToastify from '@/services/composables/useToastify'
 import useDialogfy from '@/services/composables/useDialogfy'
 import { IsEmptyObj, isNumber } from '@/services/helpers/help-defaults'
-import { ApiSupplier } from '@/services/api/purchase/api-supplier'
+import { ApiSupplier } from '@/services/api/resources-infraestructure/api-supplier'
 import { CmpCard, CmpDataTable } from '@/components'
 import { useSt_Pagination } from '@/stores/pagination'
 import { useSt_Nomenclatures } from '@/stores/nomenc'
@@ -85,7 +85,7 @@ export default defineComponent({
         const abar_mode: DT_ACTIONBAR_MODE = DT_ACTIONBAR_MODE.TOGSTATUS                    // datatable action bar mode
         const abutton_mode: DT_ACTION_BUTTON_MODE = DT_ACTION_BUTTON_MODE.JEDINDEL          // datatable button mode
         const columns = ref<Partial<IColumnHeader>[]>(HSupplierTable)                       // entity customized datatab
-        const headerFilters = [ 'sCategoryID', 'isActive' ]                                 // datatable filters  !!! you must use the real field names (nav keys in the HStaffTable object)
+        const headerFilters = [ 'suppCategoryID', 'isActive' ]                                 // datatable filters  !!! you must use the real field names (nav keys in the HStaffTable object)
 
         const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
         const { dfyConfirmation, dfyShowAlert } = useDialogfy()
@@ -105,8 +105,8 @@ export default defineComponent({
             // this is used to fetch supplier category basic data from the system so we can map the cat identifier to cat name in the datatable column
             st_nomenclatures.reqNmcSuppCat()
             .then(() => {
-                columns.value[7].filterSelectOptions = st_nomenclatures.getSuppCat4Select
-                // the 6th column is 'category' / 'sCategoryID' column. In this datatable this is a (column header) filter
+                columns.value[6].filterSelectOptions = st_nomenclatures.getSuppCat4Select
+                // the 6th column is 'category' / 'suppCategoryID' column. In this datatable this is a (column header) filter
                 // (see filters in the declaration section). So, rather define the 'select options' filter data statically in the
                 // data-datable.ts file, we weed to do it dynamically. Hence this here and no the conventionally
                 // definition in data-datable.ts.
@@ -114,7 +114,7 @@ export default defineComponent({
                 // Regarding the use of '.then()' for the callback, we jus could use async in the hook and later awaited
                 // (await) the getSuppCat4Select() call ... but I like the old fashion way
             })
-            .catch(err => tfyCRUDFail(err, ENTITY_NAMES.SUPPLIER, OPS_KIND_STR.REQUEST))
+            .catch(err => tfyCRUDFail(err, ENTITY_NAMES.SUPPLIER_CAT, OPS_KIND_STR.REQUEST))
 
             a_reqQuery()
             window.addEventListener('keydown', h_keyboardKeyPress)                            // keyboard keys event handler, we need to clean this kind of event when the component are destroyed// keyboard keys event handler, we need to clean this kind of event when the component are destroyed
@@ -171,7 +171,7 @@ export default defineComponent({
 
             // the 'single' case,  used when this is called for switch status toggle intent
             if (ids.length === 1)
-                entityReference = ls_suppliers.value.entityPage.find(suppCat => suppCat.id === ids[0])?.sName ?? ''
+                entityReference = ls_suppliers.value.entityPage.find(suppCat => suppCat.id === ids[0])?.pName ?? ''
 
             ApiSupplier.bulkToggle(ids)
             .then(() => {
@@ -197,9 +197,9 @@ export default defineComponent({
 
             ls_suppliers.value.entityPage = ls_suppliers.value.entityPage.map((row: ISupplierRow) => {
 
-                // there is a chance that this line run, and the sCategoryID field was already mapped to the role name making it a string value so we can used as index anymore, so we have to check first
-                if(isNumber(row.sCategoryID))
-                    row.sCategoryID = st_nomenclatures.getSuppCatByIdMap[+row.sCategoryID].scName
+                // there is a chance that this line run, and the suppCategoryID field was already mapped to the role name making it a string value so we can used as index anymore, so we have to check first
+                if(isNumber(row.suppCategoryID))
+                    row.suppCategoryID = st_nomenclatures.getSuppCatByIdMap[+row.suppCategoryID].scName
 
                 return row
             })
@@ -263,7 +263,7 @@ export default defineComponent({
                 return
             }
 
-            const entityReference = ls_suppliers.value.entityPage.find(supplier => supplier.id === entityId)?.sName ?? ''
+            const entityReference = ls_suppliers.value.entityPage.find(supplier => supplier.id === entityId)?.pName ?? ''
 
             const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.SUPPLIER, entityReference)
             if (wasConfirmed) a_reqDelete(entityId, entityReference)
