@@ -1,5 +1,5 @@
 import { i18n } from '@/services/i18n'
-import { max, min, regex, required, integer, length } from '@vee-validate/rules'
+import { max, min, regex, required, integer, length, min_value, max_value } from '@vee-validate/rules'
 import {
     regHTMLColorNoAlpha,
     regOnlyAlphanumNSpacesWithDots,
@@ -81,6 +81,15 @@ export const VSchemaSupplier = {
         if (!min(value, { length: 3 })) return t('validation.min-length', { length: 3 })
         if (!max(value, { length: 20 })) return t('validation.max-length', { length: 20 })
         if (!regex(value, { regex: regOnlyAlphanumNSpaces })) return t('validation.only-alpha-digits-spaces')
+
+        return true
+    },
+    zip: ( value: string ): boolean | string => {
+        if (!integer(value)) return t('validation.cellphone')
+        if (!min(value, { length: 3 })) return t('validation.min-length', { length: 3 })
+        if (!max(value, { length: 6 })) return t('validation.max-length', { length: 6 })
+        if (!min_value(value, { min: 100 })) return t('validation.min-value', { value: 100 })
+        if (!max_value(value, { max: 999999 })) return t('validation.max-value', { value: 999999 })
 
         return true
     }

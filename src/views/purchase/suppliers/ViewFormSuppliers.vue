@@ -46,58 +46,66 @@
 
               <div class="col-xm-12 col-md-6">
 
-                <!-- supplier name -->
+                <!-- isActive / type -->
+                <div class="row">
+                  <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                    {{ $t( 'data.status' ) }}
+                  </label>
+                  <div class="col-md-3">
+                    <CmpVeeCheckbox name="isActive"
+                                    :checked="values.isActive"
+                                    :labels="[$t('others.available'), $t('others.unavailable')]"
+                    />
+                  </div>
+
+                  <label class="text-sm-left text-md-right col-md-2 col-form-label">
+                    {{ $t( 'entities.supplier.isCompany' ) }}
+                  </label>
+                  <div class="col-md-4">
+                    <CmpVeeCheckbox name="isCompany"
+                                    :checked="values.isCompany"
+                                    :labels="[$t('data.company'), $t('data.individual')]"
+                    />
+                  </div>
+                </div>
+
+                <!-- [ supplier | contact | company ] name -->
                 <div class="row">
                   <label class="text-sm-left text-md-right col-md-3 col-form-label">
                     {{ $t( 'form.fields-common.firstname' ) }}
                   </label>
                   <div class="col-md-9">
                     <CmpBaseInput
-                        :placeholder="$t('form.placeholders.suppliers-company-name')"
-                        name="sName"
-                        type="text"
-
-                    />
-                  </div>
-                </div>
-
-                <!-- commercial contact -->
-                <div class="row">
-                  <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                    {{ $t( 'table-headers.contact' ) }}
-                  </label>
-                  <div class="col-md-9">
-                    <CmpBaseInput
-                        :placeholder="$t('form.placeholders.supplier-contact')"
-                        name="contactName"
+                        :placeholder=" values.isCompany === true ? $t('form.placeholders.suppliers-company-name') : $t('form.placeholders.suppliers-individual-name')"
+                        name="pName"
                         type="text"
                     />
                   </div>
                 </div>
 
-                <!-- contact notes -->
-                <div class="row">
-                  <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                    {{ $t( 'entities.supplier.sContactNotes' ) }}
-                  </label>
-                  <div class="col-md-9">
-                    <CmpBaseInput
-                        :placeholder="$t('form.placeholders.supplier-contact-notes')"
-                        name="sContactNotes"
-                        type="text"
-                    />
-                  </div>
-                </div>
-
-                <!-- address & zip -->
+                <!-- street -->
                 <div class="row">
                   <label class="text-sm-left text-md-right col-md-3 col-form-label">
                     {{ $t( 'form.fields-common.address' ) }}
                   </label>
-                  <div class="col-md-6">
+                  <div class="col-md-9">
                     <CmpBaseInput
                         :placeholder="$t('form.placeholders.address')"
-                        name="sAddress"
+                        name="street"
+                        type="text"
+                    />
+                  </div>
+                </div>
+
+                <!-- city & zip -->
+                <div class="row">
+                  <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                    {{ $t( 'form.fields-common.city' ) }}
+                  </label>
+                  <div class="col-md-5">
+                    <CmpBaseInput
+                        :placeholder="$t('form.placeholders.city')"
+                        name="city"
                         type="text"
                     />
                   </div>
@@ -105,7 +113,7 @@
                   <label class="text-sm-left text-md-right col-md-1 col-form-label">
                     Zip
                   </label>
-                  <div class="col-md-2">
+                  <div class="col-md-3">
                     <CmpBaseInput
                         :placeholder="$t('form.placeholders.zip')"
                         name="zip"
@@ -235,69 +243,16 @@
 
               <div class="col-xm-12 col-md-6">
 
-                <!-- land phone & cell phone -->
-                <div class="row">
+                <!-- company -->
+                <div v-show="values.isCompany === false" class="row">
                   <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                    {{ $t( 'form.fields-common.cell' ) }}
-                  </label>
-                  <div class="col-md-4">
-                    <CmpBaseInput
-                        placeholder="### ## ### ## ##"
-                        name="cell"
-                        type="number"
-                    />
-                  </div>
-
-                  <label class="text-sm-left text-md-right col-md-1 col-form-label">
-                    {{ $t( 'form.fields-common.phone' ) }}
-                  </label>
-                  <div class="col-md-4">
-                    <CmpBaseInput
-                        placeholder="### ## ### ## ##"
-                        name="sPhone"
-                        type="number"
-                    />
-                  </div>
-                </div>
-
-                <!-- email -->
-                <div class="row">
-                  <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                    {{ $t( 'form.fields-common.email' ) }}
-                  </label>
-                  <div class="col-md-9">
-                    <CmpBaseInput
-                        :placeholder="$t('form.placeholders.email')"
-                        name="sEmail"
-                        type="text"
-                    />
-                  </div>
-                </div>
-
-                <!-- website -->
-                <div class="row">
-                  <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                    {{ $t( 'form.fields-common.website' ) }}
-                  </label>
-                  <div class="col-md-9">
-                    <CmpBaseInput
-                        :placeholder="$t('form.placeholders.website')"
-                        name="sWebSite"
-                        type="text"
-                    />
-                  </div>
-                </div>
-
-                <!-- category -->
-                <div class="row">
-                  <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                    {{ $t( 'table-headers.category' ) }}
+                    {{ $t( 'data.company' ) }}
                   </label>
                   <div class="col-md-9">
                     <CmpMultiselectField
-                        :placeholder="$t('form.placeholders.supplier-category').toLowerCase()"
-                        :options="st_nomenclatures.getSuppCat4Select"
-                        name="sCategoryID"
+                        :placeholder="$t('form.placeholders.select').toLowerCase()"
+                        :options="st_nomenclatures.getCompanies4Select"
+                        name="parentID"
                         class="mb-2"
                         closeOnSelect>
 
@@ -317,26 +272,96 @@
                   </div>
                 </div>
 
-                <!-- isActive / type -->
+                <!-- job position -->
+                <div v-show="values.isCompany === false" class="row">
+                  <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                    {{ $t( 'entities.supplier.job-position' ) }}
+                  </label>
+                  <div class="col-md-9">
+                    <CmpBaseInput
+                        :placeholder="$t('form.placeholders.suppliers-job-position')"
+                        name="jobPosition"
+                        type="text"
+                    />
+                  </div>
+                </div>
+
+                <!-- land phone & cell phone -->
                 <div class="row">
                   <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                    {{ $t( 'data.status' ) }}
+                    {{ $t( 'form.fields-common.cell' ) }}
                   </label>
-                  <div class="col-md-3">
-                    <CmpVeeCheckbox name="isActive"
-                                    :checked="values.isActive"
-                                    :labels="[$t('others.available'), $t('others.unavailable')]"
+                  <div class="col-md-4">
+                    <CmpBaseInput
+                        placeholder="### ## ### ## ##"
+                        name="cell"
+                        type="number"
                     />
                   </div>
 
-                  <label class="text-sm-left text-md-right col-md-2 col-form-label">
-                    {{ $t( 'entities.supplier.isCompany' ) }}
+                  <label class="text-sm-left text-md-right col-md-1 col-form-label">
+                    {{ $t( 'form.fields-common.phone' ) }}
                   </label>
                   <div class="col-md-4">
-                    <CmpVeeCheckbox name="isCompany"
-                                    :checked="values.isCompany"
-                                    :labels="[$t('data.company'), $t('data.individual')]"
+                    <CmpBaseInput
+                        placeholder="### ## ### ## ##"
+                        name="phone"
+                        type="number"
                     />
+                  </div>
+                </div>
+
+                <!-- email & website -->
+                <div class="row">
+                  <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                    {{ $t( 'form.fields-common.email' ) }}
+                  </label>
+                  <div class="col-md-4">
+                    <CmpBaseInput
+                        :placeholder="$t('form.placeholders.email')"
+                        name="email"
+                        type="text"
+                    />
+                  </div>
+
+                  <label class="text-sm-left text-md-right col-md-1 col-form-label">
+                    {{ $t( 'form.fields-common.website' ) }}
+                  </label>
+                  <div class="col-md-4">
+                    <CmpBaseInput
+                        :placeholder="$t('form.placeholders.website')"
+                        name="website"
+                        type="text"
+                    />
+                  </div>
+                </div>
+
+                <!-- category -->
+                <div class="row">
+                  <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                    {{ $t( 'table-headers.category' ) }}
+                  </label>
+                  <div class="col-md-9">
+                    <CmpMultiselectField
+                        :placeholder="$t('form.placeholders.supplier-category').toLowerCase()"
+                        :options="st_nomenclatures.getSuppCat4Select"
+                        name="suppCategoryID"
+                        class="mb-2"
+                        closeOnSelect>
+
+                      <!--option coming from slot child component ('slots props') [option] -->
+                      <template #customOption="{option}">
+                        {{ option.label }}
+                      </template>
+
+                      <!-- option coming from slot child component ('slots props') [value] -->
+                      <template #customSingleLabel="{value}">
+                        <div class="multiselect-placeholder">
+                          {{ value.label }}
+                        </div>
+                      </template>
+
+                    </CmpMultiselectField>
                   </div>
                 </div>
 
@@ -436,18 +461,16 @@
                 <CmpTabContent :key="2" :tabId="2" :id="tabs[1].title" :activeTabId="activeTabId">
                   <div>
                     TODO<br><br>
-                    Datos relacionados con las compras [odoo]
-
+                    Gestión de mas de una dirección para el proveedor [odoo]
                   </div>
+
                 </CmpTabContent>
 
                 <!-- TAB data ... -->
                 <CmpTabContent :key="3" :tabId="3" :id="tabs[2].title" :activeTabId="activeTabId">
                   <div>
-                    <div>
-                      TODO<br><br>
-                      Gestión de mas de una dirección para el proveedor [odoo]
-                    </div>
+                    TODO<br><br>
+                    Datos relacionados con las compras [odoo]
                   </div>
                 </CmpTabContent>
 
@@ -456,12 +479,12 @@
                   <!-- notes -->
                   <div class="row">
                     <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                      {{ $t( 'entities.supplier.sInternalNotes' ) }}
+                      {{ $t( 'entities.supplier.internal-notes' ) }}
                     </label>
                     <div class="col-md-9">
                       <CmpTextInput
                           height="150"
-                          name="sInternalNotes"
+                          name="internalNotes"
                           type="text"
                       />
                     </div>
@@ -522,7 +545,7 @@ import { i18n } from '@/services/i18n'
 import { useRoute, useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 import { useSt_Nomenclatures } from '@/stores/nomenc'
-import { ApiSupplier } from '@/services/api/purchase/api-supplier'
+import { ApiSupplier } from '@/services/api/resources-infraestructure/api-supplier'
 import useFactory from '@/services/composables/useFactory'
 import useToastify from '@/services/composables/useToastify'
 import useQrCodes from '@/services/composables/useQrCodes'
@@ -601,31 +624,31 @@ export default defineComponent({
         const statsDataCards = reactive([                                         // form supplier statistics data / information
             {
                 id:       1,
-                title:    values.pCount.toString(),
+                title:    values.pCount === undefined ? 0 : values.pCount.toString(),
                 subTitle: t('entities.supplier.stat-products'),
-                type:     values.pCount <= 0 ? 'warning' : 'success',
+                type:     values.pCount === undefined || values.pCount <= 0 ? 'warning' : 'success',
                 icon:     'tim-icons icon-components'
                 // footer:   `<i class="tim-icons icon-zoom-split"></i></i> Update Now`
             },
             {
                 id:       2,
-                title:    values.purchasesCountPend.toString(),
+                title:    values.purchasesCountPend === undefined ? 0 : values.purchasesCountPend.toString(),
                 subTitle: t('entities.supplier.stat-purchases-pend'),
-                type:     values.purchasesCountPend <= 0 ? 'warning' : 'success',
+                type:     values.purchasesCountPend === undefined || values.purchasesCountPend <= 0 ? 'warning' : 'success',
                 icon:     'tim-icons icon-watch-time'
             },
             {
                 id:       3,
-                title:    values.purchasesCountTotal.toString(),
+                title:    values.purchasesCountTotal === undefined ? 0 : values.purchasesCountTotal.toString(),
                 subTitle: t('entities.supplier.stat-purchases-count'),
-                type:     values.purchasesCountTotal <= 0 ? 'danger' : 'info',
+                type:     values.purchasesCountTotal === undefined || values.purchasesCountTotal <= 0 ? 'danger' : 'info',
                 icon:     'tim-icons icon-cart'
             },
             {
                 id:       4,
                 title:    `$ ${ values.purchasesCountValue }`,
                 subTitle: t('entities.supplier.stat-purchases-count-value'),
-                type:     values.purchasesCountValue <= 0 ? 'danger' : 'info',
+                type:     values.purchasesCountValue === undefined || values.purchasesCountValue <= 0 ? 'danger' : 'info',
                 icon:     'tim-icons icon-money-coins'
             }
         ])
@@ -643,6 +666,8 @@ export default defineComponent({
          * Manually setting the needed values is way cleaner than the other way around. This is needed mainly because api call is asynchronous.
          */
         onMounted(async () => {
+
+            await st_nomenclatures.reqNmcCompanies().catch(err => tfyCRUDFail(err, ENTITY_NAMES.COMPANY, OPS_KIND_STR.REQUEST))
 
             // create mode
             if (cpt_fMode.value === FMODE.CREATE as TFormMode)
@@ -686,7 +711,7 @@ export default defineComponent({
 
             ApiSupplier.reqInsSupplier(newSupplier)
             .then(() => {
-                tfyCRUDSuccess(ENTITY_NAMES.SUPPLIER, OPS_KIND_STR.ADDITION, newSupplier.sName)
+                tfyCRUDSuccess(ENTITY_NAMES.SUPPLIER, OPS_KIND_STR.ADDITION, newSupplier.pName)
 
                 // so now what ?
                 if (!doWeNeedToStay) nav_back()                                              // so we are going back to the data table
@@ -715,7 +740,7 @@ export default defineComponent({
 
             ApiSupplier.reqUpdateSupplier(editedSupplier)
             .then(() => {
-                tfyCRUDSuccess(ENTITY_NAMES.SUPPLIER, OPS_KIND_STR.UPDATE, editedSupplier.sName)
+                tfyCRUDSuccess(ENTITY_NAMES.SUPPLIER, OPS_KIND_STR.UPDATE, editedSupplier.pName)
 
                 // so now what ?
                 if(!doWeNeedToStay) nav_back()                                  // so we are going back to the data table
@@ -765,8 +790,25 @@ export default defineComponent({
          * Form data sanitation method so we can clean the fields values before submitting
          */
         const hpr_sanitation = (dirtyProduct: IDtoSupplier) => {
+
+            delete dirtyProduct.cmpDisplayName
+
+            if (dirtyProduct.website !== undefined) dirtyProduct.website = dirtyProduct.website.trim()                                                // trimming spaces trailing spaces
+            if (!dirtyProduct.website || dirtyProduct.website == '') delete dirtyProduct.website
             if (dirtyProduct.zip == 0) dirtyProduct.zip = undefined
-            if (!dirtyProduct.sWebSite || dirtyProduct.sWebSite == '') delete dirtyProduct.sWebSite
+            if (dirtyProduct.city === undefined) delete dirtyProduct.city
+            if (dirtyProduct.jobPosition === undefined) delete dirtyProduct.jobPosition
+
+            if(dirtyProduct.isCompany)
+            {
+                delete dirtyProduct.jobPosition
+                dirtyProduct.parentID = ''
+            }
+
+            delete dirtyProduct.pCount
+            delete dirtyProduct.purchasesCountPend
+            delete dirtyProduct.purchasesCountTotal
+            delete dirtyProduct.purchasesCountValue
         }
 
 
@@ -788,13 +830,11 @@ export default defineComponent({
             // handling the submission with vee-validate method
             handleSubmit(formData => {
                 if (cpt_fMode.value == (FMODE.CREATE as TFormMode)) a_create(formData, doWeNeedToStay)
-                if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && isCloning.value && meta.value.dirty) a_create(formData, doWeNeedToStay)       // cloning mode
+                if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && isCloning.value && meta.value.dirty) a_create(formData, doWeNeedToStay)   // cloning mode
                 if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && !isCloning.value && meta.value.dirty) a_edit(formData, doWeNeedToStay)
                 if (cpt_fMode.value == (FMODE.EDIT as TFormMode) && !meta.value.dirty) nav_back()                                             // was no changes (no dirty) with the data, so going back normally
             }).call(this)
         }
-
-
 
         const h_intentDelete = async ( evt: any ) => {
 
@@ -806,8 +846,8 @@ export default defineComponent({
 
             if (cpt_fMode.value !== FMODE.EDIT as TFormMode) return
 
-            const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.SUPPLIER, values.sName)
-            if (wasConfirmed) await a_delete(values.id, values.sName)
+            const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.SUPPLIER, values.pName)
+            if (wasConfirmed) await a_delete(values.id, values.pName)
         }
 
         const h_keyboardKeyPress = ( evt: any ) => {
@@ -840,16 +880,19 @@ export default defineComponent({
             isCloning.value = true
 
             // -- resetting the fields that must be uniques
-            setFieldValue('sName', '')
-            setFieldValue('sEmail', undefined)
+            setFieldValue('pName', '')
+            setFieldValue('email', undefined)
             setFieldValue('cell', '')
-            setFieldValue('sPhone', undefined)
+            setFieldValue('phone', undefined)
         }
 
         /**
          * Generate a VCard QR with the supplier info, son the image can be scanned
          */
         const h_formBtnAction_QR = () => {
+            // TODO re-implementa esto una vez hayas extendido la UI para dar cobertura a los nuevos campos
+
+            /*
             isModalShowing.value = true
             let names = values.contactName?.split(' ') ?? []               // stripping the contact name
 
@@ -858,24 +901,25 @@ export default defineComponent({
                     givenName:  names[ 0 ] ?? '',
                     familyName: `${ names[ 1 ] ?? '' } ${ names[ 2 ] ?? '' }`
                 },
-                work:      { role: values.sContactNotes, title: '', organization: values.sName ?? '' },
-                emails:    [ { type: t('data.work'), text: values.sEmail ?? '' } ],
+                work:      { role: values.sContactNotes, title: '', organization: values.pName ?? '' },
+                emails:    [ { type: t('data.work'), text: values.email ?? '' } ],
                 phones:    [
                     { type: t('table-headers.cell'), text: values.cell ?? undefined },
-                    { type: t('table-headers.land-phone'), text: values.sPhone ?? '' }
+                    { type: t('table-headers.land-phone'), text: values.phone ?? '' }
                 ],
                 addresses: [
                     {
                         type:     t('data.work'),
-                        street:   values.sAddress,
+                        street:   values.street,
                         code:     values.zip ?? undefined,
                         country:  values.countryCode,
                         region:   values.stateCode ?? undefined,
                         locality: st_nomenclatures.getStatesByCode(!values.stateCode ? '' : values.stateCode)
                     }
                 ],
-                note:      values.sInternalNotes ? { text: values.sInternalNotes } : undefined
+                note:      values.internalNotes ? { text: values.internalNotes } : undefined
             })
+             */
         }
 
         /**
