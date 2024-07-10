@@ -39,7 +39,7 @@ import { CmpCard, CmpFormActionsButton, CmpBaseInput, CmpCollapseItem, CmpBaseCh
 import type { ComputedRef } from 'vue'
 
 export default defineComponent({
-    name: 'ViewFormSuppCategories',
+    name: 'ViewFormTEMPLATE',
     components: {
         CmpCard,
         CmpBaseInput,

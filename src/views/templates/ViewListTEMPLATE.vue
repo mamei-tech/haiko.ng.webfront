@@ -38,7 +38,7 @@ import type {IBulkData, IDataTableQuery, IIndexable, TFormMode } from '@/service
 
 
 export default defineComponent({
-    name: 'ViewListTransfer',
+    name: 'ViewListTEMPLATE',
     components: { CmpCard, CmpDataTable },
     setup() {
 

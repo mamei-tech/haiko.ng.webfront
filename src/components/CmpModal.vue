@@ -16,9 +16,9 @@
                     <div class="modal-header" :class="[headerClasses]" v-if="$slots.header">
                         <slot name="header"></slot>
                         <slot name="close-button">
-                            <button type="button"
+                            <button v-if="showClose"
+                                    type="button"
                                     class="close"
-                                    v-if="showClose"
                                     @click="h_CloseModal"
                                     data-dismiss="modal"
                                     aria-label="Close">
