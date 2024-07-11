@@ -6,6 +6,7 @@
         <CmpCard :hasFormBackBtn="true" v-on:doClick="nav_back">
 
           <!-- FORM -->
+          <!--<form class="form form-horizontal">-->
           <form class="form">
             <div class="row">
             </div>

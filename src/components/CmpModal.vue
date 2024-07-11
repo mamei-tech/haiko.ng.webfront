@@ -1,15 +1,28 @@
 <template>
     <transition name="fade">
         <div class="modal fade"
-             :class="[{'show d-block': show}, {'d-none': !show}, {'modal-mini': modalType === 'mini'}]"
+             :class="[
+                 {'show d-block': show},
+                 {'d-none': !show},
+
+                 ]"
              v-show="show"
              tabindex="-1"
              role="dialog"
-             @click.self="h_CloseModal"
+             @click.self="h_closingIntent(false)"
              :aria-hidden="!show">
 
             <div class="modal-dialog"
-                 :class="[{'modal-notice': modalType === 'notice'}, {'modal-dialog-centered': centered}, modalClasses]">
+                 :class="[
+                     {'modal-notice': modalType === 'notice'},
+                     {'modal-dialog-centered': centered},
+                     {'modal-auto': modalWith === 'auto'},
+                     {'modal-ultra-wide': modalWith === 'ultra-wide'},
+                     {'modal-wide': modalWith === 'wide'},
+                     {'modal-narrow': modalWith === 'narrow'},
+                     {'modal-narrow-plus': modalWith === 'narrow-plus'},
+                     modalClasses
+                     ]">
                 <div class="modal-content" :class="[gradient ? `bg-gradient-${gradient}` : '', modalContentClasses]">
 
                     <!-- MODAL HEADER -->
@@ -19,7 +32,7 @@
                             <button v-if="showClose"
                                     type="button"
                                     class="close"
-                                    @click="h_CloseModal"
+                                    @click="h_closingIntent(true)"
                                     data-dismiss="modal"
                                     aria-label="Close">
                                 <i class="tim-icons icon-simple-remove"></i>
@@ -58,6 +71,11 @@
                 type: Boolean,
                 default: true,
             },
+            closeOnBackdropClk: {
+                type:    Boolean,
+                default: true,
+                description: "Determines if the modal should close when a click was made outside of the modal window"
+            },
             modalType: {
                 type: String,
                 default: '',
@@ -68,7 +86,16 @@
                     return acceptedValues.indexOf(value) !== -1
                 }
             },
+            modalWith: {
+                type: String,
+                default: 'auto',
+                description: 'Available values are: auto | ultra-wide | wide | narrow | narrow-plus',
 
+                validator (value: string): boolean {
+                    const acceptedValues = ['auto', 'ultra-wide', 'wide', 'narrow', 'narrow-plus']
+                    return acceptedValues.indexOf(value) !== -1
+                }
+            },
             gradient: {
                 type: String,
                 description: "Modal gradient type (danger, primary etc)"
@@ -97,9 +124,17 @@
             },
         },
         methods: {
-            h_CloseModal() {
-                this.$emit("update:show", false)
-                this.$emit("close")
+            h_closingIntent( forceClose: boolean = false ) {
+                if(!forceClose)
+                {
+                    if (this.closeOnBackdropClk == false) return
+                    else this.close()
+                }
+                else this.close()                                                           // forcing the modal to close
+            },
+            close() {
+                this.$emit('close')
+                this.$emit('update:show', false)
             }
         },
         emits: ['close', 'update:show'],

@@ -165,8 +165,27 @@
 @include media-breakpoint-up(sm) {
   // Automatically set modal's width for larger viewports
   .modal-dialog {
-    max-width : $modal-md;
     margin    : $modal-dialog-margin-y-sm-up auto;
+  }
+
+  .modal-auto {
+    max-width : $modal-md;
+  }
+
+  .modal-ultra-wide {
+    max-width : 80%;
+  }
+
+  .modal-wide {
+    max-width : 60%;
+  }
+
+  .modal-narrow {
+    max-width : 45%;
+  }
+
+  .modal-narrow-plus {
+    max-width : 25%;
   }
 
   .modal-dialog-centered {

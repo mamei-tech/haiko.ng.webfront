@@ -278,18 +278,7 @@ import {
     RoutePathNames,
     VSchemaPicking
 } from '@/services/definitions'
-import {
-    CmpBaseButton,
-    CmpBaseCheckbox,
-    CmpBaseInput,
-    CmpBaseRadio,
-    CmpCard,
-    CmpCollapseItem,
-    CmpFormActionsButton,
-    CmpMultiselectField,
-    CmpTooltip,
-    CmpVeeCheckbox
-} from '@/components'
+import { CmpBaseButton, CmpBaseCheckbox, CmpBaseInput, CmpBaseRadio, CmpCard, CmpCollapseItem, CmpFormActionsButton, CmpMultiselectField, CmpTooltip, CmpVeeCheckbox } from '@/components'
 
 
 export default defineComponent({
