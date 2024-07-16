@@ -243,7 +243,7 @@
           <!-- FORM ACTION BUTTONS -->
           <template v-slot:footer>
             <CmpFormActionsButton
-                :show-delete="cpt_fMode === 'edit'"
+                :show-delete="cpt_fMode === FMODE.EDIT"
                 v-on:saveIntent="h_beforeSubmit"
                 v-on:deleteIntent="h_delete"
                 v-on:cancelIntent="nav_back"
@@ -257,7 +257,6 @@
 </template>
 
 <script lang="ts">
-import type { ComputedRef } from 'vue'
 import { computed, defineComponent, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useForm } from 'vee-validate'
 import { i18n } from '@/services/i18n'
@@ -267,18 +266,11 @@ import { useToast } from 'vue-toastification'
 import useFactory from '@/services/composables/useFactory'
 import useToastify from '@/services/composables/useToastify'
 import { ApiPickingType } from '@/services/api/inventory/api-picking-type'
-import type { IDtoPickingType, IMultiselectBasic, TFormMode } from '@/services/definitions'
-import {
-    CORE_PICKING_TYPE,
-    ENTITY_NAMES,
-    FMODE,
-    KEYS,
-    OPS_KIND_STR,
-    RESERVATION_METHODS,
-    RoutePathNames,
-    VSchemaPicking
-} from '@/services/definitions'
+import { CORE_PICKING_TYPE, ENTITY_NAMES, FMODE, KEYS, OPS_KIND_STR, RESERVATION_METHODS, RoutePathNames, VSchemaPicking } from '@/services/definitions'
 import { CmpBaseButton, CmpBaseCheckbox, CmpBaseInput, CmpBaseRadio, CmpCard, CmpCollapseItem, CmpFormActionsButton, CmpMultiselectField, CmpTooltip, CmpVeeCheckbox } from '@/components'
+
+import type { ComputedRef } from 'vue'
+import type { IDtoPickingType, IMultiselectBasic, TFormMode } from '@/services/definitions'
 
 
 export default defineComponent({
@@ -601,6 +593,8 @@ export default defineComponent({
             values,
             reservationOptions,
             doWeNeed2ShowResMethod,
+
+            FMODE,
 
             cpt_fMode,
             st_nomenclatures,

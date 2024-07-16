@@ -74,7 +74,7 @@
           <!-- FORM ACTION BUTTONS -->
           <template v-slot:footer>
             <CmpFormActionsButton
-                :show-delete="cpt_fMode === 'edit'"
+                :show-delete="cpt_fMode === FMODE.EDIT"
                 v-on:saveIntent="h_beforeSubmit"
                 v-on:deleteIntent="h_delete"
                 v-on:cancelIntent="nav_back"
@@ -293,7 +293,7 @@ export default defineComponent({
         //endregion ===========================================================================
 
         return {
-
+            FMODE,
             cpt_fMode,
 
             nav_back,

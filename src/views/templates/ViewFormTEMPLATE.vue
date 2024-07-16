@@ -15,7 +15,7 @@
           <!-- FORM ACTION BUTTONS -->
           <template v-slot:footer>
             <CmpFormActionsButton
-                :show-delete="cpt_fMode === 'edit'"
+                :show-delete="cpt_fMode === FMODE.EDIT"
                 v-on:saveIntent="h_beforeSubmit"
                 v-on:deleteIntent="h_delete"
                 v-on:cancelIntent="nav_back"
@@ -31,7 +31,7 @@
 <script lang="ts">
 import { computed, defineComponent, onBeforeUnmount, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { KEYS, RoutePathNames } from '@/services/definitions'
+import { FMODE, KEYS, RoutePathNames } from '@/services/definitions'
 import { useToast } from 'vue-toastification'
 import useFactory from '@/services/composables/useFactory'
 import useToastify from '@/services/composables/useToastify'
@@ -140,6 +140,8 @@ export default defineComponent({
         //endregion ===========================================================================
 
         return {
+            FMODE,
+
             cpt_fMode,
 
             nav_back,

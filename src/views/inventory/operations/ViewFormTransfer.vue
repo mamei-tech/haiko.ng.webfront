@@ -157,7 +157,7 @@
           <!-- FORM ACTION BUTTONS -->
           <template v-slot:footer>
             <CmpFormActionsButton
-                :show-delete="cpt_fMode === 'edit'"
+                :show-delete="cpt_fMode === FMODE.EDIT"
                 v-on:saveIntent="h_beforeSubmit"
                 v-on:deleteIntent="h_delete"
                 v-on:cancelIntent="nav_back"
@@ -174,8 +174,8 @@
 import { computed, defineComponent, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import {
-    ENTITY_NAMES,
     KEYS,
+    FMODE,
     OPS_KIND_STR,
     RoutePathNames,
 } from '@/services/definitions'
@@ -420,6 +420,8 @@ export default defineComponent({
 
         return {
             values,
+
+            FMODE,
 
             cpt_fMode,
             st_nomenclatures,
