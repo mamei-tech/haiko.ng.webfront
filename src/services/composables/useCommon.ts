@@ -73,11 +73,17 @@ export default function useCommon () {
         }
     }*/
 
+    const isUndOrEmptyStr = (str: string | undefined) => {
+        return str === undefined || str === '';
+    }
+
     return {
         cap,
         toFormData,
         toFormDataR,
 
         debounce,
+
+        isUndOrEmptyStr,
     }
 }

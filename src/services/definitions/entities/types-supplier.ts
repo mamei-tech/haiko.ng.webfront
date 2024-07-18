@@ -24,7 +24,7 @@ export interface ISupplierRow extends IIndexable {
     cmpDisplayName: string | undefined,
 
     phone: string | undefined,
-    cell: string,
+    cell: string | undefined,
     isActive: boolean,
     suppCategoryID: number | string
     pCount: number | undefined
@@ -38,7 +38,6 @@ export interface IDtoSupplier extends ISupplierRow {
     pName: string,
 
     internalNotes: string | undefined,
-    suppCategoryID: number | string,
 
     email: string | undefined,
     website: string | undefined,
@@ -47,20 +46,26 @@ export interface IDtoSupplier extends ISupplierRow {
     zip?: number,
     stateCode: string | undefined,
     jobPosition: string | undefined,
-    parentID: number | string,
+    parentID: number | undefined,
 
     isCompany: boolean,
 
     purchasesCountPend: number | undefined,
     purchasesCountTotal: number | undefined,
     purchasesCountValue: number | undefined
+
+    pType: string | undefined
+
+    /**
+     * Extended contact information data, for suppliers / partners
+     */
+    extData: Array<IDtoSupplier> | undefined
 }
 
 /**
  * Define the very basic data of a SupplierCategory
  */
 export interface ISuppCatBasic extends IIndexable {
-
     /**
      * supplier category name
      */

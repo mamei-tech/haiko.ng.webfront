@@ -16,14 +16,14 @@
               <i class="fa fa-clone"></i>
             </button>
 
-            <button :title="$t('btn.tip-action-gen-vcard-file')"
+            <button :title="$t('btn.tip-action-gen-vcard-qr')"
                     style="float: right"
                     class="btn btn-icon btn-default ml-1 mr-1"
                     @click.prevent="h_formBtnAction_QR">
               <i class="fa fa-qrcode"></i>
             </button>
 
-            <button :title="$t('btn.tip-action-gen-vcard-qr')"
+            <button :title="$t('btn.tip-action-gen-vcard-file')"
                     style="float: right"
                     class="btn btn-icon btn-default mr-1"
                     @click.prevent="h_formBtnAction_DownloadVCard">
@@ -46,7 +46,7 @@
 
               <div class="col-xm-12 col-md-6">
 
-                <!-- isActive / type -->
+                <!-- isActive / customer or company -->
                 <div class="row">
                   <label class="text-sm-left text-md-right col-md-3 col-form-label">
                     {{ $t( 'data.status' ) }}
@@ -457,16 +457,72 @@
                   </div>
                 </CmpTabContent>
 
-                <!-- TAB data ... -->
+                <!-- TAB data supplier extended data -->
                 <CmpTabContent :key="2" :tabId="2" :id="tabs[1].title" :activeTabId="activeTabId">
-                  <div>
-                    TODO<br><br>
-                    Gestión de mas de una dirección para el proveedor [odoo]
+                  <!-- btn 4 create -->
+                  <div style="text-align: end">
+                    <button :title="$t('btn.tip-create-new')"
+                            class="btn btn-icon btn-primary"
+                            @click.prevent="h_btnMkExtendedInfo">
+                      <i class="tim-icons icon-simple-add"></i>
+                    </button>
+                  </div>
+
+                  <!-- supplier extended contact info cards generation -->
+                  <div class="row mt-2">
+                    <CmpCard v-for="(value, key) in ls_dicExtData"
+                             class="col-md-3"
+                             :key="`ext_card_${key}`"
+                             :class="{
+                                 'mr-2': key == 0,
+                                 'ml-2 mr-2': key > 0 && key < Object.keys(ls_dicExtData).length - 1,
+                                 'ml-2': key == Object.keys(ls_dicExtData).length - 1
+                             }"
+                             @click.prevent="h_openExtDataCard(+key)"
+                    >
+                      <div class="row">
+
+                        <!-- icon -->
+                        <div class="col-2">
+                          <i class="tim-icons ext-contad-data-card"
+                             :class="{
+                                        'icon-single-02': value.pType === ADDRESS_TYPE.CONTACT,
+                                        'icon-lock-circle': value.pType === ADDRESS_TYPE.PRIVATE,
+                                        'icon-delivery-fast': value.pType === ADDRESS_TYPE.DELIVERY,
+                                        'icon-paper': value.pType === ADDRESS_TYPE.INVOICE,
+                                        'icon-pin': value.pType === ADDRESS_TYPE.OTHER,
+                                     }"
+                          />
+                        </div>
+
+                        <!-- contact data -->
+                        <div class="col-10">
+                          <p v-if="!isUndOrEmptyStr(value.pName)">{{ value.pName }}</p>
+                          <p v-if="!isUndOrEmptyStr(value.jobPosition)">{{ value.jobPosition }}</p>
+                          <p v-if="!isUndOrEmptyStr(value.email)">{{ value.email }}</p>
+                          <div v-if="!isUndOrEmptyStr(value.countryCode) || !isUndOrEmptyStr(value.stateCode) || !isUndOrEmptyStr(value.city)" style="display: inline-flex">
+                            <p v-if="!isUndOrEmptyStr(value.city)">{{ value.city }}</p>
+                            <p v-if="!isUndOrEmptyStr(value.countryCode) || !isUndOrEmptyStr(value.stateCode)">,&nbsp</p>
+                            <p v-if="!isUndOrEmptyStr(value.stateCode)">{{ value.stateCode }}</p>
+                            <p v-if="!isUndOrEmptyStr(value.countryCode)">&nbsp-&nbsp</p>
+                            <p v-if="!isUndOrEmptyStr(value.countryCode)">{{ value.countryCode }}</p>
+                          </div>
+                          <div>
+                            <div v-if="!isUndOrEmptyStr(value.phone) || !isUndOrEmptyStr(value.cell)" style="display: inline-flex">
+                              <p v-if="!isUndOrEmptyStr(value.phone)">{{ $t( 'form.fields-common.phone-mini' ) }}: {{ value.phone }}</p>
+                              <p v-if="!isUndOrEmptyStr(value.cell) && !isUndOrEmptyStr(value.phone)">&nbsp&nbsp|&nbsp&nbsp</p>
+                              <p v-if="!isUndOrEmptyStr(value.cell)">{{ $t( 'form.fields-common.cell' ) }}: {{ value.cell }}</p>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </CmpCard>
                   </div>
 
                 </CmpTabContent>
 
-                <!-- TAB data ... -->
+                <!-- TAB data purchase -->
                 <CmpTabContent :key="3" :tabId="3" :id="tabs[2].title" :activeTabId="activeTabId">
                   <div>
                     TODO<br><br>
@@ -474,7 +530,7 @@
                   </div>
                 </CmpTabContent>
 
-                <!-- TAB data ... -->
+                <!-- TAB data note -->
                 <CmpTabContent :key="4" :tabId="4" :id="tabs[3].title" :activeTabId="activeTabId">
                   <!-- notes -->
                   <div class="row">
@@ -498,7 +554,7 @@
           <!-- FORM ACTION BUTTONS -->
           <template v-slot:footer>
             <CmpFormActionsButton
-                :show-delete="cpt_fMode === 'edit' && !isCloning"
+                :show-delete="cpt_fMode === FMODE.EDIT && !isCloning"
                 v-on:saveIntent="h_beforeSubmit"
                 v-on:deleteIntent="h_intentDelete"
                 v-on:cancelIntent="nav_back"
@@ -508,12 +564,12 @@
 
         <!-- MODALS -->
         <!-- modal contact vCard -->
-        <CmpModal v-model:show="isModalShowing"
+        <CmpModal v-model:show="isModalQRShowing"
                   class="modal-black"
-                  id="searchModal"
+                  id="modalQR"
+                  :modal-with="'auto'"
                   :centered="false"
-                  :show-close="true"
-                  @close="h_modalVcardClosing()"
+                  @close="h_modalQRClosing"
                   headerClasses="justify-content-center">
 
           <template v-slot:header>
@@ -533,12 +589,46 @@
           </template>
         </CmpModal>
 
+        <!-- modal extended contact info -->
+        <CmpModal v-model:show="isModalContactInfoShowing"
+                  class="modal-black"
+                  id="modalContactInfo"
+                  :show-close="false"
+                  :centered="false"
+                  :close-on-backdrop-clk="false"
+                  :modal-with="'wide'"
+                  @close="h_modalContactInfoClosing"
+                  headerClasses="justify-content-center">
+
+          <template v-slot:header>
+            <p v-if="cpt_fMode === FMODE.CREATE"> {{ $t('modals.contact-info-create') }}</p>
+            <p v-else>{{ $t('modals.contact-info-edit') }}</p>
+          </template>
+
+          <template v-slot:default>
+            <ViewFormSuppliersContactExt
+                :fmode="ls_formExtMode"
+                :ext-data="ls_extData"
+                :index="ls_extDataIndex"
+                :showing="isModalContactInfoShowing"
+                :parent-id="id === '' || id === undefined ? 0 : +id"
+                :countries="st_nomenclatures.getCountry4Select"
+
+                @update="h_updateSupData"
+                @delete="h_deleteSupData"
+                @closeForm="h_modalContactInfoClosing"
+            />
+          </template>
+
+        </CmpModal>
+
       </div>
     </div>
   </transition>
 </template>
 
 <script lang="ts">
+import type { ComputedRef } from 'vue'
 import { computed, defineComponent, onBeforeUnmount, onMounted, reactive, ref } from 'vue'
 import { Field, useForm } from 'vee-validate'
 import { i18n } from '@/services/i18n'
@@ -547,22 +637,15 @@ import { useToast } from 'vue-toastification'
 import { useSt_Nomenclatures } from '@/stores/nomenc'
 import { ApiSupplier } from '@/services/api/resources-infraestructure/api-supplier'
 import useFactory from '@/services/composables/useFactory'
+import useCommon from '@/services/composables/useCommon'
 import useToastify from '@/services/composables/useToastify'
 import useQrCodes from '@/services/composables/useQrCodes'
 import useDialogfy from '@/services/composables/useDialogfy'
-import { CmpCard, CmpCardStats, CmpFormActionsButton, CmpBaseInput, CmpMultiselectField, CmpVeeCheckbox, CmpTab, CmpTabContent, CmpTextInput, CmpModal } from '@/components'
-import {
-    ACTION_KIND_STR,
-    ENTITY_NAMES,
-    FMODE,
-    KEYS,
-    OPS_KIND_STR,
-    RoutePathNames,
-    VSchemaSupplier
-} from '@/services/definitions'
+import { CmpBaseInput, CmpCard, CmpCardStats, CmpFormActionsButton, CmpModal, CmpMultiselectField, CmpTab, CmpTabContent, CmpTextInput, CmpVeeCheckbox } from '@/components'
+import { ACTION_KIND_STR, ADDRESS_TYPE, ENTITY_NAMES, FMODE, KEYS, OPS_KIND_STR, RoutePathNames, VSchemaSupplier } from '@/services/definitions'
+import ViewFormSuppliersContactExt from '@/views/purchase/suppliers/ViewFormSuppliersContactExt.vue'
 
-import type { ComputedRef } from 'vue'
-import type { IDtoSupplier, TFormMode } from '@/services/definitions'
+import type { ById, IDtoSupplier, TFormMode } from '@/services/definitions'
 
 
 export default defineComponent({
@@ -578,7 +661,9 @@ export default defineComponent({
         CmpTabContent,
         CmpVeeCheckbox,
         CmpMultiselectField,
-        CmpFormActionsButton
+        CmpFormActionsButton,
+
+        ViewFormSuppliersContactExt
     },
     setup: function() {
 
@@ -590,11 +675,16 @@ export default defineComponent({
         const route = useRoute()
         const router = useRouter()
 
-        const st_nomenclatures = useSt_Nomenclatures()                                  // pinia store for nomenclatures
         const { fmode, id } = route.params                                              // remember, fmode (form mode) property denotes the mode this form view was called | checkout the type TFormMode in types definitions
+        const st_nomenclatures = useSt_Nomenclatures()                                  // pinia store for nomenclatures
+        const ls_formExtMode = ref<String>(FMODE.CREATE)                                // flag so we can tell which form mode we need to open de extended address form for the supplier
+        const ls_dicExtData = ref<ById<IDtoSupplier>>({})                         // local store | extended contact information data, for suppliers / partners
+        const ls_extData = ref<IDtoSupplier | undefined>(undefined)
+        const ls_extDataIndex = ref<number | undefined>(undefined)                // ref value to save the index of the card is currently opened
 
         const { mkSupplier } = useFactory()
         const { mkVCardQrImg } = useQrCodes()
+        const { isUndOrEmptyStr } = useCommon()
         const { dfyConfirmation, dfyShowAlert } = useDialogfy()
         const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
 
@@ -611,7 +701,8 @@ export default defineComponent({
         // helpers & flags
         const qrimage = ref()
         const isCloning = ref(false)                                              // tells is we are in a cloning process so we call the creat endpoint instead the edition endpoint
-        const isModalShowing = ref(false)
+        const isModalQRShowing = ref(false)
+        const isModalContactInfoShowing = ref(false)
 
         // form data
         const activeTabId = ref<number>(1)
@@ -653,7 +744,6 @@ export default defineComponent({
             }
         ])
 
-
         //endregion ===========================================================================
 
         //region ======= HOOKS ================================================================
@@ -672,7 +762,7 @@ export default defineComponent({
             // create mode
             if (cpt_fMode.value === FMODE.CREATE as TFormMode)
                 await st_nomenclatures.reqNmcCountries().catch(err => tfyCRUDFail(err, ENTITY_NAMES.COUNTRY, OPS_KIND_STR.REQUEST))
-                // this isn't needed in edition mode, see h_navEditSuppIntent in ViewListSuppliers.vue file
+                // this isn't needed in edition mode, see nav_2Form in ViewListSuppliers.vue file
 
             // edition mode
             if (cpt_fMode.value === FMODE.EDIT as TFormMode) {
@@ -691,7 +781,7 @@ export default defineComponent({
          * Vue hook before component is unmounted from the DOM
          */
         onBeforeUnmount(() => {
-            window.removeEventListener('keydown', h_keyboardKeyPress)            // cleaning the event manually added before to the document. Wee need to keep the things as clean as posible
+            window.removeEventListener('keydown', h_keyboardKeyPress)                           // cleaning the event manually added before to the document. Wee need to keep the things as clean as posible
         })
         //#endregion ==========================================================================
 
@@ -717,7 +807,7 @@ export default defineComponent({
                 if (!doWeNeedToStay) nav_back()                                              // so we are going back to the data table
                 else {
                     resetForm({ values: mkSupplier(), errors: undefined })             // so wee need to clean the entire form and stay in it
-                    hpr_clearStateSelect()                                                  // cleaning select field
+                    hpr_clearSelects()                                                  // cleaning select field
                 }
 
             })
@@ -767,8 +857,6 @@ export default defineComponent({
 
         //region ======= COMPUTATIONS & GETTERS ===============================================
 
-        // compute the form mode: creation mode or edition mode
-
         const cpt_fMode: ComputedRef<string | string[]> = computed(() => fmode)
 
         //#endregion ==========================================================================
@@ -778,43 +866,69 @@ export default defineComponent({
         /**
          * Restoring the country provinces / state selected value
          */
-        const hpr_clearStateSelect = () => {
+        const hpr_clearSelects = () => {
             st_nomenclatures.states = []
 
             if (!ref_selectStates.value) return
 
             ref_selectStates.value.clearSelection()
+            setFieldValue('stateCode', undefined)
         }
 
         /**
          * Form data sanitation method so we can clean the fields values before submitting
          */
-        const hpr_sanitation = (dirtyProduct: IDtoSupplier) => {
+        const hpr_sanitation = (dirtyObj: IDtoSupplier) => {
 
-            delete dirtyProduct.cmpDisplayName
+            delete dirtyObj.pType                                 // in this view / crud, case can safely remove this property, backend will handle it
+            delete dirtyObj.cmpDisplayName
 
-            if (dirtyProduct.website !== undefined) dirtyProduct.website = dirtyProduct.website.trim()                                                // trimming spaces trailing spaces
-            if (!dirtyProduct.website || dirtyProduct.website == '') delete dirtyProduct.website
-            if (dirtyProduct.zip == 0) dirtyProduct.zip = undefined
-            if (dirtyProduct.city === undefined) delete dirtyProduct.city
-            if (dirtyProduct.jobPosition === undefined) delete dirtyProduct.jobPosition
+            if (!isUndOrEmptyStr(dirtyObj.website)) dirtyObj.website = dirtyObj.website!.trim()                                                // trimming spaces trailing spaces
+            if (isUndOrEmptyStr(dirtyObj.website)) delete dirtyObj.website
+            if (dirtyObj.zip == 0) dirtyObj.zip = undefined
+            if (isUndOrEmptyStr(dirtyObj.city)) delete dirtyObj.city
+            if (isUndOrEmptyStr(dirtyObj.jobPosition)) delete dirtyObj.jobPosition
 
-            if(dirtyProduct.isCompany)
+            if(dirtyObj.isCompany)
             {
-                delete dirtyProduct.jobPosition
-                dirtyProduct.parentID = ''
+                delete dirtyObj.jobPosition
+                delete dirtyObj.parentID
             }
 
-            delete dirtyProduct.pCount
-            delete dirtyProduct.purchasesCountPend
-            delete dirtyProduct.purchasesCountTotal
-            delete dirtyProduct.purchasesCountValue
-        }
+            delete dirtyObj.pCount
+            delete dirtyObj.purchasesCountPend
+            delete dirtyObj.purchasesCountTotal
+            delete dirtyObj.purchasesCountValue
 
+            if (Object.keys(ls_dicExtData.value).length <= 0) delete dirtyObj.extData
+            else dirtyObj.extData = Object.values(ls_dicExtData.value)
+
+            dirtyObj.internalNotes?.trim()
+        }
 
         //#endregion ==========================================================================
 
         //region ======= EVENTS HANDLERS & WATCHERS ===========================================
+
+        /**
+         * Tries to update the supplier extended contact information coming from the formulary view
+         *
+         * @param index The index for the extended supplier contact information in the local collection
+         * @param supData Extended supplier contact information object
+         */
+        const h_updateSupData = ( index: number, supData: IDtoSupplier ) => {
+            const infoCount = Object.keys(ls_dicExtData.value).length                                  // getting the existing supplier data count on the dictionary
+
+            if      (ls_formExtMode.value == FMODE.CREATE) ls_dicExtData.value[infoCount] = supData
+            else if (ls_formExtMode.value == FMODE.EDIT_LOCAL) ls_dicExtData.value[index] = supData
+            else ;   // we have nothing to do here
+        }
+
+        const h_deleteSupData = (index: number) => {
+
+            if (index >= 0)
+                delete ls_dicExtData.value[index]
+        }
 
         /**
          * This method tries to accommodate the data before it will be sent to the server
@@ -890,21 +1004,22 @@ export default defineComponent({
          * Generate a VCard QR with the supplier info, son the image can be scanned
          */
         const h_formBtnAction_QR = () => {
-            // TODO re-implementa esto una vez hayas extendido la UI para dar cobertura a los nuevos campos
+            isModalQRShowing.value = true
+            let names = values.pName?.split(' ') ?? []               // stripping the contact name
 
-            /*
-            isModalShowing.value = true
-            let names = values.contactName?.split(' ') ?? []               // stripping the contact name
+            let customNameData = {}
+            if (values.isCompany) customNameData = {  givenName: values.pName  }
+            else  customNameData = {
+                givenName:  names[ 0 ] ?? '',
+                familyName: `${ names[ 1 ] ?? '' } ${ names[ 2 ] ?? '' }`
+            }
 
             qrimage.value = mkVCardQrImg({
-                name:      {
-                    givenName:  names[ 0 ] ?? '',
-                    familyName: `${ names[ 1 ] ?? '' } ${ names[ 2 ] ?? '' }`
-                },
-                work:      { role: values.sContactNotes, title: '', organization: values.pName ?? '' },
+                name:       customNameData,
+                work:      { role: values.jobPosition, title: '', organization: values.pName ?? '' },
                 emails:    [ { type: t('data.work'), text: values.email ?? '' } ],
                 phones:    [
-                    { type: t('table-headers.cell'), text: values.cell ?? undefined },
+                    { type: t('table-headers.cell'), text: values.cell ?? '' },
                     { type: t('table-headers.land-phone'), text: values.phone ?? '' }
                 ],
                 addresses: [
@@ -919,7 +1034,6 @@ export default defineComponent({
                 ],
                 note:      values.internalNotes ? { text: values.internalNotes } : undefined
             })
-             */
         }
 
         /**
@@ -978,7 +1092,6 @@ export default defineComponent({
             // TODO implement this
 
             console.error('Not implemented', carId)
-
         }
 
         /**
@@ -988,16 +1101,49 @@ export default defineComponent({
          */
         const h_countryChange = async ( countryId: string, ): Promise<void> => {
             if (!countryId) {
-                hpr_clearStateSelect()
+                hpr_clearSelects()
                 return
             }
 
             await st_nomenclatures.reqNmcCountriesStates(countryId)
         }
 
-        const h_modalVcardClosing = () => {
-            isModalShowing.value = false
+        const h_modalQRClosing = () => {
+            isModalQRShowing.value = false
             qrimage.value = undefined
+        }
+
+        // Handles the closing event of the extended contact information formulary
+        const h_modalContactInfoClosing = () => {
+            window.addEventListener('keydown', h_keyboardKeyPress)                              // keyboard keys event handler, we need to clean this kind of event when the component are destroyed
+
+            ls_extData.value = undefined
+            ls_extDataIndex.value = undefined
+            isModalContactInfoShowing.value = false
+        }
+
+        // Handles the intention of create a new extended contact information for the supplier.
+        // So we need to open the modal with the extended contact information formulary for creation
+        const h_btnMkExtendedInfo = () => {
+            window.removeEventListener('keydown', h_keyboardKeyPress)                           // cleaning the event manually added before to the document. Wee need to keep the things as clean as posible
+
+            isModalContactInfoShowing.value = true
+            ls_formExtMode.value = FMODE.CREATE
+            ls_extDataIndex.value = undefined
+        }
+
+        /**
+         * Tries to open the Contact Extended Information Card with the appropriated data
+         * @param dataIndex The Card index in the contact extended data collection (array)
+         */
+        const h_openExtDataCard = ( dataIndex: number ) => {
+            window.removeEventListener('keydown', h_keyboardKeyPress)                           // cleaning the event manually added before to the document. Wee need to keep the things as clean as posible
+
+            ls_extData.value = ls_dicExtData.value[dataIndex]
+            ls_formExtMode.value = +id <= 0 || isNaN(+id) ? FMODE.EDIT_LOCAL : FMODE.EDIT
+            ls_extDataIndex.value = +dataIndex
+
+            isModalContactInfoShowing.value = true
         }
 
         //#endregion ==========================================================================
@@ -1012,28 +1158,47 @@ export default defineComponent({
         //endregion ===========================================================================
 
         return {
+            id,
             values,
+
+            FMODE,
+            ADDRESS_TYPE,
+            ENTITY_NAMES,
 
             qrimage,
             isCloning,
-            isModalShowing,
+            isModalQRShowing,
+            isModalContactInfoShowing,
+
+            ls_extData,
+            ls_dicExtData,
+            ls_formExtMode,
+            ls_extDataIndex,
 
             tabs,
             activeTabId,
             statsDataCards,
 
             ref_selectStates,
+            st_nomenclatures,
 
             cpt_fMode,
-            st_nomenclatures,
+
+            isUndOrEmptyStr,
 
             nav_back,
             h_tabChange,
+
             h_intentDelete,
             h_beforeSubmit,
+            h_updateSupData,
+            h_deleteSupData,
             h_countryChange,
+            h_modalQRClosing,
+            h_openExtDataCard,
             h_keyboardKeyPress,
-            h_modalVcardClosing,
+            h_btnMkExtendedInfo,
+            h_modalContactInfoClosing,
 
             h_statGoCheck,
             h_staticsRestore,
@@ -1042,12 +1207,15 @@ export default defineComponent({
             h_formBtnAction_QR,
             h_formBtnAction_Clone,
             h_formBtnAction_DownloadVCard,
-
-            ENTITY_NAMES
         }
     }
 })
 </script>
 
 <style scoped>
+
+.ext-contad-data-card {
+  font-size: 2.2rem !important;
+}
+
 </style>

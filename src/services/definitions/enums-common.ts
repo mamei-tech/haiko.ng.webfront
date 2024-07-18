@@ -41,9 +41,10 @@ export enum ACTION_KIND_STR {
  * ! The values defined here must match one2one with the definition of TFormMode type definition in the 'types-common.ts' file
  */
 export enum FMODE {
-    EDIT = 'edit',
-    CREATE = 'create',
-    DETAILS = 'details',
+    CREATE      = 'create',
+    DETAILS     = 'details',
+    EDIT        = 'edit',
+    EDIT_LOCAL  = 'edit.local',      //  used in situations when the formulary edition process need to be done locally in the front (not saving the data to the backend server)
 }
 
 /**
@@ -122,4 +123,30 @@ export enum RESERVATION_METHODS {
     AT_CONFIRMATION = 'at-confirmation',
     MANUALLY = 'manually',
     BEFORE_SCHEDULE_DATE = 'before-sche-date'
+}
+
+/**
+ * Defines the types of the address that a PARTNER (entity) may have.
+ */
+export enum ADDRESS_TYPE {
+    /**
+     * Use this to organize the contact details of employees of a given company (e.g. CEO, CFO, ...)
+     */
+    CONTACT = 'contact',
+    /**
+     * Preferred address for all invoices. Selected by default when you invoice an order that belongs to this company.
+     */
+    INVOICE = 'invoice',
+    /**
+     * Preferred address for all deliveries. Selected by default when you deliver an order that belongs to this company
+     */
+    DELIVERY = 'delivery',
+    /**
+     * Private addresses are only visible by authorized users and contain sensitive data (employee home addresses, ...)
+     */
+    PRIVATE = 'private',
+    /**
+     * Other address for the company (e.g. subsidiary, ...)
+     */
+    OTHER = 'other'
 }

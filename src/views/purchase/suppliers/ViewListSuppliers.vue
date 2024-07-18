@@ -171,7 +171,7 @@ export default defineComponent({
 
             // the 'single' case,  used when this is called for switch status toggle intent
             if (ids.length === 1)
-                entityReference = ls_suppliers.value.entityPage.find(suppCat => suppCat.id === ids[0])?.pName ?? ''
+                entityReference = ls_suppliers.value.entityPage.find(suppCat => suppCat.id === ids[0])?.cmpDisplayName ?? ''
 
             ApiSupplier.bulkToggle(ids)
             .then(() => {
@@ -229,7 +229,7 @@ export default defineComponent({
             if (mode == FMODE.EDIT)
             {
                 // in edition mode the country & state Multiselect components present in ViewFormSuppliers need to have the data before the component can render the entity selected option according with the entity data
-                // so we call the data before tell the router to show de edit. An alternative to this could be having reactive vars in the form template to tell when to render (render after the data of the Multiselect option is present) and get the data in the OnMount hook in the form.
+                // so we call the data before tell the router to show the edit. An alternative to this could be having reactive vars in the form template to tell when to render (render after the data of the Multiselect option is present) and get the data in the OnMount hook in the form.
                 // ... so, getting needed data in edition form
                 st_nomenclatures.reqNmcCountries().catch(err => tfyCRUDFail(err, ENTITY_NAMES.COUNTRY, OPS_KIND_STR.REQUEST))
                 const countryCode = (rowData as ISupplierRow).countryCode
@@ -263,7 +263,7 @@ export default defineComponent({
                 return
             }
 
-            const entityReference = ls_suppliers.value.entityPage.find(supplier => supplier.id === entityId)?.pName ?? ''
+            const entityReference = ls_suppliers.value.entityPage.find(supplier => supplier.id === entityId)?.cmpDisplayName ?? ''
 
             const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.SUPPLIER, entityReference)
             if (wasConfirmed) a_reqDelete(entityId, entityReference)

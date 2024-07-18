@@ -9,7 +9,7 @@ import { HUoMCatTable, HUoMTable, HProductTable, HProductSupplierLine, HWarehous
 import { SelectDataUoMType } from './data-select-options'
 import { HTTP_HEADER_FORM_DATA, HTTP_HEADER_FORM_URLENCODED,RELPATH_DEFAULT_AVATAR_IMG, RELPATH_DEFAULT_PRODUCT_IMG, IMG_ORG_AVATAR_NAME, IMG_AVATAR_SMALL_THUMBNAIL, IMG_ORG_PRODUCT_NAM } from './data-strs'
 import { DT_ACTIONBAR_MODE, ENTITY_NAMES, DT_ACTION_BUTTON_MODE, STRG_PROD_POLICY } from '@/services/definitions/enums-entities'
-import { HTTP_RESPONSES, OPS_KIND_STR, ACTION_KIND_STR, FMODE, BULK_ACTIONS, KEYS, PICTURE_TYPE_CELL, HTML_INPUT_TYPE, DIALOG_ICON, RESERVATION_METHODS } from '@/services/definitions/enums-common'
+import { HTTP_RESPONSES, OPS_KIND_STR, ACTION_KIND_STR, FMODE, BULK_ACTIONS, KEYS, PICTURE_TYPE_CELL, HTML_INPUT_TYPE, DIALOG_ICON, RESERVATION_METHODS, ADDRESS_TYPE } from '@/services/definitions/enums-common'
 
 import { CORE_PICKING_TYPE } from '@/services/definitions/entities/types-picking'
 import { WARE_LOC_TYPE } from '@/services/definitions/entities/types-warelocation'
@@ -18,7 +18,7 @@ import { VSchemaAuth } from '@/services/definitions/validations/validations-auth
 import { VSchemaRole } from '@/services/definitions/validations/validations-rbac'
 import { VSchemaUoM, VSchemaUoMCat } from '@/services/definitions/validations/validations-uom'
 import { VSchemaCommon } from '@/services/definitions/validations/validations-commons'
-import { VSchemaSupplier } from '@/services/definitions/validations/validations-suppliers'
+import { VSchemaSupplier, VSchemaSuppExtInfo, VSchemaSupplierCat } from '@/services/definitions/validations/validations-suppliers'
 import { VSchemaPSL, VSchemaProduct } from '@/services/definitions/validations/validations-product'
 import { VSchemaWarehouse } from '@/services/definitions/validations/validations-warehouse'
 import { VSchemaWareLocation } from '@/services/definitions/validations/validations-warelocations'
@@ -71,6 +71,7 @@ export {
     KEYS,
     FMODE,
     DIALOG_ICON,
+    ADDRESS_TYPE,
     ENTITY_NAMES,
     BULK_ACTIONS,
     OPS_KIND_STR,
@@ -107,7 +108,7 @@ export {
     ALIGN_POSITION,
 
     // Validations ... VSchema == validations schema
-    VSchemaStrgCategory, VSchemaAuth, VSchemaCommon, VSchemaStaffCreate, VSchemaStaffEdit, VSchemaRole, VSchemaWarehouse, VSchemaSupplier, VSchemaUoM, VSchemaUoMCat, VSchemaPSL, VSchemaProduct, VSchemaWareLocation, VSchemaPicking,
+    VSchemaStrgCategory, VSchemaAuth, VSchemaCommon, VSchemaStaffCreate, VSchemaStaffEdit, VSchemaRole, VSchemaWarehouse, VSchemaSupplier, VSchemaUoM, VSchemaUoMCat, VSchemaPSL, VSchemaProduct, VSchemaWareLocation, VSchemaPicking, VSchemaSuppExtInfo, VSchemaSupplierCat,
 
     // =====  ENTITIES =====
 

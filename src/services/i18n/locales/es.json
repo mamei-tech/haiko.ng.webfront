@@ -3,8 +3,10 @@
     "scrollInfo": "Debe proporcionar las props de infoParent y elem"
   },
   "modals":        {
-    "vcard":      "vCard",
-    "vcard-info": "escanea para guardar el contacto"
+    "vcard":               "vCard",
+    "vcard-info":          "escanea para guardar el contacto",
+    "contact-info-create": "Crear Contacto",
+    "contact-info-edit":   "Editar Contacto"
   },
   "btn":           {
     "val-yes":                   "si",
@@ -147,6 +149,7 @@
     "invalid":                                  "El campo no contiene valores válidos. ",
     "required":                                 "El campo es requerido",
     "email":                                    "El campo debe contener un email válido",
+    "city-zip":                                 "El código postal no parece válido.",
     "cellphone":                                "El campo de # de celular solo debe contener enteros",
     "min-length":                               "La longitud mínima permitida es de {length} caracteres",
     "max-length":                               "La longitud máxima permitida es de {length} caracteres",
@@ -200,6 +203,7 @@
       "lastname":          "Apellidos",
       "cell":              "Cell",
       "email":             "E-mail",
+      "phone-mini":        "Tel",
       "phone":             "Teléfono",
       "info":              "Información",
       "notes":             "Notas",
@@ -310,6 +314,21 @@
   },
   "entities":      {
     "default":       "entidades",
+    "address-type":  {
+      "contact":  "Contacto",
+      "invoice":  "Facturación",
+      "delivery": "Entrega",
+      "private":  "Privada",
+      "other":    "Otra",
+      "tips":     {
+        "undefined": "",
+        "contact":   "Utilice esta opción para organizar los datos de contacto de los empleados de una empresa/entidad (ej., director ejecutivo, director financiero, etc.)",
+        "invoice":   "Dirección preferida para todas las facturas. Se usará por 'default' cuando se factura un pedido que pertenece a esta empresa/entidad.",
+        "delivery":  "Dirección preferida para todas las entregas. Se usará por 'default' cuando entrega un pedido a esta entidad/empresa.",
+        "private":   "Las direcciones privadas solo son visibles para los usuarios autorizados y contienen datos confidenciales (direcciones de domicilio de los empleados, etc.).",
+        "other":     "Otra dirección de la empresa (ej., filial, etc.)"
+      }
+    },
     "country":       {
       "name": "@:form.fields-common.country"
     },
@@ -364,7 +383,10 @@
       "name":         "Compras {ref}",
       "section-name": "Solicitudes de Compras"
     },
-    "supplier": {
+    "partner":       {
+      "contact-name": "Nombre d Contacto"
+    },
+    "supplier":      {
       "name":                       "Proveedor {ref}",
       "job-position":               "Cargo",
       "section-name":               "@:{'entities.supplier.name'}",
@@ -377,7 +399,10 @@
       "stat-purchases-count":       "Total de compras",
       "stat-purchases-count-value": "Valor total de compras"
     },
-    "company":  {
+    "state":         {
+      "name": "@:form.fields-common.country-state"
+    },
+    "company":       {
       "name": "@:data.company"
     },
     "supplier-cat":  {
@@ -414,7 +439,7 @@
       "section-name": "@:entities.strgcategory.name",
       "prod-policy":  "@:table-headers.strg-prod-policy"
     },
-    "pickingtype": {
+    "pickingtype":   {
       "name":                  "Tipo d Movimiento",
       "section-name":          "@:entities.pickingtype.name",
       "iname":                 "Nombre Interno",
@@ -446,7 +471,7 @@
       "name":         "Transferencia",
       "section-name": "@:entities.transfer.name",
       "tool-tips":    {
-        "contact" : "Contacto del proveedor para esta transferencia. Si aplica, pude ser el propio negocio"
+        "contact": "Contacto del proveedor para esta transferencia. Si aplica, pude ser el propio negocio"
       }
     },
     "replenishment": {

@@ -1,9 +1,9 @@
 import {
-    STRG_PROD_POLICY,
+    ADDRESS_TYPE,
     WARE_LOC_TYPE,
+    STRG_PROD_POLICY,
     CORE_PICKING_TYPE,
     RESERVATION_METHODS,
-
 } from '@/services/definitions'
 import type {
     IDtoUoM,
@@ -125,7 +125,7 @@ export default function useFactory() {
             pName:          '',
             internalNotes:  undefined,
             suppCategoryID: '',
-            parentID:       '',
+            parentID:       undefined,
 
             email:       undefined,
             phone:       undefined,
@@ -144,7 +144,21 @@ export default function useFactory() {
             pCount:              0,
             purchasesCountPend:  0,
             purchasesCountTotal: 0,
-            purchasesCountValue: 0
+            purchasesCountValue: 0,
+
+            cmpDisplayName: undefined,
+            pType:          undefined,
+
+            extData: []
+        }
+    }
+
+    /** Extended version
+     */
+    const mkSupplierExt = (): IDtoSupplier => {
+        return {
+            ...mkSupplier(),
+            pType: ADDRESS_TYPE.OTHER
         }
     }
 
@@ -290,6 +304,7 @@ export default function useFactory() {
         mkUoMCategory,
 
         mkSupplier,
+        mkSupplierExt,
         mkSupplierCat,
 
         mkProduct,

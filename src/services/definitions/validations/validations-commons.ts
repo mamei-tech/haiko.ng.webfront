@@ -1,9 +1,11 @@
 import { i18n } from '@/services/i18n'
+import useCommon from '@/services/composables/useCommon'
 import { regex, required, min, max, email, integer, min_value, max_value } from '@vee-validate/rules'
 
 // https://github.com/logaretm/vee-validate/issues/2297
 
 const { t } = i18n.global
+const { isUndOrEmptyStr } = useCommon()
 
 /** Just permit words with just letters and spaces. Not allows spaces at the end.
  * The value hast to end with letters.
@@ -79,6 +81,17 @@ export const VSchemaCommon = {
     email: ( value: string ): boolean | string => {
         if (!max(value, { length: 100 })) return t('validation.max-length', { length: 100 })
         if (!email(value)) return t('validation.email')
+        return true
+    },
+
+    phone:         ( value: string, isThisRequired: boolean = false, validationInstance: any ): boolean | string => {
+        if (!integer(value)) return t('validation.cellphone')
+        if (!min(value, { length: 7 })) return t('validation.min-length', { length: 7 })
+        if (!max(value, { length: 10 })) return t('validation.max-length', { length: 10 })
+
+        if (isUndOrEmptyStr(validationInstance.form.cell))
+            if (validationInstance.form.cell === value) return t('validation.same-phone')
+
         return true
     },
 
