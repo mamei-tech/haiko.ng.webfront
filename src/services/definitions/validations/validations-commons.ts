@@ -89,7 +89,7 @@ export const VSchemaCommon = {
         if (!min(value, { length: 7 })) return t('validation.min-length', { length: 7 })
         if (!max(value, { length: 10 })) return t('validation.max-length', { length: 10 })
 
-        if (isUndOrEmptyStr(validationInstance.form.cell))
+        if (!isUndOrEmptyStr(validationInstance.form.cell))
             if (validationInstance.form.cell === value) return t('validation.same-phone')
 
         return true

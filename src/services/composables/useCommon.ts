@@ -73,6 +73,10 @@ export default function useCommon () {
         }
     }*/
 
+    /**
+     * Tells if the given string is 'undefined' or a empty string
+     * @param str
+     */
     const isUndOrEmptyStr = (str: string | undefined) => {
         return str === undefined || str === '';
     }
