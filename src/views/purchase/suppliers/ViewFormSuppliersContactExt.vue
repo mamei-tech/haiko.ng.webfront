@@ -292,6 +292,7 @@ import { ADDRESS_TYPE, FMODE, ENTITY_NAMES, OPS_KIND_STR, VSchemaSuppExtInfo } f
 import { useToast } from 'vue-toastification'
 import useFactory from '@/services/composables/useFactory'
 import useToastify from '@/services/composables/useToastify'
+import { ApiSupplier } from '@/services/api/resources-infraestructure/api-supplier'
 import { ApiNomenclaturesMng } from '@/services/api/api-nomenclatures-manager'
 import { CmpCard, CmpFormActionsButton, CmpBaseInput, CmpCollapseItem, CmpBaseCheckbox, CmpBaseButton, CmpBaseRadio, CmpVeeCheckbox, CmpTextInput, CmpMultiselectField } from '@/components'
 
@@ -325,6 +326,10 @@ export default defineComponent({
                 return acceptedValues.indexOf(value) !== -1
             }
         },
+        parentData: {
+            type: Object,
+            description: 'Object holding relevant information about the parent Parent data such as "parentId" and "suppCategoryID" ',
+        },
         parentId: {
             type: Number,
             default: 0,
@@ -338,6 +343,11 @@ export default defineComponent({
         countries: {
             type: Object,
             description: 'Mode in which the formulary must operate',
+        },
+        hitRemote: {
+            type: Boolean,
+            default: false,
+            description: 'Tells if this component it needs to request the creation and edition operations to the backend server'
         }
     },
     components: {
@@ -419,17 +429,62 @@ export default defineComponent({
 
         const a_create = ( data: IDtoSupplier, doWeNeedToStay: boolean ) => {
             hpr_sanitize(data)
-            ctx.emit(
-                'update',
-                props.fmode === FMODE.CREATE ? 0 : props.index,                                                   // index
-                data
-            )
 
-            if(!doWeNeedToStay) nav_closeForm()
+            // ---- with remote request for edition
+            if (props.hitRemote)
+                ApiSupplier.reqInsSupplier(data, 'ext')
+                .then(( response: any ) => {
+                    tfyCRUDSuccess(ENTITY_NAMES.SUPPLIER, OPS_KIND_STR.ADDITION, data.pName)
+
+                    data.id = response.data                                                                             // the just created entity (supplier extended contact information) identifier, are coming in the request response. so we update the object with this data
+
+                    ctx.emit(
+                        'update',
+                        props.fmode === FMODE.CREATE ? 0 : props.index,                                           // index
+                        data
+                    )
+
+                    if(!doWeNeedToStay) nav_closeForm()
+
+                })
+                .catch(err => tfyCRUDFail(err, ENTITY_NAMES.SUPPLIER, OPS_KIND_STR.ADDITION))
+
+            // ---- with out remote request for edition
+            else {
+                ctx.emit(
+                    'update',
+                    props.fmode === FMODE.CREATE ? 0 : props.index,                                               // index
+                    data
+                )
+
+                if(!doWeNeedToStay) nav_closeForm()
+            }
         }
 
         const a_edit = ( data: IDtoSupplier, doWeNeedToStay: boolean ) => {
-            console.log('pending')
+
+            if (props.fmode === FMODE.CREATE) return
+            hpr_sanitize(data)
+
+            data.suppCategoryID = (props.parentData as IDtoSupplier).suppCategoryID      // this comes in handy when the parent exist
+
+            // ---- with remote request for edition
+            if (props.hitRemote)
+                ApiSupplier.reqUpdateSupplier(data, 'ext')
+                .then(() => {
+                    tfyCRUDSuccess(ENTITY_NAMES.SUPPLIER, OPS_KIND_STR.UPDATE, data.pName)
+                    ctx.emit('update', props.index, data)
+
+                    if(!doWeNeedToStay) nav_closeForm()                                  // so we are going back to the data table
+                })
+                .catch(err => tfyCRUDFail(err, ENTITY_NAMES.SUPPLIER, OPS_KIND_STR.UPDATE))
+
+            // ---- with out remote request for edition
+            else
+            {
+                ctx.emit('update', props.index, data)
+                if(!doWeNeedToStay) nav_closeForm()                                     // so we are going back to the data table
+            }
         }
 
         const a_delete = () => {

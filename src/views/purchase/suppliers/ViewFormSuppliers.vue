@@ -601,7 +601,7 @@
                   headerClasses="justify-content-center">
 
           <template v-slot:header>
-            <p v-if="cpt_fMode === FMODE.CREATE"> {{ $t('modals.contact-info-create') }}</p>
+            <p v-if="ls_formExtMode === FMODE.CREATE"> {{ $t('modals.contact-info-create') }}</p>
             <p v-else>{{ $t('modals.contact-info-edit') }}</p>
           </template>
 
@@ -613,10 +613,13 @@
                 :showing="isModalContactInfoShowing"
                 :parent-id="id === '' || id === undefined ? 0 : +id"
                 :countries="st_nomenclatures.getCountry4Select"
+                :hit-remote="cpt_fMode === FMODE.EDIT"
 
                 @update="h_updateSupData"
                 @delete="h_deleteSupData"
                 @closeForm="h_modalContactInfoClosing"
+
+                :parent-data="values"
             />
           </template>
 
@@ -759,12 +762,12 @@ export default defineComponent({
 
             await st_nomenclatures.reqNmcCompanies().catch(err => tfyCRUDFail(err, ENTITY_NAMES.COMPANY, OPS_KIND_STR.REQUEST))
 
-            // create mode
+            // ---- creation mode
             if (cpt_fMode.value === FMODE.CREATE as TFormMode)
                 await st_nomenclatures.reqNmcCountries().catch(err => tfyCRUDFail(err, ENTITY_NAMES.COUNTRY, OPS_KIND_STR.REQUEST))
                 // this isn't needed in edition mode, see nav_2Form in ViewListSuppliers.vue file
 
-            // edition mode
+            // ---- edition mode
             if (cpt_fMode.value === FMODE.EDIT as TFormMode) {
                 let formDataFromServer: IDtoSupplier | undefined = await ApiSupplier.getSuppById(+id)                    // aux variable to save entity data requested from the server
 
@@ -773,6 +776,11 @@ export default defineComponent({
                     errors: {},
                     values: { ...formDataFromServer }
                 })
+
+                // setting up the dictionary holding the extended contact information
+                if (formDataFromServer.extData != undefined && formDataFromServer.extData.length > 0)
+                    for (let index = 0; index < formDataFromServer.extData.length ; index++)
+                        ls_dicExtData.value[index] = formDataFromServer.extData[index]
             }
             window.addEventListener('keydown', h_keyboardKeyPress)                              // keyboard keys event handler, we need to clean this kind of event when the component are destroyed
         })
@@ -804,10 +812,10 @@ export default defineComponent({
                 tfyCRUDSuccess(ENTITY_NAMES.SUPPLIER, OPS_KIND_STR.ADDITION, newSupplier.pName)
 
                 // so now what ?
-                if (!doWeNeedToStay) nav_back()                                              // so we are going back to the data table
+                if (!doWeNeedToStay) nav_back()                                                                         // so we are going back to the data table
                 else {
-                    resetForm({ values: mkSupplier(), errors: undefined })             // so wee need to clean the entire form and stay in it
-                    hpr_clearSelects()                                                  // cleaning select field
+                    resetForm({ values: mkSupplier(), errors: undefined })                                        // so wee need to clean the entire form and stay in it
+                    hpr_clearSelects()                                                                                  // cleaning select field
                 }
 
             })
@@ -820,8 +828,8 @@ export default defineComponent({
          * @param doWeNeedToStay This value, in this context, tells if the clicked button was the 'Applied' or the 'Save'
          */
         const a_edit = ( editedSupplier: IDtoSupplier, doWeNeedToStay: boolean ): void => {
-            // default entity cannot be changed
-            if (editedSupplier.id == 1) {
+
+            if (editedSupplier.id == 1) {                                                                               // default entity cannot be changed
                 dfyShowAlert(t('dialogs.title-alert-not-allowed'),  t('dialogs.cant-mod-default'))
                 return
             }
@@ -833,10 +841,10 @@ export default defineComponent({
                 tfyCRUDSuccess(ENTITY_NAMES.SUPPLIER, OPS_KIND_STR.UPDATE, editedSupplier.pName)
 
                 // so now what ?
-                if(!doWeNeedToStay) nav_back()                                  // so we are going back to the data table
+                if(!doWeNeedToStay) nav_back()                                                                          // so we are going back to the data table
 
             })
-            .catch(err => tfyCRUDFail(err, ENTITY_NAMES.SUPPLIER_CAT, OPS_KIND_STR.UPDATE))
+            .catch(err => tfyCRUDFail(err, ENTITY_NAMES.SUPPLIER, OPS_KIND_STR.UPDATE))
         }
 
         /**
@@ -880,10 +888,12 @@ export default defineComponent({
          */
         const hpr_sanitation = (dirtyObj: IDtoSupplier) => {
 
-            delete dirtyObj.pType                                 // in this view / crud, case can safely remove this property, backend will handle it
+            if (cpt_fMode.value === FMODE.EDIT) delete dirtyObj.extData             // ❗ in this (parent supplier entity) edition mode, all the contact extended information (children supplier) will be saved (update, create) in the backend directly. So we will not need this field on the request
+
+            delete dirtyObj.pType                                                   // in this view / crud, case can safely remove this property, backend will handle it
             delete dirtyObj.cmpDisplayName
 
-            if (!isUndOrEmptyStr(dirtyObj.website)) dirtyObj.website = dirtyObj.website!.trim()                                                // trimming spaces trailing spaces
+            if (!isUndOrEmptyStr(dirtyObj.website)) dirtyObj.website = dirtyObj.website!.trim()                         // trimming spaces trailing spaces
             if (isUndOrEmptyStr(dirtyObj.website)) delete dirtyObj.website
             if (dirtyObj.zip == 0) dirtyObj.zip = undefined
             if (isUndOrEmptyStr(dirtyObj.city)) delete dirtyObj.city
@@ -914,20 +924,23 @@ export default defineComponent({
          * Tries to update the supplier extended contact information coming from the formulary view
          *
          * @param index The index for the extended supplier contact information in the local collection
-         * @param supData Extended supplier contact information object
+         * @param supData Extended supplier contact information object, with its fields just updated, coming form the child component
          */
         const h_updateSupData = ( index: number, supData: IDtoSupplier ) => {
-            const infoCount = Object.keys(ls_dicExtData.value).length                                  // getting the existing supplier data count on the dictionary
+            const infoCount = Object.keys(ls_dicExtData.value).length                                                   // getting the existing supplier data count on the dictionary, cause we will use that value for index if the 'extended contact info' ios a new one
 
-            if      (ls_formExtMode.value == FMODE.CREATE) ls_dicExtData.value[infoCount] = supData
-            else if (ls_formExtMode.value == FMODE.EDIT_LOCAL) ls_dicExtData.value[index] = supData
-            else ;   // we have nothing to do here
+            if      (ls_formExtMode.value == FMODE.CREATE) ls_dicExtData.value[infoCount] = supData                     // the supplier (parent entity) doesn't exist in database yet, so we use the extended contact count in the collection as index
+            else if (ls_formExtMode.value == FMODE.EDIT_LOCAL || ls_formExtMode.value == FMODE.EDIT) ls_dicExtData.value[index] = supData
+            else ;  // we have nothing to do here
+
         }
 
         const h_deleteSupData = (index: number) => {
 
-            if (index >= 0)
-                delete ls_dicExtData.value[index]
+            // TODO I think this is not completely implemented
+
+            // if (index >= 0)
+            //     delete ls_dicExtData.value[index]
         }
 
         /**

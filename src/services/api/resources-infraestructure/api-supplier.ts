@@ -68,16 +68,6 @@ export class ApiSupplier {
     }
 
     /**
-     * Create / insert a new Supplier on the system
-     *
-     * @param newSupplier
-     * @returns Promise with the identifier of the just created entity
-     */
-    public static reqInsSupplier( newSupplier: IDtoSupplier ): AxiosPromise<number>  {
-        return axios.post(url, newSupplier)
-    }
-
-    /**
      * Invoke an api call to delete a Supplier Category from the server
      * @param categoryId Supplier Category identifier to be deleted
      */
@@ -120,12 +110,29 @@ export class ApiSupplier {
     }
 
     /**
+     * Create / insert a new Supplier on the system
+     *
+     * @param payload entity data used to update the entity
+     * @param mode Tells if we need to process the request for the creation of "DtoSupExtI" (extended supplier contact information)"
+     */
+    public static reqInsSupplier( payload: IDtoSupplier, mode: string | undefined = undefined): AxiosPromise<number>  {
+
+        return mode === undefined
+            ? axios.post(url, payload)
+            : axios.post(`${url}/ext`, payload)
+    }
+
+    /**
      * Make the request to update the Supplier data
      *
      * @param payload entity data used to update the entity
+     * @param mode Tells if we need to process the request as an update of "DtoSupExtI" (extended supplier contact information)
      */
-    public static reqUpdateSupplier( payload: IDtoSupplier ): AxiosPromise<void> {
-        return axios.put(url, payload)
+    public static reqUpdateSupplier( payload: IDtoSupplier, mode: string | undefined = undefined ): AxiosPromise<void> {
+
+        return mode === undefined
+            ? axios.put(url, payload)
+            : axios.put(`${url}/ext`, payload)
     }
 
     /**

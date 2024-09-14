@@ -24,7 +24,7 @@ export const VSchemaSupplierCat = {
 export const VSchemaSupplier = {
     pName:          ( value: string ): boolean | string => {
         if (!required(value)) return t('validation.required')
-        if (!min(value, { length: 4 })) return t('validation.min-length', { length: 4 })
+        if (!min(value, { length: 3 })) return t('validation.min-length', { length: 3 })
         if (!max(value, { length: 30 })) return t('validation.max-length', { length: 30 })
         if (!regex(value, { regex: regOnlyAlphanumNSpacesWithDots })) return t('validation.only-alpha-digits-spaces')
 
