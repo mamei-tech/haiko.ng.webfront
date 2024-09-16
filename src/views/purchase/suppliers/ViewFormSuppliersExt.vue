@@ -301,7 +301,7 @@ import type { IDtoSupplier, IMultiselectBasic, ICountryStatesBasic,  } from '@/s
 
 
 export default defineComponent({
-    name: 'ViewFormSuppliersContactExt',
+    name: 'ViewFormSuppliersExt',
     props: {
         showing: {
             type: Boolean,

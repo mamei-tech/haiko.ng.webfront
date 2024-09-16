@@ -606,7 +606,7 @@
           </template>
 
           <template v-slot:default>
-            <ViewFormSuppliersContactExt
+            <ViewFormSuppliersExt
                 :fmode="ls_formExtMode"
                 :ext-data="ls_extData"
                 :index="ls_extDataIndex"
@@ -646,7 +646,7 @@ import useQrCodes from '@/services/composables/useQrCodes'
 import useDialogfy from '@/services/composables/useDialogfy'
 import { CmpBaseInput, CmpCard, CmpCardStats, CmpFormActionsButton, CmpModal, CmpMultiselectField, CmpTab, CmpTabContent, CmpTextInput, CmpVeeCheckbox } from '@/components'
 import { ACTION_KIND_STR, ADDRESS_TYPE, ENTITY_NAMES, FMODE, KEYS, OPS_KIND_STR, RoutePathNames, VSchemaSupplier } from '@/services/definitions'
-import ViewFormSuppliersContactExt from '@/views/purchase/suppliers/ViewFormSuppliersContactExt.vue'
+import ViewFormSuppliersExt from '@/views/purchase/suppliers/ViewFormSuppliersExt.vue'
 
 import type { ById, IDtoSupplier, TFormMode } from '@/services/definitions'
 
@@ -666,7 +666,7 @@ export default defineComponent({
         CmpMultiselectField,
         CmpFormActionsButton,
 
-        ViewFormSuppliersContactExt
+        ViewFormSuppliersExt
     },
     setup: function() {
 
