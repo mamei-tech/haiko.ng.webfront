@@ -15,8 +15,8 @@
 
                         @requestIntent="h_reqQuery"
 
-                        @navCreateIntent="nav_createSuppCatIntent"
-                        @editIntent="nav_editSuppCatIntent"
+                        @navCreateIntent="nav_2Form"
+                        @editIntent="nav_2Form"
                         @deleteIntent="h_intentRowDelete"
 
                         @enableIntent=""
@@ -48,7 +48,7 @@ import {
     RoutePathNames
 } from '@/services/definitions'
 
-import type { IDataTableQuery, IColumnHeader, ISupplierCatRow, TFormMode } from '@/services/definitions'
+import type { IDataTableQuery, IColumnHeader, ISupplierCatRow, TFormMode, IIndexable } from '@/services/definitions'
 
 
 //region ======== STATE INTERFACE =======================================================
@@ -157,27 +157,21 @@ export default defineComponent({
             router.push({ name: RoutePathNames.hub });
         }
 
-        const nav_createSuppCatIntent = (): void => {
-            router.push({
-                name:   RoutePathNames.supplierCatForm,
-                params: {
-                    fmode: FMODE.CREATE as TFormMode
-                    // id   : '', no need for passing ID on creation mode
-                }
-            })
-        }
-
         /**
-         * Handler for the intent of edit a record from the table
-         * @param rowData data of the row
+         * Navigation handler method to jump to the entity formulary view
+         *
+         * @param mode To setting up the formulary view of the entity. Could be CREATION mode or EDITION mode
+         * @param rowData
          */
-        const nav_editSuppCatIntent = ( rowData: ISupplierCatRow ): void => {
+        const nav_2Form = ( mode: TFormMode = FMODE.CREATE, rowData: IIndexable | undefined = undefined ) => {
+
+            const params = mode == FMODE.CREATE
+                ? { fmode: mode }
+                : { fmode: mode, id: rowData?.id }
+
             router.push({
                 name:   RoutePathNames.supplierCatForm,
-                params: {
-                    fmode: FMODE.EDIT as TFormMode,
-                    id:    rowData.id
-                }
+                params: params
             })
         }
 
@@ -215,8 +209,7 @@ export default defineComponent({
             h_reqQuery,
             h_intentRowDelete,
 
-            nav_editSuppCatIntent,
-            nav_createSuppCatIntent,
+            nav_2Form,
         }
     }
 
