@@ -287,17 +287,35 @@
 import { i18n } from '@/services/i18n'
 import { useForm } from 'vee-validate'
 import useCommon from '@/services/composables/useCommon'
+import type { SetupContext } from 'vue'
 import { defineComponent, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { ADDRESS_TYPE, FMODE, ENTITY_NAMES, OPS_KIND_STR, VSchemaSuppExtInfo } from '@/services/definitions'
+import type { ICountryStatesBasic, IDtoSupplier, IMultiselectBasic } from '@/services/definitions'
+import {
+    ACTION_KIND_STR,
+    ADDRESS_TYPE,
+    ENTITY_NAMES,
+    FMODE,
+    OPS_KIND_STR,
+    VSchemaSuppExtInfo
+} from '@/services/definitions'
 import { useToast } from 'vue-toastification'
 import useFactory from '@/services/composables/useFactory'
 import useToastify from '@/services/composables/useToastify'
+import useDialogfy from '@/services/composables/useDialogfy'
 import { ApiSupplier } from '@/services/api/resources-infraestructure/api-supplier'
 import { ApiNomenclaturesMng } from '@/services/api/api-nomenclatures-manager'
-import { CmpCard, CmpFormActionsButton, CmpBaseInput, CmpCollapseItem, CmpBaseCheckbox, CmpBaseButton, CmpBaseRadio, CmpVeeCheckbox, CmpTextInput, CmpMultiselectField } from '@/components'
-
-import type { SetupContext } from 'vue'
-import type { IDtoSupplier, IMultiselectBasic, ICountryStatesBasic,  } from '@/services/definitions'
+import {
+    CmpBaseButton,
+    CmpBaseCheckbox,
+    CmpBaseInput,
+    CmpBaseRadio,
+    CmpCard,
+    CmpCollapseItem,
+    CmpFormActionsButton,
+    CmpMultiselectField,
+    CmpTextInput,
+    CmpVeeCheckbox
+} from '@/components'
 
 
 export default defineComponent({
@@ -379,6 +397,7 @@ export default defineComponent({
         // helpers & flags
         const { mkSupplierExt } = useFactory()
         const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
+        const { dfyConfirmation, dfyShowAlert } = useDialogfy()
         const { isUndOrEmptyStr } = useCommon()
 
         // form data
@@ -487,9 +506,18 @@ export default defineComponent({
             }
         }
 
-        const a_delete = () => {
-            ctx.emit('delete', props.index)
-            nav_closeForm()
+        const a_delete = async () => {
+
+            if (props.fmode === FMODE.CREATE) nav_closeForm()
+            else {
+                const wasConfirmed = await dfyConfirmation(ACTION_KIND_STR.DELETE, ENTITY_NAMES.SUPPLIER, values.pName)
+                if (wasConfirmed) ApiSupplier.reqDeleteSupp(values.id, 'ext')
+                .then(() => {
+                    ctx.emit('delete', props.index)
+                    nav_closeForm()
+                })
+                .catch(err => tfyCRUDFail(err, ENTITY_NAMES.SUPPLIER, OPS_KIND_STR.DELETION))
+            }
         }
 
         //#endregion ==========================================================================

@@ -78,9 +78,13 @@ export class ApiSupplier {
     /**
      * Invoke an api call to delete a Supplier from the server
      * @param supplierId Supplier identifier to be deleted
+     * @param mode Tells if we need to process the request as an update of "DtoSupExtI" (extended supplier contact information)
      */
-    public static reqDeleteSupp ( supplierId: number ): AxiosPromise<void> {
-        return axios.delete(`${url}/${ supplierId }`)
+    public static reqDeleteSupp ( supplierId: number, mode : string | undefined = undefined ): AxiosPromise<void> {
+
+        return mode === undefined
+            ?  axios.delete(`${url}/${ supplierId }`)
+            :  axios.delete(`${url}/ext/${ supplierId }`)
     }
 
     /**

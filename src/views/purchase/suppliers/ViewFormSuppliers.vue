@@ -936,11 +936,7 @@ export default defineComponent({
         }
 
         const h_deleteSupData = (index: number) => {
-
-            // TODO I think this is not completely implemented
-
-            // if (index >= 0)
-            //     delete ls_dicExtData.value[index]
+            if (index >= 0) delete ls_dicExtData.value[index]
         }
 
         /**
