@@ -39,7 +39,7 @@ import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 import useToastify from '@/services/composables/useToastify'
 import useDialogfy from '@/services/composables/useDialogfy'
-import { IsEmptyObj, isNumber } from '@/services/helpers/help-defaults'
+import { IsEmptyObj, IsNumber } from '@/services/helpers/help-defaults'
 import { ApiSupplier } from '@/services/api/resources-infraestructure/api-supplier'
 import { CmpCard, CmpDataTable } from '@/components'
 import { useSt_Pagination } from '@/stores/pagination'
@@ -198,7 +198,7 @@ export default defineComponent({
             ls_suppliers.value.entityPage = ls_suppliers.value.entityPage.map((row: ISupplierRow) => {
 
                 // there is a chance that this line run, and the suppCategoryID field was already mapped to the role name making it a string value so we can used as index anymore, so we have to check first
-                if(isNumber(row.suppCategoryID))
+                if(IsNumber(row.suppCategoryID))
                     row.suppCategoryID = st_nomenclatures.getSuppCatByIdMap[+row.suppCategoryID].scName
 
                 return row

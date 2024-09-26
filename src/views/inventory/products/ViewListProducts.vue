@@ -45,7 +45,7 @@ import useDialogfy from '@/services/composables/useDialogfy'
 import useNumeric from '@/services/composables/useNumeric'
 import { useSt_Nomenclatures } from '@/stores/nomenc'
 import { useSt_Pagination } from '@/stores/pagination'
-import { IsEmptyObj, isNumber } from '@/services/helpers/help-defaults'
+import { IsEmptyObj, IsNumber } from '@/services/helpers/help-defaults'
 import {
     ACTION_KIND_STR,
     BULK_ACTIONS,
@@ -215,10 +215,10 @@ export default defineComponent({
             ls_products.value.entityPage = ls_products.value.entityPage.map((prodRow: IProductRow) => {
 
                 // there is a chance that this line run, and the pCategoryID field was already mapped to the role name making it a string value so we can used as index anymore, so we have to check first
-                if(isNumber(prodRow.pCategoryID)) prodRow.pCategoryID = st_nomenclatures.getProdCatByIdMap[+prodRow.pCategoryID].pCatName
+                if(IsNumber(prodRow.pCategoryID)) prodRow.pCategoryID = st_nomenclatures.getProdCatByIdMap[+prodRow.pCategoryID].pCatName
 
                 // there is a chance that this line run, and the pUoMID field was already mapped to the role name making it a string value so we can used as index anymore, so we have to check first
-                if(isNumber(prodRow.pUoMID)) prodRow.pUoMID = st_nomenclatures.getUoMByIdMap[+prodRow.pUoMID].uName
+                if(IsNumber(prodRow.pUoMID)) prodRow.pUoMID = st_nomenclatures.getUoMByIdMap[+prodRow.pUoMID].uName
 
                 // so the 0 value doesnt mess with the user in the UI making them confuse, we remove the 0 values
                 if (prodRow.pTotalStock == 0) prodRow.pTotalStock = 0

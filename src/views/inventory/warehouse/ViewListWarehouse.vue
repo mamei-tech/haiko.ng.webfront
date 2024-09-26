@@ -33,6 +33,11 @@ import { i18n } from '@/services/i18n'
 import { useRouter } from 'vue-router'
 import useToastify from '@/services/composables/useToastify'
 import useDialogfy from '@/services/composables/useDialogfy'
+import { IsEmptyObj, IsNumber } from '@/services/helpers/help-defaults'
+import { ApiWarehouse } from '@/services/api/inventory/api-warehouse'
+import { useSt_Pagination } from '@/stores/pagination'
+import { useSt_Nomenclatures } from '@/stores/nomenc'
+import { CmpCard, CmpDataTable } from '@/components'
 import {
     ACTION_KIND_STR,
     ENTITY_NAMES,
@@ -41,11 +46,9 @@ import {
     OPS_KIND_STR,
     RoutePathNames,
     HWarehouseTable,
-    DT_ACTION_BUTTON_MODE, KEYS,
+    DT_ACTION_BUTTON_MODE, KEYS
 } from '@/services/definitions'
-import { CmpCard, CmpDataTable } from '@/components'
-import { ApiWarehouse } from '@/services/api/inventory/api-warehouse'
-import { useSt_Pagination } from '@/stores/pagination'
+
 
 import type { TFormMode, IColumnHeader, IDataTableQuery, IWarehouseRow, IIndexable } from '@/services/definitions'
 
@@ -72,6 +75,7 @@ export default defineComponent({
         const router = useRouter()
 
         const st_pagination = useSt_Pagination()
+        const st_nomenclatures = useSt_Nomenclatures()                                      // Pinia store for nomenclatures// pinia instance of pagination store | check the text on --> https://pinia.vuejs.org/cookbook/composing-stores.html#nested-stores
         const ls_warehouses = ref<IWarehouseState>({ entityPage: [] as IWarehouseRow[] })
 
         const abar_mode: DT_ACTIONBAR_MODE = DT_ACTIONBAR_MODE.JC                           // datatable action bar mode
@@ -101,7 +105,7 @@ export default defineComponent({
          * Vue hook before component is unmounted from the DOM
          */
         onBeforeUnmount(() => {
-            window.removeEventListener('keydown', h_keyboardKeyPress)            // cleaning the event manually added before to the document. Wee need to keep the things as clean as posible
+            window.removeEventListener('keydown', h_keyboardKeyPress)                // cleaning the event manually added before to the document. Wee need to keep the things as clean as posible
         })
 
         //endregion ===========================================================================
@@ -117,8 +121,8 @@ export default defineComponent({
                 st_pagination.mutUpdateOnRequest(response.data.totalRecords, response.data.entityList.length, st_pagination.Offset)
 
                 // --- some local data processing
-                // mappingProperties()                                      // mapping categories id to names
-
+                hpr_mappingProperties()                                                                                 // mapping supplier's / partner's address identifier to names
+                
             }).catch(error => {
                 if (error.response?.status === 404) {
                     ls_warehouses.value.entityPage = []
@@ -134,6 +138,24 @@ export default defineComponent({
         //#endregion ==========================================================================
 
         //region ======== HELPERS =============================================================
+
+        /**
+         *  'Address' column is actually using the 'Partner' / 'Supplier' record identifier. This method maps that identifier
+         *  to the name of the 'Partner' to display in the 'Address' column
+         *
+         *  ❗ in this entire view file (list view), we are going to be using the 'suppID' as 'SuppAddressID'
+         */
+        const hpr_mappingProperties = async () => {
+
+            if (IsEmptyObj(st_nomenclatures.getSuppByIdMap))                                                             // if we don't have the data, we request it
+                await st_nomenclatures.reqNmcSuppliers(false)
+
+            ls_warehouses.value.entityPage = ls_warehouses.value.entityPage.map((wareRow:IWarehouseRow) => {
+                if(IsNumber(wareRow.suppID)) wareRow.suppID = st_nomenclatures.getSuppByIdMap[+wareRow.suppID].cmpDisplayName     // there is a chance that this line run, and the 'SuppAddressID' field was already mapped to the role name making it a string value so we can't used as index anymore, so we have to check first
+                return wareRow
+            })
+        }
+
         //#endregion ==========================================================================
 
         //region ======= NAVIGATION ===========================================================

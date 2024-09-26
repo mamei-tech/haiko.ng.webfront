@@ -15,5 +15,7 @@ export interface IWarehouseRow extends IWarehouseBasic {
 /**
  * Warehouse DTO
  */
-export interface IDtoWarehouse extends IWarehouseRow {}
+export interface IDtoWarehouse extends IWarehouseRow {
+    suppAddressID: number | string
+}
 

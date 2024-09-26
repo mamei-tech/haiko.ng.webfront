@@ -112,9 +112,12 @@ export class ApiNomenclaturesMng {
      * Get a list of Suppliers defined on the system
      * - The retrieve list just will have minimum data (sName) Check ISupplierBasic
      * - M == minimum / basic information
+     *
+     * @param onlyContactType When this parameter is true, just Suppliers of type 'Contact' will be retrieved.
+     * Otherwise (false), when its present and equal to 'all', all types Suppliers will be retrieved.
      */
-    public static getSuppliersM(): AxiosPromise<IUoMBasic[]> {
-        return axios.get(`${url}/supplier/list`)
+    public static getSuppliersM(onlyContactType: boolean = true): AxiosPromise<IUoMBasic[]> {
+        return  axios.get(`${url}/supplier/list/${ onlyContactType ? '' : 'all' }`)
     }
 
     /**

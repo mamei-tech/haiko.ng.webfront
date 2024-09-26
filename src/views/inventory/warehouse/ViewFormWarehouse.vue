@@ -59,7 +59,7 @@
                                          :options="st_nomenclatures.getSupplier4Select"
                                          :searchable="true"
                                          closeOnSelect
-                                         name="suppID"
+                                         name="SuppAddressID"
                                          class="mb-2"
                     >
 
@@ -169,7 +169,7 @@ export default defineComponent({
          */
         onMounted(async () => {
 
-            try {await st_nomenclatures.reqNmcSuppliers()}
+            try {await st_nomenclatures.reqNmcSuppliers(false)}                       // requiring all types
             catch (err) {}
 
             if (cpt_fMode.value === FMODE.EDIT as TFormMode) {

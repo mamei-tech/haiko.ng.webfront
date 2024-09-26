@@ -501,6 +501,7 @@ export const useSt_Nomenclatures = defineStore({
          *
          * @param onlyContactType When this parameter is true, just Suppliers of type 'Contact' will be retrieved.
          * Otherwise (false), when its present and equal to 'all', all types Suppliers will be retrieved.
+         * TODO este nomenclador es posible que se necesite paginar, pues es totalmente seguro, q crecerá haciendo gordísimo el request
          */
         async reqNmcSuppliers(onlyContactType: boolean = true): Promise<void> {
 

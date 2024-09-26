@@ -314,6 +314,9 @@
   },
   "entities":      {
     "default":       "entidades",
+    "address":       {
+      "name": "@:form.fields-common.address"
+    },
     "address-type":  {
       "contact":  "Contacto",
       "invoice":  "Facturación",

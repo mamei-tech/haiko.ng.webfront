@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { useSt_Nomenclatures } from '@/stores/nomenc'
 import { useSt_Pagination } from '@/stores/pagination'
 import { ApiStaff } from '@/services/api/people/api-staff'
-import { IsEmptyObj, isNumber } from '@/services/helpers/help-defaults'
+import { IsEmptyObj, IsNumber } from '@/services/helpers/help-defaults'
 
 import type { IStaffRow, IdsArray } from '@/services/definitions'
 import type { IDtoStaff } from '@/services/definitions'
@@ -39,7 +39,7 @@ export const useSt_Staff = defineStore({
                 return state.entityPage.map((row: IStaffRow) => {
 
                     // there is a chance that this line run, and the roleId field was already mapped to the role name making it a string value so we can used as index anymore, so we have to check first
-                    if(isNumber(row.roleId))
+                    if(IsNumber(row.roleId))
                         row.roleId = st_nomenclatures.getRolesByIdMap[+row.roleId].rName
 
                     return row

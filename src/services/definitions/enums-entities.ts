@@ -46,7 +46,8 @@ export enum ENTITY_NAMES {
     WARELOCATION = 'wlocation',
     CURRENCY = 'currency',
     PRODUCT_CAT = 'product-cat',
-    PICKINGTYPE = 'pickingtype'
+    PICKINGTYPE = 'pickingtype',
+    ADDRESS = 'address'
 }
 
 /**

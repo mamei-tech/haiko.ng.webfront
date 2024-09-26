@@ -26,4 +26,4 @@ export function IsEmptyObj( obj: any ) {
     return obj && Object.keys(obj).length === 0 && Object.getPrototypeOf(obj) === Object.prototype
 }
 
-export function isNumber( n: any ) { return !isNaN(parseFloat(n)) && !isNaN(n - 0) }
+export function IsNumber( n: any ) { return !isNaN(parseFloat(n)) && !isNaN(n - 0) }

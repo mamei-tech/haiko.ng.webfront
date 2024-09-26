@@ -16,7 +16,7 @@ export const VSchemaWarehouse = {
     code:  ( value: string ): boolean | string => {
         return VSchemaCommon.nameValidation(value, 2, 10, true, regOnlyAlphanumericNoSpaces, t('validation.only-alpha-digits-no-spaces'))
     },
-    suppID:  ( value: number ): boolean | string => {
+    suppAddressID:  ( value: number ): boolean | string => {
         if (!required(value)) return t('validation.required')
         if (!integer(value)) return t('validation.only-integers')
 
