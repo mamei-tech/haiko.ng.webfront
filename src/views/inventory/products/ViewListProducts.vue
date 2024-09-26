@@ -207,7 +207,7 @@ export default defineComponent({
          * Maps the product categories id present in one of the fields of the list of datatable records (products),
          * to the actual product categories name (user friendliness)
          *
-         * ❗ Also this mathe makes other local data transformation / formatting jobs
+         * ❗ Also this mathe makes other local data transformation, such as formatting jobs
          */
         const mappingProperties = () => {
             if (IsEmptyObj(st_nomenclatures.getProdCatByIdMap)) return        // If there are no supplier categories yet, retrieve the entities as it is

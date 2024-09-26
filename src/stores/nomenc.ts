@@ -321,7 +321,7 @@ export const useSt_Nomenclatures = defineStore({
          *
          * @param state
          */
-        getSuppByMapId: ( state ): ById<ISupplierBasic> => toDicIds(state.suppliers),
+        getSuppByIdMap: ( state ): ById<ISupplierBasic> => toDicIds(state.suppliers),
     },
     actions: {
 
@@ -498,11 +498,14 @@ export const useSt_Nomenclatures = defineStore({
 
         /**
          * Tries to get the suppliers defined on the system. The supplier list will have only minimum data
+         *
+         * @param onlyContactType When this parameter is true, just Suppliers of type 'Contact' will be retrieved.
+         * Otherwise (false), when its present and equal to 'all', all types Suppliers will be retrieved.
          */
-        async reqNmcSuppliers(): Promise<void> {
+        async reqNmcSuppliers(onlyContactType: boolean = true): Promise<void> {
 
             return await new Promise<void>((resolve, reject) => {
-                ApiNomenclaturesMng.getSuppliersM()
+                ApiNomenclaturesMng.getSuppliersM(onlyContactType)
                 .then((response:any) => {
 
                     this.suppliers = response.data
