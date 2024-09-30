@@ -5,17 +5,11 @@ export interface IWarehouseBasic extends IIndexable {
 }
 
 /**
- * Interface for describing a Warehouse row on the datatable
- */
-export interface IWarehouseRow extends IWarehouseBasic {
-    code: string,
-    suppID: number | string
-}
-
-/**
  * Warehouse DTO
  */
-export interface IDtoWarehouse extends IWarehouseRow {
+export interface IDtoWarehouse extends IWarehouseBasic {
+    code: string,
+    suppID: number | string,
     suppAddressID: number | string
 }
 

@@ -89,7 +89,7 @@ export const HWarehouseTable: Partial<IColumnHeader>[] = [
     { title: 'id', hidden: true },
     { title: 'name', navKey: 'wName', sorting: '' },
     { title: 'code', styleWidth: 30, sorting: '' },
-    { title: 'address', navKey: 'suppID' },
+    { title: 'address', navKey: 'suppAddressID' },
     {
         title:        '',            // actions buttons
         styleToRight: true,

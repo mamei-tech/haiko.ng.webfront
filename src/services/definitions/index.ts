@@ -27,7 +27,7 @@ import { VSchemaStrgCategory } from '@/services/definitions/validations/validati
 import { VSchemaStaffCreate, VSchemaStaffEdit } from '@/services/definitions/validations/validations-people'
 
 import type { Problem, ErrorDictionary } from '@/services/definitions/types-errors'
-import type { IWarehouseRow, IDtoWarehouse, IWarehouseBasic } from '@/services/definitions/entities/types-warehouse'
+import type { IDtoWarehouse, IWarehouseBasic } from '@/services/definitions/entities/types-warehouse'
 import type { IPickingTypeBasic, IPickingTypeRow, IDtoPickingType, ICorePickingType, IDtoPickingNew } from '@/services/definitions/entities/types-picking'
 import type { IWareLocationRow, IDtoWareLocation, IWareLocationBasic, IWareLocationType } from '@/services/definitions/entities/types-warelocation'
 import type { IStrgCategoryRow, IDtoStrgCategory, IStrgCatProdLine, IStrgCategoryBasic } from '@/services/definitions/entities/types-strgcategory'
@@ -119,7 +119,7 @@ export {
     IWareLocationRow, IDtoWareLocation, IWareLocationBasic, IWareLocationType,
 
     // warehouse
-    IWarehouseRow, IDtoWarehouse, IWarehouseBasic,
+    IDtoWarehouse, IWarehouseBasic,
 
     // storage category
     IStrgCategoryRow, IDtoStrgCategory, IStrgCatProdLine, IStrgCategoryBasic,

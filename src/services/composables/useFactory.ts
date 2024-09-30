@@ -206,7 +206,8 @@ export default function useFactory() {
             id:     0,
             wName:  '',
             code:   '',
-            suppID: ''
+            suppID: '',
+            suppAddressID: ''
         }
     }
 

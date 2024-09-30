@@ -59,7 +59,7 @@
                                          :options="st_nomenclatures.getSupplier4Select"
                                          :searchable="true"
                                          closeOnSelect
-                                         name="SuppAddressID"
+                                         name="suppAddressID"
                                          class="mb-2"
                     >
 
@@ -101,7 +101,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onBeforeUnmount, onMounted, reactive } from 'vue'
+import { computed, defineComponent, nextTick, onBeforeUnmount, onMounted, reactive } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useForm } from 'vee-validate'
 import { i18n } from '@/services/i18n'
@@ -169,7 +169,7 @@ export default defineComponent({
          */
         onMounted(async () => {
 
-            try {await st_nomenclatures.reqNmcSuppliers(false)}                       // requiring all types
+            try {await st_nomenclatures.reqNmcSuppliers(false)}                                          // requiring all types
             catch (err) {}
 
             if (cpt_fMode.value === FMODE.EDIT as TFormMode) {
@@ -185,7 +185,7 @@ export default defineComponent({
                 catch (err) {}
             }
 
-            window.addEventListener('keydown', h_keyboardKeyPress)                              // keyboard keys event handler, we need to clean this kind of event when the component are destroyed
+            window.addEventListener('keydown', h_keyboardKeyPress)                                                // keyboard keys event handler, we need to clean this kind of event when the component are destroyed
         })
 
         /**

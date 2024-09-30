@@ -2,7 +2,7 @@ import axios from '../api'
 import appConfig from '@/configs/app.conf'
 
 import type { AxiosPromise } from 'axios'
-import type { IDataTableQuery, IDataTablePage, IWarehouseRow, IDtoWarehouse } from '@/services/definitions'
+import type { IDataTableQuery, IDataTablePage, IDtoWarehouse } from '@/services/definitions'
 
 
 const version = appConfig.server.current_version
@@ -27,7 +27,7 @@ export class ApiWarehouse {
      * Request datatable page data according to the given query parameters
      * @param queryParams Parameterized request for the entities. Contains query params such as pagination details and filter options for searching.
      */
-    public static getPage( queryParams: IDataTableQuery ): AxiosPromise<IDataTablePage<IWarehouseRow>> {
+    public static getPage( queryParams: IDataTableQuery ): AxiosPromise<IDataTablePage<IDtoWarehouse>> {
 
         const payload = {
             Orderer: queryParams.Orderer,

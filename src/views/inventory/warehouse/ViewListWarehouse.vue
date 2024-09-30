@@ -46,17 +46,17 @@ import {
     OPS_KIND_STR,
     RoutePathNames,
     HWarehouseTable,
-    DT_ACTION_BUTTON_MODE, KEYS
+    DT_ACTION_BUTTON_MODE, KEYS,
 } from '@/services/definitions'
 
 
-import type { TFormMode, IColumnHeader, IDataTableQuery, IWarehouseRow, IIndexable } from '@/services/definitions'
+import type { TFormMode, IColumnHeader, IDataTableQuery, IIndexable, IDtoWarehouse } from '@/services/definitions'
 
 
 //region ======== STATE INTERFACE =======================================================
 
 interface IWarehouseState {
-    entityPage: IWarehouseRow[]
+    entityPage: IDtoWarehouse[]
 }
 
 //endregion =============================================================================
@@ -76,7 +76,7 @@ export default defineComponent({
 
         const st_pagination = useSt_Pagination()
         const st_nomenclatures = useSt_Nomenclatures()                                      // Pinia store for nomenclatures// pinia instance of pagination store | check the text on --> https://pinia.vuejs.org/cookbook/composing-stores.html#nested-stores
-        const ls_warehouses = ref<IWarehouseState>({ entityPage: [] as IWarehouseRow[] })
+        const ls_warehouses = ref<IWarehouseState>({ entityPage: [] as IDtoWarehouse[] })
 
         const abar_mode: DT_ACTIONBAR_MODE = DT_ACTIONBAR_MODE.JC                           // datatable action bar mode
         const abutton_mode: DT_ACTION_BUTTON_MODE = DT_ACTION_BUTTON_MODE.JEDINDEL          // datatable button mode
@@ -122,7 +122,7 @@ export default defineComponent({
 
                 // --- some local data processing
                 hpr_mappingProperties()                                                                                 // mapping supplier's / partner's address identifier to names
-                
+
             }).catch(error => {
                 if (error.response?.status === 404) {
                     ls_warehouses.value.entityPage = []
@@ -147,11 +147,13 @@ export default defineComponent({
          */
         const hpr_mappingProperties = async () => {
 
-            if (IsEmptyObj(st_nomenclatures.getSuppByIdMap))                                                             // if we don't have the data, we request it
+            if (IsEmptyObj(st_nomenclatures.getSuppByIdMap))                                                            // if we don't have the data, we request it
                 await st_nomenclatures.reqNmcSuppliers(false)
 
-            ls_warehouses.value.entityPage = ls_warehouses.value.entityPage.map((wareRow:IWarehouseRow) => {
-                if(IsNumber(wareRow.suppID)) wareRow.suppID = st_nomenclatures.getSuppByIdMap[+wareRow.suppID].cmpDisplayName     // there is a chance that this line run, and the 'SuppAddressID' field was already mapped to the role name making it a string value so we can't used as index anymore, so we have to check first
+            ls_warehouses.value.entityPage = ls_warehouses.value.entityPage.map((wareRow:IDtoWarehouse) => {
+                if(IsNumber(wareRow.suppAddressID))
+                    wareRow.suppAddressID = st_nomenclatures.getSuppByIdMap[+wareRow.suppAddressID].cmpDisplayName      // there is a chance that this line run, and the 'SuppAddressID' field was already mapped to the role name making it a string value so we can't used as index anymore, so we have to check first
+
                 return wareRow
             })
         }
