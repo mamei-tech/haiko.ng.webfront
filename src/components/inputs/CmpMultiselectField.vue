@@ -20,6 +20,7 @@
                  :searchable="searchable"
                  :closeOnSelect="closeOnSelect"
                  :mode="mode"
+                 :disabled="disabled"
                  :max="max"
 
                  v-model="inputValue"
@@ -109,6 +110,11 @@ export default defineComponent({
             type:        Boolean,
             default:     false,
             required:    false
+        },
+        disabled: {
+            description: 'Tells if we need to render the component in a disabled mode',
+            default:  false,
+            required: false
         }
     },
     emits:      [ 'changehapend', 'openhapend', 'writehapend' ],
