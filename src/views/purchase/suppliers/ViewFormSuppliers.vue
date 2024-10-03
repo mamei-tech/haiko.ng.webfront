@@ -84,7 +84,7 @@
                 </div>
 
                 <!-- street -->
-                <div class="row">
+                <div class="row" v-if="!isExtContactInfo">
                   <label class="text-sm-left text-md-right col-md-3 col-form-label">
                     {{ $t( 'form.fields-common.address' ) }}
                   </label>
@@ -98,7 +98,7 @@
                 </div>
 
                 <!-- city & zip -->
-                <div class="row">
+                <div class="row" v-if="!isExtContactInfo">
                   <label class="text-sm-left text-md-right col-md-3 col-form-label">
                     {{ $t( 'form.fields-common.city' ) }}
                   </label>
@@ -125,7 +125,7 @@
                 <!-- country & state -->
                 <!-- in edition mode we need to ensure that we have the data of all option for the select before render it, so the Multiselect render the entity selected option properly -->
                 <!-- to assist this logic and make it more simple, make the fetch of the data before calling the router to render this entire view. CHECK h_navEditSuppIntent in ViewFormSuppliers.vue file -->
-                <div class="row" v-if="(cpt_fMode === 'edit' && values.countryCode !== undefined)">
+                <div class="row" v-if="(cpt_fMode === 'edit' && values.countryCode !== undefined) && !isExtContactInfo">
                   <label class="text-sm-left text-md-right col-md-3 col-form-label">
                     {{ $t( 'form.fields-common.country' ) }}
                   </label>
@@ -183,7 +183,7 @@
                   </div>
                 </div>
                 <!-- normal mode (form crete mode) -->
-                <div class="row" v-else>
+                <div class="row" v-else-if="!isExtContactInfo">
                   <label class="text-sm-left text-md-right col-md-3 col-form-label">
                     {{ $t( 'form.fields-common.country' ) }}
                   </label>
@@ -250,6 +250,7 @@
                   </label>
                   <div class="col-md-9">
                     <CmpMultiselectField
+                        :disabled="isExtContactInfo"
                         :placeholder="$t('form.placeholders.select').toLowerCase()"
                         :options="st_nomenclatures.getCompanies4Select"
                         name="parentID"
@@ -299,10 +300,10 @@
                     />
                   </div>
 
-                  <label class="text-sm-left text-md-right col-md-1 col-form-label">
+                  <label class="text-sm-left text-md-right col-md-1 col-form-label" v-if="!isExtContactInfo">
                     {{ $t( 'form.fields-common.phone' ) }}
                   </label>
-                  <div class="col-md-4">
+                  <div class="col-md-4" v-if="!isExtContactInfo">
                     <CmpBaseInput
                         placeholder="### ## ### ## ##"
                         name="phone"
@@ -324,10 +325,10 @@
                     />
                   </div>
 
-                  <label class="text-sm-left text-md-right col-md-1 col-form-label">
+                  <label class="text-sm-left text-md-right col-md-1 col-form-label" v-if="!isExtContactInfo">
                     {{ $t( 'form.fields-common.website' ) }}
                   </label>
-                  <div class="col-md-4">
+                  <div class="col-md-4" v-if="!isExtContactInfo">
                     <CmpBaseInput
                         :placeholder="$t('form.placeholders.website')"
                         name="website"
@@ -343,6 +344,7 @@
                   </label>
                   <div class="col-md-9">
                     <CmpMultiselectField
+                        :disabled="isExtContactInfo"
                         :placeholder="$t('form.placeholders.supplier-category').toLowerCase()"
                         :options="st_nomenclatures.getSuppCat4Select"
                         name="suppCategoryID"
@@ -387,166 +389,172 @@
 
               <!-- tabs content -->
               <div class="tab-content col-md-10">
+                <template v-for="tab in tabs" :key="'tc'+tab.title" >
 
-                <!-- TAB data statistics -->
-                <CmpTabContent :key="1" :id="tabs[0].title" :activeTabId="activeTabId" :tabId="1">
-                  <div class="row">
+                  <CmpTabContent :tabId="tab.id" :id="tab.title" :activeTabId="activeTabId">
 
-                    <!--<div class="col-lg-3 col-md-6" v-for="info in statsDataCards" :key="info.title">-->
-                    <!--    <CmpCardStats :title="info.title.toString()"-->
-                    <!--                  :subTitle="info.subTitle"-->
-                    <!--                  :type="info.type"-->
-                    <!--                  :icon="info.icon">-->
-                    <!--        <template v-slot:footer>-->
-                    <!--            <div v-html="info.footer"></div>-->
-                    <!--        </template>-->
-                    <!--    </CmpCardStats>-->
-                    <!--</div>-->
+                    <!-- TAB data statistics -->
+                    <template v-if="tab.id === 1">
+                      <div class="row">
 
-                    <!--<CmpCard style="width: 20rem;">-->
-                    <!--    <img slot="image" class="card-img-top" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22320%22%20height%3D%22180%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_1664f6b99d2%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A16pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_1664f6b99d2%22%3E%3Crect%20width%3D%22320%22%20height%3D%22180%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22119.0859375%22%20y%3D%2297.35%22%3E320x180%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="Card image cap"/>-->
-                    <!--    <h4 class="card-title">Card title</h4>-->
-                    <!--    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
-                    <!--    <a href="#" class="btn btn-primary">Go somewhere</a>-->
-                    <!--</CmpCard>-->
+                        <!--<div class="col-lg-3 col-md-6" v-for="info in statsDataCards" :key="info.title">-->
+                        <!--    <CmpCardStats :title="info.title.toString()"-->
+                        <!--                  :subTitle="info.subTitle"-->
+                        <!--                  :type="info.type"-->
+                        <!--                  :icon="info.icon">-->
+                        <!--        <template v-slot:footer>-->
+                        <!--            <div v-html="info.footer"></div>-->
+                        <!--        </template>-->
+                        <!--    </CmpCardStats>-->
+                        <!--</div>-->
 
-                    <div class="col-lg-3 col-md-12" v-for="(card, i) in statsDataCards"
-                         :key="`card_${card.id}`">
-                      <CmpCardStats :title="card.title"
-                                    :subTitle="card.subTitle"
-                                    :type="card.type"
-                                    :icon="card.icon"
-                                    :with-restore="card.id === 3 || card.id === 4"
-                                    v-on:doRestore="card.id === 3 || card.id === 4 ? h_staticsRestore(card.id) : undefined">
+                        <!--<CmpCard style="width: 20rem;">-->
+                        <!--    <img slot="image" class="card-img-top" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22320%22%20height%3D%22180%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_1664f6b99d2%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A16pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_1664f6b99d2%22%3E%3Crect%20width%3D%22320%22%20height%3D%22180%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22119.0859375%22%20y%3D%2297.35%22%3E320x180%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="Card image cap"/>-->
+                        <!--    <h4 class="card-title">Card title</h4>-->
+                        <!--    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
+                        <!--    <a href="#" class="btn btn-primary">Go somewhere</a>-->
+                        <!--</CmpCard>-->
 
-                        <template v-slot:footer>
+                        <div class="col-lg-3 col-md-12" v-for="(card, i) in statsDataCards"
+                             :key="`card_${card.id}`">
+                          <CmpCardStats :title="card.title"
+                                        :subTitle="card.subTitle"
+                                        :type="card.type"
+                                        :icon="card.icon"
+                                        :with-restore="card.id === 3 || card.id === 4"
+                                        v-on:doRestore="card.id === 3 || card.id === 4 ? h_staticsRestore(card.id) : undefined">
 
-                          <!-- jump cases -->
-                          <div v-if="card.id === 1 || card.id === 2 || card.id === 5 || card.id === 6">
-                            <a href="#" @click.prevent="h_statGoCheck(card.id)">
+                            <template v-slot:footer>
 
-                              <i class="tim-icons icon-zoom-split"></i>
-                              {{ $t( 'form.fields-common.view-check' ) }}
-                            </a>
-                          </div>
+                              <!-- jump cases -->
+                              <div v-if="card.id === 1 || card.id === 2 || card.id === 5 || card.id === 6">
+                                <a href="#" @click.prevent="h_statGoCheck(card.id)">
 
-                          <!-- change params cases -->
-                          <div v-else-if="card.id === 3 || card.id === 4">
-                            <a href="#" @click.prevent="h_changeStatsParams(card.id, 'pm')">
-                              <i class="tim-icons icon-calendar-60"></i>
-                              {{ $t( 'form.fields-common.month-pass-min' ) }}
-                            </a>
+                                  <i class="tim-icons icon-zoom-split"></i>
+                                  {{ $t( 'form.fields-common.view-check' ) }}
+                                </a>
+                              </div>
 
-                            <a href="#" @click.prevent="h_changeStatsParams(card.id, 'py')"
-                               class="ml-3">
-                              <i class="tim-icons icon-chart-bar-32"></i>
-                              {{ $t( 'form.fields-common.year-pass-min' ) }}
-                            </a>
+                              <!-- change params cases -->
+                              <div v-else-if="card.id === 3 || card.id === 4">
+                                <a href="#" @click.prevent="h_changeStatsParams(card.id, 'pm')">
+                                  <i class="tim-icons icon-calendar-60"></i>
+                                  {{ $t( 'form.fields-common.month-pass-min' ) }}
+                                </a>
 
-                            <a href="#" @click.prevent="h_changeStatsParams(card.id, 'cy')"
-                               class="ml-3">
-                              <i class="tim-icons icon-chart-bar-32"></i>
-                              {{ $t( 'form.fields-common.year-current-min' ) }}
-                            </a>
-                          </div>
+                                <a href="#" @click.prevent="h_changeStatsParams(card.id, 'py')"
+                                   class="ml-3">
+                                  <i class="tim-icons icon-chart-bar-32"></i>
+                                  {{ $t( 'form.fields-common.year-pass-min' ) }}
+                                </a>
 
-                        </template>
-                      </CmpCardStats>
-                    </div>
+                                <a href="#" @click.prevent="h_changeStatsParams(card.id, 'cy')"
+                                   class="ml-3">
+                                  <i class="tim-icons icon-chart-bar-32"></i>
+                                  {{ $t( 'form.fields-common.year-current-min' ) }}
+                                </a>
+                              </div>
 
-                  </div>
-                </CmpTabContent>
+                            </template>
+                          </CmpCardStats>
+                        </div>
 
-                <!-- TAB data supplier extended data -->
-                <CmpTabContent :key="2" :tabId="2" :id="tabs[1].title" :activeTabId="activeTabId">
-                  <!-- btn 4 create -->
-                  <div style="text-align: end">
-                    <button :title="$t('btn.tip-create-new')"
-                            class="btn btn-icon btn-primary"
-                            @click.prevent="h_btnMkExtendedInfo">
-                      <i class="tim-icons icon-simple-add"></i>
-                    </button>
-                  </div>
+                      </div>
+                    </template>
 
-                  <!-- supplier extended contact info cards generation -->
-                  <div class="row mt-2">
-                    <CmpCard v-for="(value, key) in ls_dicExtData"
-                             class="col-md-3"
-                             :key="`ext_card_${key}`"
-                             :class="{
+                    <!-- TAB data supplier extended data -->
+                    <template v-if="tab.id === 2">
+                      <!-- btn 4 create -->
+                      <div style="text-align: end">
+                        <button :title="$t('btn.tip-create-new')"
+                                class="btn btn-icon btn-primary"
+                                @click.prevent="h_btnMkExtendedInfo">
+                          <i class="tim-icons icon-simple-add"></i>
+                        </button>
+                      </div>
+
+                      <!-- supplier extended contact info cards generation -->
+                      <div class="row mt-2">
+                        <CmpCard v-for="(value, key) in ls_dicExtData"
+                                 class="col-md-3"
+                                 :key="`ext_card_${key}`"
+                                 :class="{
                                  'mr-2': key == 0,
                                  'ml-2 mr-2': key > 0 && key < Object.keys(ls_dicExtData).length - 1,
                                  'ml-2': key == Object.keys(ls_dicExtData).length - 1
                              }"
-                             @click.prevent="h_openExtDataCard(+key)"
-                    >
-                      <div class="row">
+                                 @click.prevent="h_openExtDataCard(+key)"
+                        >
+                          <div class="row">
 
-                        <!-- icon -->
-                        <div class="col-2">
-                          <i class="tim-icons ext-contad-data-card"
-                             :class="{
+                            <!-- icon -->
+                            <div class="col-2">
+                              <i class="tim-icons ext-contad-data-card"
+                                 :class="{
                                         'icon-single-02': value.pType === ADDRESS_TYPE.CONTACT,
                                         'icon-lock-circle': value.pType === ADDRESS_TYPE.PRIVATE,
                                         'icon-delivery-fast': value.pType === ADDRESS_TYPE.DELIVERY,
                                         'icon-paper': value.pType === ADDRESS_TYPE.INVOICE,
                                         'icon-pin': value.pType === ADDRESS_TYPE.OTHER,
                                      }"
+                              />
+                            </div>
+
+                            <!-- contact data -->
+                            <div class="col-10">
+                              <p v-if="!isUndOrEmptyStr(value.pName)">{{ value.pName }}</p>
+                              <p v-if="!isUndOrEmptyStr(value.jobPosition)">{{ value.jobPosition }}</p>
+                              <p v-if="!isUndOrEmptyStr(value.email)">{{ value.email }}</p>
+                              <div v-if="!isUndOrEmptyStr(value.countryCode) || !isUndOrEmptyStr(value.stateCode) || !isUndOrEmptyStr(value.city)" style="display: inline-flex">
+                                <p v-if="!isUndOrEmptyStr(value.city)">{{ value.city }}</p>
+                                <p v-if="!isUndOrEmptyStr(value.countryCode) || !isUndOrEmptyStr(value.stateCode)">,&nbsp</p>
+                                <p v-if="!isUndOrEmptyStr(value.stateCode)">{{ value.stateCode }}</p>
+                                <p v-if="!isUndOrEmptyStr(value.countryCode)">&nbsp-&nbsp</p>
+                                <p v-if="!isUndOrEmptyStr(value.countryCode)">{{ value.countryCode }}</p>
+                              </div>
+                              <div>
+                                <div v-if="!isUndOrEmptyStr(value.phone) || !isUndOrEmptyStr(value.cell)" style="display: inline-flex">
+                                  <p v-if="!isUndOrEmptyStr(value.phone)">{{ $t( 'form.fields-common.phone-mini' ) }}: {{ value.phone }}</p>
+                                  <p v-if="!isUndOrEmptyStr(value.cell) && !isUndOrEmptyStr(value.phone)">&nbsp&nbsp|&nbsp&nbsp</p>
+                                  <p v-if="!isUndOrEmptyStr(value.cell)">{{ $t( 'form.fields-common.cell' ) }}: {{ value.cell }}</p>
+                                </div>
+                              </div>
+                            </div>
+
+                          </div>
+                        </CmpCard>
+                      </div>
+                    </template>
+
+                    <!-- TAB data purchase -->
+                    <template v-if="tab.id === 3">
+                      <div>
+                        TODO<br><br>
+                        Datos relacionados con las compras [odoo]
+                      </div>
+                    </template>
+
+                    <!-- TAB data note -->
+                    <template v-if="tab.id === 4">
+                      <div class="row">
+                        <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                          {{ $t( 'entities.supplier.internal-notes' ) }}
+                        </label>
+                        <div class="col-md-9">
+                          <CmpTextInput
+                              height="150"
+                              name="internalNotes"
+                              type="text"
                           />
                         </div>
-
-                        <!-- contact data -->
-                        <div class="col-10">
-                          <p v-if="!isUndOrEmptyStr(value.pName)">{{ value.pName }}</p>
-                          <p v-if="!isUndOrEmptyStr(value.jobPosition)">{{ value.jobPosition }}</p>
-                          <p v-if="!isUndOrEmptyStr(value.email)">{{ value.email }}</p>
-                          <div v-if="!isUndOrEmptyStr(value.countryCode) || !isUndOrEmptyStr(value.stateCode) || !isUndOrEmptyStr(value.city)" style="display: inline-flex">
-                            <p v-if="!isUndOrEmptyStr(value.city)">{{ value.city }}</p>
-                            <p v-if="!isUndOrEmptyStr(value.countryCode) || !isUndOrEmptyStr(value.stateCode)">,&nbsp</p>
-                            <p v-if="!isUndOrEmptyStr(value.stateCode)">{{ value.stateCode }}</p>
-                            <p v-if="!isUndOrEmptyStr(value.countryCode)">&nbsp-&nbsp</p>
-                            <p v-if="!isUndOrEmptyStr(value.countryCode)">{{ value.countryCode }}</p>
-                          </div>
-                          <div>
-                            <div v-if="!isUndOrEmptyStr(value.phone) || !isUndOrEmptyStr(value.cell)" style="display: inline-flex">
-                              <p v-if="!isUndOrEmptyStr(value.phone)">{{ $t( 'form.fields-common.phone-mini' ) }}: {{ value.phone }}</p>
-                              <p v-if="!isUndOrEmptyStr(value.cell) && !isUndOrEmptyStr(value.phone)">&nbsp&nbsp|&nbsp&nbsp</p>
-                              <p v-if="!isUndOrEmptyStr(value.cell)">{{ $t( 'form.fields-common.cell' ) }}: {{ value.cell }}</p>
-                            </div>
-                          </div>
-                        </div>
-
                       </div>
-                    </CmpCard>
-                  </div>
+                    </template>
 
-                </CmpTabContent>
+                  </CmpTabContent>
 
-                <!-- TAB data purchase -->
-                <CmpTabContent :key="3" :tabId="3" :id="tabs[2].title" :activeTabId="activeTabId">
-                  <div>
-                    TODO<br><br>
-                    Datos relacionados con las compras [odoo]
-                  </div>
-                </CmpTabContent>
-
-                <!-- TAB data note -->
-                <CmpTabContent :key="4" :tabId="4" :id="tabs[3].title" :activeTabId="activeTabId">
-                  <!-- notes -->
-                  <div class="row">
-                    <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                      {{ $t( 'entities.supplier.internal-notes' ) }}
-                    </label>
-                    <div class="col-md-9">
-                      <CmpTextInput
-                          height="150"
-                          name="internalNotes"
-                          type="text"
-                      />
-                    </div>
-                  </div>
-                </CmpTabContent>
+                </template>
               </div>
+
             </div>
 
           </form>
@@ -563,6 +571,7 @@
         </CmpCard>
 
         <!-- MODALS -->
+
         <!-- modal contact vCard -->
         <CmpModal v-model:show="isModalQRShowing"
                   class="modal-black"
@@ -706,15 +715,15 @@ export default defineComponent({
         const isCloning = ref(false)                                              // tells is we are in a cloning process so we call the creat endpoint instead the edition endpoint
         const isModalQRShowing = ref(false)
         const isModalContactInfoShowing = ref(false)
+        const isExtContactInfo = ref (false)                                      // tells if we open a 'extended contact information' entity. Comes in handy for telling a field needs to be rendered or to know how to make the edition request to the backend..
 
         // form data
         const activeTabId = ref<number>(1)
-        const tabs = [                                                                  // form tabs data array
-            { id: 1, title: t('form.fields-common.info') },
-            { id: 2, title: t('entities.supplier.tab-contact-plus') },
-            { id: 3, title: t('entities.supplier.tab-purchases') },
-            { id: 4, title: t('form.fields-common.notes') }
-        ]
+        const _tab1 = { id: 1, title: t('form.fields-common.info') }
+        const _tab2 = { id: 2, title: t('entities.supplier.tab-contact-plus') }
+        const _tab3 = { id: 3, title: t('entities.supplier.tab-purchases') }
+        const _tab4 = { id: 4, title: t('form.fields-common.notes') }
+        const tabs = ref<Array<{id:number, title:string}>>([])                    // form tabs data array
         const statsDataCards = reactive([                                         // form supplier statistics data / information
             {
                 id:       1,
@@ -760,6 +769,7 @@ export default defineComponent({
          */
         onMounted(async () => {
 
+            tabs.value = [_tab1, _tab2, _tab3, _tab4 ]                                                                  // normal case for the tabs, its a parent / root supplier
             await st_nomenclatures.reqNmcCompanies().catch(err => tfyCRUDFail(err, ENTITY_NAMES.COMPANY, OPS_KIND_STR.REQUEST))
 
             // ---- creation mode
@@ -769,7 +779,7 @@ export default defineComponent({
 
             // ---- edition mode
             if (cpt_fMode.value === FMODE.EDIT as TFormMode) {
-                let formDataFromServer: IDtoSupplier | undefined = await ApiSupplier.getSuppById(+id)                    // aux variable to save entity data requested from the server
+                let formDataFromServer: IDtoSupplier | undefined = await ApiSupplier.getSuppById(+id)                   // aux variable to save entity data requested from the server
 
                 // setValues(formDataFromServer)
                 resetForm({
@@ -781,8 +791,17 @@ export default defineComponent({
                 if (formDataFromServer.extData != undefined && formDataFromServer.extData.length > 0)
                     for (let index = 0; index < formDataFromServer.extData.length ; index++)
                         ls_dicExtData.value[index] = formDataFromServer.extData[index]
+
+                // sub-normal case for the tabs, we opened (click) an a extended information entity for another parent / root supplier entity. So we are skipping the tabs for adding 'extended contact' info
+                if (formDataFromServer.parentID !== undefined && formDataFromServer.parentID > 0)
+                {
+                    tabs.value = [_tab1, _tab3, _tab4 ]
+                    if (formDataFromServer.pType == ADDRESS_TYPE.CONTACT) isExtContactInfo.value = true
+                }
             }
-            window.addEventListener('keydown', h_keyboardKeyPress)                              // keyboard keys event handler, we need to clean this kind of event when the component are destroyed
+
+
+            window.addEventListener('keydown', h_keyboardKeyPress)                                                // keyboard keys event handler, we need to clean this kind of event when the component are destroyed
         })
 
         /**
@@ -804,6 +823,8 @@ export default defineComponent({
          * @param doWeNeedToStay Tell us where to go after the successfully creation of the entity
          */
         const a_create = ( newSupplier: IDtoSupplier, doWeNeedToStay: boolean ) => {
+
+
 
             hpr_sanitation(newSupplier)
 
@@ -834,9 +855,11 @@ export default defineComponent({
                 return
             }
 
-            hpr_sanitation(editedSupplier)
+            isExtContactInfo.value
+                ? hpt_sanitationExt(editedSupplier)
+                : hpr_sanitation(editedSupplier)
 
-            ApiSupplier.reqUpdateSupplier(editedSupplier)
+            ApiSupplier.reqUpdateSupplier(editedSupplier, isExtContactInfo.value ? 'ext' : undefined)
             .then(() => {
                 tfyCRUDSuccess(ENTITY_NAMES.SUPPLIER, OPS_KIND_STR.UPDATE, editedSupplier.pName)
 
@@ -864,6 +887,7 @@ export default defineComponent({
         //#endregion ==========================================================================
 
         //region ======= COMPUTATIONS & GETTERS ===============================================
+        // https://medium.com/@growthcoder/how-to-correctly-use-computed-properties-in-vue3-690c16bc096c
 
         const cpt_fMode: ComputedRef<string | string[]> = computed(() => fmode)
 
@@ -885,6 +909,7 @@ export default defineComponent({
 
         /**
          * Form data sanitation method so we can clean the fields values before submitting
+         * @param dirtyObj formulary data 'Supplier' object
          */
         const hpr_sanitation = (dirtyObj: IDtoSupplier) => {
 
@@ -912,6 +937,32 @@ export default defineComponent({
 
             if (Object.keys(ls_dicExtData.value).length <= 0) delete dirtyObj.extData
             else dirtyObj.extData = Object.values(ls_dicExtData.value)
+
+            dirtyObj.internalNotes?.trim()
+        }
+
+        /**
+         * Form data sanitation method so we can clean the fields values before submitting.
+         * 📍 Should be used when we are editing a child supplier contact info (extended contact information)
+         * ⚠ This logic was taken from the 'hpr_sanitize' method located in the 'ViewFormSuppliersExt.vue' view file
+         *
+         * @param dirtyObj formulary data 'Supplier' object
+         */
+        const hpt_sanitationExt = ( dirtyObj: IDtoSupplier ) => {
+            delete dirtyObj.extData
+            delete dirtyObj.pCount
+            delete dirtyObj.purchasesCountPend
+            delete dirtyObj.purchasesCountTotal
+            delete dirtyObj.purchasesCountValue
+
+            if (isUndOrEmptyStr(dirtyObj.cell)) delete dirtyObj.cell
+            if (isUndOrEmptyStr(dirtyObj.phone)) delete dirtyObj.phone
+
+            delete dirtyObj.zip
+            delete dirtyObj.city
+            delete dirtyObj.street
+            delete dirtyObj.stateCode
+            delete dirtyObj.countryCode
 
             dirtyObj.internalNotes?.trim()
         }
@@ -1178,6 +1229,8 @@ export default defineComponent({
             isCloning,
             isModalQRShowing,
             isModalContactInfoShowing,
+
+            isExtContactInfo,
 
             ls_extData,
             ls_dicExtData,
