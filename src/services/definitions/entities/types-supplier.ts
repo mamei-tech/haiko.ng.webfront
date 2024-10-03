@@ -36,6 +36,7 @@ export interface ISupplierRow extends IIndexable {
  */
 export interface IDtoSupplier extends ISupplierRow {
     pName: string,
+    parentID?: number | string,
 
     internalNotes: string | undefined,
 
@@ -46,7 +47,6 @@ export interface IDtoSupplier extends ISupplierRow {
     zip?: number,
     stateCode: string | undefined,
     jobPosition: string | undefined,
-    parentID: number | undefined,
 
     isCompany: boolean,
 

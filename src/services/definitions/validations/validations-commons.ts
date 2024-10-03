@@ -5,7 +5,7 @@ import { regex, required, min, max, email, integer, min_value, max_value } from 
 // https://github.com/logaretm/vee-validate/issues/2297
 
 const { t } = i18n.global
-const { isUndOrEmptyStr } = useCommon()
+const { isUndEmpZero } = useCommon()
 
 /** Just permit words with just letters and spaces. Not allows spaces at the end.
  * The value hast to end with letters.
@@ -89,7 +89,7 @@ export const VSchemaCommon = {
         if (!min(value, { length: 7 })) return t('validation.min-length', { length: 7 })
         if (!max(value, { length: 10 })) return t('validation.max-length', { length: 10 })
 
-        if (!isUndOrEmptyStr(validationInstance.form.cell))
+        if (!isUndEmpZero(validationInstance.form.cell))
             if (validationInstance.form.cell === value) return t('validation.same-phone')
 
         return true

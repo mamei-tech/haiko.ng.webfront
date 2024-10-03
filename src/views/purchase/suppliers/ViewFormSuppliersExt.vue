@@ -398,7 +398,7 @@ export default defineComponent({
         const { mkSupplierExt } = useFactory()
         const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
         const { dfyConfirmation, dfyShowAlert } = useDialogfy()
-        const { isUndOrEmptyStr } = useCommon()
+        const { isUndEmpZero } = useCommon()
 
         // form data
         const addressTypeOptions = [
@@ -570,8 +570,8 @@ export default defineComponent({
             delete supData.purchasesCountTotal
             delete supData.purchasesCountValue
 
-            if (isUndOrEmptyStr(supData.cell)) delete supData.cell
-            if (isUndOrEmptyStr(supData.phone)) delete supData.phone
+            if (isUndEmpZero(supData.cell)) delete supData.cell
+            if (isUndEmpZero(supData.phone)) delete supData.phone
 
             if (props.parentId !==  undefined || props.parentId > 0) supData.parentID = props.parentId
             if (supData.pType !== ADDRESS_TYPE.CONTACT) delete supData.jobPosition                        // contact case

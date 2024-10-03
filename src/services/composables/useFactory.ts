@@ -125,7 +125,7 @@ export default function useFactory() {
             pName:          '',
             internalNotes:  undefined,
             suppCategoryID: '',
-            parentID:       undefined,
+            parentID:       '',
 
             email:       undefined,
             phone:       undefined,

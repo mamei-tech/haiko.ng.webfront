@@ -502,21 +502,21 @@
 
                             <!-- contact data -->
                             <div class="col-10">
-                              <p v-if="!isUndOrEmptyStr(value.pName)">{{ value.pName }}</p>
-                              <p v-if="!isUndOrEmptyStr(value.jobPosition)">{{ value.jobPosition }}</p>
-                              <p v-if="!isUndOrEmptyStr(value.email)">{{ value.email }}</p>
-                              <div v-if="!isUndOrEmptyStr(value.countryCode) || !isUndOrEmptyStr(value.stateCode) || !isUndOrEmptyStr(value.city)" style="display: inline-flex">
-                                <p v-if="!isUndOrEmptyStr(value.city)">{{ value.city }}</p>
-                                <p v-if="!isUndOrEmptyStr(value.countryCode) || !isUndOrEmptyStr(value.stateCode)">,&nbsp</p>
-                                <p v-if="!isUndOrEmptyStr(value.stateCode)">{{ value.stateCode }}</p>
-                                <p v-if="!isUndOrEmptyStr(value.countryCode)">&nbsp-&nbsp</p>
-                                <p v-if="!isUndOrEmptyStr(value.countryCode)">{{ value.countryCode }}</p>
+                              <p v-if="!isUndEmpZero(value.pName)">{{ value.pName }}</p>
+                              <p v-if="!isUndEmpZero(value.jobPosition)">{{ value.jobPosition }}</p>
+                              <p v-if="!isUndEmpZero(value.email)">{{ value.email }}</p>
+                              <div v-if="!isUndEmpZero(value.countryCode) || !isUndEmpZero(value.stateCode) || !isUndEmpZero(value.city)" style="display: inline-flex">
+                                <p v-if="!isUndEmpZero(value.city)">{{ value.city }}</p>
+                                <p v-if="!isUndEmpZero(value.countryCode) || !isUndEmpZero(value.stateCode)">,&nbsp</p>
+                                <p v-if="!isUndEmpZero(value.stateCode)">{{ value.stateCode }}</p>
+                                <p v-if="!isUndEmpZero(value.countryCode)">&nbsp-&nbsp</p>
+                                <p v-if="!isUndEmpZero(value.countryCode)">{{ value.countryCode }}</p>
                               </div>
                               <div>
-                                <div v-if="!isUndOrEmptyStr(value.phone) || !isUndOrEmptyStr(value.cell)" style="display: inline-flex">
-                                  <p v-if="!isUndOrEmptyStr(value.phone)">{{ $t( 'form.fields-common.phone-mini' ) }}: {{ value.phone }}</p>
-                                  <p v-if="!isUndOrEmptyStr(value.cell) && !isUndOrEmptyStr(value.phone)">&nbsp&nbsp|&nbsp&nbsp</p>
-                                  <p v-if="!isUndOrEmptyStr(value.cell)">{{ $t( 'form.fields-common.cell' ) }}: {{ value.cell }}</p>
+                                <div v-if="!isUndEmpZero(value.phone) || !isUndEmpZero(value.cell)" style="display: inline-flex">
+                                  <p v-if="!isUndEmpZero(value.phone)">{{ $t( 'form.fields-common.phone-mini' ) }}: {{ value.phone }}</p>
+                                  <p v-if="!isUndEmpZero(value.cell) && !isUndEmpZero(value.phone)">&nbsp&nbsp|&nbsp&nbsp</p>
+                                  <p v-if="!isUndEmpZero(value.cell)">{{ $t( 'form.fields-common.cell' ) }}: {{ value.cell }}</p>
                                 </div>
                               </div>
                             </div>
@@ -696,7 +696,7 @@ export default defineComponent({
 
         const { mkSupplier } = useFactory()
         const { mkVCardQrImg } = useQrCodes()
-        const { isUndOrEmptyStr } = useCommon()
+        const { isUndEmpZero } = useCommon()
         const { dfyConfirmation, dfyShowAlert } = useDialogfy()
         const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
 
@@ -793,7 +793,7 @@ export default defineComponent({
                         ls_dicExtData.value[index] = formDataFromServer.extData[index]
 
                 // sub-normal case for the tabs, we opened (click) an a extended information entity for another parent / root supplier entity. So we are skipping the tabs for adding 'extended contact' info
-                if (formDataFromServer.parentID !== undefined && formDataFromServer.parentID > 0)
+                if (!isUndEmpZero(formDataFromServer.parentID))
                 {
                     tabs.value = [_tab1, _tab3, _tab4 ]
                     if (formDataFromServer.pType == ADDRESS_TYPE.CONTACT) isExtContactInfo.value = true
@@ -856,7 +856,7 @@ export default defineComponent({
             }
 
             isExtContactInfo.value
-                ? hpt_sanitationExt(editedSupplier)
+                ? hpr_sanitationExt(editedSupplier)
                 : hpr_sanitation(editedSupplier)
 
             ApiSupplier.reqUpdateSupplier(editedSupplier, isExtContactInfo.value ? 'ext' : undefined)
@@ -918,11 +918,11 @@ export default defineComponent({
             delete dirtyObj.pType                                                   // in this view / crud, case can safely remove this property, backend will handle it
             delete dirtyObj.cmpDisplayName
 
-            if (!isUndOrEmptyStr(dirtyObj.website)) dirtyObj.website = dirtyObj.website!.trim()                         // trimming spaces trailing spaces
-            if (isUndOrEmptyStr(dirtyObj.website)) delete dirtyObj.website
+            if (!isUndEmpZero(dirtyObj.website)) dirtyObj.website = dirtyObj.website!.trim()                         // trimming spaces trailing spaces
+            if (isUndEmpZero(dirtyObj.website)) delete dirtyObj.website
             if (dirtyObj.zip == 0) dirtyObj.zip = undefined
-            if (isUndOrEmptyStr(dirtyObj.city)) delete dirtyObj.city
-            if (isUndOrEmptyStr(dirtyObj.jobPosition)) delete dirtyObj.jobPosition
+            if (isUndEmpZero(dirtyObj.city)) delete dirtyObj.city
+            if (isUndEmpZero(dirtyObj.jobPosition)) delete dirtyObj.jobPosition
 
             if(dirtyObj.isCompany)
             {
@@ -948,15 +948,15 @@ export default defineComponent({
          *
          * @param dirtyObj formulary data 'Supplier' object
          */
-        const hpt_sanitationExt = ( dirtyObj: IDtoSupplier ) => {
+        const hpr_sanitationExt = ( dirtyObj: IDtoSupplier ) => {
             delete dirtyObj.extData
             delete dirtyObj.pCount
             delete dirtyObj.purchasesCountPend
             delete dirtyObj.purchasesCountTotal
             delete dirtyObj.purchasesCountValue
 
-            if (isUndOrEmptyStr(dirtyObj.cell)) delete dirtyObj.cell
-            if (isUndOrEmptyStr(dirtyObj.phone)) delete dirtyObj.phone
+            if (isUndEmpZero(dirtyObj.cell)) delete dirtyObj.cell
+            if (isUndEmpZero(dirtyObj.phone)) delete dirtyObj.phone
 
             delete dirtyObj.zip
             delete dirtyObj.city
@@ -1246,7 +1246,7 @@ export default defineComponent({
 
             cpt_fMode,
 
-            isUndOrEmptyStr,
+            isUndEmpZero,
 
             nav_back,
             h_tabChange,
