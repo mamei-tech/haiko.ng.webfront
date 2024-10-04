@@ -77,7 +77,7 @@ export default function useCommon () {
      * Return TRUE if the given string is 'undefined' or a empty string or has the zero value
      * @param str
      */
-    const isUndEmpZero = (str: string | undefined | number) => {
+    const isUndEmpZero = (str: string | undefined | number | object) => {
         return str === undefined || str === '' || str === 0;
     }
 
