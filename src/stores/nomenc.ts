@@ -183,7 +183,7 @@ export const useSt_Nomenclatures = defineStore({
          */
         getSupplier4Select: (state): IMultiselectBasic[] => {
             return state.suppliers.map((stateData: ISupplierBasic) => {
-                return { value: stateData.id, label: stateData.cmpDisplayName }
+                return { value: stateData.id, label: stateData.cmpDisplayName ?? '' }
             })
         },
 

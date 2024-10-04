@@ -81,7 +81,7 @@
 
             </div>
 
-            <!-- ONLY 4 addresses  type version -->
+            <!-- ONLY 4 addresses type version -->
             <div v-if="values.pType !== ADDRESS_TYPE.CONTACT" class="col-xm-12 col-md-6">
 
               <!-- contact name -->

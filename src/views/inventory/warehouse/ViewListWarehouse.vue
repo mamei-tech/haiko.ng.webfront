@@ -152,7 +152,7 @@ export default defineComponent({
 
             ls_warehouses.value.entityPage = ls_warehouses.value.entityPage.map((wareRow:IDtoWarehouse) => {
                 if(IsNumber(wareRow.suppAddressID))
-                    wareRow.suppAddressID = st_nomenclatures.getSuppByIdMap[+wareRow.suppAddressID].cmpDisplayName      // there is a chance that this line run, and the 'SuppAddressID' field was already mapped to the role name making it a string value so we can't used as index anymore, so we have to check first
+                    wareRow.suppAddressID = st_nomenclatures.getSuppByIdMap[+wareRow.suppAddressID].cmpDisplayName ?? ''      // there is a chance that this line run, and the 'SuppAddressID' field was already mapped to the role name making it a string value so we can't used as index anymore, so we have to check first
 
                 return wareRow
             })

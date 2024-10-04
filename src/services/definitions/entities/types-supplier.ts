@@ -21,7 +21,7 @@ export interface IDtoSupplierCat extends ISupplierCatRow {
  * Interface for describing a Supplier Category row on the datatable
  */
 export interface ISupplierRow extends IIndexable {
-    cmpDisplayName: string | undefined,
+    cmpDisplayName?: string | undefined,
 
     phone: string | undefined,
     cell: string | undefined,
@@ -72,7 +72,6 @@ export interface ISuppCatBasic extends IIndexable {
     scName: string
 }
 
-
 /**
  * Very basic data of a Supplier
  */
@@ -80,5 +79,5 @@ export interface ISupplierBasic extends IIndexable {
     /**
      * Supplier [display] Name
      */
-    cmpDisplayName: string,
+    cmpDisplayName?: string,
 }
