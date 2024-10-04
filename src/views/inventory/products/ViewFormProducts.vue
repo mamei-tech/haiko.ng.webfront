@@ -605,6 +605,7 @@ import useFactory from '@/services/composables/useFactory'
 import useToastify from '@/services/composables/useToastify'
 import useDialogfy from '@/services/composables/useDialogfy'
 import useNumeric from '@/services/composables/useNumeric'
+import useCommon from '@/services/composables/useCommon'
 import { ApiProduct } from '@/services/api/inventory/api-product'
 
 
@@ -649,10 +650,11 @@ export default defineComponent({
 
         const { fmode, id } = route.params                                                         // remember, fmode (form mode) property denotes the mode this form view was called | checkout the type TFormMode in types definitions
 
+        const { isUndEmpZero } = useCommon()
+        const { valUI2Raw, toUIMoney } = useNumeric()
+        const { dfyConfirmation, dfyShowAlert } = useDialogfy()
         const { mkProduct, mkProductSupplierLine } = useFactory()
         const { tfyCRUDSuccess, tfyCRUDFail, tfyBasicRqError } = useToastify(toast)
-        const { dfyConfirmation, dfyShowAlert } = useDialogfy()
-        const { valUI2Raw, toUIMoney } = useNumeric()
 
         // getting the vee validate method to manipulate the form related actions from the view
         const { handleSubmit, meta, setValues, setFieldValue, resetForm, values } = useForm<IDtoProduct>({
@@ -1176,8 +1178,8 @@ export default defineComponent({
         const h_removePicture = (forceIt = false) => {
 
             if (!forceIt) {
-                if(formDataFromServer?.picPath === undefined || formDataFromServer?.picPath === '') return              // if there is NO data on server, we do nothing
-                dfyShowAlert(t('dialogs.title-alert'), t('dialogs.img-rm-alert'))                              // if there is data (product picture in this particular case) we need to alert the user the image will be completely deleted on server if the user click apply or save btns
+                if(isUndEmpZero(formDataFromServer?.picPath)) return                                                    // if there is NO data on server, we do nothing
+                dfyShowAlert(t('dialogs.title-alert'), t('dialogs.img-rm-alert'))                             // if there is data (product picture in this particular case) we need to alert the user the image will be completely deleted on server if the user click apply or save btns
             }
             else forceImgDelOnCmp.value = true                                                                          // this line will tell to the 'CmpImageInput' that we want to delete de image
 

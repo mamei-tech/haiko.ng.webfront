@@ -28,10 +28,10 @@ const customInstance = axios.create({
 customInstance.interceptors.request.use(
     config => {
 
-        const st_auth = useSt_Auth()                                                    // https://pinia.vuejs.org/core-concepts/outside-component-usage.html#single-page-applications | I cant' find another way to do this
+        const st_auth = useSt_Auth()                                                       // https://pinia.vuejs.org/core-concepts/outside-component-usage.html#single-page-applications | I cant' find another way to do this
 
-        if (config.headers === undefined) config.headers = {}                               // shut up TS mouth
-        config.headers.Authorization = `Bearer ${ st_auth.authTk }`                       // assign store token to axios configuration
+        if (config.headers === undefined) config.headers = {}                              // shut up TS mouth
+        config.headers.Authorization = `Bearer ${ st_auth.authTk }`                        // assign store token to axios configuration
 
         // Trying to show the nprogress bar
         const a = document.querySelector('div#topper-border-cont')

@@ -93,6 +93,7 @@ import { useSt_UoM } from '@/stores/uom'
 import useFactory from '@/services/composables/useFactory'
 import useToastify from '@/services/composables/useToastify'
 import useDialogfy from '@/services/composables/useDialogfy'
+import useCommon from '@/services/composables/useCommon'
 import {
     ENTITY_NAMES, DT_ACTIONBAR_MODE,
     FMODE,
@@ -131,6 +132,7 @@ export default defineComponent({
         const st_uom = useSt_UoM()                                                          // Pinia store for uom
         const { tfyCRUDSuccess, tfyError, tfyCRUDFail } = useToastify(toast)
         const { dfyConfirmation, dfyShowAlert } = useDialogfy()
+        const { isUndEmpZero } = useCommon()
 
         const { fmode, id } = route.params                                                  // remember, fmode (form mode) property denotes the mode this form view was called | checkout the type TFormMode in types definitions
         const { mkUoMCategory, mkUoM } = useFactory()
@@ -293,15 +295,15 @@ export default defineComponent({
             })
 
             if (values.units.length == 0) errorMsg = t('validation.uom-list-min')
-            else if (uoReference === undefined) errorMsg = t('validation.uom-list-ref-exist')
+            else if (isUndEmpZero(uoReference)) errorMsg = t('validation.uom-list-ref-exist')
             else if (!uoReferenceActiveStatus) errorMsg = t('validation.uom-list-active')
             else if (uoReferenceCount >= 2) errorMsg = t('validation.uom-list-one-ref')
             else if (uoReferenceRatio != 1) errorMsg = t('validation.uom-list-ratio-ref')
 
             // so far so good
-            if (errorMsg === undefined) return true
+            if (isUndEmpZero(errorMsg)) return true
 
-            tfyError(errorMsg)
+            tfyError(errorMsg as string)
             return false
         }
 

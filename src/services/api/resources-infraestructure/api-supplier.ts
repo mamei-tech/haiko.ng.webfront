@@ -2,6 +2,7 @@ import axios from '../api'
 import appConfig from '@/configs/app.conf'
 import useFactory from '@/services/composables/useFactory'
 import { HTTP_RESPONSES } from '@/services/definitions'
+import useCommon from '@/services/composables/useCommon'
 
 import type { AxiosPromise } from 'axios'
 import type { ISupplierCatRow, IDataTableQuery, IDataTablePage, IDtoSupplierCat, ISupplierRow, IDtoSupplier } from '@/services/definitions'
@@ -9,6 +10,7 @@ import type { ISupplierCatRow, IDataTableQuery, IDataTablePage, IDtoSupplierCat,
 
 const version = appConfig.server.current_version
 const url = `v${ version }/purchase/csupplier`
+const { isUndEmpZero } = useCommon()
 const { mkSupplierCat, mkSupplier } = useFactory()
 
 /**
@@ -82,7 +84,7 @@ export class ApiSupplier {
      */
     public static reqDeleteSupp ( supplierId: number, mode : string | undefined = undefined ): AxiosPromise<void> {
 
-        return mode === undefined
+        return isUndEmpZero(mode)
             ?  axios.delete(`${url}/${ supplierId }`)
             :  axios.delete(`${url}/ext/${ supplierId }`)
     }
@@ -121,7 +123,7 @@ export class ApiSupplier {
      */
     public static reqInsSupplier( payload: IDtoSupplier, mode: string | undefined = undefined): AxiosPromise<number>  {
 
-        return mode === undefined
+        return isUndEmpZero(mode)
             ? axios.post(url, payload)
             : axios.post(`${url}/ext`, payload)
     }
@@ -134,7 +136,7 @@ export class ApiSupplier {
      */
     public static reqUpdateSupplier( payload: IDtoSupplier, mode: string | undefined = undefined ): AxiosPromise<void> {
 
-        return mode === undefined
+        return isUndEmpZero(mode)
             ? axios.put(url, payload)
             : axios.put(`${url}/ext`, payload)
     }

@@ -620,7 +620,7 @@
                 :ext-data="ls_extData"
                 :index="ls_extDataIndex"
                 :showing="isModalContactInfoShowing"
-                :parent-id="id === '' || id === undefined ? 0 : +id"
+                :parent-id="isUndEmpZero(id) ? 0 : +id"
                 :countries="st_nomenclatures.getCountry4Select"
                 :hit-remote="cpt_fMode === FMODE.EDIT"
 
@@ -727,31 +727,31 @@ export default defineComponent({
         const statsDataCards = reactive([                                         // form supplier statistics data / information
             {
                 id:       1,
-                title:    values.pCount === undefined ? 0 : values.pCount.toString(),
+                title:    isUndEmpZero(values.pCount) ? 0 : values.pCount?.toString(),
                 subTitle: t('entities.supplier.stat-products'),
-                type:     values.pCount === undefined || values.pCount <= 0 ? 'warning' : 'success',
+                type:     isUndEmpZero(values.pCount) || values.pCount as number <= 0 ? 'warning' : 'success',
                 icon:     'tim-icons icon-components'
                 // footer:   `<i class="tim-icons icon-zoom-split"></i></i> Update Now`
             },
             {
                 id:       2,
-                title:    values.purchasesCountPend === undefined ? 0 : values.purchasesCountPend.toString(),
+                title:    isUndEmpZero(values.purchasesCountPend) ? 0 : values.purchasesCountPend?.toString(),
                 subTitle: t('entities.supplier.stat-purchases-pend'),
-                type:     values.purchasesCountPend === undefined || values.purchasesCountPend <= 0 ? 'warning' : 'success',
+                type:     isUndEmpZero(values.purchasesCountPend) || values.purchasesCountPend as number <= 0 ? 'warning' : 'success',
                 icon:     'tim-icons icon-watch-time'
             },
             {
                 id:       3,
-                title:    values.purchasesCountTotal === undefined ? 0 : values.purchasesCountTotal.toString(),
+                title:    isUndEmpZero(values.purchasesCountTotal) ? 0 : values.purchasesCountTotal?.toString(),
                 subTitle: t('entities.supplier.stat-purchases-count'),
-                type:     values.purchasesCountTotal === undefined || values.purchasesCountTotal <= 0 ? 'danger' : 'info',
+                type:     isUndEmpZero(values.purchasesCountTotal) || values.purchasesCountTotal as number <= 0 ? 'danger' : 'info',
                 icon:     'tim-icons icon-cart'
             },
             {
                 id:       4,
                 title:    `$ ${ values.purchasesCountValue }`,
                 subTitle: t('entities.supplier.stat-purchases-count-value'),
-                type:     values.purchasesCountValue === undefined || values.purchasesCountValue <= 0 ? 'danger' : 'info',
+                type:     isUndEmpZero(values.purchasesCountValue) || values.purchasesCountValue as number <= 0 ? 'danger' : 'info',
                 icon:     'tim-icons icon-money-coins'
             }
         ])
@@ -1246,8 +1246,6 @@ export default defineComponent({
 
             cpt_fMode,
 
-            isUndEmpZero,
-
             nav_back,
             h_tabChange,
 
@@ -1269,6 +1267,9 @@ export default defineComponent({
             h_formBtnAction_QR,
             h_formBtnAction_Clone,
             h_formBtnAction_DownloadVCard,
+
+            // --- composable-s
+            isUndEmpZero,
         }
     }
 })

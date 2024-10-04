@@ -286,7 +286,6 @@
 <script lang="ts">
 import { i18n } from '@/services/i18n'
 import { useForm } from 'vee-validate'
-import useCommon from '@/services/composables/useCommon'
 import type { SetupContext } from 'vue'
 import { defineComponent, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import type { ICountryStatesBasic, IDtoSupplier, IMultiselectBasic } from '@/services/definitions'
@@ -302,6 +301,7 @@ import { useToast } from 'vue-toastification'
 import useFactory from '@/services/composables/useFactory'
 import useToastify from '@/services/composables/useToastify'
 import useDialogfy from '@/services/composables/useDialogfy'
+import useCommon from '@/services/composables/useCommon'
 import { ApiSupplier } from '@/services/api/resources-infraestructure/api-supplier'
 import { ApiNomenclaturesMng } from '@/services/api/api-nomenclatures-manager'
 import {
@@ -395,10 +395,10 @@ export default defineComponent({
         const ls_states = ref<IMultiselectBasic[]>([])                                    // countries states / provinces
 
         // helpers & flags
-        const { mkSupplierExt } = useFactory()
-        const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
-        const { dfyConfirmation, dfyShowAlert } = useDialogfy()
         const { isUndEmpZero } = useCommon()
+        const { mkSupplierExt } = useFactory()
+        const { dfyConfirmation, dfyShowAlert } = useDialogfy()
+        const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
 
         // form data
         const addressTypeOptions = [
@@ -660,11 +660,11 @@ export default defineComponent({
                     values: { ...props.extData as IDtoSupplier }
                 })
 
-                if (props.countries === undefined ) return                                                                                                       //  we suppose to have the country list already, remember this is a form intended to be uses as modal
-                if (values.countryCode === undefined || values.countryCode == '') return
+                if (isUndEmpZero(props.countries)) return                                                                                                       //  we suppose to have the country list already, remember this is a form intended to be uses as modal
+                if (isUndEmpZero(values.countryCode)) return
 
                 // instruction to properly setup the the 'locations' (country & state) UI select controls / components
-                const selCOption = props.countries.find((option: IMultiselectBasic) => option.value === values.countryCode )                                    // selCOption -> selected country option
+                const selCOption = props.countries?.find((option: IMultiselectBasic) => option.value === values.countryCode )                                   // selCOption -> selected country option
                 if (selCOption !== undefined && ref_selectCountry.value !== undefined) ref_selectCountry.value.setSelectedValue(selCOption)
             }
         })

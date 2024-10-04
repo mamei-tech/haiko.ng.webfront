@@ -265,6 +265,7 @@ import { useSt_Nomenclatures } from '@/stores/nomenc'
 import { useToast } from 'vue-toastification'
 import useFactory from '@/services/composables/useFactory'
 import useToastify from '@/services/composables/useToastify'
+import useCommon from '@/services/composables/useCommon'
 import { ApiPickingType } from '@/services/api/inventory/api-picking-type'
 import { CORE_PICKING_TYPE, ENTITY_NAMES, FMODE, KEYS, OPS_KIND_STR, RESERVATION_METHODS, RoutePathNames, VSchemaPicking } from '@/services/definitions'
 import { CmpBaseButton, CmpBaseCheckbox, CmpBaseInput, CmpBaseRadio, CmpCard, CmpCollapseItem, CmpFormActionsButton, CmpMultiselectField, CmpTooltip, CmpVeeCheckbox } from '@/components'
@@ -308,6 +309,7 @@ export default defineComponent({
 
         // helpers & flags
         const { mkPickType } = useFactory()
+        const { isUndEmpZero } = useCommon()
         const { tfyCRUDSuccess, tfyCRUDFail, tfyBasicWarning } = useToastify(toast)
 
         let noCheckTheSame: boolean = false
@@ -497,24 +499,24 @@ export default defineComponent({
             //     ? doWeNeed2ShowResMethod.value = false
             //     : doWeNeed2ShowResMethod.value = true
 
-            if (ref_selectSrcWLocation.value === undefined || ref_selectDestWLocation.value === undefined) return
+            if (isUndEmpZero(ref_selectSrcWLocation.value) || isUndEmpZero(ref_selectDestWLocation.value)) return
 
             if (type == CORE_PICKING_TYPE.INCOMING)
             {
-                ref_selectSrcWLocation.value.setSelectedValue(defaultSuppliersLocSelectValue)
-                ref_selectDestWLocation.value.setSelectedValue(defaultStockLocSelectValue)
+                ref_selectSrcWLocation.value?.setSelectedValue(defaultSuppliersLocSelectValue)
+                ref_selectDestWLocation.value?.setSelectedValue(defaultStockLocSelectValue)
 
                 doWeNeed2ShowResMethod.value = false
                 return
             }
             else if (type == CORE_PICKING_TYPE.OUTGOING)
             {
-                ref_selectSrcWLocation.value.setSelectedValue(defaultStockLocSelectValue)
-                ref_selectDestWLocation.value.setSelectedValue(defaultCustomerLocSelectValue)
+                ref_selectSrcWLocation.value?.setSelectedValue(defaultStockLocSelectValue)
+                ref_selectDestWLocation.value?.setSelectedValue(defaultCustomerLocSelectValue)
             }
             else {
-                ref_selectSrcWLocation.value.clearSelection()
-                ref_selectDestWLocation.value.clearSelection()
+                ref_selectSrcWLocation.value?.clearSelection()
+                ref_selectDestWLocation.value?.clearSelection()
             }
 
             doWeNeed2ShowResMethod.value = true

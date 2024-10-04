@@ -184,6 +184,7 @@ import { useToast } from 'vue-toastification'
 import { useForm } from 'vee-validate'
 import useFactory from '@/services/composables/useFactory'
 import useToastify from '@/services/composables/useToastify'
+import useCommon from '@/services/composables/useCommon'
 import { CmpCard, CmpFormActionsButton, CmpBaseInput, CmpCollapseItem, CmpBaseCheckbox, CmpBaseButton, CmpMultiselectField, CmpTooltip } from '@/components'
 
 import type { ComputedRef } from 'vue'
@@ -222,6 +223,7 @@ export default defineComponent({
 
         // helpers & flags
         const { mkPicking } = useFactory()
+        const { isUndEmpZero } = useCommon()
         const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
 
         // form data
@@ -320,7 +322,7 @@ export default defineComponent({
                         value: pickingType.defDestWLocationID ?? defStLocId,
                         label: locsByIdMap[ pickingType.defDestWLocationID ?? defStLocId ].lFullName ?? defStLocLabel
                     }
-                    if (pickingType.defSrcWLocationID === undefined) sets['2hide'] = 'src'
+                    if (isUndEmpZero(pickingType.defSrcWLocationID)) sets['2hide'] = 'src'
                     break
                 case 2:                             // delivery order
                     sets[ 'src' ] = {
@@ -328,7 +330,7 @@ export default defineComponent({
                         label: locsByIdMap[ pickingType.defSrcWLocationID ?? defStLocId ].lFullName ?? defStLocLabel
                     }
                     sets[ 'dst' ] = { value: 5, label: locsByIdMap[ 5 ].lFullName ?? '' }                           // assuming that defaults CUSTOMER location have '5' as database identifier
-                    if (pickingType.defDestWLocationID === undefined) sets['2hide'] = 'dst'
+                    if (isUndEmpZero(pickingType.defDestWLocationID)) sets['2hide'] = 'dst'
                     break
                 case 6:                             // returns
                     sets[ 'src' ] = { value: 5, label: locsByIdMap[ 5 ].lFullName ?? '' }                           // assuming that defaults CUSTOMER location have '5' as database identifier
@@ -336,7 +338,7 @@ export default defineComponent({
                         value: pickingType.defDestWLocationID ?? defStLocId,
                         label: locsByIdMap[ pickingType.defDestWLocationID ?? defStLocId ].lFullName ?? defStLocLabel
                     }
-                    if (pickingType.defSrcWLocationID === undefined) sets['2hide'] = 'src'
+                    if (isUndEmpZero(pickingType.defSrcWLocationID)) sets['2hide'] = 'src'
                     break
                 default:
                     // case 5                       // internal transfer
@@ -388,19 +390,19 @@ export default defineComponent({
          */
         const h_adjustUIAcc2PT = ( type: string ) => {
 
-            if (ref_selectSrcLoc.value === undefined || ref_selectDstLoc.value === undefined) return
+            if (isUndEmpZero(ref_selectSrcLoc.value) || isUndEmpZero(ref_selectDstLoc.value)) return
             if (type == null)
             {
-                ref_selectSrcLoc.value.clearSelection()
-                ref_selectDstLoc.value.clearSelection()
+                ref_selectSrcLoc.value?.clearSelection()
+                ref_selectDstLoc.value?.clearSelection()
                 hpr_updLocVis(true, true)
                 return
             }
 
             const chosenLocations = hpr_autoSetLoc(+type)                                                               // getting the suggested inventory location for the picking type
 
-            ref_selectSrcLoc.value.setSelectedValue(chosenLocations['src'] as IMultiselectBasic)                        // setting the source location
-            ref_selectDstLoc.value.setSelectedValue(chosenLocations['dst'] as IMultiselectBasic)                        // setting the destination location
+            ref_selectSrcLoc.value?.setSelectedValue(chosenLocations['src'] as IMultiselectBasic)                       // setting the source location
+            ref_selectDstLoc.value?.setSelectedValue(chosenLocations['dst'] as IMultiselectBasic)                       // setting the destination location
 
             if      (chosenLocations['2hide'] === 'src') hpr_updLocVis(false, true)
             else if (chosenLocations['2hide'] === 'dst') hpr_updLocVis(true, false)

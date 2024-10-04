@@ -164,7 +164,7 @@ export default defineComponent({
 
         const toast = useToast()                                                            // the toast lib interface
 
-        const { debounce } = useCommon()
+        const { debounce, isUndEmpZero } = useCommon()
         const { dfyConfirmation, dfyShowAlert } = useDialogfy()
         const { tfyCRUDSuccess, tfyError, tfyCRUDFail } = useToastify(toast)
 
@@ -380,9 +380,9 @@ export default defineComponent({
             }
 
             // so far so good
-            if (errorMsg === undefined) return true
+            if (isUndEmpZero(errorMsg)) return true
 
-            tfyError(errorMsg)
+            tfyError(errorMsg as string)
             return false
         }
 

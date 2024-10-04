@@ -235,6 +235,7 @@
 import { defineComponent } from 'vue'
 import { i18n } from '@/services/i18n'
 import { CmpButtonTag, CmpBaseButton, CmpDropdown  } from '@/components'
+import useCommon from '@/services/composables/useCommon'
 import { DT_ACTIONBAR_MODE } from '@/services/definitions'
 
 import type { SetupContext, PropType } from 'vue'
@@ -271,12 +272,12 @@ export default defineComponent({
         emits: [ 'navCreateIntent', 'enableChkCollIntent', 'disableChkCollIntent', 'removeChkCollIntent', 'extFilClick' ],
 
         setup( props: any, __: SetupContext ) {
+            const { isUndEmpZero } = useCommon()
 
             const { t } = i18n.global
 
             return {
-
-                pSubject: props.subject === '' || props.subject === undefined ? t('entities.default') : props.subject,                        // processed subject
+                pSubject: isUndEmpZero(props.subject) ? t('entities.default') : props.subject,                        // processed subject
                 DT_ACTIONBAR_MODE
             }
         }

@@ -227,6 +227,7 @@ import { i18n } from '@/services/i18n'
 import useFactory from '@/services/composables/useFactory'
 import useToastify from '@/services/composables/useToastify'
 import useDialogfy from '@/services/composables/useDialogfy'
+import useCommon from '@/services/composables/useCommon'
 import { computed, onMounted, ref, defineComponent, reactive } from 'vue'
 import { Field, useForm } from 'vee-validate'
 import { useRoute, useRouter } from 'vue-router'
@@ -261,9 +262,10 @@ export default defineComponent({
         const { fmode, id } = route.params                                  // remember, fmode (form mode) property denotes the mode this form view was called | checkout the type TFormMode in types definitions
 
         const toast = useToast()                                            // the toast lib interface
+        const { mkStaff } = useFactory()
+        const { isUndEmpZero } = useCommon()
         const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
         const { dfyConfirmation, dfyShowAlert } = useDialogfy()
-        const { mkStaff } = useFactory()
 
         const forceImgDelOnCmp = ref<Boolean>(false)                 // so we can tell to the image component 'CmpImageInput' to remove the image if we need to
         let formDataFromServer: IDtoStaff | undefined = undefined          // aux variable to save entity data requested from the server
@@ -436,13 +438,13 @@ export default defineComponent({
         const h_removePicture = (forceIt = false) => {
 
             if (!forceIt) {
-                if(formDataFromServer?.avatarPath === undefined || formDataFromServer?.avatarPath === '') return        // if there is NO data on server, we do nothing
-                dfyShowAlert(t('dialogs.title-alert'), t('dialogs.img-rm-alert'))                                       // if there is data (profile picture in this particular case) we need to alert the user the image will be complete completely on server if the user click apply or save btns
+                if(isUndEmpZero(formDataFromServer?.avatarPath)) return                                                 // if there is NO data on server, we do nothing
+                dfyShowAlert(t('dialogs.title-alert'), t('dialogs.img-rm-alert'))                             // if there is data (profile picture in this particular case) we need to alert the user the image will be complete completely on server if the user click apply or save btns
             }
             else forceImgDelOnCmp.value = true                                                                          // this line will tell to the 'CmpImageInput' that we want to delete de image
 
             // actual removing the image
-            setFieldValue('avatarImg', undefined)                                                                       // I don't know if this is needed here
+            setFieldValue('avatarImg', undefined)                                                           // I don't know if this is needed here
             setFieldValue('avatarPath', undefined)
         }
 

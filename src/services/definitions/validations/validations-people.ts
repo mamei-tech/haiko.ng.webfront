@@ -1,8 +1,10 @@
 import { i18n } from '@/services/i18n'
 import { regex, required } from '@vee-validate/rules'
 import { regStrongPassword, VSchemaCommon } from '@/services/definitions/validations/validations-commons'
+import useCommon from '@/services/composables/useCommon'
 
 const { t } = i18n.global
+const { isUndEmpZero } = useCommon()
 
 /**
  * Staff validation schema. Prepared to be used with Vee-validate lib when creating a new Staff
@@ -27,7 +29,7 @@ export const VSchemaStaffCreate = {
         // The second parameter vee-validate pass to the validation function is a sort of validation object instance containing the entire form
         // The thing with the firs check, if for not showing any error in 'passwordConf' field  when 'password' field is empty
 
-        if (validationInstance.form.password === undefined || validationInstance.form.password === '') return true
+        if(isUndEmpZero(validationInstance.form.password)) return true
         if (validationInstance.form.password !== value) return t('validation.password-confirmation')                // We could use vee-validate 's 'confirmed' rule here, but it isn't working for some reason
         return true
     }
@@ -51,7 +53,7 @@ export const VSchemaStaffEdit = {
         // The second parameter vee-validate pass to the validation function is a sort of validation object instance containing the entire form
         // The thing with the firs check, if for not showing any error in 'passwordConf' field  when 'password' field is empty
 
-        if (validationInstance.form.password === undefined || validationInstance.form.password === '') return true
+        if (isUndEmpZero(validationInstance.form.password)) return true
         if (validationInstance.form.password !== value) return t('validation.password-confirmation')                // We could use vee-validate 's 'confirmed' rule here, but it isn't working for some reason
         return true
     }
