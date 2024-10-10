@@ -267,10 +267,21 @@ export const useSt_Nomenclatures = defineStore({
          * Retrieve a state / province name according with the given state code (e.g 'LH' -> 'La Habana')
          * reference: https://pinia.vuejs.org/core-concepts/getters.html#passing-arguments-to-getters
          */
-        getStatesByCode: ( state ): Function1<string, string> => {
+        getStateNameByCode: ( state ): Function1<string, string> => {
             return ( code: string ): string => {
                 const s = state.states.find(( cState: ICountryStatesBasic ) => cState.id.toString() === code)
                 return s?.sName ?? ''
+            }
+        },
+
+        /**
+         * Retrieve a country name according with the given state code (e.g 'CU' -> 'Cuba')
+         * reference: https://pinia.vuejs.org/core-concepts/getters.html#passing-arguments-to-getters
+         */
+        getCountryNameByCode: ( state ): Function1<string, string> => {
+            return ( code: string ): string => {
+                const s = state.countries.find(( cState: ICountryBasic ) => cState.id.toString() === code)
+                return s?.cName ?? ''
             }
         },
 

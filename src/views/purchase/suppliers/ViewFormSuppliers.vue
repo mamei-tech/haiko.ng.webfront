@@ -1058,12 +1058,17 @@ export default defineComponent({
             setFieldValue('email', undefined)
             setFieldValue('cell', '')
             setFieldValue('phone', undefined)
+
+            // -- removing the extended contacts information if any | I thinks isn't make any sense to clone those entity
+            ls_dicExtData.value = {}                                    // local save of the extended contact information coming from the server
+            setFieldValue('extData', undefined)             // this is the 'vee-validate' form object field value | values.extData = undefined
         }
 
         /**
          * Generate a VCard QR with the supplier info, son the image can be scanned
          */
         const h_formBtnAction_QR = () => {
+
             isModalQRShowing.value = true
             let names = values.pName?.split(' ') ?? []               // stripping the contact name
 
@@ -1087,9 +1092,9 @@ export default defineComponent({
                         type:     t('data.work'),
                         street:   values.street,
                         code:     values.zip ?? undefined,
-                        country:  values.countryCode,
-                        region:   values.stateCode ?? undefined,
-                        locality: st_nomenclatures.getStatesByCode(!values.stateCode ? '' : values.stateCode)
+                        country:  st_nomenclatures.getCountryNameByCode(values.countryCode ?? ''),
+                        region:   st_nomenclatures.getStateNameByCode(!values.stateCode ? '' : values.stateCode),
+                        locality: values.city
                     }
                 ],
                 note:      values.internalNotes ? { text: values.internalNotes } : undefined
