@@ -47,7 +47,7 @@
               <div class="col-xm-12 col-md-6">
 
                 <!-- isActive / customer or company -->
-                <div class="row">
+                <div class="row" v-if="!isExtContactInfo">
                   <label class="text-sm-left text-md-right col-md-3 col-form-label">
                     {{ $t( 'data.status' ) }}
                   </label>
@@ -289,6 +289,8 @@
 
                 <!-- land phone & cell phone -->
                 <div class="row">
+
+                  <!-- cell phone -->
                   <label class="text-sm-left text-md-right col-md-3 col-form-label">
                     {{ $t( 'form.fields-common.cell' ) }}
                   </label>
@@ -300,10 +302,11 @@
                     />
                   </div>
 
-                  <label class="text-sm-left text-md-right col-md-1 col-form-label" v-if="!isExtContactInfo">
+                  <!-- land phone -->
+                  <label class="text-sm-left text-md-right col-md-1 col-form-label">
                     {{ $t( 'form.fields-common.phone' ) }}
                   </label>
-                  <div class="col-md-4" v-if="!isExtContactInfo">
+                  <div class="col-md-4">
                     <CmpBaseInput
                         placeholder="### ## ### ## ##"
                         name="phone"
