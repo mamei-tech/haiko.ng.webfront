@@ -124,7 +124,7 @@
 
                 <!-- country & state -->
                 <!-- in edition mode we need to ensure that we have the data of all option for the select before render it, so the Multiselect render the entity selected option properly -->
-                <!-- to assist this logic and make it more simple, make the fetch of the data before calling the router to render this entire view. CHECK h_navEditSuppIntent in ViewFormSuppliers.vue file -->
+                <!-- to assist this logic and make it more simple, make the fetch of the data before calling the router for rendering this entire view. CHECK h_navEditSuppIntent in ViewFormSuppliers.vue file -->
                 <div class="row" v-if="(cpt_fMode === 'edit' && values.countryCode !== undefined) && !isExtContactInfo">
                   <label class="text-sm-left text-md-right col-md-3 col-form-label">
                     {{ $t( 'form.fields-common.country' ) }}
@@ -389,7 +389,7 @@
 
               <!-- tabs content -->
               <div class="tab-content col-md-10">
-                <template v-for="tab in tabs" :key="'tc'+tab.title" >
+                <template v-for="tab in tabs" :key="'tc'+tab.title">
 
                   <CmpTabContent :tabId="tab.id" :id="tab.title" :activeTabId="activeTabId">
 
@@ -696,7 +696,7 @@ export default defineComponent({
 
         const { mkSupplier } = useFactory()
         const { mkVCardQrImg } = useQrCodes()
-        const { isUndEmpZero } = useCommon()
+        const { isUndEmpZero, isUnd } = useCommon()
         const { dfyConfirmation, dfyShowAlert } = useDialogfy()
         const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
 
@@ -727,31 +727,31 @@ export default defineComponent({
         const statsDataCards = reactive([                                         // form supplier statistics data / information
             {
                 id:       1,
-                title:    isUndEmpZero(values.pCount) ? 0 : values.pCount?.toString(),
+                title:    isUnd(values.pCount) ? 0 : values.pCount?.toString(),
                 subTitle: t('entities.supplier.stat-products'),
-                type:     isUndEmpZero(values.pCount) || values.pCount as number <= 0 ? 'warning' : 'success',
+                type:     isUnd(values.pCount) || values.pCount as number <= 0 ? 'warning' : 'success',
                 icon:     'tim-icons icon-components'
                 // footer:   `<i class="tim-icons icon-zoom-split"></i></i> Update Now`
             },
             {
                 id:       2,
-                title:    isUndEmpZero(values.purchasesCountPend) ? 0 : values.purchasesCountPend?.toString(),
+                title:    isUnd(values.purchasesCountPend) ? 0 : values.purchasesCountPend?.toString(),
                 subTitle: t('entities.supplier.stat-purchases-pend'),
-                type:     isUndEmpZero(values.purchasesCountPend) || values.purchasesCountPend as number <= 0 ? 'warning' : 'success',
+                type:     isUnd(values.purchasesCountPend) || values.purchasesCountPend as number <= 0 ? 'warning' : 'success',
                 icon:     'tim-icons icon-watch-time'
             },
             {
                 id:       3,
-                title:    isUndEmpZero(values.purchasesCountTotal) ? 0 : values.purchasesCountTotal?.toString(),
+                title:    isUnd(values.purchasesCountTotal) ? 0 : values.purchasesCountTotal?.toString(),
                 subTitle: t('entities.supplier.stat-purchases-count'),
-                type:     isUndEmpZero(values.purchasesCountTotal) || values.purchasesCountTotal as number <= 0 ? 'danger' : 'info',
+                type:     isUnd(values.purchasesCountTotal) || values.purchasesCountTotal as number <= 0 ? 'danger' : 'info',
                 icon:     'tim-icons icon-cart'
             },
             {
                 id:       4,
                 title:    `$ ${ values.purchasesCountValue }`,
                 subTitle: t('entities.supplier.stat-purchases-count-value'),
-                type:     isUndEmpZero(values.purchasesCountValue) || values.purchasesCountValue as number <= 0 ? 'danger' : 'info',
+                type:     isUnd(values.purchasesCountValue) || values.purchasesCountValue as number <= 0 ? 'danger' : 'info',
                 icon:     'tim-icons icon-money-coins'
             }
         ])

@@ -74,11 +74,19 @@ export default function useCommon () {
     }*/
 
     /**
-     * Return TRUE if the given string is 'undefined' or a empty string or has the zero value
-     * @param str
+     * Just tell if the value is undefined
+     * @param val value tu be check
      */
-    const isUndEmpZero = (str: string | undefined | number | object) => {
-        return str === undefined || str === '' || str === 0;
+    const isUnd = (val: string | undefined | number | object) => {
+        return val === undefined
+    }
+
+    /**
+     * Return TRUE if the given string is 'undefined' or a empty string or has the zero value
+     * @param val
+     */
+    const isUndEmpZero = (val: string | undefined | number | object) => {
+        return val === undefined || val === '' || val === 0;
     }
 
     return {
@@ -88,6 +96,7 @@ export default function useCommon () {
 
         debounce,
 
+        isUnd,
         isUndEmpZero,
     }
 }
