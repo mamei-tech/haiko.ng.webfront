@@ -5,7 +5,7 @@ import { HTTP_RESPONSES } from '@/services/definitions'
 import useCommon from '@/services/composables/useCommon'
 
 import type { AxiosPromise } from 'axios'
-import type { ISupplierCatRow, IDataTableQuery, IDataTablePage, IDtoSupplierCat, ISupplierRow, IDtoSupplier } from '@/services/definitions'
+import type { ISupplierCatRow, IDataTableQuery, IDataTablePage, IDtoSupplierCat, ISupplierRow, IDtoSupplier, IDtoProductSupplierL } from '@/services/definitions'
 
 
 const version = appConfig.server.current_version
@@ -147,6 +147,14 @@ export class ApiSupplier {
      */
     public static bulkToggle( ids: Array<number> ): AxiosPromise<void> {
         return axios.post(`${url}/toggle`, ids)
+    }
+
+    /**
+     * Get the Providers associated with a specific product
+     * @param productId product identifier to look for
+     */
+    public static reqProductSuppliers ( productId: number ): AxiosPromise<Array<IDtoProductSupplierL>> {
+        return axios.get(`${ url }/product/${ productId }`)
     }
 
     //endregion ===========================================================================

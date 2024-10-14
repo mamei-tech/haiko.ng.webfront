@@ -607,6 +607,7 @@ import useDialogfy from '@/services/composables/useDialogfy'
 import useNumeric from '@/services/composables/useNumeric'
 import useCommon from '@/services/composables/useCommon'
 import { ApiProduct } from '@/services/api/inventory/api-product'
+import { ApiSupplier } from '@/services/api/resources-infraestructure/api-supplier'
 
 
 import type { ComputedRef } from 'vue'
@@ -1293,7 +1294,7 @@ export default defineComponent({
             if(ls_isSuppliersRequested.value) return                                                                // breaking the habit | if we already requested we have our job done
 
             if(activeTabId.value == 3 && cpt_fMode.value === FMODE.EDIT) {                                          // we are looking for the 'purchase' tab so we can pull the product providers from server
-                let result = await ApiProduct.reqProductSuppliers(+id).catch(err => tfyBasicRqError(err))           // requesting needed data
+                let result = await ApiSupplier.reqProductSuppliers(+id).catch(err => tfyBasicRqError(err))          // requesting needed data
 
                 //@ts-ignore
                 setFieldValue('supplierLines', result.data.map(supplierLine => {                              // mapping / normalizing the data to be rendered properly in the table

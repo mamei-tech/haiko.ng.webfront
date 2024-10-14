@@ -72,14 +72,6 @@ export class ApiProduct {
     }
 
     /**
-     * Get the Providers associated with a specific product
-     * @param productId product identifier to look for
-     */
-    public static reqProductSuppliers ( productId: number ): AxiosPromise<Array<IDtoProductSupplierL>> {
-        return axios.get(`${ url }/${ productId }/suppliers`)
-    }
-
-    /**
      * Send the request (multipart/form-data) to update an existing product
      * @param product product object tom be updated
      */
