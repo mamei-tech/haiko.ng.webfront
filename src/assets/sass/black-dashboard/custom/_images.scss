@@ -35,6 +35,12 @@ div.picture-table-cell .cell-picture {
     width: 100%;
 }
 
+div.table-cell-color {
+    width            : 30px;
+    height           : 30px;
+    border           : 2px solid $background-states-black;
+    border-radius    : 50%;
+}
 
 .a-edit-btn-icon {
     color         : white;

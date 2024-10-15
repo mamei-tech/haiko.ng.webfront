@@ -243,7 +243,7 @@
             :class="[ { 'text-right': header.styleToRight }, { 'text-left': header.styleToLeft }, { 'text-center': header.styleToCenter } ]"
             :style="[{ width: header.styleWidth + '%' }, { color: hpr_getRowValue( rowObj, header ) + '!important' }]"
         >
-          {{ hpr_getRowValue( rowObj, header ) }}
+          <CmpTableColor :key="hindex + '' + rindex" :cell-color="hpr_getRowValue( rowObj, header )" />
         </td>
 
         <!-- icon cell -->
@@ -352,6 +352,7 @@ import CmpCellSwitch from './CmpCellSwitch.vue'
 import CmpTableEmpty from './CmpTableEmpty.vue'
 import CmpTableChkbox from './CmpTableChkbox.vue'
 import CmpTablePicture from './CmpTablePicture.vue'
+import CmpTableColor from './CmpTableColor.vue'
 import CmpCellListUoM from './CmpCellListUoM.vue'
 import CmpTableRowActions from './CmpTableRowActions.vue'
 import CmpTableEditableCell from './CmpTableEditableCell.vue'
@@ -372,15 +373,15 @@ export default defineComponent({
     components: {
         Multiselect,
         CmpBaseButton,
-
-        CmpTablePagination,
         CmpCellSwitch,
+        CmpTableColor,
         CmpTableEmpty,
         CmpTableChkbox,
         CmpCellListUoM,
-        CmpTableActionBar,
-        CmpTableRowActions,
         CmpTablePicture,
+        CmpTableActionBar,
+        CmpTablePagination,
+        CmpTableRowActions,
         CmpTableEditableCell,
         CmpTableEditableCellSelect,
     },

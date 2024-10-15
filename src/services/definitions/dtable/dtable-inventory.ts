@@ -147,7 +147,7 @@ export const HWareLocationsTable: Partial<IColumnHeader>[] = [
 export const HPickingTypeTable: Partial<IColumnHeader>[] = [
     { title: 'id', hidden: true },
     { title: 'name', navKey: 'tName', sorting: ''},
-    { title: 'color', navKey: 'tColor', fieldColor: true },
+    { title: 'color', navKey: 'tColor', fieldColor: true, styleWidth: 4 },
     { title: 'active', styleToCenter: true, navKey: 'isActive', defStatus:true, fieldSwitch: true, sorting: '' },
     {
         title:        '',            // actions buttons
