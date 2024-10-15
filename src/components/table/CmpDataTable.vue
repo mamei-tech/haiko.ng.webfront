@@ -228,7 +228,7 @@
             rowspan="1" colspan="1"
             :style="[{ width: header.styleWidth + '%' }]"
         >
-          <CmpTableCellPicture
+          <CmpTablePicture
               :type="PICTURE_TYPE_CELL.USER"
               :statics="configStatic"
               :picture="hpr_getRowValue( rowObj, header )"
@@ -351,7 +351,7 @@ import CmpTablePagination from './CmpTablePagination.vue'
 import CmpCellSwitch from './CmpCellSwitch.vue'
 import CmpTableEmpty from './CmpTableEmpty.vue'
 import CmpTableChkbox from './CmpTableChkbox.vue'
-import CmpTableCellPicture from './CmpTableCellPicture.vue'
+import CmpTablePicture from './CmpTablePicture.vue'
 import CmpCellListUoM from './CmpCellListUoM.vue'
 import CmpTableRowActions from './CmpTableRowActions.vue'
 import CmpTableEditableCell from './CmpTableEditableCell.vue'
@@ -380,7 +380,7 @@ export default defineComponent({
         CmpCellListUoM,
         CmpTableActionBar,
         CmpTableRowActions,
-        CmpTableCellPicture,
+        CmpTablePicture,
         CmpTableEditableCell,
         CmpTableEditableCellSelect,
     },
