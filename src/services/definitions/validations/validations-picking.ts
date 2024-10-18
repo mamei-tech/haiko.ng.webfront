@@ -21,7 +21,7 @@ export const VSchemaPicking = {
         return VSchemaCommon.nameValidation(value, 2, 30, true, regAlphanumNHyphensLowerCaps, t('validation.only-alpha-digist-nospc-hyphen-lowcaps'))
     },
     seqCode:   ( value: string ): boolean | string => {
-        return VSchemaCommon.nameValidation(value.toUpperCase() ?? '', 2, 4, true, regOnlyAlphaNOSpacesCaps, t('validation.only-alpha-caps'))
+        return VSchemaCommon.nameValidation(value.toUpperCase() ?? '', 2, 6, true, regOnlyAlphaNOSpacesCaps, t('validation.only-alpha-caps'))
     },
     tColor:    ( value: string ): boolean | string => {
         if (!required(value)) return t('validation.required')

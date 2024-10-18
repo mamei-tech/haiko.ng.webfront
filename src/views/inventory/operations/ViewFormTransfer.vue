@@ -55,7 +55,7 @@
                   </div>
                 </div>
 
-                <!-- PickingType -->
+                <!-- PickingType / Operation type / Transfer Type / Movement -->
                 <div class="row">
                   <label class="text-sm-left text-md-right col-md-3 col-form-label">
                     {{ $t( 'entities.pickingtype.name' ) }}
@@ -67,7 +67,7 @@
                                          closeOnSelect
                                          name="pickingTypeId"
                                          class="mb-2"
-                                         v-on:changehapend="h_adjustUIAcc2PT"
+                                         v-on:changehapend="h_UIPickingTypeAdjustment"
                     >
 
                       <!--option coming from slot child component ('slots props') [option] -->
@@ -304,6 +304,7 @@ export default defineComponent({
             // ---- settings things up
             const locsByIdMap = st_nomenclatures.getWareLocByIdMap                                                      // getting inventory warehouse locations mapped by its identifier
             const pickTypesByIdMap = st_nomenclatures.getPickingTypeByIdMap                                             // getting inventory picking types mapped by its identifier
+            console.warn(pickTypesByIdMap)
 
             let sets: ById<IMultiselectBasic | string> = {}                                                             // sets of the selected locations
 
@@ -314,26 +315,28 @@ export default defineComponent({
 
             sets[ '2hide' ] = 'none'
 
-            // ---- logic by each situation
+            // ---- logic by each situation                                                                             // we have to worry only about case 1,2, 6 and 10 'cause are the ones that could have one of the two involved inventory locations, set to null by default
             switch (ptId) {
                 case 1:                             // receipts
-                    sets[ 'src' ] = { value: 4, label: locsByIdMap[ 4 ].lFullName ?? '' }                           // assuming that defaults SUPPLIER location have '4' as database identifier
+                    sets[ 'src' ] = { value: 4, label: locsByIdMap[ 4 ].lFullName ?? '' }                               // assuming that defaults SUPPLIER location have '4' as database identifier
                     sets[ 'dst' ] = {
                         value: pickingType.defDestWLocationID ?? defStLocId,
                         label: locsByIdMap[ pickingType.defDestWLocationID ?? defStLocId ].lFullName ?? defStLocLabel
                     }
                     if (isUndEmpZero(pickingType.defSrcWLocationID)) sets['2hide'] = 'src'
                     break
-                case 2:                             // delivery order
+                case 2:                             // delivery order & POS order
+                case 10:
                     sets[ 'src' ] = {
                         value: pickingType.defSrcWLocationID ?? defStLocId,
                         label: locsByIdMap[ pickingType.defSrcWLocationID ?? defStLocId ].lFullName ?? defStLocLabel
                     }
-                    sets[ 'dst' ] = { value: 5, label: locsByIdMap[ 5 ].lFullName ?? '' }                           // assuming that defaults CUSTOMER location have '5' as database identifier
-                    if (isUndEmpZero(pickingType.defDestWLocationID)) sets['2hide'] = 'dst'
+                    sets[ 'dst' ] = { value: 5, label: locsByIdMap[ 5 ].lFullName ?? '' }                               // assuming that defaults CUSTOMER location have '5' as database identifier
+                    // if (isUndEmpZero(pickingType.defDestWLocationID)) sets['2hide'] = 'dst'
+                    sets['2hide'] = 'dst'                                                                               // whe I added the 10 (PoSOrder) case, I understand that showing the control not make any sense 'causes in both case we must enforce the use of the default value for the both picking types, even with the 2 (Delivery). so the user can't change the destination value
                     break
                 case 6:                             // returns
-                    sets[ 'src' ] = { value: 5, label: locsByIdMap[ 5 ].lFullName ?? '' }                           // assuming that defaults CUSTOMER location have '5' as database identifier
+                    sets[ 'src' ] = { value: 5, label: locsByIdMap[ 5 ].lFullName ?? '' }                               // assuming that defaults CUSTOMER location have '5' as database identifier
                     sets[ 'dst' ] = {
                         value: pickingType.defDestWLocationID ?? defStLocId,
                         label: locsByIdMap[ pickingType.defDestWLocationID ?? defStLocId ].lFullName ?? defStLocLabel
@@ -343,8 +346,7 @@ export default defineComponent({
                 default:
                     // case 5                       // internal transfer
                     // case 9                       // manufacturing
-                    // case 10                      // POS order
-                    // case n
+                    // case n                       // custom picking type. it has been made by system users
                     sets[ 'src' ] = {
                         value: pickingType.defSrcWLocationID ?? defStLocId,
                         label: locsByIdMap[ pickingType.defSrcWLocationID ?? defStLocId ].lFullName ?? defStLocLabel
@@ -355,7 +357,6 @@ export default defineComponent({
                     }
 
                     break
-                // he we have to worry about case 1,2 and 6 'cause are the ones that could have one of the two involved inventory locations, set to null by default
             }
 
             return sets
@@ -388,7 +389,7 @@ export default defineComponent({
         /**
          * Adjust some UI controls according to the selection of the picking type
          */
-        const h_adjustUIAcc2PT = ( type: string ) => {
+        const h_UIPickingTypeAdjustment = ( type: string ) => {
 
             if (isUndEmpZero(ref_selectSrcLoc.value) || isUndEmpZero(ref_selectDstLoc.value)) return
             if (type == null)
@@ -436,8 +437,8 @@ export default defineComponent({
             nav_back,
             h_delete,
             h_beforeSubmit,
-            h_adjustUIAcc2PT,
-            h_keyboardKeyPress
+            h_keyboardKeyPress,
+            h_UIPickingTypeAdjustment,
         }
     }
 
