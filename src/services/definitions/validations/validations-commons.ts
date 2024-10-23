@@ -44,6 +44,16 @@ export const regStrongPassword: RegExp = /^(?=.*[A-ZÀ-ÿ].*[A-ZÀ-ÿ])(?=.*[!@#
 
 export const VSchemaCommon = {
 
+    /**
+     * Validation 'required' check intended to be used with 'SELECT' UI controls
+     * @param value
+     * @param notAllowedVal
+     */
+    required4Select: ( value: string | number, notAllowedVal: number = 0 ): boolean | string => {
+        if (+value == 0 || value == undefined) return t('validation.required')
+        return true
+    },
+
     username: ( value: string ): boolean | string => {
         if (!required(value)) return t('validation.required')
         if (!regex(value, { regex: regAlphaUnderscoreNDots })) return t('validation.only-alpha-digits-underscore-dots')

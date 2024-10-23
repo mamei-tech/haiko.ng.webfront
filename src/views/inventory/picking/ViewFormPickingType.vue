@@ -267,7 +267,7 @@ import useFactory from '@/services/composables/useFactory'
 import useToastify from '@/services/composables/useToastify'
 import useCommon from '@/services/composables/useCommon'
 import { ApiPickingType } from '@/services/api/inventory/api-picking-type'
-import { CORE_PICKING_TYPE, ENTITY_NAMES, FMODE, KEYS, OPS_KIND_STR, RESERVATION_METHODS, RoutePathNames, VSchemaPicking } from '@/services/definitions'
+import { CORE_PICKING_TYPE, ENTITY_NAMES, FMODE, KEYS, OPS_KIND_STR, RESERVATION_METHODS, RoutePathNames, VSchemaPickingType } from '@/services/definitions'
 import { CmpBaseButton, CmpBaseCheckbox, CmpBaseInput, CmpBaseRadio, CmpCard, CmpCollapseItem, CmpFormActionsButton, CmpMultiselectField, CmpTooltip, CmpVeeCheckbox } from '@/components'
 
 import type { ComputedRef } from 'vue'
@@ -428,7 +428,7 @@ export default defineComponent({
 
         // getting the vee validate method to manipulate the form related actions from the view
         const { handleSubmit, meta, resetForm, setFieldValue, values } = useForm<IDtoPickingType>({
-            validationSchema: VSchemaPicking,
+            validationSchema: VSchemaPickingType,
             initialValues:    mkPickType(),
             initialErrors:    undefined
         })
