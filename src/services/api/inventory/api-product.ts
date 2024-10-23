@@ -75,7 +75,7 @@ export class ApiProduct {
      * Send the request (multipart/form-data) to update an existing product
      * @param product product object tom be updated
      */
-    public static update (product : IDtoProduct) : AxiosPromise<void> {
+    public static reqUpdate (product : IDtoProduct) : AxiosPromise<void> {
 
         return axios.put(url, toFormDataR(product), {
             headers: { 'Content-Type': HTTP_HEADER_FORM_DATA }

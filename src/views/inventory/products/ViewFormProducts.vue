@@ -845,7 +845,7 @@ export default defineComponent({
         const a_edit = ( editedProduct: IDtoProduct, doWeNeedToStay: boolean ) => {
             hpr_sanitation(editedProduct)
 
-            ApiProduct.update(editedProduct).then(() => {
+            ApiProduct.reqUpdate(editedProduct).then(() => {
                 tfyCRUDSuccess(ENTITY_NAMES.PRODUCT, OPS_KIND_STR.UPDATE, editedProduct.pName)
 
                 // so now what ?
