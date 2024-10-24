@@ -22,13 +22,13 @@ import { VSchemaSupplier, VSchemaSuppExtInfo, VSchemaSupplierCat } from '@/servi
 import { VSchemaPSL, VSchemaProduct } from '@/services/definitions/validations/validations-product'
 import { VSchemaWarehouse } from '@/services/definitions/validations/validations-warehouse'
 import { VSchemaWareLocation } from '@/services/definitions/validations/validations-warelocations'
-import { VSchemaPicking } from '@/services/definitions/validations/validations-picking'
+import { VSchemaPickingType, VSchemaPicking } from '@/services/definitions/validations/validations-picking'
 import { VSchemaStrgCategory } from '@/services/definitions/validations/validations-strgcategory'
 import { VSchemaStaffCreate, VSchemaStaffEdit } from '@/services/definitions/validations/validations-people'
 
 import type { Problem, ErrorDictionary } from '@/services/definitions/types-errors'
 import type { IDtoWarehouse, IWarehouseBasic } from '@/services/definitions/entities/types-warehouse'
-import type { IPickingTypeBasic, IPickingTypeRow, IDtoPickingType, ICorePickingType, IDtoPickingNew } from '@/services/definitions/entities/types-picking'
+import type { IPickingTypeBasic, IPickingTypeRow, IDtoPickingType, ICorePickingType, IDtoPicking } from '@/services/definitions/entities/types-picking'
 import type { IWareLocationRow, IDtoWareLocation, IWareLocationBasic, IWareLocationType } from '@/services/definitions/entities/types-warelocation'
 import type { IStrgCategoryRow, IDtoStrgCategory, IStrgCatProdLine, IStrgCategoryBasic } from '@/services/definitions/entities/types-strgcategory'
 import type { TOpsKind, Function0, Function1, IColumnHeader, IDataTableQuery, ITableChkEmit, TBulkAction, ById, IIndexable, IChecked, Filter, IDataListBasicResponse, TFormMode, TActionKind, IdsArray, IBulkData, IMultiselectBasic, IShell, IScrollInfo, IDataTablePage, ICellUpdate, IvCard, IExtFilter, IExtFilterGroup } from './types-common'
@@ -108,12 +108,13 @@ export {
     ALIGN_POSITION,
 
     // Validations ... VSchema == validations schema
-    VSchemaStrgCategory, VSchemaAuth, VSchemaCommon, VSchemaStaffCreate, VSchemaStaffEdit, VSchemaRole, VSchemaWarehouse, VSchemaSupplier, VSchemaUoM, VSchemaUoMCat, VSchemaPSL, VSchemaProduct, VSchemaWareLocation, VSchemaPicking, VSchemaSuppExtInfo, VSchemaSupplierCat,
+    VSchemaStrgCategory, VSchemaAuth, VSchemaCommon, VSchemaStaffCreate, VSchemaStaffEdit, VSchemaRole, VSchemaWarehouse, VSchemaSupplier, VSchemaUoM, VSchemaUoMCat, VSchemaPSL, VSchemaProduct, VSchemaWareLocation, VSchemaSuppExtInfo, VSchemaSupplierCat,
+    VSchemaPickingType, VSchemaPicking,
 
     // =====  ENTITIES =====
 
     // inventory picking
-    IPickingTypeBasic, IPickingTypeRow, IDtoPickingType, ICorePickingType, IDtoPickingNew,
+    IPickingTypeBasic, IPickingTypeRow, IDtoPickingType, ICorePickingType, IDtoPicking,
 
     // warehouse (storage) locations
     IWareLocationRow, IDtoWareLocation, IWareLocationBasic, IWareLocationType,

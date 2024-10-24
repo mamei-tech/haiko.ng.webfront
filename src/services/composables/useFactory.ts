@@ -12,7 +12,7 @@ import type {
     IDtoProduct,
     IDtoSupplier,
     IDtoWarehouse,
-    IDtoPickingNew,
+    IDtoPicking,
     IDtoUoMCategory,
     IDtoPickingType,
     IDtoSupplierCat,
@@ -280,18 +280,23 @@ export default function useFactory() {
         }
     }
 
-    const mkPicking = (): IDtoPickingNew => {
+    const mkPicking = (): IDtoPicking => {
         return {
             id:                  0,
-            pFromSupplierId:     0,
-            pickingTypeId:       0,
+            contactId:           0,
+            pickingType:         0,
             pSrcWareLocationId:  0,
             pDestWareLocationId: 0,
             pSrcDocument:        undefined,
             pScheduleDate:       undefined,
-            pShippingPolicy:     '',
-            pResponsibleId:      0,
-            pNotes:              undefined
+            pShippingPolicy:     'direct',
+            pResponsibleId:      2,                     // #2 (at the moment ot writing this) is 'The Manager' on database
+            pNotes:              undefined,
+
+            //-- IDtoPickingBase props
+
+            pickName: undefined,
+            state:    undefined
         }
     }
 

@@ -43,18 +43,25 @@ export interface ICorePickingType {
     id:string
 }
 
+export interface IDtoPickingBase extends IIndexable {
+    pickName: string | undefined
+    state: string | undefined
+}
 
 /**
- * Represent a inventory Picking data transfer object on its creation
+ * Represent a inventory Picking data transfer object (DTO). This was meant to be used primarily in creations ops (CRUD)
+ * A 'picking' its A.K.A 'Inventory Transfer Operation' in the UI
  */
-export interface IDtoPickingNew extends IIndexable {
-    pFromSupplierId: number,                     // TODO check inventory_picking ContactId field 'fixme' (on backend) (migr_240412.1426_create_picking.sql file)
-    pickingTypeId: number,
+export interface IDtoPicking extends IDtoPickingBase {
+
+    contactId: number,
+    pickingType: number,
     pSrcWareLocationId: number,
     pDestWareLocationId: number,
     pSrcDocument: string | undefined,
     pScheduleDate: Date | undefined,
-    pShippingPolicy: string,
     pResponsibleId: number,
-    pNotes: string | undefined
+    pNotes: string | undefined,
+
+    pShippingPolicy: string
 }

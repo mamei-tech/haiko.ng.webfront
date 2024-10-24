@@ -798,7 +798,7 @@ export default defineComponent({
                     values: { ...formDataFromServer }
                 })
             }
-            window.addEventListener('keydown', h_keyboardKeyPress)                              // keyboard keys event handler, we need to clean this kind of event when the component are destroyed
+            window.addEventListener('keydown', h_keyboardKeyPress)                        // keyboard keys event handler, we need to clean this kind of event when the component are destroyed
         })
 
         /**
@@ -913,7 +913,7 @@ export default defineComponent({
         }
 
         /**
-         * Restoring, cleaning some formulary data, so it will be refreshed and be used again for a new product
+         * Restoring, cleaning some formulary data, so it will be refreshed and be used again for a new entity
          */
         const hpr_clearState = () => {
             ls_activateSellPrice.value = true

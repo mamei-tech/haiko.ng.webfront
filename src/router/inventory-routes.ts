@@ -94,7 +94,7 @@ export const InventoryRoutes: Array<RouteRecordRaw> = [
 
     //#endregion ==========================================================================
 
-    //#region ======= PICKING ============================================================
+    //#region ======= PICKING / TRANSFER  =======================================
 
     {
         path:      RoutePaths.pickigtypeList,
