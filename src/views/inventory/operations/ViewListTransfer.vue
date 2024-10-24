@@ -72,7 +72,7 @@ export default defineComponent({
 
         const a_reqQuery = ( queryData: IDataTableQuery | undefined = undefined ) => {
 
-            console.info('not implemented yet')
+            // TODO implement this, its pending
 
             // getting the product list data for populating the datatable (side effect)
             /*ApiProduct.getPage(st_pagination.getQueryData)

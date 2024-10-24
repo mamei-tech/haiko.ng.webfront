@@ -188,6 +188,20 @@ export const useSt_Nomenclatures = defineStore({
         },
 
         /**
+         * Retrieve the values for a 'select' UI control.
+         * The "Shipping Policy" specifies goods to be deliver partially or all at once
+         *
+         * direct -> As soon as possible        (ASAP)
+         * one -> When all products are ready   (All) / (at-once)
+         *
+         * @param state
+         */
+        getShipPol4Select: (state): IMultiselectBasic[] => [
+            { value: 'direct', label: t('data.shipping-policy.direct')},
+            { value: 'one', label: t('data.shipping-policy.one')}
+        ],
+
+        /**
          * Get defined companies from the state in a multiselect component format ({value: ___, label: ___})
          *
          * @param state Nomenclatures state

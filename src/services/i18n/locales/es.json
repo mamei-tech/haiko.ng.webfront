@@ -77,6 +77,10 @@
       "mixed": "Permitir Varios",
       "same":  "Solo mismo tipo",
       "empty": "Solo si vacío"
+    },
+    "shipping-policy":       {
+      "direct": "Lo antes posible",
+      "one":    "Todos los productos listos"
     }
   },
   "others":        {
@@ -206,7 +210,10 @@
       "phone-mini":        "Tel",
       "phone":             "Teléfono",
       "info":              "Información",
+      "options":           "Opciones",
+      "ops":               "Operaciones",
       "notes":             "Notas",
+      "notes-alt":         "Apuntes",
       "view-check":        "Ver",
       "month-pass-min":    "m. pasado",
       "month-current-min": "m. corriente",
@@ -271,7 +278,8 @@
       "picking-type-wlocation-src":    "- slecc. origen -",
       "picking-type-wlocation-des":    "- slecc. destino -",
       "picking-type-days-before":      "...6 días con antelación",
-      "picking-type-days-before-info": "días antes"
+      "picking-type-days-before-info": "días antes",
+      "picking-src-doc":               "OC/A/0004"
     }
   },
   "table-headers": {
@@ -471,10 +479,16 @@
       }
     },
     "transfer":      {
-      "name":         "Transferencia",
-      "section-name": "@:entities.transfer.name",
-      "tool-tips":    {
-        "contact": "Contacto del proveedor para esta transferencia. Si aplica, pude ser el propio negocio"
+      "name":                "Transferencia",
+      "section-name":        "@:entities.transfer.name",
+      "src-doc":             "Origen",
+      "shipping-policy":     "Política de Envíos",
+      "tool-tips":           {
+        "shipping": "Especifica si los productos definidos en la operación serán enviados parcialmente (en la medida que estén disponibles) o todos juntos"
+      },
+      "conditionals-labels": {
+        "receipts-type": "Recibido de",
+        "pos-order":     "Dir. Entrega"
       }
     },
     "replenishment": {

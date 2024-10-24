@@ -13,7 +13,7 @@ const { t } = i18n.global
 /**
  * Inventory Picking Type validation schema
  */
-export const VSchemaPicking = {
+export const VSchemaPickingType = {
     tName:     ( value: string ): boolean | string => {
         return VSchemaCommon.nameValidation(value, 2, 30, true, regOnlyAlphanumNSpacesWithDotsNHyphen, t('validation.only-alpha-digits-no-spaces'))
     },
@@ -40,3 +40,14 @@ export const VSchemaPicking = {
         else return true
     }
 }
+
+/**
+ * Inventory picking (a.k.a Inventory Transfer Ops)
+ */
+export const VSchemaPicking = {
+
+    contactId: ( value: string | number ): boolean | string => { return VSchemaCommon.required4Select(value) },
+    pickingType: ( value: string | number ): boolean | string => { return VSchemaCommon.required4Select(value) },
+    pResponsibleId: ( value: string | number ): boolean | string => { return VSchemaCommon.required4Select(value) }
+}
+
