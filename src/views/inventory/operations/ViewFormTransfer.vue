@@ -90,7 +90,7 @@
                     <CmpMultiselectField :placeholder="$t('form.placeholders.picking-type-wlocation-src')"
                                          :options="st_nomenclatures.getWareLocations4Select"
                                          searchable
-                                         name="defSrcWLocationID"
+                                         name="pSrcWareLocationId"
                                          class="mb-2"
                                          closeOnSelect
                                          ref="ref_selectSrcLoc"
@@ -120,7 +120,7 @@
                     <CmpMultiselectField :placeholder="$t('form.placeholders.picking-type-wlocation-des')"
                                          :options="st_nomenclatures.getWareLocations4Select"
                                          searchable
-                                         name="defDestWLocationID"
+                                         name="pDestWareLocationId"
                                          class="mb-2"
                                          closeOnSelect
                                          ref="ref_selectDstLoc"
