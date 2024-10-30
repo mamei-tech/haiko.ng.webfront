@@ -24,7 +24,7 @@ export class ApiPicking {
      * @param picking picking data to be drafted on the backend
      */
     public static reqDraftTransfer( picking: IDtoPicking ): AxiosPromise<number> {
-        return axios.post(url, picking)
+        return axios.post(`${ url }/draft`, picking)
     }
 
     //endregion ===========================================================================
