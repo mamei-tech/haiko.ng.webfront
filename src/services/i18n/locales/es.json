@@ -81,6 +81,17 @@
     "shipping-policy":       {
       "direct": "Lo antes posible",
       "one":    "Todos los productos listos"
+    },
+    "process-state":         {
+      "draft":     "borrd",
+      "waiting":   "espera",
+      "confirmed": "cofmd",
+      "assigned":  "asignd",
+      "ready":     "listo",
+      "done":      "hecho",
+      "delivered": "entrgd",
+      "cancelled": "cancld",
+      "state-dsc": "* Borrador: La transferencia aún no está confirmada. La reserva no aplica.\n* Esperando otra operación: Esta transferencia está esperando otra operación antes de estar lista.\n* Esperando: La transferencia está esperando la disponibilidad de algunos productos.\n    (a) La política de envío es \"Lo antes posible\": no se pudo reservar ningún producto.\n    (b) La política de envío es \"Cuando todos los productos estén listos \": no se pudieron reservar todos los productos.\n* Lista: La transferencia está lista para ser procesada.\n    (a) La política de envío es \"Lo antes posible\": se ha reservado al menos un producto.\n    (b) La política de envío es \"Cuando todos los productos estén listos\": se han reservado todos los productos.\n* Realizada: La transferencia ha sido procesada.\n* Cancelada: La transferencia ha sido cancelada.\""
     }
   },
   "others":        {

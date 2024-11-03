@@ -1,119 +1,121 @@
+@import "variables";
+
 /* Form controls */
 @include form-control-placeholder(#6c757c, 1);
 
 .caret-form-section {
-    margin-top: 10px;
-    height: 14px;
-    width: 14px;
-    color: $primary;
-    float: right;
-    vertical-align: middle;
+  margin-top     : 10px;
+  height         : 14px;
+  width          : 14px;
+  color          : $primary;
+  float          : right;
+  vertical-align : middle;
 }
 
 div.caret-container-narrow .caret-form-section {
-    margin-top: 10px;
-    margin-right: 6%;
-    height: 14px;
-    width: 14px;
-    color: $primary;
-    float: right;
-    vertical-align: middle;
+  margin-top     : 10px;
+  margin-right   : 6%;
+  height         : 14px;
+  width          : 14px;
+  color          : $primary;
+  float          : right;
+  vertical-align : middle;
 }
 
 hr.collapsable-form-section-divisor {
-    width: 90%;
-    border-width: thin;
-    border-color: $primary !important;
-    opacity: 0.2;
+  width        : 90%;
+  border-width : thin;
+  border-color : $primary !important;
+  opacity      : 0.2;
 }
 
 hr.collapsable-form-section-divisor.hr-50 {
-    margin-block-start: 5px;
-    margin-block-end: 5px;
+  margin-block-start : 5px;
+  margin-block-end   : 5px;
 }
 
 hr.collapsable-form-section-divisor.hr-100 {
-    margin-block-start: 10px;
-    margin-block-end: 10px;
+  margin-block-start : 10px;
+  margin-block-end   : 10px;
 }
 
 hr.collapsable-form-section-divisor.hr-200 {
-    margin-block-start: 20px;
-    margin-block-end: 20px;
+  margin-block-start : 20px;
+  margin-block-end   : 20px;
 }
 
 hr.collapsable-form-section-divisor.hr-300 {
-    margin-block-start: 30px;
-    margin-block-end: 30px;
+  margin-block-start : 30px;
+  margin-block-end   : 30px;
 }
 
 .form-control {
-    border-color: lighten($black, 5%);
-    border-radius: $border-radius-lg;
-    font-size: $font-size-sm;
-    @include transition-input-focus-color();
+  border-color  : lighten($black, 5%);
+  border-radius : $border-radius-lg;
+  font-size     : $font-size-sm;
+  @include transition-input-focus-color();
 
-    &:focus {
-        border-color: $primary;
-        background-color: $input-bg;
-        @include box-shadow(none);
-
-        & + .input-group-append .input-group-text,
-        & ~ .input-group-append .input-group-text,
-        & + .input-group-prepend .input-group-text,
-        & ~ .input-group-prepend .input-group-text {
-            border: 1px solid $primary;
-            border-left: none;
-            background-color: $transparent-bg;
-        }
-    }
-
-    .has-success &,
-    .has-error &,
-    .has-success &:focus,
-    .has-error &:focus {
-        @include box-shadow(none);
-    }
-
-    .has-danger &,
-    .has-success & {
-        &.form-control-success,
-        &.form-control-danger {
-            background-image: none;
-        }
-    }
-
-    & + .form-control-feedback {
-        border-radius: $border-radius-lg;
-        margin-top: -7px;
-        position: absolute;
-        right: 10px;
-        top: 50%;
-        vertical-align: middle;
-    }
-
-    .open & {
-        border-radius: $border-radius-lg $border-radius-lg 0 0;
-        border-bottom-color: $transparent-bg;
-    }
+  &:focus {
+    border-color     : $primary;
+    background-color : $input-bg;
+    @include box-shadow(none);
 
     & + .input-group-append .input-group-text,
-    & + .input-group-prepend .input-group-text {
-        background-color: $white;
+    & ~ .input-group-append .input-group-text,
+    & + .input-group-prepend .input-group-text,
+    & ~ .input-group-prepend .input-group-text {
+      border           : 1px solid $primary;
+      border-left      : none;
+      background-color : $transparent-bg;
     }
+  }
+
+  .has-success &,
+  .has-error &,
+  .has-success &:focus,
+  .has-error &:focus {
+    @include box-shadow(none);
+  }
+
+  .has-danger &,
+  .has-success & {
+    &.form-control-success,
+    &.form-control-danger {
+      background-image : none;
+    }
+  }
+
+  & + .form-control-feedback {
+    border-radius  : $border-radius-lg;
+    margin-top     : -7px;
+    position       : absolute;
+    right          : 10px;
+    top            : 50%;
+    vertical-align : middle;
+  }
+
+  .open & {
+    border-radius       : $border-radius-lg $border-radius-lg 0 0;
+    border-bottom-color : $transparent-bg;
+  }
+
+  & + .input-group-append .input-group-text,
+  & + .input-group-prepend .input-group-text {
+    background-color : $white;
+  }
 
 }
 
 .has-success .input-group-append .input-group-text,
 .has-success .input-group-prepend .input-group-text,
 .has-success .form-control {
-    border-color: lighten($black, 5%);
+  border-color : lighten($black, 5%);
 }
 
 .has-success .form-control:focus,
 .has-success.input-group-focus .input-group-append .input-group-text,
 .has-success.input-group-focus .input-group-prepend .input-group-text {
-    border-color: darken($success, 10%);
+  border-color : darken($success, 10%);
 }
 
 .has-danger .form-control,
@@ -121,68 +123,173 @@ hr.collapsable-form-section-divisor.hr-300 {
 .has-danger .input-group-prepend .input-group-text,
 .has-danger.input-group-focus .input-group-prepend .input-group-text,
 .has-danger.input-group-focus .input-group-append .input-group-text {
-    border-color: lighten($danger-states, 5%);
-    color: $danger-states;
-    background-color: rgba(222, 222, 222, .1);
+  border-color     : lighten($danger-states, 5%);
+  color            : $danger-states;
+  background-color : rgba(222, 222, 222, .1);
 
-    &:focus {
-        background-color: $transparent-bg;
-    }
+  &:focus {
+    background-color : $transparent-bg;
+  }
 }
 
 div.form-group.has-danger div.multiselect {
-    border-color: lighten($danger-states, 5%);
-    color: $danger-states;
-    background-color: rgba(222, 222, 222, .1);
+  border-color     : lighten($danger-states, 5%);
+  color            : $danger-states;
+  background-color : rgba(222, 222, 222, .1);
 
-    &:focus {
-        background-color: $transparent-bg;
-    }
+  &:focus {
+    background-color : $transparent-bg;
+  }
 }
 
 .has-success,
 .has-danger {
+  &:after {
+    font-family : 'nucleo';
+    content     : "\ea1b";
+    display     : inline-block;
+    position    : absolute;
+    right       : 20px;
+    top         : 13px;
+    color       : $success;
+    font-size   : 11px;
+  }
+
+  &.form-control-lg {
     &:after {
-        font-family: 'nucleo';
-        content: "\ea1b";
-        display: inline-block;
-        position: absolute;
-        right: 20px;
-        top: 13px;
-        color: $success;
-        font-size: 11px;
+      font-size : 13px;
+      top       : 24px;
     }
+  }
 
-    &.form-control-lg {
-        &:after {
-            font-size: 13px;
-            top: 24px;
-        }
+  &.has-label {
+    &:after {
+      top : 37px;
     }
-
-    &.has-label {
-        &:after {
-            top: 37px;
-        }
-    }
+  }
 
 
-    &.form-check:after {
-        display: none !important;
-    }
+  &.form-check:after {
+    display : none !important;
+  }
 
-    &.form-check .form-check-label {
-        color: $success;
-    }
+  &.form-check .form-check-label {
+    color : $success;
+  }
 }
 
 .has-danger {
-    &:after {
-        content: "\ea48";
-        color: $danger-states;
-    }
+  &:after {
+    content : "\ea48";
+    color   : $danger-states;
+  }
 
-    &.form-check .form-check-label {
-        color: $danger-states;
+  &.form-check .form-check-label {
+    color : $danger-states;
+  }
+}
+
+// inventory process status | button group like
+/* Container for the progress bar */
+
+.inv-ops-status {
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  width: 50%;
+  float: right;
+}
+
+/* Style for each step */
+.inv-ops-status-step, .inv-ops-status-step-sm {
+  flex: 1;
+  padding: 10px;
+  text-align: center;
+  color: $gray-500;
+  background-color: $gray-800;
+  font-weight: bold;
+  position: relative;
+  border-radius: 5px 0 0 5px;
+}
+
+.inv-ops-status-step-sm {
+  border-radius: 5px !important;
+}
+
+/* Slim arrow effect with white border */
+.inv-ops-status-step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: -7px;
+  top: 0;
+  width: 0;
+  height: 0;
+  border-top: 23px solid transparent;
+  border-bottom: 18px solid transparent;
+  border-left: 15px solid $gray-200;                      /* Thinner white border */
+  z-index: 1;
+}
+
+/* Inner arrow to match the step background */
+.inv-ops-status-step:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  right: -7px;                                          /* Adjust for thin white border */
+  top: 0;
+  width: 0;
+  height: 0;
+  border-top: 23px solid transparent;
+  border-bottom: 18px solid transparent;
+  border-left: 15px solid $gray-800;                    /* Match step background color */
+  z-index: 2;
+}
+
+/* Arrow color change for active step */
+.inv-ops-status-step.active, .inv-ops-status-step-sm.active {
+  background-color: $info;
+  color: $gray-200;
+}
+
+.inv-ops-status-step.active:not(:last-child)::before {
+  border-left-color: $info;                          /* Active color for arrow */
+}
+
+/* Fix for step overlap on the arrow */
+.inv-ops-status-step:not(:first-child) {
+  margin-left: -8px;                                  /* Pulls each step to the left to overlap arrows */
+  border-radius: 0;                                   /* Removes left rounding for middle steps */
+}
+
+.inv-ops-status-step:first-child {
+  border-radius: 5px 0 0 5px;                         /* Round the first step's left side */
+}
+
+.inv-ops-status-step:last-child {
+  border-radius: 0 5px 5px 0;                         /* Round the last step's right side */
+}
+
+// formulary buttons brake points
+// @media (min-width: $min) and (max-width: $max)
+@media (max-width : 766px) {
+
+    div.d-sm-none {
+        display: none;
     }
+}
+
+// formulary inventory process status buttons brake points
+@media (max-width : 980px) {
+
+  div.inv-ops-container-sm-none {
+    display : none;
+  }
+}
+
+@media (min-width : 981px) {
+
+  div.inv-ops-container-md-none {
+    display : none;
+  }
 }

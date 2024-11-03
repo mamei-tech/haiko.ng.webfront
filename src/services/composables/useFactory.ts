@@ -1,4 +1,5 @@
 import {
+    INV_STATUS,
     ADDRESS_TYPE,
     WARE_LOC_TYPE,
     STRG_PROD_POLICY,
@@ -296,7 +297,7 @@ export default function useFactory() {
             //-- IDtoPickingBase props
 
             pickName: undefined,
-            state:    undefined
+            state:    INV_STATUS.DRAFT
         }
     }
 

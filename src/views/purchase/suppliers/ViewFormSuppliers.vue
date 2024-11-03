@@ -827,8 +827,6 @@ export default defineComponent({
          */
         const a_create = ( newSupplier: IDtoSupplier, doWeNeedToStay: boolean ) => {
 
-
-
             hpr_sanitation(newSupplier)
 
             ApiSupplier.reqInsSupplier(newSupplier)
