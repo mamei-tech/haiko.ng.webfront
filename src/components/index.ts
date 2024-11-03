@@ -12,6 +12,7 @@ import CmpBaseInput from '@/components/inputs/CmpBaseInput.vue'
 import CmpImageInput from '@/components/inputs/CmpImageInput.vue'
 import CmpTablePicture from '@/components/table/CmpDataTable.vue'
 import CmpTableColor from '@/components/table/CmpTableColor.vue'
+import CmpFormTStatus from '@/components/form/CmpFormTStatus.vue'
 import CmpVeeCheckbox from '@/components/inputs/CmpVeeCheckbox.vue'
 import CmpBaseCheckbox from '@/components/inputs/CmpBaseCheckbox.vue'
 import CmpButtonBackTop from '@/components/buttons/CmpButtonBackTop.vue'
@@ -28,6 +29,9 @@ export {
     CmpBaseButton,
     CmpButtonBackTop,
     CmpFormActionsButton,
+
+    // form
+    CmpFormTStatus,
 
     // inputs
     CmpTextInput,

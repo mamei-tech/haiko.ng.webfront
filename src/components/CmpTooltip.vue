@@ -30,7 +30,7 @@ export default defineComponent({
         useVHtml: {
             default:     false,
             type:        Boolean,
-            description: 'Force the component to use the v-HTML mode  to render the string. It can come in handy when we need to render multiline i18n text'
+            description: 'Force the component to use the v-HTML mode to render the string. It can come in handy when we need to render multiline i18n text'
         }
     }
 })

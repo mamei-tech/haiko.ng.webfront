@@ -1,7 +1,6 @@
-
 export enum HTTP_RESPONSES {
-    OK = 200,
-    BAD_REQ = 400,
+    OK                    = 200,
+    BAD_REQ               = 400,
     INTERNAL_SERVER_ERROR = 500
 }
 
@@ -14,10 +13,10 @@ export enum HTTP_RESPONSES {
 export enum OPS_KIND_STR {
     DELETION = 'deletion',
     ADDITION = 'addition',
-    UPDATE = 'update',
-    ENABLE = 'enable',
-    DISABLE = 'disable',
-    REQUEST = 'request'
+    UPDATE   = 'update',
+    ENABLE   = 'enable',
+    DISABLE  = 'disable',
+    REQUEST  = 'request'
 }
 
 /**
@@ -27,10 +26,10 @@ export enum OPS_KIND_STR {
  * ! The values defined here must match one2one with the definition of TActionKind type definition in the 'types-common.ts' file
  */
 export enum ACTION_KIND_STR {
-    DELETE = 'delete',
-    CREATE = 'create',
-    UPDATE = 'update',
-    ACTIVATE = 'activate',
+    DELETE     = 'delete',
+    CREATE     = 'create',
+    UPDATE     = 'update',
+    ACTIVATE   = 'activate',
     DEACTIVATE = 'deactivate',
 }
 
@@ -41,10 +40,24 @@ export enum ACTION_KIND_STR {
  * ! The values defined here must match one2one with the definition of TFormMode type definition in the 'types-common.ts' file
  */
 export enum FMODE {
-    CREATE      = 'create',
-    DETAILS     = 'details',
-    EDIT        = 'edit',
-    EDIT_LOCAL  = 'edit.local',      //  used in situations when the formulary edition process need to be done locally in the front (not saving the data to the backend server)
+    CREATE     = 'create',
+    DETAILS    = 'details',
+    EDIT       = 'edit',
+    EDIT_LOCAL = 'edit.local',      //  used in situations when the formulary edition process need to be done locally in the front (not saving the data to the backend server)
+}
+
+/**
+ * Common status for inventory process and transactions
+ */
+export enum INV_STATUS {
+    DRAFT     = 'draft',
+    WAITING   = 'waiting',
+    CONFIRMED = 'confirmed',
+    ASSIGNED  = 'assigned',
+    READY     = 'ready',
+    DONE      = 'done',
+    DELIVERED = 'delivered',
+    CANCELLED = 'cancelled',
 }
 
 /**
@@ -53,9 +66,9 @@ export enum FMODE {
  * ! The values defined here must match one2one with the definition of TBulkAction type definition in the 'types-common.ts' file
  */
 export enum BULK_ACTIONS {
-    ENALBE = 'ENABLE',
+    ENALBE  = 'ENABLE',
     DISABLE = 'DISABLE',
-    REMOVE = 'REMOVE',
+    REMOVE  = 'REMOVE',
 }
 
 /**
@@ -63,8 +76,8 @@ export enum BULK_ACTIONS {
  * this enum intent to be filled on demand as the project codebase grow
  */
 export enum KEYS {
-    ESCAPE = 'Escape',
-    ENTER = 'Enter',
+    ESCAPE  = 'Escape',
+    ENTER   = 'Enter',
     BACKSPC = 'Backspace'
 }
 
@@ -74,35 +87,35 @@ export enum KEYS {
 export enum PICTURE_TYPE_CELL {
     DEFAULT = 0,
     PRODUCT = 1,
-    USER = 2
+    USER    = 2
 }
 
 /***
  * HTML input types definitions
  */
 export enum HTML_INPUT_TYPE {
-    BUTTON = 'button',
-    CHECKBOX = 'checkbox',
-    COLOR = 'color',
-    DATE = 'date',
+    BUTTON         = 'button',
+    CHECKBOX       = 'checkbox',
+    COLOR          = 'color',
+    DATE           = 'date',
     DATETIME_LOCAL = 'datetime-local',
-    EMAIL = 'email',
-    FILE = 'file',
-    HIDDEN = 'hidden',
-    IMAGE = 'image',
-    MONTH = 'month',
-    NUMBER = 'number',
-    PASSWORD = 'password',
-    RADIO = 'radio',
-    RANGE = 'range',
-    RESET = 'reset',
-    SEARCH = 'search',
-    SUBMIT = 'submit',
-    TEL = 'tel',
-    TEXT = 'text',
-    TIME = 'time',
-    URL = 'url',
-    WEEK = 'week',
+    EMAIL          = 'email',
+    FILE           = 'file',
+    HIDDEN         = 'hidden',
+    IMAGE          = 'image',
+    MONTH          = 'month',
+    NUMBER         = 'number',
+    PASSWORD       = 'password',
+    RADIO          = 'radio',
+    RANGE          = 'range',
+    RESET          = 'reset',
+    SEARCH         = 'search',
+    SUBMIT         = 'submit',
+    TEL            = 'tel',
+    TEXT           = 'text',
+    TIME           = 'time',
+    URL            = 'url',
+    WEEK           = 'week',
 }
 
 /***
@@ -120,8 +133,8 @@ export enum DIALOG_ICON {
  * Inventory stock pick reservation methods
  */
 export enum RESERVATION_METHODS {
-    AT_CONFIRMATION = 'at-confirmation',
-    MANUALLY = 'manually',
+    AT_CONFIRMATION      = 'at-confirmation',
+    MANUALLY             = 'manually',
     BEFORE_SCHEDULE_DATE = 'before-sche-date'
 }
 
@@ -132,11 +145,11 @@ export enum ADDRESS_TYPE {
     /**
      * Use this to organize the contact details of employees of a given company (e.g. CEO, CFO, ...)
      */
-    CONTACT = 'contact',
+    CONTACT  = 'contact',
     /**
      * Preferred address for all invoices. Selected by default when you invoice an order that belongs to this company.
      */
-    INVOICE = 'invoice',
+    INVOICE  = 'invoice',
     /**
      * Preferred address for all deliveries. Selected by default when you deliver an order that belongs to this company
      */
@@ -144,9 +157,9 @@ export enum ADDRESS_TYPE {
     /**
      * Private addresses are only visible by authorized users and contain sensitive data (employee home addresses, ...)
      */
-    PRIVATE = 'private',
+    PRIVATE  = 'private',
     /**
      * Other address for the company (e.g. subsidiary, ...)
      */
-    OTHER = 'other'
+    OTHER    = 'other'
 }

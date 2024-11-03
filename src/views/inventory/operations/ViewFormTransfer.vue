@@ -5,6 +5,13 @@
 
         <CmpCard :hasFormBackBtn="true" v-on:doClick="nav_back">
 
+          <template v-slot:card-actionbar>
+
+            <!-- inventory process status -->
+            <CmpFormTStatus :state="values.state"></CmpFormTStatus>
+
+          </template>
+
           <!-- FORM -->
           <form class="form-horizontal">
 
@@ -332,7 +339,7 @@ import useFactory from '@/services/composables/useFactory'
 import useToastify from '@/services/composables/useToastify'
 import useCommon from '@/services/composables/useCommon'
 import { ApiPicking } from '@/services/api/inventory/api-picking'
-import { CmpCard, CmpFormActionsButton, CmpBaseInput, CmpCollapseItem, CmpBaseCheckbox, CmpBaseButton, CmpMultiselectField, CmpTooltip, CmpTab, CmpTabContent, CmpTextInput } from '@/components'
+import { CmpCard, CmpFormActionsButton, CmpBaseInput, CmpCollapseItem, CmpBaseCheckbox, CmpBaseButton, CmpMultiselectField, CmpTooltip, CmpTab, CmpTabContent, CmpTextInput, CmpFormTStatus } from '@/components'
 
 import type { ComputedRef } from 'vue'
 import type { IDtoPicking, IMultiselectBasic, ById, TFormMode } from '@/services/definitions'
@@ -348,6 +355,7 @@ export default defineComponent({
         CmpBaseInput,
         CmpTabContent,
         CmpBaseButton,
+        CmpFormTStatus,
         CmpCollapseItem,
         CmpBaseCheckbox,
         CmpMultiselectField,
@@ -427,6 +435,8 @@ export default defineComponent({
 
         const a_create = (newTransfer: IDtoPicking, doWeNeedToStay: boolean) => {
 
+            hpr_sanitation(newTransfer)
+
             ApiPicking.reqDraftTransfer(newTransfer).then (() => {
                 tfyCRUDSuccess(ENTITY_NAMES.PICKING, OPS_KIND_STR.ADDITION)
 
@@ -461,6 +471,18 @@ export default defineComponent({
         //#endregion ==========================================================================
 
         //region ======= HELPERS ==============================================================
+
+        /**
+         * Form data sanitation method so we can clean the fields values before submitting
+         * @param dirtyObj formulary data 'Picking' object
+         */
+        const hpr_sanitation = (dirtyObj: IDtoPicking) => {
+
+            if (cpt_fMode.value === FMODE.EDIT) return
+
+            delete dirtyObj.state
+            delete dirtyObj.pickName
+        }
 
         /**
          * Restoring, cleaning some formulary data, so it will be refreshed and be used again for a new entity
