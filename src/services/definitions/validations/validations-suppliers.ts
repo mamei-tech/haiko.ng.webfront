@@ -26,7 +26,7 @@ export const VSchemaSupplier = {
         if (!required(value)) return t('validation.required')
         if (!min(value, { length: 3 })) return t('validation.min-length', { length: 3 })
         if (!max(value, { length: 30 })) return t('validation.max-length', { length: 30 })
-        if (!regex(value, { regex: regOnlyAlphanumNSpacesWithDots })) return t('validation.only-alpha-digits-spaces')
+        if (!regex(value, { regex: regOnlyAlphanumNSpacesWithDots })) return t('validation.only-alpha-digit-spaces')
 
         return true
     },
@@ -69,14 +69,14 @@ export const VSchemaSupplier = {
     jobPosition: ( value: string ): boolean | string => {
         if (!min(value, { length: 3 })) return t('validation.min-length', { length: 3 })
         if (!max(value, { length: 26 })) return t('validation.max-length', { length: 26 })
-        if (!regex(value, { regex: regOnlyAlphanumNSpaces })) return t('validation.only-alpha-digits-spaces')
+        if (!regex(value, { regex: regOnlyAlphanumNSpaces })) return t('validation.only-alpha-digit-spaces')
 
         return true
     },
     city: ( value: string ): boolean | string => {
         if (!min(value, { length: 3 })) return t('validation.min-length', { length: 3 })
         if (!max(value, { length: 20 })) return t('validation.max-length', { length: 20 })
-        if (!regex(value, { regex: regOnlyAlphanumNSpaces })) return t('validation.only-alpha-digits-spaces')
+        if (!regex(value, { regex: regOnlyAlphanumNSpaces })) return t('validation.only-alpha-digit-spaces')
 
         return true
     },
@@ -103,7 +103,7 @@ export const VSchemaSuppExtInfo = {
         if (!required(value)) return t('validation.required')
         if (!min(value, { length: 4 })) return t('validation.min-length', { length: 4 })
         if (!max(value, { length: 30 })) return t('validation.max-length', { length: 30 })
-        if (!regex(value, { regex: regOnlyAlphanumNSpacesWithDots })) return t('validation.only-alpha-digits-spaces')
+        if (!regex(value, { regex: regOnlyAlphanumNSpacesWithDots })) return t('validation.only-alpha-digit-spaces')
 
         return true
     },
@@ -133,14 +133,14 @@ export const VSchemaSuppExtInfo = {
     jobPosition:   ( value: string ): boolean | string => {
         if (!min(value, { length: 3 })) return t('validation.min-length', { length: 3 })
         if (!max(value, { length: 26 })) return t('validation.max-length', { length: 26 })
-        if (!regex(value, { regex: regOnlyAlphanumNSpaces })) return t('validation.only-alpha-digits-spaces')
+        if (!regex(value, { regex: regOnlyAlphanumNSpaces })) return t('validation.only-alpha-digit-spaces')
 
         return true
     },
     city:          ( value: string ): boolean | string => {
         if (!min(value, { length: 3 })) return t('validation.min-length', { length: 3 })
         if (!max(value, { length: 20 })) return t('validation.max-length', { length: 20 })
-        if (!regex(value, { regex: regOnlyAlphanumNSpaces })) return t('validation.only-alpha-digits-spaces')
+        if (!regex(value, { regex: regOnlyAlphanumNSpaces })) return t('validation.only-alpha-digit-spaces')
 
         return true
     },

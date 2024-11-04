@@ -10,7 +10,7 @@ const { t } = i18n.global
  */
 export const VSchemaUoM = {
     uName:  ( value: string ): boolean | string => {
-        return VSchemaCommon.nameValidation(value, 3, 30, true, regOnlyAlphanumericNoSpaces, t('validation.only-alpha-digits-no-spaces'))
+        return VSchemaCommon.nameValidation(value, 3, 30, true, regOnlyAlphanumericNoSpaces, t('validation.only-alpha-digit-no-spaces'))
     },
     uType:  ( value: number ): boolean | string => {
         if (!required(value)) return t('validation.required')
@@ -29,7 +29,7 @@ export const VSchemaUoM = {
 
 export const VSchemaUoMCat = {
     ucName: ( value: string ): boolean | string => {
-        return VSchemaCommon.nameValidation(value, 3, 30, true, regOnlyAlphanumericNoSpaces, t('validation.only-alpha-digits-no-spaces'))
+        return VSchemaCommon.nameValidation(value, 3, 30, true, regOnlyAlphanumericNoSpaces, t('validation.only-alpha-digit-no-spaces'))
     },
 }
 

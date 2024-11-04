@@ -1,6 +1,7 @@
 import {
     INV_STATUS,
     ADDRESS_TYPE,
+    SHIPPING_POL,
     WARE_LOC_TYPE,
     STRG_PROD_POLICY,
     CORE_PICKING_TYPE,
@@ -290,7 +291,7 @@ export default function useFactory() {
             pDestWareLocationId: 0,
             pSrcDocument:        undefined,
             pScheduleDate:       undefined,
-            pShippingPolicy:     'direct',
+            pShippingPolicy:     SHIPPING_POL.DIRECT,
             pResponsibleId:      2,                     // #2 (at the moment ot writing this) is 'The Manager' on database
             pNotes:              undefined,
 

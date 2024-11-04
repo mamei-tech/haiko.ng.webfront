@@ -14,7 +14,7 @@ const { t } = i18n.global
  */
 export const VSchemaProduct = {
     pName:              ( value: string ): boolean | string => {
-        return VSchemaCommon.nameValidation(value, 3, 36, true, regOnlyAlphanumNSpacesWithDotsNHyphen, t('validation.only-alpha-digits-underscore-dots-spaces'))
+        return VSchemaCommon.nameValidation(value, 3, 36, true, regOnlyAlphanumNSpacesWithDotsNHyphen, t('validation.only-alpha-digit-underscore-dots-spaces'))
     },
     noteSell:           ( value: string ): boolean | string => {return VSchemaCommon.notes(value, 3, 200, false)},
     notePurchase:       ( value: string ): boolean | string => {return VSchemaCommon.notes(value, 3, 200, false)},
@@ -34,7 +34,7 @@ export const VSchemaProduct = {
  */
 export const VSchemaPSL = {
     supplierCode: ( value: string ): boolean | string => {
-        return VSchemaCommon.nameValidation(value, 3, 36, false, regOnlyAlphanumNSpacesWithDotsNHyphen, t('validation.only-alpha-digits-underscore-dots-spaces'))
+        return VSchemaCommon.nameValidation(value, 3, 36, false, regOnlyAlphanumNSpacesWithDotsNHyphen, t('validation.only-alpha-digit-underscore-dots-spaces'))
     },
     sPrice:       ( value: string ): boolean | string => {return VSchemaCommon.numerical(value, 0, 500000000, false, true)},
     sTax:  ( value: string ): boolean | string => {return VSchemaCommon.numerical(value, 0, 100, true, false)}

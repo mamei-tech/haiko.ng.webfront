@@ -13,7 +13,7 @@ const { t } = i18n.global
  */
 export const VSchemaStrgCategory = {
     sCatName: ( value: string ): boolean | string => {
-        return VSchemaCommon.nameValidation(value, 3, 30, true, regOnlyAlphanumericNoSpaces, t('validation.only-alpha-digits-no-spaces'))
+        return VSchemaCommon.nameValidation(value, 3, 30, true, regOnlyAlphanumericNoSpaces, t('validation.only-alpha-digit-no-spaces'))
     },
 }
 

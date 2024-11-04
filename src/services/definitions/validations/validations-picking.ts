@@ -1,10 +1,10 @@
 import { i18n } from '@/services/i18n'
 import { regex, required } from '@vee-validate/rules'
-import { CORE_PICKING_TYPE, RESERVATION_METHODS } from '@/services/definitions'
+import { CORE_PICKING_TYPE, RESERVATION_METHODS, SHIPPING_POL } from '@/services/definitions'
 import {
     VSchemaCommon,
     regOnlyAlphanumNSpacesWithDotsNHyphen,
-    regAlphanumNHyphensLowerCaps, regOnlyAlphaNOSpacesCaps, regHTMLColorNoAlpha
+    regAlphanumNHyphensLowerCaps, regOnlyAlphaNOSpacesCaps, regHTMLColorNoAlpha, regAlphanumNHyphensDotsCaps
 } from '@/services/definitions/validations/validations-commons'
 
 
@@ -15,10 +15,10 @@ const { t } = i18n.global
  */
 export const VSchemaPickingType = {
     tName:     ( value: string ): boolean | string => {
-        return VSchemaCommon.nameValidation(value, 2, 30, true, regOnlyAlphanumNSpacesWithDotsNHyphen, t('validation.only-alpha-digits-no-spaces'))
+        return VSchemaCommon.nameValidation(value, 2, 30, true, regOnlyAlphanumNSpacesWithDotsNHyphen, t('validation.only-alpha-digit-no-spaces'))
     },
     iName:     ( value: string ): boolean | string => {
-        return VSchemaCommon.nameValidation(value, 2, 30, true, regAlphanumNHyphensLowerCaps, t('validation.only-alpha-digist-nospc-hyphen-lowcaps'))
+        return VSchemaCommon.nameValidation(value, 2, 30, true, regAlphanumNHyphensLowerCaps, t('validation.only-alpha-digit-nospc-hyphen-lowcaps'))
     },
     seqCode:   ( value: string ): boolean | string => {
         return VSchemaCommon.nameValidation(value.toUpperCase() ?? '', 2, 6, true, regOnlyAlphaNOSpacesCaps, t('validation.only-alpha-caps'))
@@ -46,8 +46,15 @@ export const VSchemaPickingType = {
  */
 export const VSchemaPicking = {
 
+    pSrcDocument:     ( value: string ): boolean | string => {
+        return VSchemaCommon.nameValidation(value, 4, 120, true, regAlphanumNHyphensDotsCaps, t('validation.only-alpha-digit-nospc-hyphen-dots-caps'))
+    },
+
+    pShippingPolicy: ( value: string ): boolean | string => {return value == SHIPPING_POL.DIRECT || value == SHIPPING_POL.ONE},
+
     contactId: ( value: string | number ): boolean | string => { return VSchemaCommon.required4Select(value) },
     pickingType: ( value: string | number ): boolean | string => { return VSchemaCommon.required4Select(value) },
     pResponsibleId: ( value: string | number ): boolean | string => { return VSchemaCommon.required4Select(value) }
+
 }
 

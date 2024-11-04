@@ -14,7 +14,7 @@ const { t } = i18n.global
  */
 export const VSchemaWareLocation = {
     lName:       ( value: string ): boolean | string => {
-        return VSchemaCommon.nameValidation(value, 2, 30, true, regOnlyAlphanumNSpacesWithDotsNHyphen, t('validation.only-alpha-digits-no-spaces'))
+        return VSchemaCommon.nameValidation(value, 2, 30, true, regOnlyAlphanumNSpacesWithDotsNHyphen, t('validation.only-alpha-digit-no-spaces'))
     },
     parentID:    ( value: string ): boolean | string => {return VSchemaCommon.numerical(value, 1, 10000, true, true)},
     warehouseID: ( value: string ): boolean | string => {return VSchemaCommon.numerical(value, 1, 10000, true, true)},

@@ -34,6 +34,20 @@ export enum ACTION_KIND_STR {
 }
 
 /**
+ * Shipping policy
+ */
+export enum SHIPPING_POL {
+    /**
+     * ASAP, send the product when at lease some of them are ready
+     */
+    DIRECT = 'direct',
+    /**
+     * AT ONCE, send the product when all of them are ready
+     */
+    ONE = 'one'
+}
+
+/**
  * 'FORM MODE' definition
  * This helps to get TFormMode strings so one don't have to manually write it down on the code, just call this use it
  *

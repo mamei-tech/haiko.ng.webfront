@@ -2,9 +2,7 @@ import axios from '../api'
 import appConfig from '@/configs/app.conf'
 
 import type { AxiosPromise } from 'axios'
-import type {
-    IDtoPicking
-} from '@/services/definitions'
+import type { IDtoPicking } from '@/services/definitions'
 
 
 const version = appConfig.server.current_version

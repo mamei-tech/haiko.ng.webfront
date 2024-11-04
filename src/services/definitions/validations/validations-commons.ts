@@ -14,6 +14,7 @@ export const regOnlyAlphaNOSpacesCaps: RegExp = /^([A-Z|À-ÿ])+$/
 export const regOnlyAlphaNOSpaces: RegExp = /^([a-z|A-Z|À-ÿ])+$/
 export const regAlphaNHyphens: RegExp = /^([a-z|A-Z|À-ÿ]+([-|_]){0,1})+[a-z|A-Z|À-ÿ]$/
 export const regAlphanumNHyphensLowerCaps: RegExp = /^([a-z|0-9]+([-|_]){0,1})+[a-z|0-9]$/
+export const regAlphanumNHyphensDotsCaps: RegExp = /^([A-Z|0-9]+([-|_|\.]){0,1})+[A-Z|0-9]$/
 export const regAlphaNSpaces: RegExp = /^([a-z|A-Z|À-ÿ]+( ){0,1})+[a-z|A-Z|À-ÿ]$/
 export const regOnlyAlphanumNSpaces: RegExp = /^([a-z|A-Z|À-ÿ|0-9]+( ){0,1})+[a-z|A-Z|À-ÿ|0-9]$/
 export const regOnlyAlphanumNSpacesWithDots: RegExp = /^([a-z|A-Z|À-ÿ|0-9|\.]+( ){0,1})+[a-z|A-Z|À-ÿ|0-9|\.]$/
@@ -56,7 +57,7 @@ export const VSchemaCommon = {
 
     username: ( value: string ): boolean | string => {
         if (!required(value)) return t('validation.required')
-        if (!regex(value, { regex: regAlphaUnderscoreNDots })) return t('validation.only-alpha-digits-underscore-dots')
+        if (!regex(value, { regex: regAlphaUnderscoreNDots })) return t('validation.only-alpha-digit-underscore-dots')
         if (!min(value, { length: 4 })) return t('validation.min-length', { length: 4 })
         if (!max(value, { length: 26 })) return t('validation.max-length', { length: 30 })
 
@@ -131,7 +132,7 @@ export const VSchemaCommon = {
                         maxLength = 20,
                         isThisRequired: boolean = true,
                         cregex: RegExp = regAlphaUnderscoreNDots,
-                        cregexMsg: string = t('validation.only-alpha-digits-underscore-dots')
+                        cregexMsg: string = t('validation.only-alpha-digit-underscore-dots')
 
                     ): boolean | string => {
         if (isThisRequired && !required(value)) return t('validation.required')
@@ -155,7 +156,7 @@ export const VSchemaCommon = {
         if (isThisRequired && !required(value)) return t('validation.required')
 
         // FIXME this here, creates some sort of regex performance malfunction, seems related to the size of the string when increase, commenting this for now
-        // if (!regex(value, { regex: regOnlyAlphanumNSpacesWithDots })) return t('validation.only-alpha-digits-spaces')
+        // if (!regex(value, { regex: regOnlyAlphanumNSpacesWithDots })) return t('validation.only-alpha-digit-spaces')
 
         if (!min(value, { length: minLength })) return t('validation.min-length', { length: minLength })
         if (!max(value, { length: maxLength })) return t('validation.max-length', { length: maxLength })
