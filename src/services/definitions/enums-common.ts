@@ -152,6 +152,14 @@ export enum RESERVATION_METHODS {
     BEFORE_SCHEDULE_DATE = 'before-sche-date'
 }
 
+export enum INPUT_DATE_TYPE {
+    DATE = 'date',
+    DATETIME_LOCAL = 'datetime-local',
+    TIME = 'time',
+    WEEK = 'week',
+    MONTH = 'month'
+}
+
 /**
  * Defines the types of the address that a PARTNER (entity) may have.
  */

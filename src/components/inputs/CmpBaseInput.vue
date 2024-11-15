@@ -50,66 +50,67 @@ import { defineComponent, ref, computed } from 'vue'
 import { useField } from 'vee-validate'
 import type { SetupContext } from 'vue'
 
+
 export default defineComponent({
-    name: "CmpBaseInput",
+    name:  'CmpBaseInput',
     props: {
-        name: {
-            type: String,
-            description: "The name of the input",
+        name:        {
+            type:        String,
+            description: 'The name of the input'
         },
         placeholder: String,
-        label: String,
-        aleftIcon: {
-            type: String,
-            description: "The icon to show in the left of the input",
+        label:       String,
+        aleftIcon:   {
+            type:        String,
+            description: 'The icon to show in the left of the input'
         },
-        arightIcon: {
-            type: String,
-            description: "The icon to show in the right of the input",
+        arightIcon:  {
+            type:        String,
+            description: 'The icon to show in the right of the input'
         },
-        value: {
-            type: [String, Number],
-            description: "Input value",
+        value:       {
+            type:        [ String, Number ],
+            description: 'Input value'
         },
-        rules: {
-            type: String,
-            description: "A vee validate global rule to apply to this input",
-            default: ""
+        rules:       {
+            type:        String,
+            description: 'A vee validate global rule to apply to this input',
+            default:     ''
         },
-        type: String,
+        type:        String
     },
-    setup(props, cntx: SetupContext) {
+    setup( props, cntx: SetupContext ) {
         // #region  ======== DECLARATIONS & LOCAL STATE ============================================
-        let isFocused = ref<boolean>(false);
+        let isFocused = ref<boolean>(false)
         const {
-            value: inputValue,
-            errorMessage,
-            handleBlur,
-            handleChange,
-            meta,
-        } = useField(props.name as string, props.rules, { initialValue: props.value });
+                  value: inputValue,
+                  errorMessage,
+                  handleBlur,
+                  handleChange,
+                  meta
+              }       = useField(props.name as string, props.rules, { initialValue: props.value })
         // #endregion =============================================================================
 
         //region ======== COMPUTATIONS & GETTERS ================================================
         const hasIcon = computed(() => {
-            const { aleft, aright } = cntx.slots;
+            const { aleft, aright } = cntx.slots
             return (
                 aleft !== undefined ||
                 aright !== undefined ||
                 props.aleftIcon !== undefined ||
                 props.arightIcon !== undefined
-            );
-        });
+            )
+        })
         //endregion =============================================================================
 
         //region ======= EVENTS HANDLERS & WATCHERS =============================================
         const onInputFocused = () => {
-            isFocused.value = true;
-        };
-        const onInputBlur = () => {
-            isFocused.value = false;
-            handleBlur();
-        };
+            isFocused.value = true
+        }
+        const onInputBlur    = () => {
+            isFocused.value = false
+            handleBlur()
+        }
         //endregion =============================================================================
 
         return {
@@ -123,8 +124,8 @@ export default defineComponent({
 
             handleChange,
             errorMessage,
-            meta,
-        };
-    },
-});
+            meta
+        }
+    }
+})
 </script>

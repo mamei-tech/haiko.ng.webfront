@@ -231,6 +231,7 @@
       "month-current-min": "m. corriente",
       "year-pass-min":     "a. pasado",
       "year-current-min":  "a. actual",
+      "scheduled-date":    "Fecha Programada",
       "cards":             {
         "stock-ready":               "Stock",
         "stock-value":               "Valor act. del Inventario",

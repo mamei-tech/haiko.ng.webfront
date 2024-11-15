@@ -47,7 +47,7 @@ export const VSchemaPickingType = {
 export const VSchemaPicking = {
 
     pSrcDocument:     ( value: string ): boolean | string => {
-        return VSchemaCommon.nameValidation(value, 4, 120, true, regAlphanumNHyphensDotsCaps, t('validation.only-alpha-digit-nospc-hyphen-dots-caps'))
+        return VSchemaCommon.nameValidation(value, 4, 120, false, regAlphanumNHyphensDotsCaps, t('validation.only-alpha-digit-nospc-hyphen-dots-caps'))
     },
 
     pShippingPolicy: ( value: string ): boolean | string => {return value == SHIPPING_POL.DIRECT || value == SHIPPING_POL.ONE},

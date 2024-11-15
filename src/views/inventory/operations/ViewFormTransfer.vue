@@ -169,6 +169,16 @@
 
                 <!-- schedule date -->
                 <div class="row">
+                  <label class="text-sm-left text-md-right col-md-3 col-form-label">
+                    {{ $t( 'form.fields-common.scheduled-date' ) }}
+                  </label>
+                  <div class="col-md-9">
+                    <CmpBaseDateTime
+                        name="pScheduleDate"
+                        :placeholder="$t('form.placeholders.picking-src-doc')"
+                        :type="INPUT_DATE_TYPE.DATETIME_LOCAL"
+                    />
+                  </div>
                 </div>
 
               </div>
@@ -328,21 +338,24 @@ import { useRoute, useRouter } from 'vue-router'
 import {
     KEYS,
     FMODE,
+    ENTITY_NAMES,
     OPS_KIND_STR,
+    INPUT_DATE_TYPE,
     RoutePathNames,
-    VSchemaPicking, ENTITY_NAMES
+    VSchemaPicking,
 } from '@/services/definitions'
 import { useSt_Nomenclatures } from '@/stores/nomenc'
 import { useToast } from 'vue-toastification'
 import { useForm } from 'vee-validate'
 import useFactory from '@/services/composables/useFactory'
+import useDates from '@/services/composables/useDates'
 import useToastify from '@/services/composables/useToastify'
 import useCommon from '@/services/composables/useCommon'
 import { ApiPicking } from '@/services/api/inventory/api-picking'
-import { CmpCard, CmpFormActionsButton, CmpBaseInput, CmpCollapseItem, CmpBaseCheckbox, CmpBaseButton, CmpMultiselectField, CmpTooltip, CmpTab, CmpTabContent, CmpTextInput, CmpFormTStatus } from '@/components'
+import { CmpCard, CmpFormActionsButton, CmpBaseInput, CmpCollapseItem, CmpBaseCheckbox, CmpBaseButton, CmpMultiselectField, CmpTooltip, CmpTab, CmpTabContent, CmpTextInput, CmpFormTStatus, CmpBaseDateTime } from '@/components'
 
 import type { ComputedRef } from 'vue'
-import type { IDtoPicking, IMultiselectBasic, ById, TFormMode } from '@/services/definitions'
+import type { IDtoPicking, IMultiselectBasic, ById, TFormMode, IColumnHeader } from '@/services/definitions'
 
 
 export default defineComponent({
@@ -356,6 +369,7 @@ export default defineComponent({
         CmpTabContent,
         CmpBaseButton,
         CmpFormTStatus,
+        CmpBaseDateTime,
         CmpCollapseItem,
         CmpBaseCheckbox,
         CmpMultiselectField,
@@ -371,6 +385,8 @@ export default defineComponent({
         const toast  = useToast()                                                       // The toast lib interface
         const router = useRouter()
 
+        const columns = ref<Partial<IColumnHeader>[]>()                                 // picking specification properties
+
         const st_nomenclatures = useSt_Nomenclatures()                                  // Pinia store for nomenclatures// pinia instance of pagination store | check the text on --> https://pinia.vuejs.org/cookbook/composing-stores.html#nested-stores
 
         const { fmode, id } = route.params                                              // remember, fmode (form mode) property denotes the mode this form view was called | checkout the type TFormMode in types definitions
@@ -384,6 +400,7 @@ export default defineComponent({
 
         // helpers & flags
         const { mkPicking }                   = useFactory()
+        const { toLocal }             = useDates()
         const { isUndEmpZero }                = useCommon()
         const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
 
@@ -479,6 +496,10 @@ export default defineComponent({
         const hpr_sanitation = (dirtyObj: IDtoPicking) => {
 
             if (cpt_fMode.value === FMODE.EDIT) return
+
+            dirtyObj.pScheduleDate = dirtyObj.pScheduleDate == undefined
+                ? toLocal(new Date())
+                : toLocal(new Date(dirtyObj.pScheduleDate))
 
             delete dirtyObj.state
             delete dirtyObj.pickName
@@ -654,6 +675,7 @@ export default defineComponent({
             values,
 
             FMODE,
+            INPUT_DATE_TYPE,
 
             cpt_fMode,
             st_nomenclatures,
@@ -668,6 +690,7 @@ export default defineComponent({
             ref_selectDstLoc,
 
             nav_back,
+
             h_delete,
             h_tabChange,
             h_beforeSubmit,

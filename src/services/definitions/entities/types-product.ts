@@ -8,7 +8,6 @@ export interface IProdUoM extends IIndexable {
     pUoMID: number | string
 }
 
-
 /**
  * Interface for describing a Product row on the datatable
  */

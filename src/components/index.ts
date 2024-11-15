@@ -15,6 +15,7 @@ import CmpTableColor from '@/components/table/CmpTableColor.vue'
 import CmpFormTStatus from '@/components/form/CmpFormTStatus.vue'
 import CmpVeeCheckbox from '@/components/inputs/CmpVeeCheckbox.vue'
 import CmpBaseCheckbox from '@/components/inputs/CmpBaseCheckbox.vue'
+import CmpBaseDateTime from '@/components/inputs/CmpBaseDateTime.vue'
 import CmpButtonBackTop from '@/components/buttons/CmpButtonBackTop.vue'
 import CmpCollapseItem from '@/components/collapsable/CmpCollapseItem.vue'
 import CmpMultiselectField from '@/components/inputs/CmpMultiselectField.vue'
@@ -39,6 +40,7 @@ export {
     CmpBaseRadio,
     CmpImageInput,
     CmpVeeCheckbox,
+    CmpBaseDateTime,
     CmpBaseCheckbox,
     CmpMultiselectField,
 
