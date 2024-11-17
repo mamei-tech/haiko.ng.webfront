@@ -15,6 +15,7 @@
         :searchable="searchable"
         :closeOnSelect="true"
         :mode="'single'"
+        :name="cmp_name"
 
         @open="h_onOpenWrap"
         @change="h_OnChangeWrap"
@@ -27,48 +28,48 @@
 <script lang="ts">
 import type { SetupContext } from 'vue'
 import Multiselect from '@vueform/multiselect'
-import { defineComponent, onMounted, ref, watch } from 'vue'
+import { computed, defineComponent, onMounted, ref, watch } from 'vue'
 
 import type { ICellUpdate, IMultiselectBasic } from '@/services/definitions'
 
 
 export default defineComponent({
-    name:  'CmpTableEditableCellSelect',
+    name:       'CmpTableEditableCellSelect',
     components: { Multiselect },
-    props: {
-        cellData: {
+    props:      {
+        cellData:    {
             type:        [ String, Number ],
             description: 'The data to be rendered in the cell. If you want to set to default you have to use -1 or empty-string',
             required:    true
         },
-        refId:    {
+        refId:       {
             type:        Number,
             description: 'Identifier entity that could be used as reference later',
             required:    true
         },
-        refField: {
+        refField:    {
             type:        String,
             description: 'This is the field name of the entity. It the editable cell is intended, then it will comes in handy for telling parent components the actual entity\'s field name that was updated',
             required:    false
         },
-        options:       {
+        options:     {
             type:        [ Object, Array ],
             required:    true,
             description: 'Set of options to pick from'
         },
-        placeholder:   {
-            type:     String,
+        placeholder: {
+            type:        String,
             description: 'A placeholder to guide the user in the UI',
-            required: false
+            required:    false
         },
-        searchable:    {
+        searchable:  {
             description: 'Tells if the component must handle user input to filter available options',
             type:        Boolean,
             default:     false,
             required:    false
         }
     },
-    emits: [
+    emits:      [
         'fieldUpdateIntent',            // to notice the entity field value (cell data) has updated / changed
         'openhapend',                   // to notice when the select open its window
         'writehapend'                   // to notice when something was written in the select search input
@@ -82,7 +83,7 @@ export default defineComponent({
         const isEditionLock = ref<boolean>(false)          // a flag value to lock the edition mode until input blur event or until enter (keydown) event, so the input remains on edition mode if an accidental click was made by the user
 
         const value = ref<string | number>(props.cellData)       // just save the selection made by the user in the select
-        const text = ref<string | number>(props.placeholder)     // default set up for the cell text of the row to be displayed when edit mode isn't on
+        const text  = ref<string | number>(props.placeholder)     // default set up for the cell text of the row to be displayed when edit mode isn't on
 
         //endregion ===========================================================================
 
@@ -94,7 +95,7 @@ export default defineComponent({
             if (props.cellData == null) text.value = props.placeholder
             else {
                 text.value = hpr_findLabelByValue(props.cellData)
-                if(text.value == '' || text.value == undefined ) text.value = props.placeholder
+                if (text.value == '' || text.value == undefined) text.value = props.placeholder
             }
         })
 
@@ -104,6 +105,15 @@ export default defineComponent({
         //endregion ===========================================================================
 
         //region ======= COMPUTATIONS & GETTERS ===============================================
+
+        /**
+         * compute a 'name' to be use as name in the multiselect HTML component. This could come in handy in event
+         * propagation in parent Vue components to identify the specific UI control that trigger the events
+         */
+        const cmp_name = computed(() => {
+            return `${ props.refId }.${ props.refField }`
+        })
+
         //endregion ===========================================================================
 
         //region ======= HELPERS ==============================================================
@@ -113,7 +123,7 @@ export default defineComponent({
          * @param search4
          */
         const hpr_findLabelByValue = ( search4: string | number ): string => {
-            let label = "";
+            let label = ''
 
             props.options.find(( option: IMultiselectBasic ) => {
                 if (option.value == search4) label = option.label
@@ -142,13 +152,15 @@ export default defineComponent({
             isEditionMode.value = false
 
             value.value = newSelectedValue ?? 0
-            text.value = hpr_findLabelByValue(newSelectedValue)
+            text.value  = hpr_findLabelByValue(newSelectedValue)
 
             ctx.emit('fieldUpdateIntent', {
                 entityId:     props.refId,
                 entityField:  props.refField,
                 updatedValue: value.value
             } as ICellUpdate)
+
+            // TIP as we are setting the HTML name property to a compound with the id and the name of the field (see 'cmp_name') we could remove the explicit emission of 'entityId' and 'entityField'
         }
 
         /**
@@ -188,11 +200,12 @@ export default defineComponent({
             isEditionMode,
 
             text,
+            cmp_name,
 
             h_click,
             h_onOpenWrap,
             h_OnChangeWrap,
-            h_onWriteSearch,
+            h_onWriteSearch
         }
     }
 })
