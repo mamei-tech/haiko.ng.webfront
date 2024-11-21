@@ -48,7 +48,7 @@ export interface IExtFilterGroup {
     filters: IExtFilter[]
 }
 
-/***
+/**
  * Interface to describe object for datatable headers abstraction.
  * This create a flexible configuration for describing how to handle the headers and cell representation.
  */
@@ -159,6 +159,18 @@ export interface IColumnHeader {
      * @param color CSS color str to be mapped
      */
     colorMapValues: Array<{val: number | string | boolean, color: string}> | undefined
+
+    /**
+     * Define if we want to render an string of characters as a cell prefix on the table records
+     * e.g: $ <00.00>  | for a price datatable cell
+     */
+    prefixStr: string | undefined
+
+    /**
+     * Define if we want to render an string of characters as a cell suffix on the table records
+     * e.g: <120> cm  | for a measurement value datatable cell
+     */
+    suffixStr: string | undefined
 }
 
 /***

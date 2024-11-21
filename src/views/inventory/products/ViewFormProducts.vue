@@ -504,7 +504,7 @@
 
                                   @deleteIntent="h_intentRowDelete"
                                   @navCreateIntent="h_intentSuppLineCreate"
-                                  @cellUpdateIntent="h_updateCell"
+                                  @cellUpdateIntent="h_intentUpdCell"
 
                                   @enableIntent="h_intentToggleEnable"
                                   @disableIntent="h_intentToggleDisable"
@@ -674,8 +674,8 @@ export default defineComponent({
         const isCloning = ref(false)                                                        // tells is we are in a cloning process so we call the creat endpoint instead the edition endpoint
         const ls_isSuppliersRequested = ref<boolean>(false)                                 // flag var to know if we already requested the suppliers
         /**
-         * An ID counter auxiliary var for the ProductSupplier Line rows of the table when the creation mode is on. We need that the UoM rows has it own temporal identifier for proper data update when child component emit cell update intents
-         * ❗ An important thing, we use negative values so we can diferenciate this from the existing UoM in edition mode
+         * An ID counter auxiliary var for the ProductSupplier Line rows of the table when the creation mode is on. We need that 'cause ProductSupplier rows most have it own temporal identifier for proper data update when child component emit cell update intents
+         * ❗ An important thing, we use negative values so we can diferenciate this from the existing ProductSupplier in edition mode
          */
         const auxIdCounter = ref<number>(-1)
 
@@ -1278,7 +1278,7 @@ export default defineComponent({
          * Its jobs its to maintain sync the user changes in the table of ProductSupplierLine an the local store data of Product
          * @param data: data to be updated
          */
-        const h_updateCell = (data: ICellUpdate) => {
+        const h_intentUpdCell = (data: ICellUpdate) => {
             hpr_updatePSLInList(data)
         }
 
@@ -1369,7 +1369,7 @@ export default defineComponent({
             h_formBtnAction_Replenish,
             h_formBtnAction_UpdateStock,
 
-            h_updateCell,
+            h_intentUpdCell,
             h_intentRowDelete,
             h_intentSuppLineCreate,
 

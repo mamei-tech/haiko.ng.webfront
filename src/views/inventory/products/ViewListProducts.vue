@@ -224,7 +224,7 @@ export default defineComponent({
                 if (prodRow.pTotalStock == 0) prodRow.pTotalStock = 0
 
                 // money ui conversion
-                prodRow.sellPrice = '$ ' + toUIMoney(prodRow?.sellPrice ?? '0') as string
+                prodRow.sellPrice = toUIMoney(prodRow?.sellPrice ?? '0') as string
 
                 return prodRow
             })

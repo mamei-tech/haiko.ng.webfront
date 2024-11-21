@@ -285,6 +285,9 @@
                               @fieldUpdateIntent="h_passCellUpdateEmission"
 
                               :key="hindex + '' + rindex"
+
+                              :prefix="header.prefixStr ?? ''"
+                              :suffix="header.suffixStr ?? ''"
         />
 
         <!-- normal mode | select editable cell -->
@@ -316,7 +319,9 @@
                 { 'font-weight': header.styleBold ? 600 : '' }
                 ]"
         >
+          <span v-if="!isUndEmpZero(header.prefixStr)">{{ header.prefixStr }} &nbsp;</span>
           {{ hpr_getRowValue( rowObj, header ) }}
+          <span v-if="!isUndEmpZero(header.suffixStr)">&nbsp;{{ header.suffixStr }}</span>
         </td>
 
       </template>
@@ -513,7 +518,7 @@ export default defineComponent({
          */
         const abutton_mode = toRaw(props.actionBtnMode)                                                 // Returns the raw, original object of a reactive or readonly proxy. This is an escape hatch that can be used to temporarily read without incurring proxy access/tracking overhead or write without triggering changes.
 
-        const { cap } = useCommon()
+        const { cap, isUndEmpZero } = useCommon()
         const search = ref('')
         const dtFilters = ref<any>({})
 
@@ -1014,6 +1019,7 @@ export default defineComponent({
             hpr_lastSelectedSelectElem,
 
             cap,
+            isUndEmpZero,
 
             configStatic: appConfig.server.statics,
             PICTURE_TYPE_CELL: PICTURE_TYPE_CELL

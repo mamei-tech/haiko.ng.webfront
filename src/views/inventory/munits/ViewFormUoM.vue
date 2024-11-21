@@ -138,8 +138,8 @@ export default defineComponent({
         const { mkUoMCategory, mkUoM } = useFactory()
 
         /**
-         * An ID counter auxiliary var for the UoM rows of the table when the creation mode is on. We need that the UoM rows has it own temporal identifier for proper data update when child component emit cell update intents
-         * ❗ An important thing, we use negative values so we can diferenciate new associations from the existing ones in edition mode
+         * An ID counter auxiliary var for the UoM Line rows of the table when the creation mode is on. We need that 'cause ProductSupplier rows most have it own temporal identifier for proper data update when child component emit cell update intents
+         * ❗ An important thing, we use negative values so we can diferenciate this from the existing UoM in edition mode
          */
         const auxIdCounter = ref<number>(-1)
 

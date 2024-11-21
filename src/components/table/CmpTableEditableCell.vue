@@ -2,7 +2,9 @@
 
   <!-- non edition mode situation -->
   <td v-show="!isEditionMode" rowspan="1" colspan="1" @click.prevent="h_click" v-bind="$attrs">
+    <span v-if="!isUndEmpZero(prefix)">{{ prefix }} &nbsp;</span>
     {{ value }}
+    <span v-if="!isUndEmpZero(suffix)">&nbsp;{{ suffix }}</span>
   </td>
 
   <!-- edition mode situation -->
@@ -29,6 +31,7 @@
 
 <script lang="ts">
 import { defineComponent, nextTick, ref, watch } from 'vue'
+import useCommon from '@/services/composables/useCommon'
 import { KEYS } from '@/services/definitions'
 
 import type { SetupContext } from 'vue'
@@ -74,6 +77,16 @@ export default defineComponent({
             description: 'Tell if we want to align text to LEFT when the edit input is active (edition mode) on the cell',
             default: false,
         },
+        prefix: {
+            type: String,
+            description: 'Define if we want to render an string of characters as a cell prefix on the table records',
+            default: '',
+        },
+        suffix: {
+            type: String,
+            description: 'Define if we want to render an string of characters as a cell suffix on the table records',
+            default: '',
+        },
     },
     emits: [
         'fieldUpdateIntent',            // to notice the entity field value (cell data) has updated / changed
@@ -90,6 +103,8 @@ export default defineComponent({
 
         const ref_input = ref()                               // input field reference
         const value = ref<string | number>(props.cellData)
+
+        const { isUndEmpZero } = useCommon()
 
         //endregion ===========================================================================
 
@@ -199,7 +214,9 @@ export default defineComponent({
 
             h_blur,
             h_click,
-            h_keydown
+            h_keydown,
+
+            isUndEmpZero
         }
     }
 })
