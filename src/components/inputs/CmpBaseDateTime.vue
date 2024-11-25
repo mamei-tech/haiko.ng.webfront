@@ -32,27 +32,28 @@ import { defineComponent, ref } from 'vue'
 import { useField } from 'vee-validate'
 import type { SetupContext } from 'vue'
 
+
 export default defineComponent({
-    name: "CmpBaseDateTime",
+    name:  'CmpBaseDateTime',
     props: {
-        name: {
-            type: String,
-            description: "The name of the input (eg. object property name)",
+        name:        {
+            type:        String,
+            description: 'The name of the input (eg. object property name)'
         },
         placeholder: String,
-        value: {
-            type: [Date],
-            description: "Input value",
+        value:       {
+            type:        [ Date ],
+            description: 'Input value'
         },
-        rules: {
-            type: String,
-            description: "A vee validate global rule to apply to this input",
-            default: ""
+        rules:       {
+            type:        String,
+            description: 'A vee validate global rule to apply to this input',
+            default:     ''
         },
-        type:          {
-            type:    String,
-            description: "The kind of date UI control",
-            default: 'date',
+        type:        {
+            type:        String,
+            description: 'The kind of date UI control',
+            default:     'date',
             validation( value: string ) {
                 return [ 'date', 'datetime-local', 'time', 'week', 'month' ].includes(value)
             }
@@ -63,9 +64,9 @@ export default defineComponent({
             // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/time
             // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/week
             // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/month
-        },
+        }
     },
-    setup(props, _: SetupContext) {
+    setup( props, _: SetupContext ) {
 
         // we check some other alternatives of using HTML native control for datetime selection the creative-team
         // https://demos.creative-tim.com/vue-black-dashboard-pro/#/forms/extended | archivo en vue-black-dashboard-pro-v1.4.0 -> ExtendedForms.vue
@@ -75,15 +76,15 @@ export default defineComponent({
 
 
         // #region  ======== DECLARATIONS & LOCAL STATE ============================================
-        let isFocused = ref<boolean>(false);
+        let isFocused = ref<boolean>(false)
 
         const {
-            value: inputValue,
-            errorMessage,
-            handleBlur,
-            handleChange,
-            meta,
-        } = useField(props.name as string, props.rules, { initialValue: props.value });
+                  value: inputValue,
+                  errorMessage,
+                  handleBlur,
+                  handleChange,
+                  meta
+              } = useField(props.name as string, props.rules, { initialValue: props.value })
 
         // #endregion =============================================================================
 
@@ -92,12 +93,12 @@ export default defineComponent({
 
         //region ======= EVENTS HANDLERS & WATCHERS =============================================
         const onInputFocused = () => {
-            isFocused.value = true;
-        };
-        const onInputBlur = () => {
-            isFocused.value = false;
-            handleBlur();
-        };
+            isFocused.value = true
+        }
+        const onInputBlur    = () => {
+            isFocused.value = false
+            handleBlur()
+        }
         //endregion =============================================================================
 
         return {
@@ -110,10 +111,10 @@ export default defineComponent({
 
             handleChange,
             errorMessage,
-            meta,
-        };
-    },
-});
+            meta
+        }
+    }
+})
 </script>
 
 <style scoped>
