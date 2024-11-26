@@ -479,9 +479,10 @@ export default defineComponent({
         }
 
         /**
-         * Handles the dynamic request and the search query written in form input select, so we can get the products
-         * list from the backend to populate the product selection options, allowing us to define the Product Capacity
-         * Associations of the Storage Category
+         * Handles the dynamic request and the search query written in form input select (those located in the table ).
+         * Through this, we can get the products list from the backend that 'match' user input queries
+         * and populate the product selection options, then allowing us to define the Product Capacity Associations
+         * of the Storage Category
          */
         const h_prodSelectSearch = debounce(async ( queryStr: string ) => {
 
