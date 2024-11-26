@@ -4,7 +4,7 @@ import { RoutePaths, RoutePathNames } from './route-paths'
 import { PAGE_SIZE } from './dtable/dtable-common'
 import { HRolesTable, HStaffTable } from './dtable/dtable-people'
 import { HSupplierCatTable, HSupplierTable } from './dtable/dtable-purchase'
-import { HUoMCatTable, HUoMTable, HProductTable, HProductSupplierLine, HWarehouseTable, HStrgCategory, HStrgCatProductLine, HWareLocationsTable, HPickingTypeTable } from './dtable/dtable-inventory'
+import { HUoMCatTable, HUoMTable, HProductTable, HProductSupplierLine, HWarehouseTable, HStrgCategory, HStrgCatProductLine, HWareLocationsTable, HPickingTypeTable, HPickingMove } from './dtable/dtable-inventory'
 
 import { SelectDataUoMType } from './data-select-options'
 import { HTTP_HEADER_FORM_DATA, HTTP_HEADER_FORM_URLENCODED,RELPATH_DEFAULT_AVATAR_IMG, RELPATH_DEFAULT_PRODUCT_IMG, IMG_ORG_AVATAR_NAME, IMG_AVATAR_SMALL_THUMBNAIL, IMG_ORG_PRODUCT_NAM } from './data-strs'
@@ -26,9 +26,10 @@ import { VSchemaPickingType, VSchemaPicking } from '@/services/definitions/valid
 import { VSchemaStrgCategory } from '@/services/definitions/validations/validations-strgcategory'
 import { VSchemaStaffCreate, VSchemaStaffEdit } from '@/services/definitions/validations/validations-people'
 
+import type { IDtoMoveLine } from '@/services/definitions/entities/types-move'
 import type { Problem, ErrorDictionary } from '@/services/definitions/types-errors'
 import type { IDtoWarehouse, IWarehouseBasic } from '@/services/definitions/entities/types-warehouse'
-import type { IPickingTypeBasic, IPickingTypeRow, IDtoPickingType, ICorePickingType, IDtoPicking } from '@/services/definitions/entities/types-picking'
+import type { IPickingTypeBasic, IPickingTypeRow, IDtoPickingType, ICorePickingType, IDtoPicking  } from '@/services/definitions/entities/types-picking'
 import type { IWareLocationRow, IDtoWareLocation, IWareLocationBasic, IWareLocationType } from '@/services/definitions/entities/types-warelocation'
 import type { IStrgCategoryRow, IDtoStrgCategory, IStrgCatProdLine, IStrgCategoryBasic } from '@/services/definitions/entities/types-strgcategory'
 import type { TOpsKind, Function0, Function1, IColumnHeader, IDataTableQuery, ITableChkEmit, TBulkAction, ById, IIndexable, IChecked, Filter, IDataListBasicResponse, TFormMode, TActionKind, IdsArray, IBulkData, IMultiselectBasic, IShell, IScrollInfo, IDataTablePage, ICellUpdate, IvCard, IExtFilter, IExtFilterGroup } from './types-common'
@@ -54,6 +55,7 @@ export {
     HUoMTable,
     HRolesTable,
     HStaffTable,
+    HPickingMove,
     HUoMCatTable,
     HProductTable,
     HStrgCategory,
@@ -118,6 +120,9 @@ export {
 
     // inventory picking
     IPickingTypeBasic, IPickingTypeRow, IDtoPickingType, ICorePickingType, IDtoPicking,
+
+    // inventory picking move
+    IDtoMoveLine,
 
     // warehouse (storage) locations
     IWareLocationRow, IDtoWareLocation, IWareLocationBasic, IWareLocationType,

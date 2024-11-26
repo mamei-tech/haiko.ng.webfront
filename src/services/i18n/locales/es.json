@@ -274,6 +274,7 @@
       "product-name":                  "... helado de chocolate ??",
       "product-supplier":              " - selecconar @:entities.supplier.name - ",
       "product-currency":              "- moneda -",
+      "product-select":                "- @:entities.product.name -",
       "warehouse-name":                "MiNegocio",
       "warehouse-code":                "A",
       "strg-category-policy":          "- política d productos -",
@@ -331,7 +332,10 @@
     "tax":              "Impuesto(%)",
     "sku":              "SKU",
     "strg-prod-policy": "Política Productos",
-    "capacity":         "Capacidad"
+    "capacity":         "Capacidad",
+    "demand":           "Demanda",
+    "product":          "@:entities.product.name",
+    "scheduled-date":   "@:form.fields-common.scheduled-date"
   },
   "entities":      {
     "default":       "entidades",
@@ -497,7 +501,8 @@
       "src-doc":             "Origen",
       "shipping-policy":     "Política de Envíos",
       "tool-tips":           {
-        "shipping": "Especifica si los productos definidos en la operación serán enviados parcialmente (en la medida que estén disponibles) o todos juntos"
+        "shipping": "Especifica si los productos definidos en la operación serán enviados parcialmente (en la medida que estén disponibles) o todos juntos",
+        "src-doc":  "Puede especificar la referencia a un documento origen de esta operación. por ejemplo: una orden de compra o una factura"
       },
       "conditionals-labels": {
         "receipts-type": "Recibido de",

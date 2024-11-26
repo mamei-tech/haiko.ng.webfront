@@ -246,6 +246,24 @@
           <CmpTableColor :key="hindex + '' + rindex" :cell-color="hpr_getRowValue( rowObj, header )" />
         </td>
 
+        <!--datetime editable cell -->
+        <td v-else-if="hpr_chkHasValue(rowObj, header) && !header.hidden && header.cellEditableDateTime"
+            :style="[{ width: header.styleWidth + '%' }]"
+        >
+          <CmpTableDateTime
+              :cell-data="hpr_getRowValue( rowObj, header )"
+              :ref-field="hpr_getNavKey(header)"
+              :ref-id="rowObj.id ?? 0"
+
+              @fieldUpdateIntent="h_passCellUpdateEmission"
+
+              :validation="header.cellEditableValidation ?? hpr_EmpVal"
+              :type="header.dateTimeType ?? INPUT_DATE_TYPE.TIME"
+
+              :key="hindex + '' + rindex"
+          />
+        </td>
+
         <!-- icon cell -->
         <td v-else-if="hpr_chkHasValue(rowObj, header) && !header.hidden && header.iconField"
             rowspan="1"
@@ -276,7 +294,7 @@
                               :cell-data="hpr_getRowValue( rowObj, header )"
                               :ref-field="hpr_getNavKey(header)"
                               :ref-id="rowObj.id ?? 0"
-                              :validation="header.cellEditableValidation ?? hpr_empty"
+                              :validation="header.cellEditableValidation ?? hpr_EmpVal"
                               :input-type="header.cellEditableInputType ?? 'text'"
 
                               :align-tex-left="header.styleToLeft"
@@ -297,7 +315,7 @@
             :cell-data="hpr_getRowValue( rowObj, header )"
             :ref-field="hpr_getNavKey(header)"
             :ref-id="rowObj.id ?? 0"
-            :validation="header.cellEditableValidation ?? hpr_empty"
+            :validation="header.cellEditableValidation ?? hpr_EmpVal"
             :options="header.cellEditableSelectOptions ?? []"
             :searchable="header.cellEditableSelectSearchable ?? false"
 
@@ -353,6 +371,7 @@ import appConfig from '@/configs/app.conf'
 import { onMounted, onBeforeUpdate, computed, defineComponent, toRaw, reactive, ref } from 'vue'
 import { watch } from '@vue/runtime-core'
 import CmpTablePagination from './CmpTablePagination.vue'
+import CmpTableDateTime from './CmpTableDateTime.vue'
 import CmpCellSwitch from './CmpCellSwitch.vue'
 import CmpTableEmpty from './CmpTableEmpty.vue'
 import CmpTableChkbox from './CmpTableChkbox.vue'
@@ -367,7 +386,7 @@ import { CmpBaseButton } from '@/components'
 import useCommon from '@/services/composables/useCommon'
 import Multiselect from '@vueform/multiselect'
 import { useSt_Pagination } from '@/stores/pagination'
-import { PICTURE_TYPE_CELL } from '@/services/definitions'
+import { PICTURE_TYPE_CELL, INPUT_DATE_TYPE } from '@/services/definitions'
 
 import type { SetupContext, PropType } from 'vue'
 import type { ById, TBulkAction, IIndexable, IColumnHeader, ITableChkEmit, IChecked, Filter, ICellUpdate, IExtFilterGroup  } from '@/services/definitions'
@@ -384,6 +403,7 @@ export default defineComponent({
         CmpTableChkbox,
         CmpCellListUoM,
         CmpTablePicture,
+        CmpTableDateTime,
         CmpTableActionBar,
         CmpTablePagination,
         CmpTableRowActions,
@@ -807,9 +827,9 @@ export default defineComponent({
         //region ======== WATCHERS ==============================================================
 
         watch(
-                () => dtFilters,
-                () => h_doRequest(),
-                { deep: true }
+            () => dtFilters,
+            () => h_doRequest(),
+            { deep: true }
         )
 
         //endregion =============================================================================
@@ -951,7 +971,7 @@ export default defineComponent({
          * editable cell in the Partial<IColumnHeader> array of data
          * @param _
          */
-        const hpr_empty = ( _: any ) => { return true }
+        const hpr_EmpVal = ( _: any ) => { return true }
 
         /**
          * Check if any filter is active and returns true in case positive
@@ -983,7 +1003,7 @@ export default defineComponent({
             cpt_isAnyFilerActive,
             hpr_lastSelectedSelectElemRef,
 
-            hpr_empty,
+            hpr_EmpVal,
             hpr_chkHasId,
             hpr_getNavKey,
             hpr_chkHasValue,
@@ -1022,7 +1042,9 @@ export default defineComponent({
             isUndEmpZero,
 
             configStatic: appConfig.server.statics,
-            PICTURE_TYPE_CELL: PICTURE_TYPE_CELL
+
+            INPUT_DATE_TYPE,
+            PICTURE_TYPE_CELL,
         }
     }
 })

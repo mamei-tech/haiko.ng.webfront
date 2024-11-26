@@ -117,7 +117,7 @@ export class ApiNomenclaturesMng {
      * Otherwise (false), when its present and equal to 'all', all types Suppliers will be retrieved.
      */
     public static getSuppliersM(onlyContactType: boolean = true): AxiosPromise<IUoMBasic[]> {
-        return  axios.get(`${url}/supplier/list/${ onlyContactType ? '' : 'all' }`)
+        return  axios.get(`${url}/supplier/list${ onlyContactType ? '' : '/all' }`)
     }
 
     /**

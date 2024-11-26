@@ -1,4 +1,4 @@
-import type { HTML_INPUT_TYPE } from '@/services/definitions'
+import type { HTML_INPUT_TYPE, INPUT_DATE_TYPE } from '@/services/definitions'
 
 
 export interface IDataTablePage<T> extends IDataListBasicResponse {
@@ -171,6 +171,24 @@ export interface IColumnHeader {
      * e.g: <120> cm  | for a measurement value datatable cell
      */
     suffixStr: string | undefined
+
+    /**
+     * Editable cell for datetime
+     */
+    cellEditableDateTime: boolean
+    /**
+     * Tells the kind of render needed for the datetime field e.g 'datetime-local', 'date', 'week'
+     */
+    dateTimeType: INPUT_DATE_TYPE
+    /**
+     * ISO 8601 datetime string, that will be used as max limit.
+     */
+    dateTimeMax: string
+    /**
+     * ISO 8601 datetime string, that will be used as max limit.
+     * check 'minDateForInput' in 'useDates.ts' for references
+     */
+    dateTimeMin: string
 }
 
 /***

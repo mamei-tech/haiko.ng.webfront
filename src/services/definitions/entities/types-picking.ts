@@ -1,5 +1,8 @@
-import type { IIndexable } from '@/services/definitions/types-common'
 import type { RESERVATION_METHODS } from '@/services/definitions'
+
+import type { IIndexable } from '@/services/definitions/types-common'
+import type { IDtoMoveLine } from '@/services/definitions/entities/types-move'
+
 
 /**
  * picking core operation types definitions
@@ -11,7 +14,6 @@ export enum CORE_PICKING_TYPE {
     TRANSFER = 'internal',                  // internal | transfer
     MNFACTRN = 'manufacturing'
 }
-
 
 export interface IPickingTypeBasic extends IIndexable {
     tName: string | undefined,
@@ -59,9 +61,11 @@ export interface IDtoPicking extends IDtoPickingBase {
     pSrcWareLocationId: number,
     pDestWareLocationId: number,
     pSrcDocument: string | undefined,
-    pScheduleDate: Date | undefined,
+    pScheduleDate: Date | string | undefined,
     pResponsibleId: number,
     pNotes: string | undefined,
 
     pShippingPolicy: string
+
+    moveLines: Array<IDtoMoveLine>                 // actual product for the picking
 }
