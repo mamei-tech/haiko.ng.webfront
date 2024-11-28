@@ -637,9 +637,10 @@ export default defineComponent({
         /**
          * To notice parent components when its written something in an existing select field
          * @param characterWritten Text written in the search input
+         * @param idCompound its a compound with the id of the row and the field navigation key. eg []
          */
-        const h_passSelectSearchEmission = ( characterWritten: string ) => {
-            ctx.emit ('selectFieldSearch', characterWritten)
+        const h_passSelectSearchEmission = ( characterWritten: string, idCompound: string ) => {
+            ctx.emit('selectFieldSearch', characterWritten, idCompound)
         }
 
         const h_onSrchFocusEvt = ( evt: any ) => {

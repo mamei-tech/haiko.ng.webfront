@@ -180,7 +180,7 @@ export default defineComponent({
          */
         const h_onWriteSearch = ( characterWritten: string ) => {
             if (characterWritten.length >= 3)
-                ctx.emit('writehapend', characterWritten)
+                ctx.emit('writehapend', characterWritten, cmp_name.value)
         }
 
         /**
