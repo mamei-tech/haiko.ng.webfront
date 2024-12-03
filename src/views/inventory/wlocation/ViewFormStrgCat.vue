@@ -131,11 +131,12 @@ import {
     FMODE,
     KEYS, OPS_KIND_STR,
     RoutePathNames, DT_ACTION_BUTTON_MODE,
-    HStrgCatProductLine, ACTION_KIND_STR, VSchemaStrgCategory,
+    HStrgCatProductLine, VSchemaStrgCategory,
 } from '@/services/definitions'
 
 import type { ComputedRef } from 'vue'
-import type { IColumnHeader, TFormMode, ICellUpdate, IDtoStrgCategory, IStrgCatProdLine, IProdUoM, IDtoWarehouse } from '@/services/definitions'
+import type { IColumnHeader, TFormMode, ICellUpdate, IDtoStrgCategory, IStrgCatProdLine, IProdUoM, IMultiselectBasic } from '@/services/definitions'
+import Multiselect from '@vueform/multiselect'
 
 
 export default defineComponent({
@@ -174,11 +175,7 @@ export default defineComponent({
         // html references
 
         // helpers & flags
-        /**
-         * ls_isProdUoMRequestedByOpenW = ls (local storage) is product unit of measurement requested by select open
-         * It is a boolean flag to know las time we made a product request related to the select open windows criteria
-         */
-        const ls_isProdUoMRequestedBySOpen = ref<boolean>(false)
+        const ls_productCache = ref<IMultiselectBasic[]>([])
 
         /**
          * An ID counter auxiliary var for the IStrgCatProdLine (products line) rows of the table when the creation mode is on. We need that the Product Lines (IStrgCatProdLine) rows has it own temporal identifier for proper data update when child component emit cell update intents
@@ -408,6 +405,31 @@ export default defineComponent({
             resetForm({ values: mkStrgCategory(), errors: undefined })
         }
 
+        /**
+         * Select Event Manager
+         * @param objField Then name (navigation key in Partial<IColumnHeader> definitions) of the objet field
+         * (column header)
+         * @param queryStr If a user write something in the component (> 3 character), the character will be sent to
+         * the handlers as user query string
+         */
+        const hrp_SelectEvMgr = async ( objField: string, queryStr: string | null = null ) => {
+            if(isUndEmpZero(objField)) return
+            if(objField == 'productID') {
+                if(queryStr !== null) {
+
+                    await st_nomenclatures.reqNmcProdUoM(queryStr)                                                // requesting products data
+                    columns.value[ 1 ].cellEditableSelectOptions = st_nomenclatures.getProdUoM4Select             // populating the select
+                }
+                else if (ls_productCache.value.length == 0) {
+
+                    await st_nomenclatures.reqNmcProdUoM()                                                          // requesting products data
+                    ls_productCache.value = st_nomenclatures.getProdUoM4Select
+                    columns.value[ 1 ].cellEditableSelectOptions = ls_productCache.value                            // populating the select
+                }
+                else columns.value[ 1 ].cellEditableSelectOptions = ls_productCache.value
+            }
+        }
+
         //endregion ===========================================================================
 
         //region ======= EVENTS HANDLERS & WATCHERS ===========================================
@@ -469,13 +491,8 @@ export default defineComponent({
          * Handles the dynamic request for getting the products list from the backend to populate the product selection
          * options in the form input select, allowing us to define the Product Capacity Associations of the Storage Category
          */
-        const h_prodSelectOpened = async () => {
-            if (ls_isProdUoMRequestedBySOpen.value) return
-
-            await st_nomenclatures.reqNmcProdUoM()                                                          // requesting products data
-            columns.value[ 1 ].cellEditableSelectOptions = st_nomenclatures.getProdUoM4Select               // populating the select
-
-            ls_isProdUoMRequestedBySOpen.value = true
+        const h_prodSelectOpened = async ( selectInstance: Multiselect ) => {
+            await hrp_SelectEvMgr(selectInstance.name.split('.')[1])
         }
 
         /**
@@ -484,12 +501,8 @@ export default defineComponent({
          * and populate the product selection options, then allowing us to define the Product Capacity Associations
          * of the Storage Category
          */
-        const h_prodSelectSearch = debounce(async ( queryStr: string ) => {
-
-            await st_nomenclatures.reqNmcProdUoM(queryStr)                                                // requesting products data
-            columns.value[ 1 ].cellEditableSelectOptions = st_nomenclatures.getProdUoM4Select             // populating the select
-            ls_isProdUoMRequestedBySOpen.value = false
-
+        const h_prodSelectSearch = debounce(async ( queryStr: string, idCompound: string ) => {
+            await hrp_SelectEvMgr(idCompound.split('.')[1], queryStr)
         }, 1500)
 
         const h_delete = async ( evt: any ) => {
