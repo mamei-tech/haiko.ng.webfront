@@ -10,7 +10,13 @@ import type {
     IProdCatBasic,
     IUoMBasic,
     IProdUoM,
-    IWareLocationBasic, IWarehouseBasic, IStrgCategoryBasic, IPickingTypeBasic, ICompanyBasic
+    IWareLocationBasic,
+    IWarehouseBasic,
+    IStrgCategoryBasic,
+    IPickingTypeBasic,
+    ICompanyBasic,
+    IStaffBasic,
+    ISupplierBasic, ICurrencyBasic
 } from '@/services/definitions'
 
 
@@ -65,8 +71,9 @@ export class ApiNomenclaturesMng {
      * @param lookup Allows a query string to search for specific product
      */
     public static getProdUoM ( lookup: string | null = null ): AxiosPromise<IProdUoM[]> {
-        return axios.get(`${url}/product/uom/list/${ lookup != null && lookup.length >= 3 ? lookup : ''}`)
+        return axios.get(`${url}/product/uom/list${ lookup != null && lookup.length >= 3 ? '/'+ lookup : ''}`)
     }
+
 
     /**
      * Get a list of products only containing the identifier, uom and the name. The resulting products list will
@@ -101,10 +108,18 @@ export class ApiNomenclaturesMng {
     }
 
     /**
+     * Get all the UoMs of the same category as the one with match the identifier given in the parameter
+     * @uomid UoM identifier to look up the category
+     */
+    public static getUoMSameCat (uomid: number): AxiosPromise <IUoMBasic> {
+        return axios.get(`${url}/uom/${uomid}/list`)
+    }
+
+    /**
      * Get a list of Staff defined on the system
      * - The retrieve list just will have minimum data (name) Check IStaffBasic
      */
-    public static getStaff(): AxiosPromise<IUoMBasic[]> {
+    public static getStaff(): AxiosPromise<IStaffBasic[]> {
         return axios.get(`${url}/staff/list`)
     }
 
@@ -116,7 +131,7 @@ export class ApiNomenclaturesMng {
      * @param onlyContactType When this parameter is true, just Suppliers of type 'Contact' will be retrieved.
      * Otherwise (false), when its present and equal to 'all', all types Suppliers will be retrieved.
      */
-    public static getSuppliersM(onlyContactType: boolean = true): AxiosPromise<IUoMBasic[]> {
+    public static getSuppliersM(onlyContactType: boolean = true): AxiosPromise<ISupplierBasic[]> {
         return  axios.get(`${url}/supplier/list${ onlyContactType ? '' : '/all' }`)
     }
 
@@ -138,7 +153,7 @@ export class ApiNomenclaturesMng {
      * - The retrieve list just will have minimum data (cDenomination) Check ICurrencyBasic
      * - M == minimum / basic information
      */
-    public static getCurrenciesM(): AxiosPromise<IUoMBasic[]> {
+    public static getCurrenciesM(): AxiosPromise<ICurrencyBasic[]> {
         return axios.get(`${url}/currency/list`)
     }
 

@@ -347,6 +347,8 @@ export const useSt_Nomenclatures = defineStore({
          * @param state
          */
         getSuppByIdMap: ( state ): ById<ISupplierBasic> => toDicIds(state.suppliers),
+
+        getProdUoMByIdMap: ( state ): ById<IProdUoM> => toDicIds(state.prodUoM),
     },
     actions: {
 
@@ -408,7 +410,8 @@ export const useSt_Nomenclatures = defineStore({
         },
 
         /**
-         * Get a list of at least (tops) 50 products only containing the identifier, uom and the name
+         * Get a list of at least (tops) 50 products only containing the identifier, uom and the name.
+         * Allows to search for specify product according to the string given in the param
          * @param query Allows a query string to search for specific product
          */
         async reqNmcProdUoM (query: string | null = null): Promise<void> {
@@ -424,7 +427,8 @@ export const useSt_Nomenclatures = defineStore({
         },
 
         /**
-         * Get a filtered list of products only containing the identifier, uom and the name
+         * Get a filtered list of products that matches the identifiers given in the parameter list. The result will
+         * just contain uom and the name.
          * @param ids products identifiers to filter for
          */
         async reqNmcProdUoMById (ids: Array<number>): Promise<void> {
@@ -440,13 +444,29 @@ export const useSt_Nomenclatures = defineStore({
         },
 
         /**
-         * Tries to get the uom from the backend
+         * Tries to get all the UoMs from the backend
          */
         async reqNmcUoM () : Promise<void> {
 
             return await new Promise<void>((resolve, reject) => {
                 ApiNomenclaturesMng.getUoM()
                 .then((response:any) => {
+
+                    this.uom = response.data
+                    resolve()
+
+                }).catch(error => { reject(error) })
+            })
+        },
+
+        /**
+         * Retrieve all the UoMs of the same category as the UoM identifier given in the parameter
+         * @param uomid UoM identifier to look up the entire category its belongs to
+         */
+        async reqNmcUoMSameCat( uomid: number ): Promise<void> {
+
+            return await new Promise<void>(( resolve, reject ) => {
+                ApiNomenclaturesMng.getUoMSameCat(uomid).then(( response: any ) => {
 
                     this.uom = response.data
                     resolve()
