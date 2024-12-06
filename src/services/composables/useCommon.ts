@@ -89,6 +89,15 @@ export default function useCommon () {
         return val === undefined || val === '' || val === 0;
     }
 
+    /**
+     * Return TRUE if the given string is 'undefined' or has the zero value
+     * ! If u want to compare with empty string use 'isUndEmpZero' function instead
+     * @param val
+     */
+    const isUndZero = (val: undefined | number | object) => {
+        return val === undefined || val === 0;
+    }
+
     return {
         cap,
         toFormData,
@@ -97,6 +106,7 @@ export default function useCommon () {
         debounce,
 
         isUnd,
+        isUndZero,
         isUndEmpZero,
     }
 }
