@@ -134,9 +134,9 @@ import {
     HStrgCatProductLine, VSchemaStrgCategory,
 } from '@/services/definitions'
 
+import type Multiselect from '@vueform/multiselect'
 import type { ComputedRef } from 'vue'
 import type { IColumnHeader, TFormMode, ICellUpdate, IDtoStrgCategory, IStrgCatProdLine, IProdUoM, IMultiselectBasic } from '@/services/definitions'
-import Multiselect from '@vueform/multiselect'
 
 
 export default defineComponent({
@@ -492,6 +492,7 @@ export default defineComponent({
          * options in the form input select, allowing us to define the Product Capacity Associations of the Storage Category
          */
         const h_prodSelectOpened = async ( selectInstance: Multiselect ) => {
+            //@ts-ignore
             await hrp_SelectEvMgr(selectInstance.name.split('.')[1])
         }
 
