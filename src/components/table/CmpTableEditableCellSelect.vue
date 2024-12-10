@@ -28,6 +28,7 @@
 <script lang="ts">
 import type { SetupContext } from 'vue'
 import Multiselect from '@vueform/multiselect'
+import useCommon from '@/services/composables/useCommon'
 import { computed, defineComponent, onMounted, ref, watch } from 'vue'
 
 import type { ICellUpdate, IMultiselectBasic } from '@/services/definitions'
@@ -60,6 +61,7 @@ export default defineComponent({
         placeholder: {
             type:        String,
             description: 'A placeholder to guide the user in the UI',
+            default:     '',
             required:    false
         },
         searchable:  {
@@ -79,6 +81,8 @@ export default defineComponent({
 
         //region ======= DECLARATIONS & LOCAL STATE ===========================================
 
+        const { isUndEmpZero } = useCommon()
+
         const isEditionMode = ref<boolean>(false)          // tell is the component (cell) should be rendered in edition mode, so the input value for editing should be enabled
         const isEditionLock = ref<boolean>(false)          // a flag value to lock the edition mode until input blur event or until enter (keydown) event, so the input remains on edition mode if an accidental click was made by the user
 
@@ -94,7 +98,7 @@ export default defineComponent({
             // we try to set the proper string in to the cell data according to the given props from the parent
             if (props.cellData == null) text.value = props.placeholder
             else {
-                text.value = hpr_findLabelByValue(props.cellData)
+                text.value = hpr_guessCellText(props.cellData)
                 if (text.value == '' || text.value == undefined) text.value = props.placeholder
             }
         })
@@ -119,10 +123,10 @@ export default defineComponent({
         //region ======= HELPERS ==============================================================
 
         /**
-         * Search for the correspondent label of the given value, in to the (also) given select option
+         * Search for the correspondent label (cell text) of the given value, in to the (also) given select option
          * @param search4
          */
-        const hpr_findLabelByValue = ( search4: string | number ): string => {
+        const hpr_guessCellText = ( search4: string | number ): string => {
             let label = ''
 
             props.options.find(( option: IMultiselectBasic ) => {
@@ -139,6 +143,10 @@ export default defineComponent({
 
         watch(() => [ props.cellData ], () => {
             value.value = props.cellData
+
+            !isUndEmpZero(value.value)
+                ? text.value  = hpr_guessCellText(value.value)
+                : text.value = ''
         })
 
         /**
@@ -152,7 +160,7 @@ export default defineComponent({
             isEditionMode.value = false
 
             value.value = newSelectedValue ?? 0
-            text.value  = hpr_findLabelByValue(newSelectedValue)
+            text.value  = hpr_guessCellText(newSelectedValue)
 
             ctx.emit('fieldUpdateIntent', {
                 entityId:     props.refId,

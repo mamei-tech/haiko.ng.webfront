@@ -489,7 +489,6 @@ export const useSt_Nomenclatures = defineStore({
 
                 }).catch(error => { reject(error) })
             })
-
         },
 
         /**
