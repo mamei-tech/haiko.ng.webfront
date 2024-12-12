@@ -94,7 +94,7 @@ export default function useCommon () {
      * ! If u want to compare with empty string use 'isUndEmpZero' function instead
      * @param val
      */
-    const isUndZero = (val: undefined | number | object) => {
+    const isUndOrZero = (val: undefined | number | object) => {
         return val === undefined || val === 0;
     }
 
@@ -106,7 +106,7 @@ export default function useCommon () {
         debounce,
 
         isUnd,
-        isUndZero,
+        isUndOrZero,
         isUndEmpZero,
     }
 }
