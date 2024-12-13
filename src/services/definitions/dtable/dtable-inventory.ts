@@ -1,8 +1,9 @@
 import { VSchemaUoM } from '@/services/definitions/validations/validations-uom'
 import { VSchemaPSL } from '@/services/definitions/validations/validations-product'
 import { VSchemaProdLine } from '@/services/definitions/validations/validations-strgcategory'
+import { VSchemaPickingMoveL } from '@/services/definitions/validations/validations-picking-move'
 import { SelectDataUoMType } from '@/services/definitions/data-select-options'
-import { HTML_INPUT_TYPE } from '@/services/definitions/enums-common'
+import { HTML_INPUT_TYPE, INPUT_DATE_TYPE } from '@/services/definitions/enums-common'
 import { i18n } from '@/services/i18n'
 
 import type { IColumnHeader } from '@/services/definitions'
@@ -54,6 +55,20 @@ export const HProductSupplierLine: Partial<IColumnHeader>[] = [
     }
 ]
 
+export const HPickingMove: Partial<IColumnHeader>[] = [
+    { title: 'id', hidden: true },
+    { title: 'product', navKey: 'mProdId', styleWidth: 15, styleToLeft: true, cellEditableSelect: true, cellEditableSelectOptions: [], cellEditableSelectPlaceholder: t('form.placeholders.product-select'), cellEditableSelectSearchable: true },        // ❗ this select will be filled in the 'onMounted' present in the ViewFormTransfer component
+    { title: 'description', navKey: 'moveDescription', styleWidth: 30, styleToLeft: true, cellEditable: true, cellEditableInputType: HTML_INPUT_TYPE.TEXT, cellEditableValidation:VSchemaPickingMoveL.moveDescription },
+    { title: 'scheduled-date', navKey: 'mScheduleDate', styleWidth: 5, cellEditableDateTime: true, dateTimeType: INPUT_DATE_TYPE.DATETIME_LOCAL },
+    { title: 'demand', navKey: 'prodUoMQty', styleWidth: 5, styleToRight: true, cellEditable: true, cellEditableValidation: VSchemaPickingMoveL.prodUoMQty, cellEditableInputType: HTML_INPUT_TYPE.TEXT },
+    { title: 'unit', navKey: 'mUoMId', styleWidth: 5, styleToLeft: true, cellEditableSelect: true, cellEditableSelectOptions: [], cellEditableSelectSearchable: false },                                                                                       // ❗ this select will be filled in the 'onMounted' present in the ViewFormTransfer component
+    {
+        title:        '',                                     // actions buttons
+        styleToRight: true,
+        styleWidth:   6
+    },
+]
+
 export const HProductTable: Partial<IColumnHeader>[] = [
     { title: '', chk: true, styleWidth: 2 },
     { title: 'id', hidden: true },
@@ -74,7 +89,7 @@ export const HProductTable: Partial<IColumnHeader>[] = [
         ]
     },
     { title: 'category', styleToCenter: true, navKey: 'pCategoryID', styleWidth: 10, sorting: '' },
-    { title: 'price', navKey: 'sellPrice', styleToRight: true, styleWidth: 6, sorting: '' },
+    { title: 'price', navKey: 'sellPrice', styleToRight: true, styleWidth: 6, sorting: '', prefixStr: '$' },
     { title: 'cost', styleToCenter: true, styleWidth: 6 },
     { title: 'stock', navKey: 'pTotalStock', styleToRight: true, styleWidth: 4, forceEmptyRender: true, sorting: '' },
     { title: 'unit', navKey: 'pUoMID', styleToLeft: true, styleWidth: 1 },

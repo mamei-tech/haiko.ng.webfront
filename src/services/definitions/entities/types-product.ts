@@ -1,11 +1,13 @@
 import type { IIndexable } from '@/services/definitions'
 
+
 /**
  * ❗ the id, is the identifier of the product
  */
 export interface IProdUoM extends IIndexable {
     pName: string,
     pUoMID: number | string
+    pUoMPurchaseID: number | string
 }
 
 /**
@@ -37,10 +39,6 @@ export interface IDtoProduct extends IProductRow {
 
     canBePurchased: boolean
     canBeSold: boolean
-
-    pCategoryID: number
-
-    pUoMPurchaseID: number
 
     pTotalStockValue: number | undefined
     pTotalSalesCountInMonth: number | undefined

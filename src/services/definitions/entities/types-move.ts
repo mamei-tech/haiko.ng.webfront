@@ -12,6 +12,8 @@ export interface IDtoMoveLine extends IIndexable {
     moveDescription: string | undefined
     mScheduleDate: Date | string | undefined
     mDeadLineDate: Date | string | undefined
-    pProdUoMQty: number                                 // the demand the business need for the product
+    prodUoMQty: number                                // the demand the business need for the product
     mUoMId: number
+
+    moveName: string | undefined                      // at the moment we are auto fill this with the name of the product
 }

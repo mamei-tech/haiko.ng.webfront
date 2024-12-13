@@ -195,7 +195,8 @@
     "uom-ratio-gt-zero":                       "El ratio de conversión debe ser un número positivo mayor o igual que 1",
     "same-phone":                              "Los dos números de teléfono no deben ser iguales",
     "country-code-present":                    "Si se selecciona el país, entonces la selección de la provincia es obligatoria",
-    "strg-cat-prod-lines-qty":                 "Las capacidades por productos deben tener un valor por encima de 0"
+    "strg-cat-prod-lines-qty":                 "Las capacidades por productos deben tener un valor por encima de 0",
+    "move-line-prod-qty":                      "No se admiten movimientos con cantidad definida a 0. Revise los movimientos definidos."
   },
   "form":          {
     "section":       {

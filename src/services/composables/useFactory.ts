@@ -7,14 +7,16 @@ import {
     CORE_PICKING_TYPE,
     RESERVATION_METHODS,
 } from '@/services/definitions'
+import useDates from '@/services/composables/useDates'
 import type {
     IDtoUoM,
     IDtoRole,
     IDtoStaff,
+    IDtoPicking,
     IDtoProduct,
+    IDtoMoveLine,
     IDtoSupplier,
     IDtoWarehouse,
-    IDtoPicking,
     IDtoUoMCategory,
     IDtoPickingType,
     IDtoSupplierCat,
@@ -23,7 +25,10 @@ import type {
     IDtoWareLocation,
     IDtoProductSupplierL,
 } from '@/services/definitions'
+import {  } from '@/services/definitions/entities/types-move'
 
+
+const { date2UIStr } = useDates()
 
 /**
  * This composable has the same responsibility of the constructors in the backend (.net)
@@ -225,7 +230,7 @@ export default function useFactory() {
         }
     }
 
-    const mkStrgCatProductLine = ( prodLineId: number, strgCatID: number ): IStrgCatProdLine => {
+    const mkStrgCatProductLine = ( prodLineId: number = 0, strgCatID: number ): IStrgCatProdLine => {
         return {
             id: prodLineId,
             strgCatID: strgCatID,
@@ -290,15 +295,41 @@ export default function useFactory() {
             pSrcWareLocationId:  0,
             pDestWareLocationId: 0,
             pSrcDocument:        undefined,
-            pScheduleDate:       undefined,
+            pScheduleDate:       date2UIStr(new Date()),
             pShippingPolicy:     SHIPPING_POL.DIRECT,
             pResponsibleId:      2,                     // #2 (at the moment ot writing this) is 'The Manager' on database
             pNotes:              undefined,
+
+            moveLines:           new Array<IDtoMoveLine>(),
 
             //-- IDtoPickingBase props
 
             pickName: undefined,
             state:    INV_STATUS.DRAFT
+        }
+    }
+
+    /**
+     * Factory for the creation of an inventory picking move line
+     * Remember that 'transfer' and 'picking' in the inventory context, are the same thing
+     *
+     * @param moveId -> object identifier. When the line is new, the index will be negative 'cause obviously the object doesn't exist on the system yet. Check 'h_intentMoveCreate' on the ViewFormTransfer.vue file
+     * @param dsd -> means default schedule date
+     */
+    const mkPickingMoveLine = ( moveId: number = 0, dsd: Date | string | undefined = undefined ): IDtoMoveLine => {
+        return {
+            id:              moveId,
+
+            mDeadLineDate:   undefined,
+            mScheduleDate:   dsd,
+
+            mUoMId:          0,
+            moveDescription: '',
+
+            mProdId:         0,
+            prodUoMQty:      0,
+
+            moveName:        undefined
         }
     }
 
@@ -317,6 +348,7 @@ export default function useFactory() {
 
         mkProduct,
         mkProductSupplierLine,
+        mkPickingMoveLine,
 
         mkWarehouse,
         mkWareLocation,

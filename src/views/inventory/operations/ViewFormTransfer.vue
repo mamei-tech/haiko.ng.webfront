@@ -30,7 +30,7 @@
                 <!-- contact -->
                 <div class="row">
                   <label class="text-sm-left text-md-right col-md-3 col-form-label">
-                    {{ ls_ContactLabel }}
+                    {{ ls_contactLabel }}
                   </label>
                   <div class="col-md-9">
                     <CmpMultiselectField :placeholder="$t('form.placeholders.select')"
@@ -156,11 +156,11 @@
                 <div class="row">
                   <label class="text-sm-left text-md-right col-md-3 col-form-label">
                     {{ $t( 'entities.transfer.src-doc' ) }}
-                    <CmpTooltip is-form-label-mode tip="pending..." />
+                    <CmpTooltip is-form-label-mode :tip="$t( 'entities.transfer.tool-tips.src-doc' )" />
                   </label>
                   <div class="col-md-9">
                     <CmpBaseInput
-                        :placeholder="$t('form.placeholders.picking-src-doc')"
+                        placeholder="e.g. PO321"
                         name="pSrcDocument"
                         type="text"
                     />
@@ -209,7 +209,30 @@
 
                     <!-- TAB operations / products picks -->
                     <template v-if="tab.id === 1">
-                      <div class="row">
+
+                      <!-- picking - move relationship -->
+                        <div class="row mr-1 ml-1" style="justify-content: center">
+                          <CmpDataTable table-type="hover"
+                                        :action-bar-mode="abar_mode"
+                                        :action-btn-mode="abutton_mode"
+
+                                        :columns="columns"
+                                        :data="values.moveLines"
+
+                                        :has-search="false"
+                                        :has-actions="true"
+                                        :has-top-btn-bar="true"
+                                        :has-pagination="false"
+                                        :has-page-size-selector="false"
+
+                                        @deleteIntent="h_intentRowDelete"
+                                        @cellUpdateIntent="h_intentUpdCell"
+                                        @navCreateIntent="h_intentMoveCreate"
+
+                                        @selectFieldOpened="h_dtSelectOpened"
+                                        @selectFieldSearch="h_prodSelectSearch"
+                          >
+                          </CmpDataTable>
                       </div>
                     </template>
 
@@ -312,7 +335,6 @@
 
             </div>
 
-
           </form>
 
           <!-- FORM ACTION BUTTONS -->
@@ -334,6 +356,7 @@
 <script lang="ts">
 import { computed, defineComponent, onBeforeUnmount, onMounted, ref } from 'vue'
 import { i18n } from '@/services/i18n'
+import { useToast } from 'vue-toastification'
 import { useRoute, useRouter } from 'vue-router'
 import {
     KEYS,
@@ -341,21 +364,22 @@ import {
     ENTITY_NAMES,
     OPS_KIND_STR,
     INPUT_DATE_TYPE,
+    HPickingMove,
     RoutePathNames,
-    VSchemaPicking,
+    VSchemaPicking, DT_ACTIONBAR_MODE, DT_ACTION_BUTTON_MODE
 } from '@/services/definitions'
 import { useSt_Nomenclatures } from '@/stores/nomenc'
-import { useToast } from 'vue-toastification'
 import { useForm } from 'vee-validate'
 import useFactory from '@/services/composables/useFactory'
 import useDates from '@/services/composables/useDates'
 import useToastify from '@/services/composables/useToastify'
 import useCommon from '@/services/composables/useCommon'
 import { ApiPicking } from '@/services/api/inventory/api-picking'
-import { CmpCard, CmpFormActionsButton, CmpBaseInput, CmpCollapseItem, CmpBaseCheckbox, CmpBaseButton, CmpMultiselectField, CmpTooltip, CmpTab, CmpTabContent, CmpTextInput, CmpFormTStatus, CmpBaseDateTime } from '@/components'
+import { CmpCard, CmpFormActionsButton, CmpBaseInput, CmpCollapseItem, CmpBaseCheckbox, CmpBaseButton, CmpMultiselectField, CmpTooltip, CmpTab, CmpTabContent, CmpTextInput, CmpFormTStatus, CmpBaseDateTime, CmpDataTable } from '@/components'
 
+import type  Multiselect  from '@vueform/multiselect'
 import type { ComputedRef } from 'vue'
-import type { IDtoPicking, IMultiselectBasic, ById, TFormMode, IColumnHeader } from '@/services/definitions'
+import type { IDtoPicking, IMultiselectBasic, ById, TFormMode, IColumnHeader, ICellUpdate, IDtoMoveLine } from '@/services/definitions'
 
 
 export default defineComponent({
@@ -364,6 +388,7 @@ export default defineComponent({
         CmpTab,
         CmpCard,
         CmpTooltip,
+        CmpDataTable,
         CmpTextInput,
         CmpBaseInput,
         CmpTabContent,
@@ -381,15 +406,20 @@ export default defineComponent({
 
         const { t } = i18n.global
 
+        const abar_mode: DT_ACTIONBAR_MODE = DT_ACTIONBAR_MODE.JC                      // MOVE datatable action bar mode
+        const abutton_mode: DT_ACTION_BUTTON_MODE = DT_ACTION_BUTTON_MODE.JDEL         // MOVE datatable rows buttons mode
+
         const route  = useRoute()
         const toast  = useToast()                                                       // The toast lib interface
         const router = useRouter()
 
-        const columns = ref<Partial<IColumnHeader>[]>()                                 // picking specification properties
+        const columns = ref<Partial<IColumnHeader>[]>(HPickingMove)                     // picking specification properties
 
         const st_nomenclatures = useSt_Nomenclatures()                                  // Pinia store for nomenclatures// pinia instance of pagination store | check the text on --> https://pinia.vuejs.org/cookbook/composing-stores.html#nested-stores
 
         const { fmode, id } = route.params                                              // remember, fmode (form mode) property denotes the mode this form view was called | checkout the type TFormMode in types definitions
+
+        const { mkPickingMoveLine } = useFactory()
 
         // html references
         const isCloning        = ref(false)                                       // tells is we are in a cloning process so we call the creat endpoint instead the edition endpoint
@@ -399,15 +429,24 @@ export default defineComponent({
         const ref_selectDstLoc = ref<InstanceType<typeof CmpMultiselectField>>()        // reference to warehouse default destination location
 
         // helpers & flags
-        const { mkPicking }                   = useFactory()
-        const { toLocal }             = useDates()
-        const { isUndEmpZero }                = useCommon()
-        const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
+        const { mkPicking }                             = useFactory()
+        const { toLocal }                               = useDates()
+        const { debounce, isUndEmpZero, isUndOrZero }   = useCommon()
+        const { tfyCRUDSuccess, tfyCRUDFail, tfyError } = useToastify(toast)
+        const flg_lastRowIndex                          = ref<number | undefined>(undefined)
 
         // form data
-        const ls_ContactLabel = ref<string>(t('form.fields-common.contact'))
-        const activeTabId     = ref<number>(1)
-        const tabs            = ref<Array<{ id: number, title: string }>>(
+        const ls_uomCache = ref<IMultiselectBasic[]>([])
+        const ls_productCache = ref<IMultiselectBasic[]>([])
+        const ls_contactLabel = ref<string>(t('form.fields-common.contact'))
+
+        /**
+         * An ID counter auxiliary var for the PickingMove Line rows of the table when the creation mode is on. We need that 'cause ProductSupplier rows most have it own temporal identifier for proper data update when child component emit cell update intents
+         * ❗ An important thing, we use negative values so we can diferenciate this from the existing PickingMove Line in edition mode
+         */
+        const auxIdCounter  = ref<number>(-1)
+        const activeTabId   = ref<number>(1)
+        const tabs          = ref<Array<{ id: number, title: string }>>(
             [
                 { id: 1, title: t('form.fields-common.ops') },
                 { id: 2, title: t('form.fields-common.options') },
@@ -446,6 +485,7 @@ export default defineComponent({
         onBeforeUnmount(() => {
             window.removeEventListener('keydown', h_keyboardKeyPress)                           // cleaning the event manually added before to the document. Wee need to keep the things as clean as posible
         })
+
         //#endregion ==========================================================================
 
         //#region ======= FETCHING DATA & ACTIONS =============================================
@@ -479,7 +519,7 @@ export default defineComponent({
         // compute the form mode: creation mode or edition mode
         const cpt_fMode: ComputedRef<string | string[]> = computed(() => fmode)
 
-        const { handleSubmit, values, meta } = useForm<IDtoPicking>({
+        const { handleSubmit, values, meta, setFieldValue } = useForm<IDtoPicking>({
             validationSchema: VSchemaPicking,
             initialValues: mkPicking(),
             initialErrors: undefined
@@ -490,10 +530,35 @@ export default defineComponent({
         //region ======= HELPERS ==============================================================
 
         /**
+         * Helps to validate the transfer 'move lines' data given by the user. If something is wrong this method should
+         * return false
+         *
+         * @param moves Dirty 'IDtoMoveLine' object to be validated
+         */
+        const hpr_isMoveLinesValid = ( moves: Array<IDtoMoveLine> ): boolean => {
+            for (let i = 0; i < moves.length; i++)
+                if (!isUndEmpZero(moves[ i ].mProdId) && +moves[ i ].prodUoMQty <= 0) {
+                    tfyError(t('validation.move-line-prod-qty'))
+                    return false
+                }
+
+            return true
+        }
+
+        /**
          * Form data sanitation method so we can clean the fields values before submitting
          * @param dirtyObj formulary data 'Picking' object
          */
         const hpr_sanitation = (dirtyObj: IDtoPicking) => {
+
+            if (cpt_fMode.value === FMODE.CREATE)
+                dirtyObj.moveLines = dirtyObj.moveLines.map(( move: IDtoMoveLine ) => {                                 // sanitizing the id in creation mode, se the backend don't panic
+                    if (move.id < 0) move.id = 0
+                    move.prodUoMQty = +move.prodUoMQty
+                    delete move.mDeadLineDate
+
+                    return move
+                })
 
             if (cpt_fMode.value === FMODE.EDIT) return
 
@@ -503,6 +568,11 @@ export default defineComponent({
 
             delete dirtyObj.state
             delete dirtyObj.pickName
+
+            // ---- move lines sanitation
+            dirtyObj.moveLines = dirtyObj.moveLines.filter(move => move.mProdId ?? 0 > 0)                               // all the line that doesn't have product will be removed
+            //@ts-ignore
+            if(dirtyObj.moveLines.length == 0) delete dirtyObj.moveLines
         }
 
         /**
@@ -553,7 +623,7 @@ export default defineComponent({
             // ---- logic by each situation                                                                             // we have to worry only about case 1,2, 6 and 10 'cause are the ones that could have one of the two involved inventory locations, set to null by default
             switch (ptId) {
                 case 1:                             // receipts
-                    ls_ContactLabel.value = t('entities.transfer.conditionals-labels.receipts-type')
+                    ls_contactLabel.value = t('entities.transfer.conditionals-labels.receipts-type')
                     sets[ 'src' ] = { value: 4, label: locsByIdMap[ 4 ].lFullName ?? '' }                               // assuming that defaults SUPPLIER location have '4' as database identifier
                     sets[ 'dst' ] = {
                         value: pickingType.defDestWLocationID ?? defStLocId,
@@ -563,7 +633,7 @@ export default defineComponent({
                     break
                 case 2:                             // delivery order & POS order
                 case 10:
-                    ls_ContactLabel.value = t('entities.transfer.conditionals-labels.pos-order')
+                    ls_contactLabel.value = t('entities.transfer.conditionals-labels.pos-order')
                     sets[ 'src' ] = {
                         value: pickingType.defSrcWLocationID ?? defStLocId,
                         label: locsByIdMap[ pickingType.defSrcWLocationID ?? defStLocId ].lFullName ?? defStLocLabel
@@ -573,7 +643,7 @@ export default defineComponent({
                     sets['2hide'] = 'dst'                                                                               // whe I added the 10 (PoSOrder) case, I understand that showing the control not make any sense 'causes in both case we must enforce the use of the default value for the both picking types, even with the 2 (Delivery). so the user can't change the destination value
                     break
                 case 6:                             // returns
-                    ls_ContactLabel.value = t('entities.transfer.conditionals-labels.receipts-type')
+                    ls_contactLabel.value = t('entities.transfer.conditionals-labels.receipts-type')
                     sets[ 'src' ] = { value: 5, label: locsByIdMap[ 5 ].lFullName ?? '' }                               // assuming that defaults CUSTOMER location have '5' as database identifier
                     sets[ 'dst' ] = {
                         value: pickingType.defDestWLocationID ?? defStLocId,
@@ -585,7 +655,7 @@ export default defineComponent({
                     // case 5                       // internal transfer
                     // case 9                       // manufacturing
                     // case n                       // custom picking type. it has been made by system users
-                    ls_ContactLabel.value = t('form.fields-common.contact')
+                    ls_contactLabel.value = t('form.fields-common.contact')
                     sets[ 'src' ] = {
                         value: pickingType.defSrcWLocationID ?? defStLocId,
                         label: locsByIdMap[ pickingType.defSrcWLocationID ?? defStLocId ].lFullName ?? defStLocLabel
@@ -598,6 +668,50 @@ export default defineComponent({
             }
 
             return sets
+        }
+
+        /**
+         * Select Event Manager. Handles the changes and the opened event, made in the datatable select ui controls
+         *
+         * @param objField Then name (navigation key in Partial<IColumnHeader> definitions) of the objet field
+         * (column header)
+         * @param queryStr If a user write something in the component (> 3 character), the character will be sent to
+         * the handlers as user query string
+         * @param rowIndex index of the row in the table, so we can identify which one is the record the user click on
+         */
+        const hrp_SelectEvMgr = async ( objField: string, queryStr: string | null = null, rowIndex: number | undefined = undefined ) => {
+
+            if(isUndEmpZero(objField)) return
+            if(objField == 'mProdId' as keyof IDtoMoveLine) {                                                           // we'll try to cache the product list so we can used every time without any more request, unless a query are written in the select by the user (in that case we make a request no matter what)
+
+                if(queryStr !== null) {
+
+                    await st_nomenclatures.reqNmcProdUoM(queryStr)                                                      // requesting products data
+                    columns.value[ 1 ].cellEditableSelectOptions = st_nomenclatures.getProdUoM4Select
+                }
+                else if (ls_productCache.value.length == 0) {                                                           // we don't have cache yet, so we request the product list and create the cache
+
+                    await st_nomenclatures.reqNmcProdUoM()                                                              // requesting products data and make a cache for it, that will be used as default (no query) dataset
+                    ls_productCache.value = st_nomenclatures.getProdUoM4Select
+                    columns.value[ 1 ].cellEditableSelectOptions = ls_productCache.value
+                }
+                else columns.value[ 1 ].cellEditableSelectOptions = ls_productCache.value                               // using the cache
+            }
+            if(objField == 'mUoMId' as keyof IDtoMoveLine)                                                              // besides the auto select we have for the UoM when product are selected (see lines around 812), here we are filtering the entire UoM list with only the UoM that belongs to the same category to the UoM product is defined to use
+            {
+                // TODO check how this behave in edition mode
+                const movement = values.moveLines.find(m => m.id == rowIndex)
+                if (
+                    movement !== undefined                &&
+                    movement.mUoMId > 0                   &&
+                    flg_lastRowIndex.value !== rowIndex
+                )  {
+                    flg_lastRowIndex.value = rowIndex
+                    st_nomenclatures.reqNmcUoMSameCat(movement.mUoMId).then(() => {
+                        columns.value[ 5 ].cellEditableSelectOptions = st_nomenclatures.getUoM4Select                   // then we populate the UoMs options in the select, bringing the data from the server according to the uom category of the product. Only the uom within the same category will be retrieved
+                    })
+                }
+            }
         }
 
         //#endregion ==========================================================================
@@ -618,6 +732,8 @@ export default defineComponent({
          */
         const h_beforeSubmit = (evt: Event, doWeNeedToStay: boolean) => {
             evt.preventDefault()
+
+            if (!hpr_isMoveLinesValid(values.moveLines)) return
 
             // handling the submission with vee-validate method
             handleSubmit(formData => {
@@ -660,6 +776,75 @@ export default defineComponent({
             else                                         hpr_updLocVis(true, true)                     // 'none' case, so show both
         }
 
+        const h_intentMoveCreate = async () => {
+            if (!values.moveLines) return
+
+            if (ls_uomCache.value.length == 0) {                                                                        // getting the uom in advance so we can auto set the UoM for the movement-line when product is selected
+                await st_nomenclatures.reqNmcUoM()
+                ls_uomCache.value = st_nomenclatures.getUoM4Select
+            }
+            columns.value[ 5 ].cellEditableSelectOptions = ls_uomCache.value                                            // ensuring the UoM options are ready, so values can react / reflects properly
+
+            values.moveLines.push(mkPickingMoveLine(auxIdCounter.value, values.pScheduleDate))
+            auxIdCounter.value -= 1
+        }
+
+        const h_intentUpdCell = ( data: ICellUpdate ) => {
+
+            setFieldValue('moveLines', values.moveLines.map(( row: IDtoMoveLine ) => {
+                if (row.id !== data.entityId) return row
+                row[ data.entityField as keyof IDtoMoveLine ] = data.updatedValue as never                              // updating the value
+
+                if (data.entityField == 'mProdId' as keyof IDtoMoveLine) {
+
+                    flg_lastRowIndex.value = undefined
+
+                    if (+data.updatedValue == 0)                                                                        // so we can handles the case when the select value was cleared
+                    {
+                        row['mUoMId' as keyof IDtoMoveLine] = +data.updatedValue as never                               // clearing the auto selected uom
+                        return row                                                                                      // breaking right here
+                    }
+
+                    const p = st_nomenclatures.getProdUoMByIdMap[+data.updatedValue]                                    // getting the selected product data, from the store (that should has the previously fetched product data)
+                    if (!isUndOrZero(+p.pUoMID))
+                    {
+                        columns.value[ 5 ].cellEditableSelectOptions = ls_uomCache.value                                // ensuring the UoM options are ready, so values can react / reflects properly
+                        row['mUoMId' as keyof IDtoMoveLine] = +p.pUoMID as never                                        // if product were selected, we can also set the UoM for that product
+                        row['moveName' as keyof IDtoMoveLine] = p.pName as never                                        // setting also the name of the product as name of the movement
+                    }
+
+                    return row
+                }
+                else return row
+            }))
+        }
+
+        const h_intentRowDelete = ( rowId: number ) => {
+            console.error('not implemented yet')
+        }
+
+        /**
+         * dt = means datatable, so handler for datatable select when opened
+         */
+        const h_dtSelectOpened = ( selectInstance: Multiselect | any ) => {
+            const s = selectInstance.name.split('.')
+            s[ 1 ] == 'mUoMId' as keyof IDtoMoveLine
+                ? hrp_SelectEvMgr(s[ 1 ], null, +s[ 0 ])
+                : hrp_SelectEvMgr(s[ 1 ])
+        }
+
+        /**
+         * Handles the dynamic request and the search query written in form input select (those located in the table )
+         *
+         * dt = means datatable, so handler for datatable select when opened
+         *
+         * @param characterWritten Text written in the search input
+         * @param idCompound its a compound with the id of the row and the field navigation key. eg [ -5.categoryId ]
+         */
+        const h_prodSelectSearch = debounce(async ( queryStr: string, idCompound: string ) => {
+            await hrp_SelectEvMgr(idCompound.split('.')[1], queryStr)
+        }, 1500)
+
         //#endregion ==========================================================================
 
         //region ======= NAVIGATION ===========================================================
@@ -677,12 +862,16 @@ export default defineComponent({
             FMODE,
             INPUT_DATE_TYPE,
 
+            columns,
+            abar_mode,
+            abutton_mode,
+
             cpt_fMode,
             st_nomenclatures,
 
             tabs,
             activeTabId,
-            ls_ContactLabel,
+            ls_contactLabel,
 
             showSrcLoc,
             showDesLoc,
@@ -694,6 +883,11 @@ export default defineComponent({
             h_delete,
             h_tabChange,
             h_beforeSubmit,
+            h_intentUpdCell,
+            h_dtSelectOpened,
+            h_intentRowDelete,
+            h_prodSelectSearch,
+            h_intentMoveCreate,
             h_keyboardKeyPress,
             h_UIPickingTypeAdjustment,
         }
