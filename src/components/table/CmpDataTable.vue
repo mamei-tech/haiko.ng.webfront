@@ -8,6 +8,7 @@
         :mode="abar_mode"
         :chkCount="Object.keys(ls_selections.selected).length"
         :extendedFilters="ls_extFilters"
+        :lockCreation="ls_isAnyChildOnEdition"
         v-on:navCreateIntent="$emit('navCreateIntent')"
         v-on:enableChkCollIntent="h_EnableChkCollection"
         v-on:disableChkCollIntent="h_DisableChkCollection"
@@ -300,6 +301,7 @@
                               :align-tex-left="header.styleToLeft"
                               :align-tex-right="header.styleToRight"
 
+                              @editionModeSts="h_childEdSts"
                               @fieldUpdateIntent="h_passCellUpdateEmission"
 
                               :key="hindex + '' + rindex"
@@ -319,9 +321,11 @@
             :options="header.cellEditableSelectOptions ?? []"
             :searchable="header.cellEditableSelectSearchable ?? false"
 
-            @fieldUpdateIntent="h_passCellUpdateEmission"
             @openhapend="h_passSelectOpenEmission"
             @writehapend="h_passSelectSearchEmission"
+
+            @editionModeSts="h_childEdSts"
+            @fieldUpdateIntent="h_passCellUpdateEmission"
 
             :key="hindex + '' + rindex"
         />
@@ -512,6 +516,8 @@ export default defineComponent({
 
         'bulkActionIntent',
 
+        'childEdSts',                          // A propagation of 'editionModeSts' children components events | tells when the 'edition status' in any children UI component was changed
+
         'requestIntent'                        // make a request of data, normally using a IDataTableQuery object as parameter with the event emission
     ],
 
@@ -519,11 +525,12 @@ export default defineComponent({
 
         //region ======== DECLARATIONS & LOCAL STATE ============================================
 
-        const pageSizeOptions = { '10': 10, '25': 25, '50': 50, '100': 100 }                             // pagination size (options) data
-        const ls_selections = reactive<{ selected: ById<IChecked> }>({ selected: {} })            // ls =  local state
-        const ls_rootChkBoxState = ref<boolean>(false)
-        const ls_columns = ref<Array<Partial<IColumnHeader>>>([ ...props.columns ])
-        const ls_extFilters = ref<Array<IExtFilterGroup>>([...props.extendedFilters])
+        const pageSizeOptions        = { '10': 10, '25': 25, '50': 50, '100': 100 }                      // pagination size (options) data
+        const ls_selections          = reactive<{ selected: ById<IChecked> }>({ selected: {} })   // ls =  local state
+        const ls_rootChkBoxState     = ref<boolean>(false)
+        const ls_columns             = ref<Array<Partial<IColumnHeader>>>([ ...props.columns ])
+        const ls_extFilters          = ref<Array<IExtFilterGroup>>([ ...props.extendedFilters ])
+        const ls_isAnyChildOnEdition = ref<boolean>(false)
 
         const hpr_lastSelectedSelectElemRef = ref<number>(0)                                      // receive the key (or identifier) of item selected in select component
         const isAnyCheckboxSelectedRef = ref<boolean>(false)                                      // true if at least, one checkbox component filter was selected
@@ -605,6 +612,20 @@ export default defineComponent({
         //endregion =============================================================================
 
         //region ======= EVENTS HANDLERS & WATCHERS =============================================
+
+        /**
+         * Handles the events for children edition status changes
+         * Is a propagation of 'editionModeSts' children components events | tells when the 'edition status' in any
+         * children UI component was changed
+         *
+         * ! childEdSts = children edition status
+         *
+         * @param newStatus the updated edition status
+         */
+        const h_childEdSts = (newStatus: boolean) => {
+            ls_isAnyChildOnEdition.value = newStatus
+            ctx.emit('childEdSts', newStatus)
+        }
 
         /**
          * This method process the changes made in the UI regarding the extended filters
@@ -995,6 +1016,7 @@ export default defineComponent({
             ls_extFilters,
             ls_selections,
             ls_rootChkBoxState,
+            ls_isAnyChildOnEdition,
 
             search,
             dtFilters,
@@ -1017,6 +1039,7 @@ export default defineComponent({
             h_ChkObject,
             h_extFilter,
             h_changeSort,
+            h_childEdSts,
             h_searchChange,
             h_ChkAllObjects,
             h_renderTDColor,

@@ -52,6 +52,7 @@
         </div>
 
         <CmpBaseButton
+            :disabled="lockCreation"
             icon
             buttonType="primary"
             :title="$t('btn.tip-create-new')"
@@ -139,6 +140,7 @@
         </div>
 
         <CmpBaseButton
+            :disabled="lockCreation"
             icon
             buttonType="primary"
             :title="$t('btn.tip-create-new')"
@@ -218,6 +220,7 @@
         </div>
 
         <CmpBaseButton
+            :disabled="lockCreation"
             icon
             buttonType="primary"
             :title="$t('btn.tip-create-new')"
@@ -243,35 +246,41 @@ import type { IExtFilterGroup } from '@/services/definitions'
 
 
 export default defineComponent({
-        name: 'CmpTableActionBar',
-        components: { CmpButtonTag, CmpBaseButton, CmpDropdown },
-        props: {
-            subject:    {
-                type:        String,
-                description: 'This should be the translation (❗means the translated string) value string for a specific entity of the business. This value could be used for contextualization in the actions button bar.',
-                required:    false
-            },
-            mode: {
-                type:        Number,
-                default:     0,
-                description: 'The mode (sets of buttons) to show in the table top action bar according to the specified entity type'
-                // see more comments in enums-entities.ts file
-            },
-            chkCount:   {
-                type:        Number,
-                default:     0,
-                description: 'The count of the selected/checked items to show the action bar buttons'
-            },
-            extendedFilters:  {
-                type:        Object as PropType<IExtFilterGroup[]>,
-                description: 'Helps to defined a extended collections of filters. Can come in handy when we need other filter criteria that we don\'t want to put in the table columns headers',
-                required:    false,
-                default:     []
-            }
+    name:       'CmpTableActionBar',
+    components: { CmpButtonTag, CmpBaseButton, CmpDropdown },
+    props:      {
+        lockCreation:    {
+            type:        Boolean,
+            description: 'Tells if the component needs to lock the new / creation button',
+            required:    false,
+            default:     false
         },
-        emits: [ 'navCreateIntent', 'enableChkCollIntent', 'disableChkCollIntent', 'removeChkCollIntent', 'extFilClick' ],
+        subject:         {
+            type:        String,
+            description: 'This should be the translation (❗means the translated string) value string for a specific entity of the business. This value could be used for contextualization in the actions button bar.',
+            required:    false
+        },
+        mode:            {
+            type:        Number,
+            default:     0,
+            description: 'The mode (sets of buttons) to show in the table top action bar according to the specified entity type'
+            // see more comments in enums-entities.ts file
+        },
+        chkCount:        {
+            type:        Number,
+            default:     0,
+            description: 'The count of the selected/checked items to show the action bar buttons'
+        },
+        extendedFilters: {
+            type:        Object as PropType<IExtFilterGroup[]>,
+            description: 'Helps to defined a extended collections of filters. Can come in handy when we need other filter criteria that we don\'t want to put in the table columns headers',
+            required:    false,
+            default:     []
+        }
+    },
+    emits:      [ 'navCreateIntent', 'enableChkCollIntent', 'disableChkCollIntent', 'removeChkCollIntent', 'extFilClick' ],
 
-        setup( props: any, __: SetupContext ) {
+    setup( props: any, __: SetupContext ) {
             const { isUndEmpZero } = useCommon()
 
             const { t } = i18n.global

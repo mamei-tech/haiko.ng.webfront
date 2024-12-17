@@ -90,6 +90,7 @@ export default defineComponent({
     },
     emits: [
         'fieldUpdateIntent',            // to notice the entity field value (cell data) has updated / changed
+        'editionModeSts'                // to notice parents components, if this one is on edition mode | editionModeSts = edition mode status
     ],
 
     setup( props: any, ctx: SetupContext ) {
@@ -104,7 +105,7 @@ export default defineComponent({
         const ref_input = ref()                               // input field reference
         const value = ref<string | number>(props.cellData)
 
-        const { isUndEmpZero } = useCommon()
+        const { isUndEmpZero, isUndOrEmpty } = useCommon()
 
         //endregion ===========================================================================
 
@@ -163,6 +164,10 @@ export default defineComponent({
             value.value = props.cellData
         })
 
+        watch(isEditionMode, () => {
+            ctx.emit('editionModeSts', isEditionMode.value)
+        })
+
         /**
          * If not locked already, then we lock and enable the edition mode
          */
@@ -181,8 +186,9 @@ export default defineComponent({
          */
         const h_blur = ( evt: any ) => {
 
-            // bypassing if keypressed 'enter' was happen
-            if(wasByKeyDown.value) {
+            if (isUndOrEmpty(evt.target.value)) return          // we try to lock on edition if no value was given
+
+            if(wasByKeyDown.value) {                            // bypassing if keypressed 'enter' was happen
                 wasByKeyDown.value = false
                 return
             }

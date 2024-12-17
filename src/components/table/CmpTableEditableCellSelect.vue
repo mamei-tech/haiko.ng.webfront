@@ -17,6 +17,8 @@
         :mode="'single'"
         :name="cmp_name"
 
+        @close="h_closing"
+        @clear="h_clearing"
         @open="h_onOpenWrap"
         @change="h_OnChangeWrap"
         @search-change="h_onWriteSearch"
@@ -26,11 +28,11 @@
 </template>
 
 <script lang="ts">
-import type { SetupContext } from 'vue'
+import { computed, defineComponent, onMounted, ref, watch, nextTick } from 'vue'
 import Multiselect from '@vueform/multiselect'
 import useCommon from '@/services/composables/useCommon'
-import { computed, defineComponent, onMounted, ref, watch } from 'vue'
 
+import type { SetupContext } from 'vue'
 import type { ICellUpdate, IMultiselectBasic } from '@/services/definitions'
 
 
@@ -72,9 +74,10 @@ export default defineComponent({
         }
     },
     emits:      [
-        'fieldUpdateIntent',            // to notice the entity field value (cell data) has updated / changed
         'openhapend',                   // to notice when the select open its window
-        'writehapend'                   // to notice when something was written in the select search input
+        'writehapend',                  // to notice when something was written in the select search input
+        'editionModeSts',               // to notice parents components, if this one is on edition mode | editionModeSts = edition mode status
+        'fieldUpdateIntent'             // to notice the entity field value (cell data) has updated / changed
     ],
 
     setup( props: any, ctx: SetupContext ) {
@@ -149,6 +152,32 @@ export default defineComponent({
                 : text.value = ''
         })
 
+        watch(isEditionMode, () => {
+            ctx.emit('editionModeSts', isEditionMode.value)
+        })
+
+        /**
+         * So if the selected value was cleared, we need to lock the edition mode
+         * @param evt Multiselect instance
+         */
+        const h_clearing = ( evt: any ) => {
+            nextTick(() => {
+                isEditionLock.value = true
+            })
+        }
+
+        /**
+         * If its a closing situation and we have no value selected, we should lock the edition mode, so no new row
+         * can be created in the datatable
+         *
+         * @param evt Multiselect instance
+         */
+        const h_closing = ( evt: any ) => {
+            nextTick(() => {
+                if (isUndEmpZero(evt.internalValue.value)) isEditionLock.value = true
+            })
+        }
+
         /**
          * This may come in handy when a parent component needs to trigger something after this
          * select changes
@@ -156,8 +185,12 @@ export default defineComponent({
          * @param newSelectedValue ... wel this is self explanatory
          */
         const h_OnChangeWrap = ( newSelectedValue: any ) => {
-            isEditionLock.value = false
-            isEditionMode.value = false
+
+            if (newSelectedValue != null)
+            {
+                isEditionLock.value = false
+                isEditionMode.value = false
+            }
 
             value.value = newSelectedValue ?? 0
             text.value  = hpr_guessCellText(newSelectedValue)
@@ -195,7 +228,7 @@ export default defineComponent({
          * If not locked already, then we lock and enable the edition mode
          */
         const h_click = () => {
-            if (isEditionLock.value) return
+            if (isEditionLock.value && isEditionMode.value) return
 
             isEditionLock.value = true
             isEditionMode.value = true
@@ -211,6 +244,8 @@ export default defineComponent({
             cmp_name,
 
             h_click,
+            h_closing,
+            h_clearing,
             h_onOpenWrap,
             h_OnChangeWrap,
             h_onWriteSearch

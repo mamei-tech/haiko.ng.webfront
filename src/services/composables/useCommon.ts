@@ -89,6 +89,10 @@ export default function useCommon () {
         return val === undefined || val === '' || val === 0;
     }
 
+    const isUndOrEmpty = (val: string | undefined | number | object) => {
+        return val === undefined || val === '';
+    }
+
     /**
      * Return TRUE if the given string is 'undefined' or has the zero value
      * ! If u want to compare with empty string use 'isUndEmpZero' function instead
@@ -107,6 +111,7 @@ export default function useCommon () {
 
         isUnd,
         isUndOrZero,
+        isUndOrEmpty,
         isUndEmpZero,
     }
 }
