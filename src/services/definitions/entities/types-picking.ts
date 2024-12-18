@@ -1,7 +1,7 @@
 import type { RESERVATION_METHODS } from '@/services/definitions'
 
 import type { IIndexable } from '@/services/definitions/types-common'
-import type { IDtoMoveLine } from '@/services/definitions/entities/types-move'
+import type { IDtoMove } from '@/services/definitions/entities/types-move'
 
 
 /**
@@ -67,5 +67,5 @@ export interface IDtoPicking extends IDtoPickingBase {
 
     pShippingPolicy: string
 
-    moveLines: Array<IDtoMoveLine>                 // actual product for the picking
+    moves: Array<IDtoMove>                 // actual product for the picking
 }

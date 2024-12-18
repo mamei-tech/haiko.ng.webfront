@@ -6,7 +6,7 @@ import type { IIndexable } from '@/services/definitions'
  *  Hols the specifications (in terms of products) for an inventory operations.
  *
  */
-export interface IDtoMoveLine extends IIndexable {
+export interface IDtoMove extends IIndexable {
     mProdId: number | undefined                         // it will be hidden [column] in some tables
 
     moveDescription: string | undefined

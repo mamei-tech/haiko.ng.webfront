@@ -26,7 +26,7 @@ import { VSchemaPickingType, VSchemaPicking } from '@/services/definitions/valid
 import { VSchemaStrgCategory } from '@/services/definitions/validations/validations-strgcategory'
 import { VSchemaStaffCreate, VSchemaStaffEdit } from '@/services/definitions/validations/validations-people'
 
-import type { IDtoMoveLine } from '@/services/definitions/entities/types-move'
+import type { IDtoMove } from '@/services/definitions/entities/types-move'
 import type { Problem, ErrorDictionary } from '@/services/definitions/types-errors'
 import type { IDtoWarehouse, IWarehouseBasic } from '@/services/definitions/entities/types-warehouse'
 import type { IPickingTypeBasic, IPickingTypeRow, IDtoPickingType, ICorePickingType, IDtoPicking  } from '@/services/definitions/entities/types-picking'
@@ -122,7 +122,7 @@ export {
     IPickingTypeBasic, IPickingTypeRow, IDtoPickingType, ICorePickingType, IDtoPicking,
 
     // inventory picking move
-    IDtoMoveLine,
+    IDtoMove,
 
     // warehouse (storage) locations
     IWareLocationRow, IDtoWareLocation, IWareLocationBasic, IWareLocationType,

@@ -10,11 +10,11 @@ import {
 import useDates from '@/services/composables/useDates'
 import type {
     IDtoUoM,
+    IDtoMove,
     IDtoRole,
     IDtoStaff,
     IDtoPicking,
     IDtoProduct,
-    IDtoMoveLine,
     IDtoSupplier,
     IDtoWarehouse,
     IDtoUoMCategory,
@@ -300,7 +300,7 @@ export default function useFactory() {
             pResponsibleId:      2,                     // #2 (at the moment ot writing this) is 'The Manager' on database
             pNotes:              undefined,
 
-            moveLines:           new Array<IDtoMoveLine>(),
+            moves:               new Array<IDtoMove>(),
 
             //-- IDtoPickingBase props
 
@@ -316,7 +316,7 @@ export default function useFactory() {
      * @param moveId -> object identifier. When the line is new, the index will be negative 'cause obviously the object doesn't exist on the system yet. Check 'h_intentMoveCreate' on the ViewFormTransfer.vue file
      * @param dsd -> means default schedule date
      */
-    const mkPickingMoveLine = ( moveId: number = 0, dsd: Date | string | undefined = undefined ): IDtoMoveLine => {
+    const mkPickingMoveLine = ( moveId: number = 0, dsd: Date | string | undefined = undefined ): IDtoMove => {
         return {
             id:              moveId,
 

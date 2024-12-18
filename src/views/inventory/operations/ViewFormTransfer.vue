@@ -217,7 +217,7 @@
                                         :action-btn-mode="abutton_mode"
 
                                         :columns="columns"
-                                        :data="values.moveLines"
+                                        :data="values.moves"
 
                                         :has-search="false"
                                         :has-actions="true"
@@ -379,7 +379,7 @@ import { CmpCard, CmpFormActionsButton, CmpBaseInput, CmpCollapseItem, CmpBaseCh
 
 import type  Multiselect  from '@vueform/multiselect'
 import type { ComputedRef } from 'vue'
-import type { IDtoPicking, IMultiselectBasic, ById, TFormMode, IColumnHeader, ICellUpdate, IDtoMoveLine } from '@/services/definitions'
+import type { IDtoPicking, IMultiselectBasic, ById, TFormMode, IColumnHeader, ICellUpdate, IDtoMove } from '@/services/definitions'
 
 
 export default defineComponent({
@@ -533,9 +533,9 @@ export default defineComponent({
          * Helps to validate the transfer 'move lines' data given by the user. If something is wrong this method should
          * return false
          *
-         * @param moves Dirty 'IDtoMoveLine' object to be validated
+         * @param moves Dirty 'IDtoMove' object to be validated
          */
-        const hpr_isMoveLinesValid = ( moves: Array<IDtoMoveLine> ): boolean => {
+        const hpr_isMoveLinesValid = ( moves: Array<IDtoMove> ): boolean => {
             for (let i = 0; i < moves.length; i++)
                 if (!isUndEmpZero(moves[ i ].mProdId) && +moves[ i ].prodUoMQty <= 0) {
                     tfyError(t('validation.move-line-prod-qty'))
@@ -552,7 +552,7 @@ export default defineComponent({
         const hpr_sanitation = (dirtyObj: IDtoPicking) => {
 
             if (cpt_fMode.value === FMODE.CREATE)
-                dirtyObj.moveLines = dirtyObj.moveLines.map(( move: IDtoMoveLine ) => {                                 // sanitizing the id in creation mode, se the backend don't panic
+                dirtyObj.moves = dirtyObj.moves.map(( move: IDtoMove ) => {                                 // sanitizing the id in creation mode, se the backend don't panic
                     if (move.id < 0) move.id = 0
                     move.prodUoMQty = +move.prodUoMQty
                     delete move.mDeadLineDate
@@ -570,9 +570,9 @@ export default defineComponent({
             delete dirtyObj.pickName
 
             // ---- move lines sanitation
-            dirtyObj.moveLines = dirtyObj.moveLines.filter(move => move.mProdId ?? 0 > 0)                               // all the line that doesn't have product will be removed
+            dirtyObj.moves = dirtyObj.moves.filter(move => move.mProdId ?? 0 > 0)                               // all the line that doesn't have product will be removed
             //@ts-ignore
-            if(dirtyObj.moveLines.length == 0) delete dirtyObj.moveLines
+            if(dirtyObj.moves.length == 0) delete dirtyObj.moves
         }
 
         /**
@@ -682,7 +682,7 @@ export default defineComponent({
         const hrp_SelectEvMgr = async ( objField: string, queryStr: string | null = null, rowIndex: number | undefined = undefined ) => {
 
             if(isUndEmpZero(objField)) return
-            if(objField == 'mProdId' as keyof IDtoMoveLine) {                                                           // we'll try to cache the product list so we can used every time without any more request, unless a query are written in the select by the user (in that case we make a request no matter what)
+            if(objField == 'mProdId' as keyof IDtoMove) {                                                           // we'll try to cache the product list so we can used every time without any more request, unless a query are written in the select by the user (in that case we make a request no matter what)
 
                 if(queryStr !== null) {
 
@@ -697,10 +697,10 @@ export default defineComponent({
                 }
                 else columns.value[ 1 ].cellEditableSelectOptions = ls_productCache.value                               // using the cache
             }
-            if(objField == 'mUoMId' as keyof IDtoMoveLine)                                                              // besides the auto select we have for the UoM when product are selected (see lines around 812), here we are filtering the entire UoM list with only the UoM that belongs to the same category to the UoM product is defined to use
+            if(objField == 'mUoMId' as keyof IDtoMove)                                                              // besides the auto select we have for the UoM when product are selected (see lines around 812), here we are filtering the entire UoM list with only the UoM that belongs to the same category to the UoM product is defined to use
             {
                 // TODO check how this behave in edition mode
-                const movement = values.moveLines.find(m => m.id == rowIndex)
+                const movement = values.moves.find(m => m.id == rowIndex)
                 if (
                     movement !== undefined                &&
                     movement.mUoMId > 0                   &&
@@ -733,7 +733,7 @@ export default defineComponent({
         const h_beforeSubmit = (evt: Event, doWeNeedToStay: boolean) => {
             evt.preventDefault()
 
-            if (!hpr_isMoveLinesValid(values.moveLines)) return
+            if (!hpr_isMoveLinesValid(values.moves)) return
 
             // handling the submission with vee-validate method
             handleSubmit(formData => {
@@ -777,7 +777,7 @@ export default defineComponent({
         }
 
         const h_intentMoveCreate = async () => {
-            if (!values.moveLines) return
+            if (!values.moves) return
 
             if (ls_uomCache.value.length == 0) {                                                                        // getting the uom in advance so we can auto set the UoM for the movement-line when product is selected
                 await st_nomenclatures.reqNmcUoM()
@@ -785,23 +785,23 @@ export default defineComponent({
             }
             columns.value[ 5 ].cellEditableSelectOptions = ls_uomCache.value                                            // ensuring the UoM options are ready, so values can react / reflects properly
 
-            values.moveLines.push(mkPickingMoveLine(auxIdCounter.value, values.pScheduleDate))
+            values.moves.push(mkPickingMoveLine(auxIdCounter.value, values.pScheduleDate))
             auxIdCounter.value -= 1
         }
 
         const h_intentUpdCell = ( data: ICellUpdate ) => {
 
-            setFieldValue('moveLines', values.moveLines.map(( row: IDtoMoveLine ) => {
+            setFieldValue('moves', values.moves.map(( row: IDtoMove ) => {
                 if (row.id !== data.entityId) return row
-                row[ data.entityField as keyof IDtoMoveLine ] = data.updatedValue as never                              // updating the value
+                row[ data.entityField as keyof IDtoMove ] = data.updatedValue as never                              // updating the value
 
-                if (data.entityField == 'mProdId' as keyof IDtoMoveLine) {
+                if (data.entityField == 'mProdId' as keyof IDtoMove) {
 
                     flg_lastRowIndex.value = undefined
 
                     if (+data.updatedValue == 0)                                                                        // so we can handles the case when the select value was cleared
                     {
-                        row['mUoMId' as keyof IDtoMoveLine] = +data.updatedValue as never                               // clearing the auto selected uom
+                        row['mUoMId' as keyof IDtoMove] = +data.updatedValue as never                               // clearing the auto selected uom
                         return row                                                                                      // breaking right here
                     }
 
@@ -809,8 +809,8 @@ export default defineComponent({
                     if (!isUndOrZero(+p.pUoMID))
                     {
                         columns.value[ 5 ].cellEditableSelectOptions = ls_uomCache.value                                // ensuring the UoM options are ready, so values can react / reflects properly
-                        row['mUoMId' as keyof IDtoMoveLine] = +p.pUoMID as never                                        // if product were selected, we can also set the UoM for that product
-                        row['moveName' as keyof IDtoMoveLine] = p.pName as never                                        // setting also the name of the product as name of the movement
+                        row['mUoMId' as keyof IDtoMove] = +p.pUoMID as never                                        // if product were selected, we can also set the UoM for that product
+                        row['moveName' as keyof IDtoMove] = p.pName as never                                        // setting also the name of the product as name of the movement
                     }
 
                     return row
@@ -828,7 +828,7 @@ export default defineComponent({
          */
         const h_dtSelectOpened = ( selectInstance: Multiselect | any ) => {
             const s = selectInstance.name.split('.')
-            s[ 1 ] == 'mUoMId' as keyof IDtoMoveLine
+            s[ 1 ] == 'mUoMId' as keyof IDtoMove
                 ? hrp_SelectEvMgr(s[ 1 ], null, +s[ 0 ])
                 : hrp_SelectEvMgr(s[ 1 ])
         }
