@@ -80,7 +80,7 @@ export default defineComponent({
          * Manually setting the needed values is way cleaner than the other way around. This is needed mainly because api call is asynchronous.
          */
         onMounted(() => {
-            st_uom.reqUoMCatPages().catch(err => tfyCRUDFail(err, ENTITY_NAMES.STAFF, OPS_KIND_STR.REQUEST))    // getting the uom categories list data for populating the datatable (side effect)
+            st_uom.reqUoMCatPages().catch(err => tfyCRUDFail(err, ENTITY_NAMES.UOMCATEGORY, OPS_KIND_STR.REQUEST))    // getting the uom categories list data for populating the datatable (side effect)
             window.addEventListener('keydown', h_keyboardKeyPress)                                        // keyboard keys event handler, we need to clean this kind of event when the component are destroyed
         })
 

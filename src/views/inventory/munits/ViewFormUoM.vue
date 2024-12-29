@@ -132,7 +132,7 @@ export default defineComponent({
         const st_uom = useSt_UoM()                                                          // Pinia store for uom
         const { tfyCRUDSuccess, tfyError, tfyCRUDFail } = useToastify(toast)
         const { dfyConfirmation, dfyShowAlert } = useDialogfy()
-        const { isUndEmpZero } = useCommon()
+        const { isUndEmpZero, isUndOrEmpty } = useCommon()
 
         const { fmode, id } = route.params                                                  // remember, fmode (form mode) property denotes the mode this form view was called | checkout the type TFormMode in types definitions
         const { mkUoMCategory, mkUoM } = useFactory()
@@ -191,11 +191,7 @@ export default defineComponent({
          * @param doWeNeedToStay Tell us where to go after the successfully creation of the entity
          */
         const a_create = ( newUoMCategory: IDtoUoMCategory, isFormDirty: boolean, doWeNeedToStay: boolean): void => {
-            // little bit sanitization for the negative number Id of the uom, so the backed doesn't protest about the negative Id
-            newUoMCategory.units = newUoMCategory.units.map(( uom ) => {
-                if (uom.id < 0) uom.id = 0
-                return uom
-            })
+            hpr_sanitation(newUoMCategory)
 
             // making the request
             st_uom.reqInsertUoMCat(newUoMCategory).then(() => {
@@ -209,11 +205,7 @@ export default defineComponent({
         }
 
         const a_edit = ( updatedUoMCategory: IDtoUoMCategory, isFormDirty: boolean, doWeNeedToStay: boolean): void => {
-            // little bit sanitization for the negative number Id of the uom, so the backed doesn't protest about the negative Id
-            updatedUoMCategory.units = updatedUoMCategory.units.map(( uom ) => {
-                if (uom.id < 0) uom.id = 0
-                return uom
-            })
+            hpr_sanitation(updatedUoMCategory)
 
             st_uom.reqUpdUoMCat(updatedUoMCategory).then(() => {
                 tfyCRUDSuccess(ENTITY_NAMES.UOMCATEGORY, OPS_KIND_STR.UPDATE, updatedUoMCategory.ucName)
@@ -286,7 +278,8 @@ export default defineComponent({
             let errorMsg = undefined
 
             values.units.forEach((uom) => {
-                if (uom.uType == 0) {
+
+                if (uom.uType == '0') {
                     uoReference = uom.uName
                     uoReferenceCount += 1
                     uoReferenceRatio = uom.uRatio
@@ -295,7 +288,7 @@ export default defineComponent({
             })
 
             if (values.units.length == 0) errorMsg = t('validation.uom-list-min')
-            else if (isUndEmpZero(uoReference)) errorMsg = t('validation.uom-list-ref-exist')
+            else if (isUndOrEmpty(uoReference)) errorMsg = t('validation.uom-list-ref-exist')
             else if (!uoReferenceActiveStatus) errorMsg = t('validation.uom-list-active')
             else if (uoReferenceCount >= 2) errorMsg = t('validation.uom-list-one-ref')
             else if (uoReferenceRatio != 1) errorMsg = t('validation.uom-list-ratio-ref')
@@ -305,6 +298,18 @@ export default defineComponent({
 
             tfyError(errorMsg as string)
             return false
+        }
+
+        const hpr_sanitation = (dirtyObj: IDtoUoMCategory) => {
+
+            // little bit sanitization for the negative number Id of the uom, so the backed doesn't protest about the negative Id
+            dirtyObj.units = dirtyObj.units.map(( uom ) => {
+                if (uom.id < 0) uom.id = 0
+                return uom
+            })
+
+            if (dirtyObj.unitsToDelete !== undefined)
+                if (dirtyObj.unitsToDelete.length == 0) delete dirtyObj.unitsToDelete
         }
 
         /**
@@ -370,8 +375,14 @@ export default defineComponent({
 
         const h_intentRowDelete = ( rowId: number ) => {
             values.units = values.units.filter((row) => {
-                if(row.id !== rowId) return row
-                if(row.id === rowId && rowId > 0 && cpt_fMode.value === FMODE.EDIT) values.unitsToDelete.push(rowId)
+                if (row.id !== rowId) return row
+                if (row.id === rowId && rowId > 0 && cpt_fMode.value === FMODE.EDIT)
+                {
+                    if (values.unitsToDelete == undefined)
+                        values.unitsToDelete = []
+
+                    values.unitsToDelete.push(rowId)
+                }
 
                 // this las condition tries to handle the situation of the edit form mode, that we need to record a UoM
                 // that already exist in the database and the user want to deleted. So we write down the UoM's identifier

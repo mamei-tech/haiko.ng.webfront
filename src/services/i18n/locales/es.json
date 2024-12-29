@@ -189,7 +189,7 @@
     "avatar-invalid-extension":                "La extensión de la imagen utilizada no esta permitida",
     "uom-list-one-ref":                        "Solo debe existir una sola unidad de referencia",
     "uom-list-ratio-ref":                      "El ratio de conversión de la unidad de referencia debe ser 1",
-    "uom-list-ref-exist":                      "Debe existir al menos una unidad de referencia",
+    "uom-list-ref-exist":                      "Existen nombres sin definir o no se ha seleccionado una unidad de referencia",
     "uom-list-min":                            "Al menos debe existir una unidad para la categoría",
     "uom-list-active":                         "La unidad de referencia debe estar activa",
     "uom-ratio-gt-zero":                       "El ratio de conversión debe ser un número positivo mayor o igual que 1",

@@ -11,7 +11,7 @@ export interface IDtoUoMCategory extends IIndexable {
     /**
      * Collection of array numbers to be deleted when we want to update the UoM category
      */
-    unitsToDelete: number[]
+    unitsToDelete: number[] | undefined
 }
 
 /**
@@ -20,7 +20,7 @@ export interface IDtoUoMCategory extends IIndexable {
 export interface IDtoUoM extends IIndexable {
     uName: string,
     uCategoryId: number,
-    uType: number | null,
+    uType: string,
     uRatio: number,
     isActive: boolean
 }
