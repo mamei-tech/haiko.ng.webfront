@@ -75,7 +75,7 @@ export const useSt_UoM = defineStore({
                 ApiUoM.reqInsUoMCat(payload)
                 .then((response:any) => {
 
-                    payload.id = response.data          // updating the payload with its identifier given by the backend server
+                    payload = response.data             // updating the payload with its identifier given by the backend server
                     this.mutUpdateUoMList(payload)      // mutating / updating the local store so we don't need to request to the server
 
                     resolve(response.data)
