@@ -101,7 +101,6 @@ export default defineComponent({
 
         const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
         const { dfyConfirmation, dfyShowAlert } = useDialogfy()
-        const { toUIMoney } = useNumeric()
 
         //#endregion ==========================================================================
 
@@ -222,9 +221,6 @@ export default defineComponent({
 
                 // so the 0 value doesnt mess with the user in the UI making them confuse, we remove the 0 values
                 if (prodRow.pTotalStock == 0) prodRow.pTotalStock = 0
-
-                // money ui conversion
-                prodRow.sellPrice = toUIMoney(prodRow?.sellPrice ?? '0') as string
 
                 return prodRow
             })

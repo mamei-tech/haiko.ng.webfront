@@ -14,7 +14,6 @@ const url = `v${ version }/inventory/cproduct`
 
 const { mkProduct } = useFactory()
 const { toFormDataR } = useCommon()
-const { toUIMoney } = useNumeric()
 
 /***
  * REST API class for backend interaction logic related with Products
@@ -101,10 +100,6 @@ export class ApiProduct {
      */
     public static async getProductById( id: number ): Promise<IDtoProduct> {
         const response = await ApiProduct.reqProductById(id)
-
-        // small data sanitation here because of the integer raw currency scale that we are working with
-        if(response.data.sellPrice !== undefined)
-            response.data.sellPrice = toUIMoney(+response.data.sellPrice)
 
         if (response.status === HTTP_RESPONSES.OK) return response.data as IDtoProduct
         return mkProduct()

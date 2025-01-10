@@ -604,7 +604,6 @@ import { CmpCard, CmpFormActionsButton, CmpBaseInput, CmpCollapseItem, CmpBaseCh
 import useFactory from '@/services/composables/useFactory'
 import useToastify from '@/services/composables/useToastify'
 import useDialogfy from '@/services/composables/useDialogfy'
-import useNumeric from '@/services/composables/useNumeric'
 import useCommon from '@/services/composables/useCommon'
 import { ApiProduct } from '@/services/api/inventory/api-product'
 import { ApiSupplier } from '@/services/api/resources-infraestructure/api-supplier'
@@ -652,7 +651,6 @@ export default defineComponent({
         const { fmode, id } = route.params                                                         // remember, fmode (form mode) property denotes the mode this form view was called | checkout the type TFormMode in types definitions
 
         const { isUndEmpZero } = useCommon()
-        const { valUI2Raw, toUIMoney } = useNumeric()
         const { dfyConfirmation, dfyShowAlert } = useDialogfy()
         const { mkProduct, mkProductSupplierLine } = useFactory()
         const { tfyCRUDSuccess, tfyCRUDFail, tfyBasicRqError } = useToastify(toast)
@@ -945,8 +943,8 @@ export default defineComponent({
         /**
          * Form data sanitation method so we can clean the fields values before submitting
          */
-        const hpr_sanitation = (dirtyProduct: IDtoProduct) => {
-            dirtyProduct.sellPrice = valUI2Raw(dirtyProduct.sellPrice)                                    // converting the price to 100K scale using in the backend
+        const hpr_sanitation = ( dirtyProduct: IDtoProduct ) => {
+            dirtyProduct.sellPrice = dirtyProduct.sellPrice != undefined ? dirtyProduct.sellPrice.toString() : ""       // sending this as string so we mitigate losing the precision of the number
 
             if (!dirtyProduct.cost) dirtyProduct.cost = 0
             if (!dirtyProduct.sellTax) dirtyProduct.sellTax = 0
@@ -959,21 +957,18 @@ export default defineComponent({
             if (!dirtyProduct.noteSell) delete dirtyProduct.noteSell
             if (!dirtyProduct.noteTransfer) delete dirtyProduct.noteTransfer
 
-            // this is the creation, so is not for sale, then sellPrice not make any sense
-            if(!dirtyProduct.canBeSold) delete dirtyProduct.sellPrice
-
             // suppliers sanitation
             if(cpt_fMode.value === FMODE.CREATE) delete dirtyProduct.suppLinesToDelete
             if (!dirtyProduct.supplierLines || dirtyProduct.supplierLines.length == 0) delete dirtyProduct.supplierLines
             else dirtyProduct.supplierLines = dirtyProduct.supplierLines.map(( supplier: IDtoProductSupplierL ) => {
 
                 // sanitation
-                supplier.sPrice = valUI2Raw(supplier.sPrice)                                    // price sanitation & conversion (remember the scale)
+                supplier.sPrice = supplier.sPrice != undefined ? supplier.sPrice.toString() : ""                        // sending this as string so we mitigate losing the precision of the number
 
-                if(cpt_fMode.value === FMODE.CREATE) delete supplier.sku                        // this value will be generate in the backend, it make no sense send it from here on creation
-                delete supplier.id                                                              // only relevant in the front, it will not be needed in the backend
+                if(cpt_fMode.value === FMODE.CREATE) delete supplier.sku                                                // this value will be generate in the backend, it make no sense send it from here on creation
+                delete supplier.id                                                                                      // only relevant in the front, it will not be needed in the backend
 
-                if (supplier.supplierId)                                                        // seeking for the name of the supplier
+                if (supplier.supplierId)                                                                                // seeking for the name of the supplier
                     supplier.sName = st_nomenclatures.getSuppByIdMap[ supplier.supplierId ].cmpDisplayName
 
                 // returning modifier supplier
@@ -1302,8 +1297,6 @@ export default defineComponent({
                     auxIdCounter.value -= 1
 
                     if (!supplierLine.supplierCode) supplierLine.supplierCode = ''                                  // setting up the field, so table can render it. This is 'cause it may be null
-
-                    supplierLine.sPrice = toUIMoney(+supplierLine.sPrice)                                           // transform the raw currency value (recall the scale) into UI value
 
                     return supplierLine
                 }))
