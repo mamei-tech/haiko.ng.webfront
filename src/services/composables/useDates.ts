@@ -42,10 +42,11 @@ export default function useDates() {
 
         const now = new Date()                                             // getting teh current time
         const yy = now.getFullYear()                                       // getting teh date data so we can properly format it
-        const mm = String(now.getMonth()).padStart(2, '0')
-        const dd = String(now.getDay()).padStart(2, '0');
-        const hh = String(now.getHours()).padStart(2, '0');
-        const mn = String(now.getMinutes()).padStart(2, '0');
+
+        const mm = String(now.getMonth()+1).padStart(2, '0')
+        const dd = String(now.getDate()).padStart(2, '0')           // no, isn't '.getDay'. That is for the day of the week
+        const hh = String(now.getHours()).padStart(2, '0')
+        const mn = String(now.getMinutes()).padStart(2, '0')
 
         return `${ yy }-${ mm }-${ dd }T${ hh }:${ mn }`                   // putting al together complaint with ISO 8601 format
     }

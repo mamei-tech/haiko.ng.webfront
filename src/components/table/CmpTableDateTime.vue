@@ -10,6 +10,7 @@
          @focus="h_onInputFocused"
 
          v-bind="$attrs"
+         ref="ref_inputDate"
   />
 
   <!-- Error Msg -->
@@ -91,9 +92,11 @@ export default defineComponent({
         // #region  ======== DECLARATIONS & LOCAL STATE ============================================
 
         let isFocused      = ref<boolean>(false)
-        const errorMessage = ref<string>('')              // reactive property holder for validation error message
+        const errorMessage = ref<string>('')                                // reactive property holder for validation error message
 
         const value = ref<string | number>(props.cellData)
+
+        const ref_inputDate = ref<InstanceType<typeof HTMLInputElement>>()        // reference to warehouse default destination location
 
         // #endregion =============================================================================
 
@@ -139,7 +142,7 @@ export default defineComponent({
         //region ======= EVENTS HANDLERS & WATCHERS =============================================
 
         watch(() => [ props.cellData ], () => {
-            value.value = props.cellData
+            if (value.value != props.cellData) value.value = props.cellData
         })
 
         const h_change = ( evt: any ) => {
@@ -165,7 +168,9 @@ export default defineComponent({
 
             h_change,
             h_onInputBlur,
-            h_onInputFocused
+            h_onInputFocused,
+
+            ref_inputDate
         }
     }
 })
