@@ -54,7 +54,7 @@ export const VSchemaPicking = {
 
     contactId: ( value: string | number ): boolean | string => { return VSchemaCommon.required4Select(value) },
     pickingType: ( value: string | number ): boolean | string => { return VSchemaCommon.required4Select(value) },
-    pResponsibleId: ( value: string | number ): boolean | string => { return VSchemaCommon.required4Select(value) }
+    pResponsibleId: ( value: string | number ): boolean | string => { return VSchemaCommon.required4Select(value) },
 
 }
 

@@ -177,6 +177,7 @@
                         name="pScheduleDate"
                         :placeholder="$t('form.placeholders.picking-src-doc')"
                         :type="INPUT_DATE_TYPE.DATETIME_LOCAL"
+                        @change="h_scheduleChange"
                     />
                   </div>
                 </div>
@@ -429,11 +430,11 @@ export default defineComponent({
         const ref_selectDstLoc = ref<InstanceType<typeof CmpMultiselectField>>()        // reference to warehouse default destination location
 
         // helpers & flags
-        const { mkPicking }                             = useFactory()
-        const { toLocal }                               = useDates()
-        const { debounce, isUndEmpZero, isUndOrZero }   = useCommon()
-        const { tfyCRUDSuccess, tfyCRUDFail, tfyError } = useToastify(toast)
-        const flg_lastRowIndex                          = ref<number | undefined>(undefined)
+        const { mkPicking }                                        = useFactory()
+        const { toLocal }                                          = useDates()
+        const { debounce, isUndEmpZero, isUndOrZero, isUndOrNull } = useCommon()
+        const { tfyCRUDSuccess, tfyCRUDFail, tfyError }            = useToastify(toast)
+        const flg_lastRowIndex                                     = ref<number | undefined>(undefined)
 
         // form data
         const ls_uomCache = ref<IMultiselectBasic[]>([])
@@ -536,11 +537,24 @@ export default defineComponent({
          * @param moves Dirty 'IDtoMove' object to be validated
          */
         const hpr_isMoveLinesValid = ( moves: Array<IDtoMove> ): boolean => {
-            for (let i = 0; i < moves.length; i++)
+
+            if (moves.length <= 0) {
+                tfyError(t('validation.move-line-required'))
+                return false
+            }
+
+            for (let i = 0; i < moves.length; i++) {
+
                 if (!isUndEmpZero(moves[ i ].mProdId) && +moves[ i ].prodUoMQty <= 0) {
                     tfyError(t('validation.move-line-prod-qty'))
                     return false
                 }
+
+                if (isUndEmpZero(moves[ i ].mProdId)) {
+                    tfyError(t('validation.move-line-prod'))
+                    return false
+                }
+            }
 
             return true
         }
@@ -557,20 +571,27 @@ export default defineComponent({
                     move.prodUoMQty = +move.prodUoMQty
                     delete move.mDeadLineDate
 
+                    move.prodUoMQty = move.prodUoMQty.toString()                                           // tries to ensure the number reach the backend in a proper way
+
                     return move
                 })
 
             if (cpt_fMode.value === FMODE.EDIT) return
 
-            dirtyObj.pScheduleDate = dirtyObj.pScheduleDate == undefined
+            dirtyObj.pScheduleDate = isUndOrNull(dirtyObj.pScheduleDate)
                 ? toLocal(new Date())
-                : toLocal(new Date(dirtyObj.pScheduleDate))
+                : toLocal(new Date(dirtyObj.pScheduleDate as Date))
 
             delete dirtyObj.state
             delete dirtyObj.pickName
 
             // ---- move lines sanitation
-            dirtyObj.moves = dirtyObj.moves.filter(move => move.mProdId ?? 0 > 0)                               // all the line that doesn't have product will be removed
+            dirtyObj.moves = dirtyObj.moves.filter(move => move.mProdId ?? 0 > 0)                          // all the line that doesn't have product will be removed
+            dirtyObj.moves = dirtyObj.moves.map((move) => {
+                if ( isUndEmpZero(move.moveDescription) ) delete move.moveDescription
+                return move
+            })
+
             //@ts-ignore
             if(dirtyObj.moves.length == 0) delete dirtyObj.moves
         }
@@ -845,6 +866,11 @@ export default defineComponent({
             await hrp_SelectEvMgr(idCompound.split('.')[1], queryStr)
         }, 1500)
 
+        const h_scheduleChange = ( evt: any ) => {
+            for (let i = 0; i < values.moves.length; i++)
+                values.moves[ i ].mScheduleDate = values.pScheduleDate
+        }
+
         //#endregion ==========================================================================
 
         //region ======= NAVIGATION ===========================================================
@@ -885,6 +911,7 @@ export default defineComponent({
             h_beforeSubmit,
             h_intentUpdCell,
             h_dtSelectOpened,
+            h_scheduleChange,
             h_intentRowDelete,
             h_prodSelectSearch,
             h_intentMoveCreate,
