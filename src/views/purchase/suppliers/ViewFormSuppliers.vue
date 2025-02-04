@@ -939,7 +939,13 @@ export default defineComponent({
             if (Object.keys(ls_dicExtData.value).length <= 0) delete dirtyObj.extData
             else dirtyObj.extData = Object.values(ls_dicExtData.value)
 
-            dirtyObj.internalNotes?.trim()
+            if (!isUnd(dirtyObj.internalNotes)) dirtyObj.internalNotes = dirtyObj.internalNotes?.trim()
+
+            // sanitize the extended contact information if exist
+            if (dirtyObj.extData !== undefined)
+                for (let i = 0; i < dirtyObj.extData.length; i++) {
+                    hpr_sanitationExt(dirtyObj.extData[ i ])
+                }
         }
 
         /**
@@ -965,7 +971,7 @@ export default defineComponent({
             delete dirtyObj.stateCode
             delete dirtyObj.countryCode
 
-            dirtyObj.internalNotes?.trim()
+            if (!isUnd(dirtyObj.internalNotes)) dirtyObj.internalNotes = dirtyObj.internalNotes?.trim()
         }
 
         //#endregion ==========================================================================
