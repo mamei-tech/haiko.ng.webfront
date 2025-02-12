@@ -58,7 +58,7 @@ import type { IBulkData, TOpsKind, IDataTableQuery, IColumnHeader, TFormMode, IS
 
 //region ======== STATE INTERFACE =======================================================
 
-// interface IStaffState extends IBasicPageState {
+// interface INmcState extends IBasicPageState {
 interface ISupplierState {
     entityPage: ISupplierRow[]
 }

@@ -116,7 +116,7 @@ export const useSt_Rbac = defineStore({
 
 //region ======== STATE INTERFACE =======================================================
 
-// interface IStaffState extends IBasicPageState {
+// interface INmcState extends IBasicPageState {
 
 interface IRbacState {
     entityPage: Array<IDtoRole>

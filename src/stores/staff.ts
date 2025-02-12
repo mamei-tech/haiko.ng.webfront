@@ -14,7 +14,7 @@ import type { IDtoStaff } from '@/services/definitions'
 export const useSt_Staff = defineStore({
     id: 'staff',
 
-    state: () : IStaffState => ({
+    state: () : INmcState => ({
         entityPage:   [] as IStaffRow[]
     }),
 
@@ -183,8 +183,8 @@ export const useSt_Staff = defineStore({
 
 //region ======== STATE INTERFACE =======================================================
 
-// interface IStaffState extends IBasicPageState {
-interface IStaffState {
+// interface INmcState extends IBasicPageState {
+interface INmcState {
     entityPage: Array<IStaffRow>
 }
 

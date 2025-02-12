@@ -42,7 +42,6 @@ import { ApiProduct } from '@/services/api/inventory/api-product'
 import { useToast } from 'vue-toastification'
 import useToastify from '@/services/composables/useToastify'
 import useDialogfy from '@/services/composables/useDialogfy'
-import useNumeric from '@/services/composables/useNumeric'
 import { useSt_Nomenclatures } from '@/stores/nomenc'
 import { useSt_Pagination } from '@/stores/pagination'
 import { IsEmptyObj, IsNumber } from '@/services/helpers/help-defaults'
@@ -155,7 +154,7 @@ export default defineComponent({
                 st_pagination.mutUpdateOnRequest(response.data.totalRecords, response.data.entityList.length, st_pagination.Offset)
 
                 // --- some local data processing
-                mappingProperties()                                      // mapping categories id to names
+                mappingProperties()                                                                       // mapping categories id to names
 
             }).catch(error => {
                 if (error.response?.status === 404) {

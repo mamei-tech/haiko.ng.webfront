@@ -35,7 +35,7 @@ const { t } = i18n.global
 export const useSt_Nomenclatures = defineStore({
     id: 'nomenc',
 
-    state: (): IStaffState => ({
+    state: (): INmcState => ({
         uom:                [] as IUoMBasic[],
         roles:              [] as IRoleBasic[],
         suppCat:            [] as ISuppCatBasic[],
@@ -646,7 +646,7 @@ export const useSt_Nomenclatures = defineStore({
 
 //region ======== STATE INTERFACE =======================================================
 
-interface IStaffState {
+interface INmcState {
     uom:                Array<IUoMBasic>,
     roles:              Array<IRoleBasic>,
     suppCat:            Array<ISuppCatBasic>,

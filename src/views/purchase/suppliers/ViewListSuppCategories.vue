@@ -53,7 +53,7 @@ import type { IDataTableQuery, IColumnHeader, ISupplierCatRow, TFormMode, IIndex
 
 //region ======== STATE INTERFACE =======================================================
 
-// interface IStaffState extends IBasicPageState {
+// interface INmcState extends IBasicPageState {
 interface ISupplierCatState {
     entityPage: ISupplierCatRow[]
 }
