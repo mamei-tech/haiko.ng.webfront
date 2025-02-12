@@ -274,7 +274,7 @@
                 </div>
 
                 <!-- job position -->
-                <div v-show="values.isCompany === false" class="row">
+                <div v-show="values.isCompany === false && values.parentID !==  null" class="row">
                   <label class="text-sm-left text-md-right col-md-3 col-form-label">
                     {{ $t( 'entities.supplier.job-position' ) }}
                   </label>
@@ -643,8 +643,7 @@
 </template>
 
 <script lang="ts">
-import type { ComputedRef } from 'vue'
-import { computed, defineComponent, onBeforeUnmount, onMounted, reactive, ref } from 'vue'
+import { computed, defineComponent, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import { Field, useForm } from 'vee-validate'
 import { i18n } from '@/services/i18n'
 import { useRoute, useRouter } from 'vue-router'
@@ -660,6 +659,7 @@ import { CmpBaseInput, CmpCard, CmpCardStats, CmpFormActionsButton, CmpModal, Cm
 import { ACTION_KIND_STR, ADDRESS_TYPE, ENTITY_NAMES, FMODE, KEYS, OPS_KIND_STR, RoutePathNames, VSchemaSupplier } from '@/services/definitions'
 import ViewFormSuppliersExt from '@/views/purchase/suppliers/ViewFormSuppliersExt.vue'
 
+import type { ComputedRef } from 'vue'
 import type { ById, IDtoSupplier, TFormMode } from '@/services/definitions'
 
 
