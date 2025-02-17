@@ -1,5 +1,8 @@
 /* DATES & TIMES FUNCTIONS */
+import { i18n } from '@/services/i18n'
 import appConfig from '@/configs/app.conf'
+
+const { t } = i18n.global
 
 const gmtOffset = appConfig.server.utc_offset
 
@@ -52,6 +55,52 @@ export default function useDates() {
     }
 
     /**
+     * Calculates the time difference between the given date and the current time,
+     * and returns a human-readable string indicating the elapsed or remaining time.
+     *
+     * The function supports both past and future dates. For past dates, it returns
+     * the elapsed time (e.g., "2 days ago"). For future dates, it returns the
+     * remaining time (e.g., "3 hours remaining"). If the difference is less than
+     * a second, it returns "Just about now".
+     *
+     * @param {string} dateStr - The date string in ISO 8601 format (e.g., "YYYY-MM-DDTHH:MM:SS").
+     * @returns {string} A human-readable string describing the time difference.
+     *
+     * @example
+     * // Current date: 2023-10-03T12:00:00
+     * strDate2Diff("2023-10-01T12:00:00"); // Returns "2 days ago"
+     * strDate2Diff("2023-10-05T12:00:00"); // Returns "2 days remaining"
+     * strDate2Diff("2023-10-03T12:00:01"); // Returns "1 second remaining"
+     * strDate2Diff("2023-10-03T12:00:00"); // Returns "Just about now"
+     */
+    const strDate2Diff = ( dateStr: string ): string => {
+        const now       = new Date()
+        const givenDate = new Date(dateStr)
+
+        const diff = givenDate.getTime() - now.getTime()                // the value of 'diff' will be in milliseconds
+
+        const s = diff < 0                                              // s = seconds
+            ? Math.floor(-diff / 1000)                               // time is behind (in the past)
+            : Math.floor(diff / 1000)                                // future is ahead in the future
+        const m = Math.floor(s / 60)                                 // m = minutes
+        const h = Math.floor(m / 60)                                 // h = hours
+        const d = Math.floor(h / 24)                                 // d = days
+
+        const headI18nKey = diff < 0 ? 'data.elapsed-time' : 'data.remaining-time'
+
+        if (d > 0)
+            return t(headI18nKey, { value: d, kind: t('data.days') })
+        else if (h > 0)
+            return t(headI18nKey, { value: h, kind: t('data.hours') })
+        else if (m > 0)
+            return t(headI18nKey, { value: m, kind: t('data.minutes') })
+        else if (s > 0)
+            return t(headI18nKey, { value: s, kind: t('data.seconds') })
+        else
+            return t('data.just-about-now')
+    }
+
+    /**
      * Using the defined GMT / UTC offset defined in the 'app.conf.ts' config file, this method applies that offset
      * for converting the given UTC date object to a localized (time-zone) one.
      *
@@ -65,6 +114,7 @@ export default function useDates() {
     return {
         toLocal,
         date2UIStr,
+        strDate2Diff,
         minDateForInput,
     }
 }
