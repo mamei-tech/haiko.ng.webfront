@@ -1,0 +1,20 @@
+---
+description: 
+globs: 
+---
+---
+description: Naming convention rules to take into account
+globs: *.sql
+---
+
+
+1. The view files are located in `./src/view/<related_module>/` and the subfolders from that location. View files are grouped in folders, named based on the module name of the business logic modules they are related to. The view file name must comply with the following naming convention:x
+    - general view files: View<reference_names>.vue
+    - formulary view files: ViewForm<reference_name>.vue
+    - list / data-table view files: ViewList<reference_name>.vue
+
+2. Composable files are locate in `./src/services/composables/`. The composable file name must comply with the following naming convention: use<reference_name>.ts
+
+3. The route files are located in `./src/router/`. Routes files needs to be defined / registered in the `./src/router/index.ts` file. The router file name must comply with the following naming convention: <reference_name>-routes.ts
+
+4. The UI layout files are located in `./src/layouts/`. The UI layout file name must comply with the following naming convention: Lay<referece_name>.vue

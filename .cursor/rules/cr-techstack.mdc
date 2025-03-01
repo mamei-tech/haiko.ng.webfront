@@ -1,0 +1,23 @@
+---
+description: This rules describes the tech-stack we are using for the entire solution
+globs: 
+---
+## Tech-Stack
+
+This repository is the frontend of the solution and we are using the following tech stack to build it:
+
+1. VueJs v3, using both approaches: composition API and options API just with a few minor components.
+2. Sass: CSS preprocessor that enhances CSS with variables, nesting, and mixins for more maintainable styles. 
+3. Pinia: state management.
+4. Vue Router: official routing library for Vue.js, enabling single-page application navigation with dynamic route matching.
+5. Vee-Validates: form validation, providing a flexible and declarative way to validate input fields.
+6. Vue Toastification: lightweight and customizable toast notification library.
+7. SweeatAlert2: responsive, and customizable replacement for JavaScript's native alert and modal dialogs.
+8. Vue i18n: localization library that helps manage multilingual support.
+9. Typescript: a typed superset of JavaScript adding static types to improve code quality and productivity.
+10. Vite / votes/plugin view: build tool and development server for web projects, with the Vue plugin enabling Vue integration.
+10. Vue Sidebar Menu: component for creating customizable and responsive sidebar menus in web applications.
+
+! It is important to consider that we are using other javascript libraries across this project, but those are the main ones.
+
+## Others Tech Information

@@ -1,40 +1,44 @@
-# haiko.ng.webfront
+Haiko.NG WebFront
+===
+_web-front solution_
 
-This template should help get you started developing with Vue 3 in Vite.
+This repo contains the whole Haiko.NG web front solution.
 
-## Recommended IDE Setup
+_technology stack_
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+![](https://img.shields.io/badge/Tech-Vue3-informational?style=flat&logo=Vue.js&logoColor=4FC08D)
+![](https://img.shields.io/badge/Tech-TypeScript-informational?style=flat&logo=typescript&logoColor=3178C6)
+![](https://img.shields.io/badge/Tech-Vite-informational?style=flat&logo=vite&logoColor=646CFF)
+![](https://img.shields.io/badge/Tech-Pinia-informational?style=flat&logo=datadotai&logoColor=F4C51C)
+![](https://img.shields.io/badge/Tech-Axios-informational?style=flat&logo=axios&logoColor=FF7200)
+![](https://img.shields.io/badge/Tech-Sass-informational?style=flat&logo=sass&logoColor=CC6699)
 
-## Type Support for `.vue` Imports in TS
+_misc_
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+![](https://img.shields.io/badge/build-passing-brightgreen?style=flat)
+![](https://img.shields.io/badge/release-v0.0.0-inactive?style=flat)
+![](https://img.shields.io/badge/coverage-0%25-critical?style=flat)
+![](https://img.shields.io/badge/reposize-0MB-inactive?style=flat)
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+## 📑 Table of content
 
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+1. ### 📄 [Architecture]
+2. ### 🧪 [Development]   
+3. ### 🚀 [Deployment]
+4. ### 📜 [Changelog]
 
-## Customize configuration
+## ApiDoc
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+http://\<running ip\>:\<port\>/swagger/index.html 
 
-## Project Setup
+## 👨‍💻 Dev Users
 
-```sh
-npm install
-```
+- Admin:
+    - user: admin@dev.com
+    - pass: admin
 
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
+ 
+[Architecture]: doc/arch.md
+[Development]: doc/dev.md
+[Deployment]: doc/deployment.md
+[Changelog]: doc/changelog.md

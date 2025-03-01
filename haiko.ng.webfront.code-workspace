@@ -1,0 +1,32 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+
+		"git.enableCommitSigning": true,
+		"git.enableSmartCommit": true,
+
+		"cSpell.language": "en,es",		
+		"cSpell.minWordLength": 4,
+		"cSpell.ignoreWords": [
+			"Odoo",
+			"Toastify",
+			"pickingtype",
+			"Toastification"
+
+		],
+		"cSpell.ignorePaths": [
+			"package-lock.json",
+			"node_modules",
+			"vscode-extension",
+			".git/{info,lfs,logs,refs,objects}/**",
+			".git/{index,*refs,*HEAD}",
+			".vscode",
+			".vscode-insiders",
+			"tsconfig.json"
+		]		
+	}
+}

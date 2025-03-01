@@ -1,0 +1,18 @@
+---
+description: Oveview and general information about this the repo, project and the entire solution
+globs: 
+---
+
+## Overview
+
+1. This repo is a frontend SPA (single-page application) we are building for an advanced ERP (similar to Odoo) system.
+2. The ERP system will be divided into the following modules:
+    - PoS: The Point of Sell
+    - Dashboard & Report: for the most reporting view of the system.
+    - Management: for specific business management operations.
+    - Inventory: all inventory operation.
+    - Production: bill of Material, recipes, and production records.
+    - Purchase: purchase management.
+    - People: staff and client management, and related operations.
+    - Gallery: product gallery with categorization.
+    - Configuration: the config for the end users.

@@ -1,0 +1,56 @@
+## 1 Overview
+
+This repo is a frontend SPA (single-page application) we are building for an advanced ERP (similar to Odoo) system.
+
+#### About some of the tech used in the project:
+
+- [Vue.js](https://vuejs.org/) - The main framework for the frontend.
+- [Pinia](https://pinia.vuejs.org/) - The state management library.
+- [Vite](https://vitejs.dev/) - The build tool.
+- [Sass](https://sass-lang.com/) - The CSS preprocessor.
+- [Axios](https://axios-http.com/) - The HTTP client.
+- [Vue Router](https://router.vuejs.org/) - Official routing library for Vue.js, enabling single-page application navigation with dynamic route matching.
+- [Vee-Validate](https://vee-validate.logaretm.com/v4/) - Form validation, providing a flexible and declarative way to validate input fields.
+- [Vue Toastification](https://vue-toastification.maronato.dev/) - Lightweight and customizable toast notification library.
+- [SweetAlert2](https://sweetalert2.github.io/) - Responsive and customizable replacement for JavaScript's native alert and modal dialogs.
+- [Vue i18n](https://vue-i18n.intlify.dev/) - Localization library that helps manage multilingual support.
+- [TypeScript](https://www.typescriptlang.org/) - A typed superset of JavaScript adding static types to improve code quality and productivity.
+- [Vite](https://vitejs.dev/) - Build tool and development server for web projects, with the Vue plugin enabling Vue integration.
+- [Vue Sidebar Menu](https://yaminncco.github.io/vue-sidebar-menu/) - Component for creating customizable and responsive sidebar menus in web applications.
+
+The ERP system will be divided into the following modules:
+- `PoS`: The Point of Sell
+- `Dashboard` & Report: for the most reporting view of the system.
+- `Management`: for specific business management operations.
+- `Inventory`: all inventory operation.
+- `Production`: bill of Material, recipes, and production records.
+- `Purchase`: purchase management.
+- `People`: staff and client management, and related operations.
+- `Gallery`: product gallery with categorization.
+- `Configuration`: the config for the end users.
+
+## 1.1 Project Structure Explained
+
+The code are contained in the `src` folder.
+
+- `assets`: Contains the static assets of the project.
+- `components`: Contains the reusable components of the project. This component may be implemented using Option API or Composition API.
+- `composables`: Contains the composables (Vue Composition API) of the project. This are common and reusable logic files that acts like javascript libraries.
+- `layouts`: Contains the definitions off the layouts used in the views, so the variations structuring the UI can be easily reused in different views. This files defines the TOP-level structure of information block in the UI.
+- `configs`: This folder holds the configurations parameters of the app.
+- `router`: This folder contain the routes definition of the app. Commonly the route are grouped in folders named based on the module name of the business logic modules they are related to. In this folder we use a `index.ts` file, so we can define all the separate routes files into one single file.
+- `services`: This folder contain the app services. Summarizing, services are common and reusable logic folders that may acts like javascript libraries. Some of these services folders are the following:
+
+    - `api`: contains the definition and some configuration for the backend API calls. Inside this folder we can find other folders named after the business logic modules we are calling, such as **pos**, **inventory**, **production**, etc.
+
+    - `composables`: This folder holds files that will act like javascript libraries, containing common and reusable logic that can be used in the app. The composables files should be defined in a way that is compatible with the Vue Composition API.
+
+    - `definitions`: This folder contains the TOP-level definitions such as types, enums, interfaces, etc. The entities (DTOs / backend models) are defined in the `entities` folder contained in the `definitions` folder; the same applies to the vee-validations rules (used in form validation) also contained in the `definitions` folder.
+
+    - `helpers`: This folder contains small and very specific helpers functions grouped in files.
+
+    - `i18n`: This folder contains the i18n configuration and the translations files.
+
+- `stores`: This folder contain the files of each Pinia store, for sharing data across the entire application. 
+
+- `views`: This folder act as the presentation layer of the project. It contains the files of each view of the app. Commonly, the views files are grouped in folders named based on the module name of the business logic modules they are related to. 
