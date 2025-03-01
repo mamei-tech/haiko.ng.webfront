@@ -11,13 +11,7 @@
 
 		"cSpell.language": "en,es",		
 		"cSpell.minWordLength": 4,
-		"cSpell.ignoreWords": [
-			"Odoo",
-			"Toastify",
-			"pickingtype",
-			"Toastification"
-
-		],
+		"cSpell.ignoreWords": [],
 		"cSpell.ignorePaths": [
 			"package-lock.json",
 			"node_modules",
@@ -27,6 +21,28 @@
 			".vscode",
 			".vscode-insiders",
 			"tsconfig.json"
-		]		
+		],
+		"cSpell.words": [
+			"abar",
+			"abutton",
+			"DT_ACTIONBAR_MODE",
+			"fmode",
+			"FMODE",
+			"IFEMPTY",
+			"JEDINDEL",
+			"MNFACTRN",
+			"nomenc",
+			"Odoo",
+			"ONLYSAME",
+			"pickingtype",
+			"Pinia",
+			"strg",
+			"toastification",
+			"Toastification",
+			"Toastify",
+			"TTL",
+			"uomid",
+			"wlocations"
+		]
 	}
 }

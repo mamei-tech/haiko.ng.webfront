@@ -1,6 +1,7 @@
 // Store for nomenclatures data from the backend
 import { defineStore } from 'pinia'
 import { i18n } from '@/services/i18n'
+import appConfig from '@/configs/app.conf'
 import { toDicIds } from '@/services/helpers/help-conversion'
 import { WARE_LOC_TYPE, STRG_PROD_POLICY, CORE_PICKING_TYPE } from '@/services/definitions'
 import { ApiNomenclaturesMng } from '@/services/api/api-nomenclatures-manager'
@@ -25,8 +26,12 @@ import type {
     IWareLocationBasic, IWarehouseBasic, IWareLocationType
 } from '@/services/definitions'
 
-
-const { t } = i18n.global
+/**
+ * Cache time-to-live in milliseconds.
+ * This value is defined in the config file and is used to set the time-to-live for the cache of the data.
+ */
+const CACHE_TTL = appConfig.app.store_cache_ttl * 60 * 1000     // take minutes defined in config and convert it to milliseconds
+const { t }     = i18n.global
 
 
 // https://pinia.vuejs.org/core-concepts/#setup-stores
@@ -65,7 +70,30 @@ export const useSt_Nomenclatures = defineStore({
             { id: CORE_PICKING_TYPE.OUTGOING },
             { id: CORE_PICKING_TYPE.TRANSFER },
             { id: CORE_PICKING_TYPE.MNFACTRN }
-        ]
+        ],
+
+        /**
+         * Last request time-span in milliseconds.
+         * This object is used to store the time-span of the last request for each state collection.
+         * The key is the collection Pinia store collection name and the value is the time-span in milliseconds.
+         */
+        lrt: {
+            uom:                0,
+            roles:              0,
+            suppCat:            0,
+            prodCat:            0,
+            prodUoM:            0,
+            countries:          0,
+            states:             0,
+            staffs:             0,
+            suppliers:          0,
+            pickingTypes:       0,
+            currencies:         0,
+            wlocations:         0,
+            warehouses:         0,
+            strgCategories:     0,
+            companies:          0
+        }
     }),
 
     /**
@@ -362,51 +390,54 @@ export const useSt_Nomenclatures = defineStore({
          * Tries to get the defines system users roles from the backend
          */
         async reqNmcRoles () : Promise<void> {
+            if (!_isReqNeeded('roles', this)) return
 
             return await new Promise<void>((resolve, reject) => {
                 ApiNomenclaturesMng.getRoles()
                 .then((response:any) => {
 
                     this.roles = response.data
+                    _updateLrt('roles', this)
                     resolve()
 
                 }).catch(error => { reject(error) })
             })
-
         },
 
         /**
          * Tries to get the supplier categories from the backend
          */
         async reqNmcSuppCat () : Promise<void> {
+            if (!_isReqNeeded('suppCat', this)) return
 
             return await new Promise<void>((resolve, reject) => {
                 ApiNomenclaturesMng.getSuppCat()
                 .then((response:any) => {
 
                     this.suppCat = response.data
+                    _updateLrt('suppCat', this)
                     resolve()
 
                 }).catch(error => { reject(error) })
             })
-
         },
 
         /**
          * Tries to get the product categories from the backend
          */
         async reqNmcProdCat () : Promise<void> {
+            if (!_isReqNeeded('prodCat', this)) return
 
             return await new Promise<void>((resolve, reject) => {
                 ApiNomenclaturesMng.getProdCat()
                 .then((response:any) => {
 
                     this.prodCat = response.data
+                    _updateLrt('prodCat', this)
                     resolve()
 
                 }).catch(error => { reject(error) })
             })
-
         },
 
         /**
@@ -415,11 +446,13 @@ export const useSt_Nomenclatures = defineStore({
          * @param query Allows a query string to search for specific product
          */
         async reqNmcProdUoM (query: string | null = null): Promise<void> {
+            if (!_isReqNeeded('prodUoM', this)) return
 
             return await new Promise<void>((resolve, reject) => {
                 ApiNomenclaturesMng.getProdUoM(query).then(( response: any ) => {
 
                     this.prodUoM = response.data
+                    _updateLrt('prodUoM', this)
                     resolve()
 
                 }).catch(error => { reject(error) })
@@ -432,11 +465,13 @@ export const useSt_Nomenclatures = defineStore({
          * @param ids products identifiers to filter for
          */
         async reqNmcProdUoMById (ids: Array<number>): Promise<void> {
+            if (!_isReqNeeded('prodUoM', this)) return
 
             return await new Promise<void>((resolve, reject) => {
                 ApiNomenclaturesMng.getProdUoMFilteredById(ids).then(( response: any ) => {
 
                     this.prodUoM = response.data
+                    _updateLrt('prodUoM', this)
                     resolve()
 
                 }).catch(error => { reject(error) })
@@ -447,12 +482,14 @@ export const useSt_Nomenclatures = defineStore({
          * Tries to get all the UoMs from the backend
          */
         async reqNmcUoM () : Promise<void> {
+            if (!_isReqNeeded('uom', this)) return
 
             return await new Promise<void>((resolve, reject) => {
                 ApiNomenclaturesMng.getUoM()
                 .then((response:any) => {
 
                     this.uom = response.data
+                    _updateLrt('uom', this)
                     resolve()
 
                 }).catch(error => { reject(error) })
@@ -464,11 +501,13 @@ export const useSt_Nomenclatures = defineStore({
          * @param uomid UoM identifier to look up the entire category its belongs to
          */
         async reqNmcUoMSameCat( uomid: number ): Promise<void> {
+            if (!_isReqNeeded('uom', this)) return
 
             return await new Promise<void>(( resolve, reject ) => {
                 ApiNomenclaturesMng.getUoMSameCat(uomid).then(( response: any ) => {
 
                     this.uom = response.data
+                    _updateLrt('uom', this)
                     resolve()
 
                 }).catch(error => { reject(error) })
@@ -479,12 +518,14 @@ export const useSt_Nomenclatures = defineStore({
          * Tries to fetch the defined companies list from the backend
          */
         async reqNmcCompanies (): Promise<void> {
+            if (!_isReqNeeded('companies', this)) return
 
             return await new Promise<void>((resolve, reject) => {
                 ApiNomenclaturesMng.getCompanyM()
                 .then((response:any) => {
 
                     this.companies = response.data
+                    _updateLrt('companies', this)
                     resolve()
 
                 }).catch(error => { reject(error) })
@@ -495,12 +536,14 @@ export const useSt_Nomenclatures = defineStore({
          * Tries to get the countries from the backend
          */
         async reqNmcCountries () : Promise<void> {
+            if (!_isReqNeeded('countries', this)) return
 
             return await new Promise<void>((resolve, reject) => {
                 ApiNomenclaturesMng.getCountries()
                 .then((response:any) => {
 
                     this.countries = response.data
+                    _updateLrt('countries', this)
                     resolve()
 
                 }).catch(error => { reject(error) })
@@ -512,12 +555,14 @@ export const useSt_Nomenclatures = defineStore({
          * @param countryId Identifier of the country we want to look for
          */
         async reqNmcCountriesStates (countryId: string) : Promise<void> {
+            if (!_isReqNeeded('states', this)) return
 
             return await new Promise<void>((resolve, reject) => {
                 ApiNomenclaturesMng.getCountryStates(countryId)
                 .then((response:any) => {
 
                     this.states = response.data
+                    _updateLrt('states', this)
                     resolve()
 
                 }).catch(error => { reject(error) })
@@ -528,12 +573,14 @@ export const useSt_Nomenclatures = defineStore({
          * Tries to get the staff defined on the system. The staff will have only minimum data
          */
         async reqNmcStaff(): Promise<void> {
+            if (!_isReqNeeded('staffs', this)) return
 
             return await new Promise<void>((resolve, reject) => {
                 ApiNomenclaturesMng.getStaff()
                 .then((response:any) => {
 
                     this.staffs = response.data
+                    _updateLrt('staffs', this)
                     resolve()
 
                 }).catch(error => { reject(error) })
@@ -545,15 +592,17 @@ export const useSt_Nomenclatures = defineStore({
          *
          * @param onlyContactType When this parameter is true, just Suppliers of type 'Contact' will be retrieved.
          * Otherwise (false), when its present and equal to 'all', all types Suppliers will be retrieved.
-         * TODO este nomenclador es posible que se necesite paginar, pues es totalmente seguro, q crecerá haciendo gordísimo el request
+         * TODO este nomenclador es posible que se necesite paginar, pues es totalmente seguro, q crecerá haciendo gordo el request
          */
         async reqNmcSuppliers(onlyContactType: boolean = true): Promise<void> {
+            if (!_isReqNeeded('suppliers', this)) return
 
             return await new Promise<void>((resolve, reject) => {
                 ApiNomenclaturesMng.getSuppliersM(onlyContactType)
                 .then((response:any) => {
 
                     this.suppliers = response.data
+                    _updateLrt('suppliers', this)
                     resolve()
 
                 }).catch(error => { reject(error) })
@@ -564,12 +613,14 @@ export const useSt_Nomenclatures = defineStore({
          * Tries to get the inventory picking types defined on the system. The picking type list will have only minimum data
          */
         async reqNmcPickingTypes(): Promise<void> {
+            if (!_isReqNeeded('pickingTypes', this)) return
 
             return await new Promise<void>((resolve, reject) => {
                 ApiNomenclaturesMng.getPickingTypeM()
                 .then((response:any) => {
 
                     this.pickingTypes = response.data
+                    _updateLrt('pickingTypes', this)
                     resolve()
 
                 }).catch(error => { reject(error) })
@@ -581,11 +632,14 @@ export const useSt_Nomenclatures = defineStore({
          */
         async reqNmcCurrency(): Promise<void> {
 
+            if (!_isReqNeeded('currencies', this)) return
+
             return await new Promise<void>((resolve, reject) => {
                 ApiNomenclaturesMng.getCurrenciesM()
                 .then((response:any) => {
 
                     this.currencies = response.data
+                    _updateLrt('currencies', this)
                     resolve()
 
                 }).catch(error => { reject(error) })
@@ -597,11 +651,14 @@ export const useSt_Nomenclatures = defineStore({
          */
         async reqNmcStrgCategoriesM(): Promise<void> {
 
+            if (!_isReqNeeded('strgCategories', this)) return
+
             return await new Promise<void>((resolve, reject) => {
                 ApiNomenclaturesMng.getStrgCategoriesM()
                 .then((response:any) => {
 
                     this.strgCategories = response.data
+                    _updateLrt('strgCategories', this)
                     resolve()
 
                 }).catch(error => { reject(error) })
@@ -614,11 +671,15 @@ export const useSt_Nomenclatures = defineStore({
          */
         async reqNmcWareLocations( wareID: number = 0 ): Promise<void> {
 
+            if (!_isReqNeeded('wlocations', this)) return
+
             return await new Promise<void>((resolve, reject) => {
                 ApiNomenclaturesMng.getWareLocationsM(wareID)
                 .then((response:any) => {
 
                     this.wlocations = response.data
+
+                    _updateLrt('wlocations', this)
                     resolve()
 
                 }).catch(error => { reject(error) })
@@ -630,11 +691,14 @@ export const useSt_Nomenclatures = defineStore({
          */
         async reqNmcWarehouses(): Promise<void> {
 
+            if (!_isReqNeeded('warehouses', this)) return
+
             return await new Promise<void>((resolve, reject) => {
                 ApiNomenclaturesMng.getWarehousesM()
                 .then((response:any) => {
 
                     this.warehouses = response.data
+                    _updateLrt('warehouses', this)
                     resolve()
 
                 }).catch(error => { reject(error) })
@@ -644,7 +708,7 @@ export const useSt_Nomenclatures = defineStore({
     }
 })
 
-//region ======== STATE INTERFACE =======================================================
+//#region ======== STATE INTERFACE =======================================================
 
 interface INmcState {
     uom:                Array<IUoMBasic>,
@@ -664,6 +728,55 @@ interface INmcState {
     wlocationsTypes:    Array<IWareLocationType>,
     strgCategories:     Array<IStrgCategoryBasic>,
     corePickingType:    Array<ICorePickingType>,
+
+    lrt: {
+        uom:                number,
+        roles:              number,
+        suppCat:            number,
+        prodCat:            number,
+        prodUoM:            number,
+        countries:          number,
+        states:             number,
+        staffs:             number,
+        suppliers:          number,
+        pickingTypes:       number,
+        currencies:         number,
+        wlocations:         number,
+        warehouses:         number,
+        companies:          number,
+        strgCategories:     number
+    }
 }
 
-//endregion =============================================================================
+//#endregion =============================================================================
+
+//#region ======== LOCAL HELPERS =========================================================
+
+/**
+ * Checks if a request is needed for a store entity collection according to the time-to-live (ttl) value and the last request time-span.
+ * 
+ * @param key The key of the collection to check.
+ * @param state The state of the store.
+ * @returns True if a request is needed, false otherwise.
+ */
+const _isReqNeeded = ( key: string, state: INmcState ): boolean => {
+
+    if (state.lrt[key as keyof INmcState["lrt"]] == undefined) return true
+
+    const now = Date.now()
+    if (now - state.lrt[key as keyof INmcState["lrt"]] > CACHE_TTL) return true
+
+    else return false
+}
+
+/**
+ * Updates the last request time-span for a store entity collection.
+ * 
+ * @param key The key of the collection to update.
+ * @param state The state of the store.
+ */
+const _updateLrt = ( key: string, state: INmcState ): void => {
+    state.lrt[key as keyof INmcState["lrt"]] = Date.now()
+}
+
+//#endregion =============================================================================
