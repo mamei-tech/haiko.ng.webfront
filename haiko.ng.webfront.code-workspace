@@ -23,26 +23,29 @@
 			"tsconfig.json"
 		],
 		"cSpell.words": [
+			"TTL",
+			"strg",
+			"Odoo",
 			"abar",
-			"abutton",
-			"DT_ACTIONBAR_MODE",
+			"Pinia",
 			"fmode",
 			"FMODE",
+			"uomid",
+			"nomenc",
 			"IFEMPTY",
+			"abutton",
+			"Toastify",
+			"Dialogfy",
 			"JEDINDEL",
 			"MNFACTRN",
-			"nomenc",
-			"Odoo",
 			"ONLYSAME",
+			"actionbar",
+			"wlocation",
+			"wlocations",
 			"pickingtype",
-			"Pinia",
-			"strg",
 			"toastification",
 			"Toastification",
-			"Toastify",
-			"TTL",
-			"uomid",
-			"wlocations"
+			"DT_ACTIONBAR_MODE"
 		]
 	}
 }

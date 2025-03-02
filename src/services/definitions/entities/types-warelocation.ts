@@ -18,7 +18,7 @@ export interface IWareLocationBasic extends IIndexable {
 }
 
 /**
- * Interface for describing a Warehouse row on the datatable
+ * Interface for describing a Warehouse row on the data-table
  */
 export interface IWareLocationRow extends IWareLocationBasic {
     lName: string,
@@ -26,7 +26,7 @@ export interface IWareLocationRow extends IWareLocationBasic {
 }
 
 /**
- * Interface for describing a Warehouse (storage) Location on the datatable (WareLocation)
+ * Interface for describing a Warehouse (storage) Location on the data-table (WareLocation)
  */
 export interface IDtoWareLocation extends IWareLocationRow {
     parentID: number | undefined,                               // storage location parent of this location

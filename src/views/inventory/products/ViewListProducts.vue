@@ -58,13 +58,13 @@ import {
 import type { IDataTableQuery, IColumnHeader, IProductRow, IExtFilterGroup, IBulkData,  TOpsKind, TFormMode, IIndexable } from '@/services/definitions'
 
 
-//region ======== STATE INTERFACE =======================================================
+//#region ======== STATE INTERFACE =======================================================
 
 interface IProductState {
     entityPage: IProductRow[]
 }
 
-//endregion =============================================================================
+//#endregion =============================================================================
 
 export default defineComponent({
     name: 'ViewListProducts',
@@ -79,14 +79,14 @@ export default defineComponent({
         const toast = useToast()
 
         const st_pagination = useSt_Pagination()
-        const st_nomenclatures = useSt_Nomenclatures()                                      // Pinia store for nomenclatures// pinia instance of pagination store | check the text on --> https://pinia.vuejs.org/cookbook/composing-stores.html#nested-stores
+        const st_nomenclatures = useSt_Nomenclatures()                                      // Pinia store for nomenclatures | Pinia instance of pagination store | check the text on --> https://pinia.vuejs.org/cookbook/composing-stores.html#nested-stores
 
         const ls_products = ref<IProductState>({ entityPage: [] as IProductRow[] })
 
-        const abutton_mode: DT_ACTION_BUTTON_MODE = DT_ACTION_BUTTON_MODE.JEDINDEL          // datatable button mode
-        const abar_mode: DT_ACTIONBAR_MODE = DT_ACTIONBAR_MODE.COMMON                       // datatable action bar mode
+        const abutton_mode: DT_ACTION_BUTTON_MODE = DT_ACTION_BUTTON_MODE.JEDINDEL          // data-table button mode
+        const abar_mode: DT_ACTIONBAR_MODE = DT_ACTIONBAR_MODE.COMMON                       // data-table action bar mode
         const columns = ref<Partial<IColumnHeader>[]>(HProductTable)                        // entity customized data-table
-        const headerFilters = [ 'pCategoryID', 'isActive', 'doWeTrackInventory' ]           // datatable filters  !!! you must use the real field names (nav keys in the HProductTable object)
+        const headerFilters = [ 'pCategoryID', 'isActive', 'doWeTrackInventory' ]           // data-table filters  !!! you must use the real field names (nav keys in the HProductTable object)
         const extFilters: IExtFilterGroup[] =
                 [
                     {
@@ -103,7 +103,7 @@ export default defineComponent({
 
         //#endregion ==========================================================================
 
-        //region ======= HOOKS ================================================================
+        //#region ======= HOOKS ================================================================
 
         /**
          * setup is called before component creation, so the onMounted hook is a good time / place to
@@ -113,11 +113,11 @@ export default defineComponent({
          */
         onMounted(() => {
             // getting supplier categories definitions from the system (side effect)
-            // this is used to fetch supplier category basic data from the system so we can map the cat identifier to cat name in the datatable column
+            // this is used to fetch supplier category basic data from the system so we can map the cat identifier to cat name in the data-table column
             st_nomenclatures.reqNmcProdCat()
             .then(() => {
                 columns.value[6].filterSelectOptions = st_nomenclatures.getProdCat4Select
-                // the 6th column is 'category' / 'sCategoryID' column. In this datatable this is a (column header) filter
+                // the 6th column is 'category' / 'sCategoryID' column. In this data-table this is a (column header) filter
                 // (see filters in the declaration section). So, rather define the 'select options' filter data statically in the
                 // data-datable.ts file, we weed to do it dynamically. Hence this here and no the conventionally
                 // definition in data-datable.ts.
@@ -141,12 +141,12 @@ export default defineComponent({
             window.removeEventListener('keydown', h_keyboardKeyPress)            // cleaning the event manually added before to the document. Wee need to keep the things as clean as posible
         })
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
         //#region ======= FETCHING DATA & ACTIONS =============================================
 
         const a_reqQuery = ( queryData: IDataTableQuery | undefined = undefined ) => {
-            // getting the product list data for populating the datatable (side effect)
+            // getting the product list data for populating the data-table (side effect)
             ApiProduct.getPage(st_pagination.getQueryData)
             .then(( response: any ) => {
 
@@ -199,13 +199,13 @@ export default defineComponent({
         //#region ======= COMPUTATIONS & GETTERS ==============================================
         //#endregion ==========================================================================
 
-        //region ======= HELPERS ==============================================================
+        //#region ======= HELPERS ==============================================================
 
         /**
-         * Maps the product categories id present in one of the fields of the list of datatable records (products),
+         * Maps the product categories id present in one of the fields of the list of data-table records (products),
          * to the actual product categories name (user friendliness)
          *
-         * ❗ Also this mathe makes other local data transformation, such as formatting jobs
+         * ❗ Also this method makes other local data transformation, such as formatting jobs
          */
         const mappingProperties = () => {
             if (IsEmptyObj(st_nomenclatures.getProdCatByIdMap)) return        // If there are no supplier categories yet, retrieve the entities as it is
@@ -218,7 +218,7 @@ export default defineComponent({
                 // there is a chance that this line run, and the pUoMID field was already mapped to the role name making it a string value so we can used as index anymore, so we have to check first
                 if(IsNumber(prodRow.pUoMID)) prodRow.pUoMID = st_nomenclatures.getUoMByIdMap[+prodRow.pUoMID].uName
 
-                // so the 0 value doesnt mess with the user in the UI making them confuse, we remove the 0 values
+                // so the 0 value doesn't mess with the user in the UI making them confuse, we remove the 0 values
                 if (prodRow.pTotalStock == 0) prodRow.pTotalStock = 0
 
                 return prodRow
@@ -227,7 +227,7 @@ export default defineComponent({
 
         //#endregion ==========================================================================
 
-        //region ======= NAVIGATION ===========================================================
+        //#region ======= NAVIGATION ===========================================================
 
         const nav_2Hub = () => {
             // router.back()
@@ -252,7 +252,7 @@ export default defineComponent({
             })
         }
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
         //#region ======= EVENTS HANDLERS & WATCHERS ==========================================
 

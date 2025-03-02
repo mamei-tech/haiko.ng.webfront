@@ -53,13 +53,13 @@ import {
 import type { TFormMode, IColumnHeader, IDataTableQuery, IIndexable, IDtoWarehouse } from '@/services/definitions'
 
 
-//region ======== STATE INTERFACE =======================================================
+//#region ======== STATE INTERFACE =======================================================
 
 interface IWarehouseState {
     entityPage: IDtoWarehouse[]
 }
 
-//endregion =============================================================================
+//#endregion =============================================================================
 
 
 export default defineComponent({
@@ -75,19 +75,19 @@ export default defineComponent({
         const router = useRouter()
 
         const st_pagination = useSt_Pagination()
-        const st_nomenclatures = useSt_Nomenclatures()                                      // Pinia store for nomenclatures// pinia instance of pagination store | check the text on --> https://pinia.vuejs.org/cookbook/composing-stores.html#nested-stores
+        const st_nomenclatures = useSt_Nomenclatures()                                      // Pinia store for nomenclatures | Pinia instance of pagination store | check the text on --> https://pinia.vuejs.org/cookbook/composing-stores.html#nested-stores
         const ls_warehouses = ref<IWarehouseState>({ entityPage: [] as IDtoWarehouse[] })
 
-        const abar_mode: DT_ACTIONBAR_MODE = DT_ACTIONBAR_MODE.JC                           // datatable action bar mode
-        const abutton_mode: DT_ACTION_BUTTON_MODE = DT_ACTION_BUTTON_MODE.JEDINDEL          // datatable button mode
-        const columns = ref<Partial<IColumnHeader>[]>(HWarehouseTable)                      // entity customized datatable header | As here the data for the filter is dynamically (side-effect) obtained, we need to use ref so we can fill the datas
+        const abar_mode: DT_ACTIONBAR_MODE = DT_ACTIONBAR_MODE.JC                           // data-table action bar mode
+        const abutton_mode: DT_ACTION_BUTTON_MODE = DT_ACTION_BUTTON_MODE.JEDINDEL          // data-table button mode
+        const columns = ref<Partial<IColumnHeader>[]>(HWarehouseTable)                      // entity customized data-table header | As here the data for the filter is dynamically (side-effect) obtained, we need to use ref so we can fill the datas
 
         const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
         const { dfyConfirmation, dfyShowAlert } = useDialogfy()
 
         //#endregion ==========================================================================
 
-        //region ======= HOOKS ================================================================
+        //#region ======= HOOKS ================================================================
 
         /**
          * setup is called before component creation, so the onMounted hook is a good time / place to
@@ -108,12 +108,12 @@ export default defineComponent({
             window.removeEventListener('keydown', h_keyboardKeyPress)                // cleaning the event manually added before to the document. Wee need to keep the things as clean as posible
         })
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
         //#region ======= FETCHING DATA & ACTIONS =============================================
 
         const a_reqQuery = ( queryData: IDataTableQuery | undefined = undefined ) => {
-            // getting the product list data for populating the datatable (side effect)
+            // getting the product list data for populating the data-table (side effect)
             ApiWarehouse.getPage(st_pagination.getQueryData)
             .then(( response: any ) => {
 
@@ -137,7 +137,7 @@ export default defineComponent({
         //#region ======= COMPUTATIONS & GETTERS ==============================================
         //#endregion ==========================================================================
 
-        //region ======== HELPERS =============================================================
+        //#region ======= HELPERS =============================================================
 
         /**
          *  'Address' column is actually using the 'Partner' / 'Supplier' record identifier. This method maps that identifier
@@ -160,7 +160,7 @@ export default defineComponent({
 
         //#endregion ==========================================================================
 
-        //region ======= NAVIGATION ===========================================================
+        //#region ======= NAVIGATION ===========================================================
 
         const nav_2Hub = () => {
             // router.back()
@@ -185,7 +185,7 @@ export default defineComponent({
             })
         }
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
         //#region ======= EVENTS HANDLERS & WATCHERS ==========================================
 
