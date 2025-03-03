@@ -759,12 +759,12 @@ interface INmcState {
  * @param state The state of the store.
  * @returns True if a request is needed, false otherwise.
  */
-const _isReqNeeded = ( key: string, state: INmcState ): boolean => {
+const _isReqNeeded = ( key: keyof INmcState["lrt"], state: INmcState ): boolean => {
 
-    if (state.lrt[key as keyof INmcState["lrt"]] == undefined) return true
+    if (state.lrt[key] == undefined) return true
 
     const now = Date.now()
-    if (now - state.lrt[key as keyof INmcState["lrt"]] > CACHE_TTL) return true
+    if (now - state.lrt[key] > CACHE_TTL) return true
 
     else return false
 }
@@ -775,8 +775,8 @@ const _isReqNeeded = ( key: string, state: INmcState ): boolean => {
  * @param key The key of the collection to update.
  * @param state The state of the store.
  */
-const _updateLrt = ( key: string, state: INmcState ): void => {
-    state.lrt[key as keyof INmcState["lrt"]] = Date.now()
+const _updateLrt = ( key: keyof INmcState["lrt"], state: INmcState ): void => {
+    state.lrt[key] = Date.now()
 }
 
 //#endregion =============================================================================
