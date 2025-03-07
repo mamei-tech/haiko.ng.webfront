@@ -18,14 +18,14 @@ export interface IChecked {
 /***
  * Generic type for a non param function
  */
-export interface Function0<T = void> {
+export interface Function0<T = any> {
     (): T
 }
 
 /***
  * Generic type for a functions with one parameter
  */
-export interface Function1<T1, T2 = void> {
+export interface Function1<T1, T2 = any> {
     ( param1: T1 ): T2
 }
 
@@ -40,7 +40,7 @@ export interface IExtFilter {
 }
 
 /**
- * Database extended filters group. If we need to define more (extended) filters for a datatable than we can define in the columns headers,
+ * Database extended filters group. If we need to define more (extended) filters for a data-table than we can define in the columns headers,
  * this is the solution.
  */
 export interface IExtFilterGroup {
@@ -49,7 +49,7 @@ export interface IExtFilterGroup {
 }
 
 /**
- * Interface to describe object for datatable headers abstraction.
+ * Interface to describe object for data-table headers abstraction.
  * This create a flexible configuration for describing how to handle the headers and cell representation.
  */
 export interface IColumnHeader {
@@ -116,18 +116,22 @@ export interface IColumnHeader {
      */
     listOPillsUoM: boolean | undefined
     /**
-     * Tells if we want a normal / basic editable cell on click event, built-in the datatable
+     * Tells if we want a normal / basic editable cell on click event, built-in the data-table
      * ❗ This property and cellEditableSelect should be mutual exclusive
      */
     cellEditable: boolean | undefined
     /**
-     * Tells if we want a select editable cell on click event, built-in the datatable
+     * Tells if we want a select editable cell on click event, built-in the data-table
      * ❗ This property and cellEditable should be mutual exclusive
      */
     cellEditableSelect: boolean | undefined
     cellEditableSelectOptions: IMultiselectBasic[] | undefined
     cellEditableSelectPlaceholder: string | undefined
     cellEditableSelectSearchable: boolean | undefined
+    /**
+     * Editable cell for datetime
+     */
+    cellEditableDateTime: boolean
     /**
      * A function of /services/definition/validation/ schema, to be used as a callback for validating the editable cell data when it changes
      */
@@ -153,29 +157,28 @@ export interface IColumnHeader {
      */
     iconMapBinary: Array<{ val: number | string | boolean, icon: string }> | undefined
     /**
-     * Defines the conversion (or mapping)
+     * Defines a conversion (or mapping) to be use for colorizing the cell text in the table 
      *
      * @param val reference value to map the color to
      * @param color CSS color str to be mapped
      */
     colorMapValues: Array<{val: number | string | boolean, color: string}> | undefined
+    /**
+     * Defines a function to be evaluated in the correspondent column. The function must return a color to be rendered.
+     * colorRenFn -> color render function.
+     */
+    colorRenFn: Function1<any>
 
     /**
      * Define if we want to render an string of characters as a cell prefix on the table records
-     * e.g: $ <00.00>  | for a price datatable cell
+     * e.g: $ <00.00>  | for a price data-table cell
      */
     prefixStr: string | undefined
-
     /**
      * Define if we want to render an string of characters as a cell suffix on the table records
-     * e.g: <120> cm  | for a measurement value datatable cell
+     * e.g: <120> cm  | for a measurement value data-table cell
      */
     suffixStr: string | undefined
-
-    /**
-     * Editable cell for datetime
-     */
-    cellEditableDateTime: boolean
     /**
      * Tells the kind of render needed for the datetime field e.g 'datetime-local', 'date', 'week'
      */
@@ -267,12 +270,12 @@ export type TBulkActions = {
 }
 
 /**
- * Datatable sort header direction
+ * Data-table sort header direction
  */
 export type SortDir = 'ASC' | 'DESC' | ''
 
 /**
- * This type hold the base query information related to a datatable
+ * This type hold the base query information related to a data-table
  */
 export interface IDTQueryBase {
     sortdir: SortDir
@@ -365,7 +368,7 @@ export interface IScrollInfo {
 }
 
 /**
- * Used as object to hold the data when a datatable cell is updated
+ * Used as object to hold the data when a data-table cell is updated
  */
 export interface ICellUpdate {
     entityId: number,
@@ -390,7 +393,7 @@ export interface IMultiselectBasic {
 }
 
 /**
- * vCard v4 interface so the necesary props are defined
+ * vCard v4 interface so the necessary props are defined
  * reference -> https://github.com/joonhocho/vcard-generator
  */
 export interface IvCard {

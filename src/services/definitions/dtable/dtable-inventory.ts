@@ -11,6 +11,35 @@ import type { IColumnHeader } from '@/services/definitions'
 
 const { t } = i18n.global
 
+
+//#region ======= HELPERS =============================================================
+
+
+/**
+ * Decides (select) which color needs to be render in the TD according with the TD text given by the Data-Table component
+ *  
+ * @param tdTxt should be the TD text coming from the Data-Table component
+ */
+const selCellTxColor = (tdTxt: string): string => {
+
+    const fw = tdTxt.split(' ')[0]                  // first word
+
+    if      (fw === 'Hace')         return 'red'
+    else if (
+            tdTxt === 'En 1 días' 
+        ||  tdTxt === 'En 1 día'
+    )                               return '#df9100'
+    else if (fw === 'En')           return 'green'
+
+    // TODO by now we only cover `ES` i18n lang. If `EN` is implemented, we need it to included here.
+
+    return ''
+}
+
+//#endregion ==========================================================================
+
+//#region ======= HEADERS =============================================================
+
 // H means headers
 // this struct defines (tells) to the CmpDataTable how it should render and process the table headers and the cells
 // for a specific data
@@ -170,3 +199,31 @@ export const HPickingTypeTable: Partial<IColumnHeader>[] = [
         styleWidth:   40
     }
 ]
+
+export const HPickingTable: Partial<IColumnHeader>[] = [
+    { title: 'id', hidden: true },
+
+    { title: '', chk: true, styleWidth: 2 },
+    { title: 'reference', navKey: 'pickName', sorting: '', styleWidth: 14 },
+
+    { title: 'contact', navKey: 'contactID',  styleWidth: 20 },                                                          // select filter
+    { title: 'type', navKey: 'pickingType', sorting: '', styleWidth: 14 },                              // select filter
+
+    { title: 'src', navKey: 'pSrcWareLocationID', sorting: '', styleToCenter: true, styleWidth: 12 },
+    { title: 'dest', navKey: 'pDestWareLocationID', sorting: '', styleToCenter: true, styleWidth: 12 },
+    { 
+        title: 'scheduled-date', 
+        navKey: 'pScheduleDate', 
+        styleWidth: 20,
+        styleToRight: true,
+        colorRenFn: selCellTxColor
+    
+    },
+    {
+        title:        '',            // actions buttons
+        styleToRight: true,
+        styleWidth:   5
+    }
+]
+
+//#endregion ==========================================================================
