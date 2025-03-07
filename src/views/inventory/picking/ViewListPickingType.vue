@@ -50,13 +50,13 @@ import {
 import type { IPickingTypeRow, IDataTableQuery, IColumnHeader, TOpsKind, TFormMode, IIndexable } from '@/services/definitions'
 
 
-//region ======== STATE INTERFACE =======================================================
+//#region ======== STATE INTERFACE =======================================================
 
 interface IPickingTypeState {
     entityPage: IPickingTypeRow[]
 }
 
-//endregion =============================================================================
+//#endregion =============================================================================
 
 export default defineComponent({
     name: 'ViewListPickingType',
@@ -83,7 +83,7 @@ export default defineComponent({
 
         //#endregion ==========================================================================
 
-        //region ======= HOOKS ================================================================
+        //#region ======= HOOKS ================================================================
 
         /**
          * setup is called before component creation, so the onMounted hook is a good time / place to
@@ -108,7 +108,7 @@ export default defineComponent({
             window.removeEventListener('keydown', h_keyboardKeyPress)            // cleaning the event manually added before to the document. Wee need to keep the things as clean as posible
         })
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
         //#region ======= FETCHING DATA & ACTIONS =============================================
 
@@ -162,10 +162,10 @@ export default defineComponent({
         //#region ======= COMPUTATIONS & GETTERS ==============================================
         //#endregion ==========================================================================
 
-        //region ======= HELPERS ==============================================================
+        //#region ======= HELPERS ==============================================================
         //#endregion ==========================================================================
 
-        //region ======= NAVIGATION ===========================================================
+        //#region ======= NAVIGATION ===========================================================
 
         const nav_2Hub = () => {
             // router.back()
@@ -190,7 +190,7 @@ export default defineComponent({
             })
         }
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
         //#region ======= EVENTS HANDLERS & WATCHERS ==========================================
 

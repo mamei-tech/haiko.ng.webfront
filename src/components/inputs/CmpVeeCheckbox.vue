@@ -42,16 +42,16 @@
         emits: [ 'chkboxchange' ],
         setup( props: any, context: any ) {
 
-            //region ======== DECLARATIONS & LOCAL STATE ============================================
+            //#region ======== DECLARATIONS & LOCAL STATE ============================================
             const { value, handleChange } = useField(props.name as string, '', { initialValue: props.checked })
-            //endregion =============================================================================
+            //#endregion =============================================================================
 
-            //region ======= EVENTS HANDLERS & WATCHERS =============================================
+            //#region ======= EVENTS HANDLERS & WATCHERS =============================================
             const hdlChange = ( evt: any ) => {
                 handleChange(evt.target!.checked)
                 context.emit('chkboxchange', evt.target!.checked)
             }
-            //endregion =============================================================================
+            //#endregion =============================================================================
 
             return {
 

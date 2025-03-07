@@ -39,33 +39,33 @@ export default defineComponent({
     },
     setup( props: any, __: SetupContext ) {
 
-        //region ======= DECLARATIONS & LOCAL STATE ===========================================
+        //#region ======= DECLARATIONS & LOCAL STATE ===========================================
 
         const rotationCaretClass = ref('')                                       // rotate the caret | this is the CSS alternative, no Vue transition needed
         const doWeShowCollapsable = ref(false)                                   // start the animation of the actual collapsible
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
-        //region ======= HOOKS ================================================================
-        //endregion ===========================================================================
+        //#region ======= HOOKS ================================================================
+        //#endregion ===========================================================================
 
-        //region ======= FETCHING DATA & ACTIONS ==============================================
-        //endregion ===========================================================================
+        //#region ======= FETCHING DATA & ACTIONS ==============================================
+        //#endregion ===========================================================================
 
-        //region ======= COMPUTATIONS & GETTERS ===============================================
-        //endregion ===========================================================================
+        //#region ======= COMPUTATIONS & GETTERS ===============================================
+        //#endregion ===========================================================================
 
-        //region ======= HELPERS ==============================================================
-        //endregion ===========================================================================
+        //#region ======= HELPERS ==============================================================
+        //#endregion ===========================================================================
 
-        //region ======= EVENTS HANDLERS & WATCHERS ===========================================
+        //#region ======= EVENTS HANDLERS & WATCHERS ===========================================
 
         const h_toggleCollapsable = () => {
             doWeShowCollapsable.value = !doWeShowCollapsable.value
             rotationCaretClass.value === 'rotate-up' ? rotationCaretClass.value = 'rotate-down' : rotationCaretClass.value = 'rotate-up'
         }
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
         return {
             rotationCaretClass,

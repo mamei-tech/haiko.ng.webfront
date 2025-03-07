@@ -88,7 +88,7 @@ export default defineComponent({
     },
     setup(props, ctx: SetupContext) {
 
-        //region  ======== DECLARATIONS & LOCAL STATE =============================================
+        //#region  ======== DECLARATIONS & LOCAL STATE =============================================
 
         let ref_fileInput = ref()
         let errorMessage = ref<string>('')                                          // validation error message
@@ -99,9 +99,9 @@ export default defineComponent({
         const allowed_extensions = ["jpg", "jpeg", "png"]
         const { t } = i18n.global
 
-        //endregion ===============================================================================
+        //#endregion ===============================================================================
 
-        //region ======== COMPUTATIONS & GETTERS ==================================================
+        //#region ======== COMPUTATIONS & GETTERS ==================================================
 
         const cmp_image = computed(() => {
 
@@ -115,7 +115,7 @@ export default defineComponent({
             // http://localhost:7000/statics/media/staff/avatars/1953288944/profile_avatar.jpg
         })
 
-        //endregion ===============================================================================
+        //#endregion ===============================================================================
 
         //#region ======= FETCHING DATA & ACTIONS =================================================
 
@@ -134,7 +134,7 @@ export default defineComponent({
 
         //#endregion ==============================================================================
 
-        //region ======= EVENTS HANDLERS & WATCHERS ===============================================
+        //#region ======= EVENTS HANDLERS & WATCHERS ===============================================
 
         /**
          * This method contains the logic for erasing the image
@@ -187,7 +187,7 @@ export default defineComponent({
             ctx.emit('restore')             // with that emission, the paren can restore the prop so it can be used properly next time. That change is going to cause this watch run again, but 'props.parentDelIntent' should be FALSE so there isn't be a any infinite loop
         })
 
-        //endregion ===============================================================================
+        //#endregion ===============================================================================
 
         return {
             props,

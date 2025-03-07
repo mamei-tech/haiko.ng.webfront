@@ -316,7 +316,7 @@ export default defineComponent({
     },
     setup() {
 
-        //region ======= DECLARATIONS & LOCAL STATE ===========================================
+        //#region ======= DECLARATIONS & LOCAL STATE ===========================================
 
         const { t } = i18n.global
 
@@ -371,9 +371,9 @@ export default defineComponent({
         // helpers & flags
         const { tfyCRUDSuccess, tfyCRUDFail } = useToastify(toast)
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
-        //region ======= HOOKS ================================================================
+        //#region ======= HOOKS ================================================================
 
         /**
          * Vue hook before component is mounted in the DOM
@@ -464,14 +464,14 @@ export default defineComponent({
 
         //#endregion ==========================================================================
 
-        //region ======= COMPUTATIONS & GETTERS ===============================================
+        //#region ======= COMPUTATIONS & GETTERS ===============================================
 
         // compute the form mode: creation mode or edition mode
         const cpt_fMode: ComputedRef<string | string[]> = computed(() => fmode)
 
         //#endregion ==========================================================================
 
-        //region ======= HELPERS ==============================================================
+        //#region ======= HELPERS ==============================================================
 
         const hpr_sanitation = ( location: IDtoWareLocation ): void => {
             if (location.lNotes == undefined || location.lNotes.length == 0) delete location.lNotes
@@ -514,7 +514,7 @@ export default defineComponent({
 
         //#endregion ==========================================================================
 
-        //region ======= EVENTS HANDLERS & WATCHERS ===========================================
+        //#region ======= EVENTS HANDLERS & WATCHERS ===========================================
 
         /**
          * This method tries to accommodate the data before it will be sent to the server
@@ -604,14 +604,14 @@ export default defineComponent({
 
         //#endregion ==========================================================================
 
-        //region ======= NAVIGATION ===========================================================
+        //#region ======= NAVIGATION ===========================================================
 
         const nav_back = () => {
             // router.back()
             router.push({ name: RoutePathNames.wlocationList });
         }
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
         return {
             values,

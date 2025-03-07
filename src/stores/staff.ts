@@ -181,13 +181,13 @@ export const useSt_Staff = defineStore({
     }
 })
 
-//region ======== STATE INTERFACE =======================================================
+//#region ======== STATE INTERFACE =======================================================
 
 // interface INmcState extends IBasicPageState {
 interface INmcState {
     entityPage: Array<IStaffRow>
 }
 
-//endregion =============================================================================
+//#endregion =============================================================================
 
 

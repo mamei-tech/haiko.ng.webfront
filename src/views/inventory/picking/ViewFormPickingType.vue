@@ -290,7 +290,7 @@ export default defineComponent({
     },
     setup() {
 
-        //region ======= DECLARATIONS & LOCAL STATE ===========================================
+        //#region ======= DECLARATIONS & LOCAL STATE ===========================================
 
         const { t } = i18n.global
 
@@ -334,9 +334,9 @@ export default defineComponent({
             }
         ]
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
-        //region ======= HOOKS ================================================================
+        //#region ======= HOOKS ================================================================
 
         /**
          * Vue hook before component is mounted in the DOM
@@ -421,7 +421,7 @@ export default defineComponent({
 
         //#endregion ==========================================================================
 
-        //region ======= COMPUTATIONS & GETTERS ===============================================
+        //#region ======= COMPUTATIONS & GETTERS ===============================================
 
         // compute the form mode: creation mode or edition mode
         const cpt_fMode: ComputedRef<string | string[]> = computed(() => fmode)
@@ -435,7 +435,7 @@ export default defineComponent({
 
         //#endregion ==========================================================================
 
-        //region ======= HELPERS ==============================================================
+        //#region ======= HELPERS ==============================================================
 
         const hpr_sanitation = ( pick: IDtoPickingType ): void => {
             pick.seqCode = pick.seqCode.toUpperCase()
@@ -489,7 +489,7 @@ export default defineComponent({
 
         //#endregion ==========================================================================
 
-        //region ======= EVENTS HANDLERS & WATCHERS ===========================================
+        //#region ======= EVENTS HANDLERS & WATCHERS ===========================================
 
         // st_nomenclatures.reqNmcWareLocations()
         // .catch(err => tfyCRUDFail(err, ENTITY_NAMES.WARELOCATION, OPS_KIND_STR.REQUEST))
@@ -582,14 +582,14 @@ export default defineComponent({
 
         //#endregion ==========================================================================
 
-        //region ======= NAVIGATION ===========================================================
+        //#region ======= NAVIGATION ===========================================================
 
         const nav_back = () => {
             // router.back()
             router.push({ name: RoutePathNames.pickigtypeList });
         }
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
         return {
             values,

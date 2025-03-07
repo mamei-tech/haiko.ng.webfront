@@ -682,7 +682,7 @@ export default defineComponent({
     },
     setup: function() {
 
-        //region ======= DECLARATIONS & LOCAL STATE ===========================================
+        //#region ======= DECLARATIONS & LOCAL STATE ===========================================
 
         const { t } = i18n.global
 
@@ -759,9 +759,9 @@ export default defineComponent({
             }
         ])
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
-        //region ======= HOOKS ================================================================
+        //#region ======= HOOKS ================================================================
 
         /**
          * Vue hook before component is mounted in the DOM
@@ -887,14 +887,14 @@ export default defineComponent({
 
         //#endregion ==========================================================================
 
-        //region ======= COMPUTATIONS & GETTERS ===============================================
+        //#region ======= COMPUTATIONS & GETTERS ===============================================
         // https://medium.com/@growthcoder/how-to-correctly-use-computed-properties-in-vue3-690c16bc096c
 
         const cpt_fMode: ComputedRef<string | string[]> = computed(() => fmode)
 
         //#endregion ==========================================================================
 
-        //region ======= HELPERS ==============================================================
+        //#region ======= HELPERS ==============================================================
 
         /**
          * Restoring the country provinces / state selected value
@@ -976,7 +976,7 @@ export default defineComponent({
 
         //#endregion ==========================================================================
 
-        //region ======= EVENTS HANDLERS & WATCHERS ===========================================
+        //#region ======= EVENTS HANDLERS & WATCHERS ===========================================
 
         /**
          * Tries to update the supplier extended contact information coming from the formulary view
@@ -1220,14 +1220,14 @@ export default defineComponent({
 
         //#endregion ==========================================================================
 
-        //region ======= NAVIGATION ===========================================================
+        //#region ======= NAVIGATION ===========================================================
 
         const nav_back = () => {
             // router.back()
             router.push({ name: RoutePathNames.supplier })
         }
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
         return {
             id,

@@ -251,7 +251,7 @@ export default defineComponent({
     },
     setup() {
 
-        //region ======= DECLARATIONS & LOCAL STATE ===========================================
+        //#region ======= DECLARATIONS & LOCAL STATE ===========================================
 
         const { t } = i18n.global
         const route = useRoute()
@@ -271,9 +271,9 @@ export default defineComponent({
         let formDataFromServer: IDtoStaff | undefined = undefined          // aux variable to save entity data requested from the server
         // const rolesData = ref<IMultiselectBasic[]>([])                  // I will use ref 'cause is only one nested object
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
-        //region ======= HOOKS ================================================================
+        //#region ======= HOOKS ================================================================
 
         /**
          * Vue hook before component is mounted in the DOM
@@ -305,7 +305,7 @@ export default defineComponent({
             window.removeEventListener('keydown', h_keyboardKeyPress)            // cleaning the event manually added before to the document. Wee need to keep the things as clean as posible
         })
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
         //#region ======= FETCHING DATA & ACTIONS =============================================
 
@@ -359,7 +359,7 @@ export default defineComponent({
 
         //#endregion ==========================================================================
 
-        //region ======= COMPUTATIONS & GETTERS ===============================================
+        //#region ======= COMPUTATIONS & GETTERS ===============================================
 
         // compute the form mode: creation mode or edition mode
         const cpt_fMode: ComputedRef<string | string[]> = computed(() => fmode)
@@ -371,16 +371,16 @@ export default defineComponent({
             initialErrors:    undefined
         })
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
-        //region ======= HELPERS ==============================================================
+        //#region ======= HELPERS ==============================================================
 
         const hpr_rotationCaretClass = ref('')                                       // rotate the caret | this is the CSS alternative, no Vue transition needed
         const hpr_doWeShowCollapsable = ref(cpt_fMode.value === FMODE.CREATE)       // start the animation of the actual collapsible
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
-        //region ======= EVENTS HANDLERS & WATCHERS ===========================================
+        //#region ======= EVENTS HANDLERS & WATCHERS ===========================================
 
         const h_toggleCollapsable = () => {
             hpr_doWeShowCollapsable.value = !hpr_doWeShowCollapsable.value
@@ -448,16 +448,16 @@ export default defineComponent({
             setFieldValue('avatarPath', undefined)
         }
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
-        //region ======= NAVIGATION ===========================================================
+        //#region ======= NAVIGATION ===========================================================
 
         const nav_back = () => {
             // router.back()
             router.push({ name: RoutePathNames.staff });
         }
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
         return {
             values,

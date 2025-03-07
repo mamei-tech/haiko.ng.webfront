@@ -71,7 +71,7 @@ export const useSt_Auth = defineStore({
     }
 })
 
-//region ======== INTERFACES & TYPES ====================================================
+//#region ======== INTERFACES & TYPES ====================================================
 
 /**
  * Authentication State interface
@@ -81,6 +81,6 @@ interface IAuthState {
     authTk: string
 }
 
-//endregion =============================================================================
+//#endregion =============================================================================
 
 

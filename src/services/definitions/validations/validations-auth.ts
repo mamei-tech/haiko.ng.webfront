@@ -1,14 +1,14 @@
 // import { vLengthMin, vRequired } from '@/services/validations/rules'
 
 
-//region ======== SCHEMA ================================================================
+//#region ======== SCHEMA ================================================================
 export const VSchemaAuth = {
 
 }
-//endregion =============================================================================
+//#endregion =============================================================================
 
 
-//region ======== VALIDATIONS FUNCTIONS =================================================
+//#region ======== VALIDATIONS FUNCTIONS =================================================
 // function vUserName (val:any, field: string) : boolean | string {
 
 //     if (!vRequired(val)) return `The ${field} is required`
@@ -24,4 +24,4 @@ export const VSchemaAuth = {
 
 //     return true
 // }
-//endregion =============================================================================
+//#endregion =============================================================================

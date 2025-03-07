@@ -156,13 +156,13 @@ export const useSt_UoM = defineStore({
     }
 })
 
-//region ======== STATE INTERFACE =======================================================
+//#region ======== STATE INTERFACE =======================================================
 
 // interface INmcState extends IBasicPageState {
 interface IUoMState {
     entityPage: Array<IDtoUoMCategory>
 }
 
-//endregion =============================================================================
+//#endregion =============================================================================
 
 

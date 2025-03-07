@@ -634,7 +634,7 @@ export default defineComponent({
     },
     setup() {
 
-        //region ======= DECLARATIONS & LOCAL STATE ===========================================
+        //#region ======= DECLARATIONS & LOCAL STATE ===========================================
 
         const { t } = i18n.global
 
@@ -740,9 +740,9 @@ export default defineComponent({
         ])
         let formDataFromServer: IDtoProduct | undefined = undefined                               // aux variable to save entity data requested from the server
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
-        //region ======= HOOKS ================================================================
+        //#region ======= HOOKS ================================================================
 
         /**
          * Vue hook before component is mounted in the DOM
@@ -868,14 +868,14 @@ export default defineComponent({
 
         //#endregion ==========================================================================
 
-        //region ======= COMPUTATIONS & GETTERS ===============================================
+        //#region ======= COMPUTATIONS & GETTERS ===============================================
 
         // compute the form mode: creation mode or edition mode
         const cpt_fMode: ComputedRef<string | string[]> = computed(() => fmode)
 
         //#endregion ==========================================================================
 
-        //region ======= HELPERS ==============================================================
+        //#region ======= HELPERS ==============================================================
 
         /**
          * Restoring the uom purchase selected value
@@ -993,7 +993,7 @@ export default defineComponent({
 
         //#endregion ==========================================================================
 
-        //region ======= EVENTS HANDLERS & WATCHERS ===========================================
+        //#region ======= EVENTS HANDLERS & WATCHERS ===========================================
 
         /**
          * Handling the change in the main UoM selector. The goal here is to ensure the main UoM selector and the
@@ -1307,14 +1307,14 @@ export default defineComponent({
 
         //#endregion ==========================================================================
 
-        //region ======= NAVIGATION ===========================================================
+        //#region ======= NAVIGATION ===========================================================
 
         const nav_back = () => {
             // router.back()
             router.push({ name: RoutePathNames.product });
         }
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
         return {
             values,

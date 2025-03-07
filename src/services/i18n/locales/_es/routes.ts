@@ -2,7 +2,7 @@ import { RoutePathNames } from '@/services/definitions'
 
 
 export default {
-    //region ======== ROOTS ===============================================================
+    //#region ======== ROOTS ===============================================================
 
     // [ RoutePathNames.dashboard ]: RoutePathNames.dashboard,
     [ RoutePathNames.hub ]: 'Módulos',

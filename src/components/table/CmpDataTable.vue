@@ -523,7 +523,7 @@ export default defineComponent({
 
     setup( props: any, ctx: SetupContext ) {
 
-        //region ======== DECLARATIONS & LOCAL STATE ============================================
+        //#region ======== DECLARATIONS & LOCAL STATE ============================================
 
         const pageSizeOptions        = { '10': 10, '25': 25, '50': 50, '100': 100 }                      // pagination size (options) data
         const ls_selections          = reactive<{ selected: ById<IChecked> }>({ selected: {} })   // ls =  local state
@@ -551,9 +551,9 @@ export default defineComponent({
 
         const st_pagination = useSt_Pagination()                                                        // Pinia instance of pagination store// Store the datatable filters
 
-        //endregion =============================================================================
+        //#endregion =============================================================================
 
-        //region ======== HOOKS =================================================================
+        //#region ======== HOOKS =================================================================
 
         onMounted(() => {
 
@@ -591,9 +591,9 @@ export default defineComponent({
             selectFilterListRef.value = []
         })
 
-        //endregion =============================================================================
+        //#endregion =============================================================================
 
-        //region ======== COMPUTATIONS & GETTERS ================================================
+        //#region ======== COMPUTATIONS & GETTERS ================================================
 
         const cpt_tableClass = computed((): string => props.tableType && `table-${ props.tableType }`)
         const cpt_searchHasText = computed(() => search.value.length > 0)
@@ -609,9 +609,9 @@ export default defineComponent({
             return false
         })
 
-        //endregion =============================================================================
+        //#endregion =============================================================================
 
-        //region ======= EVENTS HANDLERS & WATCHERS =============================================
+        //#region ======= EVENTS HANDLERS & WATCHERS =============================================
 
         /**
          * Handles the events for children edition status changes
@@ -851,9 +851,9 @@ export default defineComponent({
             return undefined
         }
 
-        //endregion =============================================================================
+        //#endregion =============================================================================
 
-        //region ======== WATCHERS ==============================================================
+        //#region ======== WATCHERS ==============================================================
 
         watch(
             () => dtFilters,
@@ -861,9 +861,9 @@ export default defineComponent({
             { deep: true }
         )
 
-        //endregion =============================================================================
+        //#endregion =============================================================================
 
-        //region ======== HELPERS ===============================================================
+        //#region ======== HELPERS ===============================================================
 
         /**
          * Tries to get an existed column header according with the given navigation key (navkey).
@@ -1012,7 +1012,7 @@ export default defineComponent({
             return search.value.length > 0 || chkBoxSelected > 0 || hpr_lastSelectedSelectElemRef.value > 0 || isAnyCheckboxSelectedRef.value || cpt_isAnyExtFActive.value
         })
 
-        //endregion =============================================================================
+        //#endregion =============================================================================
 
         return {
 

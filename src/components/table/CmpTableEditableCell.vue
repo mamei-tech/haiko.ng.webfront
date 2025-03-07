@@ -95,7 +95,7 @@ export default defineComponent({
 
     setup( props: any, ctx: SetupContext ) {
 
-        //region ======= DECLARATIONS & LOCAL STATE ===========================================
+        //#region ======= DECLARATIONS & LOCAL STATE ===========================================
 
         const isEditionMode = ref<boolean>(false)       // tell is the component (cell) should be rendered in edition mode, so the input value for editing should be enabled
         const isEditionLock = ref<boolean>(false)       // a flag value to lock the edition mode until input blur event or until enter (keydown) event, so the input remains on edition mode if an accidental click was made by the user
@@ -107,10 +107,10 @@ export default defineComponent({
 
         const { isUndEmpZero, isUndOrEmpty } = useCommon()
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
-        //region ======= HOOKS ================================================================
-        //endregion ===========================================================================
+        //#region ======= HOOKS ================================================================
+        //#endregion ===========================================================================
 
         //#region ======= FETCHING DATA & ACTIONS =============================================
 
@@ -150,15 +150,15 @@ export default defineComponent({
             }
         }
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
-        //region ======= COMPUTATIONS & GETTERS ===============================================
-        //endregion ===========================================================================
+        //#region ======= COMPUTATIONS & GETTERS ===============================================
+        //#endregion ===========================================================================
 
-        //region ======= HELPERS ==============================================================
-        //endregion ===========================================================================
+        //#region ======= HELPERS ==============================================================
+        //#endregion ===========================================================================
 
-        //region ======= EVENTS HANDLERS & WATCHERS ===========================================
+        //#region ======= EVENTS HANDLERS & WATCHERS ===========================================
 
         watch(() => [ props.cellData ], () => {
             value.value = props.cellData
@@ -208,7 +208,7 @@ export default defineComponent({
             a_fireCellUpdate(evt.target.value)
         }
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
 
         return {

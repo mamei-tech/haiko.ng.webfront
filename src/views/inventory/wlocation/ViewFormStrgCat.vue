@@ -151,7 +151,7 @@ export default defineComponent({
     },
     setup() {
 
-        //region ======= DECLARATIONS & LOCAL STATE ===========================================
+        //#region ======= DECLARATIONS & LOCAL STATE ===========================================
 
         const { t } = i18n.global
         const abar_mode: DT_ACTIONBAR_MODE = DT_ACTIONBAR_MODE.JC                           // PRODUCTS datatable action bar mode
@@ -183,9 +183,9 @@ export default defineComponent({
          */
         const auxIdCounter = ref<number>(-1)
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
-        //region ======= HOOKS ================================================================
+        //#region ======= HOOKS ================================================================
 
         /**
          * Vue hook before component is mounted in the DOM
@@ -231,7 +231,7 @@ export default defineComponent({
             window.removeEventListener('keydown', h_keyboardKeyPress)            // cleaning the event manually added before to the document. Wee need to keep the things as clean as posible
         })
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
         //#region ======= FETCHING DATA & ACTIONS =============================================
 
@@ -290,7 +290,7 @@ export default defineComponent({
 
         //#endregion ==========================================================================
 
-        //region ======= COMPUTATIONS & GETTERS ===============================================
+        //#region ======= COMPUTATIONS & GETTERS ===============================================
 
         // compute the form mode: creation mode or edition mode
         const cpt_fMode: ComputedRef<string | string[]> = computed(() => fmode)
@@ -302,9 +302,9 @@ export default defineComponent({
             initialErrors:    undefined
         })
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
-        //region ======= HELPERS ==============================================================
+        //#region ======= HELPERS ==============================================================
 
         const hpr_getUoMByProdID = ( prodID: number ) => {
 
@@ -430,9 +430,9 @@ export default defineComponent({
             }
         }
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
-        //region ======= EVENTS HANDLERS & WATCHERS ===========================================
+        //#region ======= EVENTS HANDLERS & WATCHERS ===========================================
 
         /**
          * This method tries to accommodate the data before it will be sent to the server
@@ -511,16 +511,16 @@ export default defineComponent({
             console.error('not implemented yet')
         }
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
-        //region ======= NAVIGATION ===========================================================
+        //#region ======= NAVIGATION ===========================================================
 
         const nav_back = () => {
             // router.back()
             router.push({ name: RoutePathNames.strgcategoryList })
         }
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
         return {
             values,

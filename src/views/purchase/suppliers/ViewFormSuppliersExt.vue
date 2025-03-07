@@ -383,7 +383,7 @@ export default defineComponent({
     emits: [ 'closeForm', 'update', 'delete' ],
     setup(props, ctx: SetupContext) {
 
-        //region ======= DECLARATIONS & LOCAL STATE ===========================================
+        //#region ======= DECLARATIONS & LOCAL STATE ===========================================
 
         const { t } = i18n.global
         const toast = useToast()                                                                // The toast lib interface
@@ -424,9 +424,9 @@ export default defineComponent({
             }
         ]
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
-        //region ======= HOOKS ================================================================
+        //#region ======= HOOKS ================================================================
 
         /**
          * Vue hook before component is mounted in the DOM
@@ -522,7 +522,7 @@ export default defineComponent({
 
         //#endregion ==========================================================================
 
-        //region ======= COMPUTATIONS & GETTERS ===============================================
+        //#region ======= COMPUTATIONS & GETTERS ===============================================
 
         // getting the vee validate method to manipulate the form related actions from the view
 
@@ -534,7 +534,7 @@ export default defineComponent({
 
         //#endregion ==========================================================================
 
-        //region ======= HELPERS ==============================================================
+        //#region ======= HELPERS ==============================================================
 
         /**
          * Restoring the country provinces / state selected value
@@ -588,7 +588,7 @@ export default defineComponent({
 
         //#endregion ==========================================================================
 
-        //region ======= EVENTS HANDLERS & WATCHERS ===========================================
+        //#region ======= EVENTS HANDLERS & WATCHERS ===========================================
 
         /**
          * This method tries to accommodate the data before it will be sent to the server
@@ -671,14 +671,14 @@ export default defineComponent({
 
         //#endregion ==========================================================================
 
-        //region ======= NAVIGATION ===========================================================
+        //#region ======= NAVIGATION ===========================================================
 
         const nav_closeForm = () => {
             hpr_clearState()
             ctx.emit('closeForm')
         }
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
         return {
             values,

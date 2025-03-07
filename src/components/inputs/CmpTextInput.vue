@@ -70,10 +70,10 @@ export default defineComponent({
         } = useField(props.name as string, props.rules, { initialValue: props.value })
         // #endregion =============================================================================
 
-        //region ======== COMPUTATIONS & GETTERS ================================================
-        //endregion =============================================================================
+        //#region ======== COMPUTATIONS & GETTERS ================================================
+        //#endregion =============================================================================
 
-        //region ======= EVENTS HANDLERS & WATCHERS =============================================
+        //#region ======= EVENTS HANDLERS & WATCHERS =============================================
         const onInputFocused = () => {
             isFocused.value = true
         }
@@ -81,7 +81,7 @@ export default defineComponent({
             isFocused.value = false
             handleBlur()
         }
-        //endregion =============================================================================
+        //#endregion =============================================================================
 
         return {
             isFocused,

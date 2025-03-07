@@ -82,7 +82,7 @@ export default defineComponent({
 
     setup( props: any, ctx: SetupContext ) {
 
-        //region ======= DECLARATIONS & LOCAL STATE ===========================================
+        //#region ======= DECLARATIONS & LOCAL STATE ===========================================
 
         const { isUndEmpZero } = useCommon()
 
@@ -92,9 +92,9 @@ export default defineComponent({
         const value = ref<string | number>(props.cellData)       // just save the selection made by the user in the select
         const text  = ref<string | number>(props.placeholder)     // default set up for the cell text of the row to be displayed when edit mode isn't on
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
-        //region ======= HOOKS ================================================================
+        //#region ======= HOOKS ================================================================
 
         onMounted(async () => {
 
@@ -106,12 +106,12 @@ export default defineComponent({
             }
         })
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
         //#region ======= FETCHING DATA & ACTIONS =============================================
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
-        //region ======= COMPUTATIONS & GETTERS ===============================================
+        //#region ======= COMPUTATIONS & GETTERS ===============================================
 
         /**
          * compute a 'name' to be use as name in the multiselect HTML component. This could come in handy in event
@@ -121,9 +121,9 @@ export default defineComponent({
             return `${ props.refId }.${ props.refField }`
         })
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
-        //region ======= HELPERS ==============================================================
+        //#region ======= HELPERS ==============================================================
 
         /**
          * Search for the correspondent label (cell text) of the given value, in to the (also) given select option
@@ -140,9 +140,9 @@ export default defineComponent({
             return label
         }
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
-        //region ======= EVENTS HANDLERS & WATCHERS ===========================================
+        //#region ======= EVENTS HANDLERS & WATCHERS ===========================================
 
         watch(() => [ props.cellData ], () => {
             value.value = props.cellData
@@ -234,7 +234,7 @@ export default defineComponent({
             isEditionMode.value = true
         }
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
 
         return {

@@ -41,7 +41,7 @@ export const regAlphaUnderscoreNDots: RegExp = /^[a-zA-ZÀ-ÿ][a-zA-ZÀ-ÿ0-9\._
  */
 export const regStrongPassword: RegExp = /^(?=.*[A-ZÀ-ÿ].*[A-ZÀ-ÿ])(?=.*[!@#$&._*])(?=.*[0-9].*[0-9])(?=.*[a-zÀ-ÿ].*[a-zÀ-ÿ].*[a-zÀ-ÿ]).{8,20}$/    // https://stackoverflow.com/questions/5142103/regex-to-validate-password-strength
 
-//region ======== COMMON VALIDATIONS FIELDS RULES =======================================
+//#region ======== COMMON VALIDATIONS FIELDS RULES =======================================
 
 export const VSchemaCommon = {
 
@@ -189,5 +189,5 @@ export const VSchemaCommon = {
     }
 }
 
-//endregion =============================================================================
+//#endregion =============================================================================
 

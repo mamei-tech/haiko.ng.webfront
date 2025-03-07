@@ -147,7 +147,7 @@ export default defineComponent({
 
     setup() {
 
-        //region ======= DECLARATIONS & LOCAL STATE ===========================================
+        //#region ======= DECLARATIONS & LOCAL STATE ===========================================
 
         const st_rbac = useSt_Rbac()                                    // Pinia store for rbac / roles
 
@@ -170,9 +170,9 @@ export default defineComponent({
         // The reactivity for the UI resides with `perms2mod` ref object handled by `h_permMod` method. The
         // fields mentioned above, will be filled just before submit the DTO to the backend in the CREATE or EDIT flow
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
-        //region ======= HOOKS ================================================================
+        //#region ======= HOOKS ================================================================
 
         /**
          * Vue hook before component is mounted in the DOM
@@ -235,7 +235,7 @@ export default defineComponent({
             window.removeEventListener('keydown', h_keyboardKeyPress)            // cleaning the event manually added before to the document. Wee need to keep the things as clean as posible
         })
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
         //#region ======= FETCHING DATA & ACTIONS =============================================
 
@@ -339,7 +339,7 @@ export default defineComponent({
 
         //#endregion ==========================================================================
 
-        //region ======= COMPUTATIONS & GETTERS ===============================================
+        //#region ======= COMPUTATIONS & GETTERS ===============================================
 
         // compute the form mode: creation mode or edition mode
         const cpt_fMode: ComputedRef<string | string[]> = computed(() => fmode)
@@ -351,9 +351,9 @@ export default defineComponent({
             initialErrors:    undefined
         })
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
-        //region ======= HELPERS ==============================================================
+        //#region ======= HELPERS ==============================================================
 
         /**
          * Tiny helper method to clean the form and local state data, cleaning the storage / records of
@@ -375,9 +375,9 @@ export default defineComponent({
             })
         }
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
-        //region ======= EVENTS HANDLERS & WATCHERS ===========================================
+        //#region ======= EVENTS HANDLERS & WATCHERS ===========================================
 
         /**
          * This method tries to accommodate the data before it will send to the server to update the permission of the role
@@ -443,16 +443,16 @@ export default defineComponent({
             }
         }
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
-        //region ======= NAVIGATION ===========================================================
+        //#region ======= NAVIGATION ===========================================================
 
         const nav_back = () => {
             // router.back()
             router.push({ name: RoutePathNames.roles });
         }
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
         return {
             FMODE,

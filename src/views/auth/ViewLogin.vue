@@ -60,7 +60,7 @@ export default defineComponent({
     },
     setup() {
 
-        //region ======== DECLARATIONS & LOCAL STATE ============================================
+        //#region ======== DECLARATIONS & LOCAL STATE ============================================
 
         const st_auth = useSt_Auth()
         const router = useRouter()
@@ -70,7 +70,7 @@ export default defineComponent({
         const { cap } = useCommon()
         const { handleSubmit } = useForm<IAuthFormData>({ validationSchema: VSchemaAuth })
 
-        //endregion =============================================================================
+        //#endregion =============================================================================
 
         //#region ======= FETCHING DATA & ACTIONS ===============================================
 
@@ -80,23 +80,23 @@ export default defineComponent({
             .catch(error => { tfyAuthFail(error) })
         }
 
-        //endregion =============================================================================
+        //#endregion =============================================================================
 
-        //region ======= NAVIGATION =============================================================
+        //#region ======= NAVIGATION =============================================================
 
         const goToModuleHub = () => {
             router.push({ name: RoutePathNames.hub })
         }
 
-        //endregion =============================================================================
+        //#endregion =============================================================================
 
-        //region ======= EVENTS HANDLERS & WATCHERS =============================================
+        //#region ======= EVENTS HANDLERS & WATCHERS =============================================
 
         const hLoginIntent = handleSubmit(formData => {
             aReqAccess(formData)
         })
 
-        //endregion =============================================================================
+        //#endregion =============================================================================
 
         return {
             hLoginIntent,
