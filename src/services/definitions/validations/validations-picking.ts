@@ -52,7 +52,7 @@ export const VSchemaPicking = {
 
     pShippingPolicy: ( value: string ): boolean | string => {return value == SHIPPING_POL.DIRECT || value == SHIPPING_POL.ONE},
 
-    contactId: ( value: string | number ): boolean | string => { return VSchemaCommon.required4Select(value) },
+    contactID: ( value: string | number ): boolean | string => { return VSchemaCommon.required4Select(value) },
     pickingType: ( value: string | number ): boolean | string => { return VSchemaCommon.required4Select(value) },
     pResponsibleId: ( value: string | number ): boolean | string => { return VSchemaCommon.required4Select(value) },
 

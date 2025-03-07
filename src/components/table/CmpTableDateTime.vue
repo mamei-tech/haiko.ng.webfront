@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, nextTick, ref, watch } from 'vue'
+import { defineComponent, ref, watch } from 'vue'
 
 import type { SetupContext } from 'vue'
 import type { ICellUpdate } from '@/services/definitions'

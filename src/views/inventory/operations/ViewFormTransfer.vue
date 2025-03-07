@@ -37,7 +37,7 @@
                                          :options="st_nomenclatures.getSupplier4Select"
                                          :searchable="true"
                                          closeOnSelect
-                                         name="contactId"
+                                         name="contactID"
                                          class="mb-2"
                     >
 
@@ -97,7 +97,7 @@
                     <CmpMultiselectField :placeholder="$t('form.placeholders.picking-type-wlocation-src')"
                                          :options="st_nomenclatures.getWareLocations4Select"
                                          searchable
-                                         name="pSrcWareLocationId"
+                                         name="pSrcWareLocationID"
                                          class="mb-2"
                                          closeOnSelect
                                          ref="ref_selectSrcLoc"
@@ -127,7 +127,7 @@
                     <CmpMultiselectField :placeholder="$t('form.placeholders.picking-type-wlocation-des')"
                                          :options="st_nomenclatures.getWareLocations4Select"
                                          searchable
-                                         name="pDestWareLocationId"
+                                         name="pDestWareLocationID"
                                          class="mb-2"
                                          closeOnSelect
                                          ref="ref_selectDstLoc"
@@ -403,7 +403,7 @@ export default defineComponent({
     },
     setup() {
 
-        //region ======= DECLARATIONS & LOCAL STATE ===========================================
+        //#region ======= DECLARATIONS & LOCAL STATE ===========================================
 
         const { t } = i18n.global
 
@@ -455,14 +455,14 @@ export default defineComponent({
             ]
         )
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
-        //region ======= HOOKS ================================================================
+        //#region ======= HOOKS ================================================================
 
         /**
          * Vue hook before component is mounted in the DOM
          * If this view is called as edit mode rather than creation mode, we need to call the backend API
-         * asking for the resource so we can populate the datatable
+         * asking for the resource so we can populate the data-table
          *
          * Manually setting the needed values is way cleaner than the other way around. This is needed mainly because api call is asynchronous.
          */
@@ -515,7 +515,7 @@ export default defineComponent({
 
         //#endregion ==========================================================================
 
-        //region ======= COMPUTATIONS & GETTERS ===============================================
+        //#region ======= COMPUTATIONS & GETTERS ===============================================
 
         // compute the form mode: creation mode or edition mode
         const cpt_fMode: ComputedRef<string | string[]> = computed(() => fmode)
@@ -528,7 +528,7 @@ export default defineComponent({
 
         //#endregion ==========================================================================
 
-        //region ======= HELPERS ==============================================================
+        //#region ======= HELPERS ==============================================================
 
         /**
          * Helps to validate the transfer 'move lines' data given by the user. If something is wrong this method should
@@ -692,7 +692,7 @@ export default defineComponent({
         }
 
         /**
-         * Select Event Manager. Handles the changes and the opened event, made in the datatable select ui controls
+         * Select Event Manager. Handles the changes and the opened event, made in the data-table select ui controls
          *
          * @param objField Then name (navigation key in Partial<IColumnHeader> definitions) of the objet field
          * (column header)
@@ -737,7 +737,7 @@ export default defineComponent({
 
         //#endregion ==========================================================================
 
-        //region ======= EVENTS HANDLERS & WATCHERS ===========================================
+        //#region ======= EVENTS HANDLERS & WATCHERS ===========================================
 
         const h_tabChange = ( tabId: number ) => {
             activeTabId.value = tabId
@@ -845,7 +845,7 @@ export default defineComponent({
         }
 
         /**
-         * dt = means datatable, so handler for datatable select when opened
+         * dt = means data-table, so handler for data-table select when opened
          */
         const h_dtSelectOpened = ( selectInstance: Multiselect | any ) => {
             const s = selectInstance.name.split('.')
@@ -857,7 +857,7 @@ export default defineComponent({
         /**
          * Handles the dynamic request and the search query written in form input select (those located in the table )
          *
-         * dt = means datatable, so handler for datatable select when opened
+         * dt = means data-table, so handler for data-table select when opened
          *
          * @param characterWritten Text written in the search input
          * @param idCompound its a compound with the id of the row and the field navigation key. eg [ -5.categoryId ]
@@ -873,14 +873,14 @@ export default defineComponent({
 
         //#endregion ==========================================================================
 
-        //region ======= NAVIGATION ===========================================================
+        //#region ======= NAVIGATION ===========================================================
 
         const nav_back = () => {
             // router.back()
             router.push({ name: RoutePathNames.invTransferList });
         }
 
-        //endregion ===========================================================================
+        //#endregion ===========================================================================
 
         return {
             values,

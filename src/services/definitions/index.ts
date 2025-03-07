@@ -4,7 +4,7 @@ import { RoutePaths, RoutePathNames } from './route-paths'
 import { PAGE_SIZE } from './dtable/dtable-common'
 import { HRolesTable, HStaffTable } from './dtable/dtable-people'
 import { HSupplierCatTable, HSupplierTable } from './dtable/dtable-purchase'
-import { HUoMCatTable, HUoMTable, HProductTable, HProductSupplierLine, HWarehouseTable, HStrgCategory, HStrgCatProductLine, HWareLocationsTable, HPickingTypeTable, HPickingMove } from './dtable/dtable-inventory'
+import { HUoMCatTable, HUoMTable, HProductTable, HProductSupplierLine, HWarehouseTable, HStrgCategory, HStrgCatProductLine, HWareLocationsTable, HPickingTypeTable, HPickingMove, HPickingTable } from './dtable/dtable-inventory'
 
 import { SelectDataUoMType } from './data-select-options'
 import { HTTP_HEADER_FORM_DATA, HTTP_HEADER_FORM_URLENCODED,RELPATH_DEFAULT_AVATAR_IMG, RELPATH_DEFAULT_PRODUCT_IMG, IMG_ORG_AVATAR_NAME, IMG_AVATAR_SMALL_THUMBNAIL, IMG_ORG_PRODUCT_NAM } from './data-strs'
@@ -57,6 +57,7 @@ export {
     HStaffTable,
     HPickingMove,
     HUoMCatTable,
+    HPickingTable,
     HProductTable,
     HStrgCategory,
     HSupplierTable,

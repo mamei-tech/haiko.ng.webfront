@@ -4,6 +4,8 @@ import type { IIndexable } from '@/services/definitions/types-common'
 import type { IDtoMove } from '@/services/definitions/entities/types-move'
 
 
+//#region ======= PICKING TYPE ========================================================
+
 /**
  * picking core operation types definitions
  */
@@ -23,7 +25,7 @@ export interface IPickingTypeBasic extends IIndexable {
 }
 
 /**
- * Interface for describing a inventory PickingType row on the datatable
+ * Interface for describing a inventory PickingType row on the data-table
  */
 export interface IPickingTypeRow extends IPickingTypeBasic {
     tColor: string,
@@ -45,23 +47,32 @@ export interface ICorePickingType {
     id:string
 }
 
-export interface IDtoPickingBase extends IIndexable {
+//#endregion ===========================================================================
+
+
+//#region ======= PICKING =============================================================
+
+export interface IPickingRow extends IIndexable {
+
     pickName: string | undefined
     state: string | undefined
+
+    pSrcWareLocationID: number | string,
+    pDestWareLocationID: number | string,
+
+    pScheduleDate: Date | string | undefined,
+
+    contactID: number | string,
+    pickingType: number | string,
 }
 
 /**
  * Represent a inventory Picking data transfer object (DTO). This was meant to be used primarily in creations ops (CRUD)
  * A 'picking' its A.K.A 'Inventory Transfer Operation' in the UI
  */
-export interface IDtoPicking extends IDtoPickingBase {
+export interface IDtoPicking extends IPickingRow {
 
-    contactId: number,
-    pickingType: number,
-    pSrcWareLocationId: number,
-    pDestWareLocationId: number,
     pSrcDocument: string | undefined,
-    pScheduleDate: Date | string | undefined,
     pResponsibleId: number,
     pNotes: string | undefined,
 
@@ -69,3 +80,5 @@ export interface IDtoPicking extends IDtoPickingBase {
 
     moves: Array<IDtoMove>                 // actual product for the picking
 }
+
+//#endregion ===========================================================================

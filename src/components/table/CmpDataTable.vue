@@ -286,7 +286,7 @@
           />
         </td>
 
-        <!-- normal mode | follow 3 modes: 2 editables (text & select) and 1 non editable normal text cell  -->
+        <!-- normal mode | follow 3 modes: 2 editable (text & select) and 1 non editable normal text cell  -->
         <!-- normal mode | normal editable cell -->
         <CmpTableEditableCell v-else-if="hpr_chkHasValue(rowObj, header) && !header.hidden && header.cellEditable"
                               :style="[{ width: header.styleWidth + '%' }]"
@@ -330,7 +330,7 @@
             :key="hindex + '' + rindex"
         />
 
-        <!-- normal mode | non editable cell -->
+        <!-- normal mode | non editable cell | text -->
         <td v-else-if="hpr_chkHasValue(rowObj, header, header.forceEmptyRender) && !header.hidden"
             rowspan="1"
             colspan="1"
@@ -825,15 +825,22 @@ export default defineComponent({
         }
 
         /**
-         * For normal TD, this tries to render (color css class) a color to colorize the cell text inside the TD
-         * if the proper the value was given in the 'iconMapBinary' (IColumnHeader object) header field
+         * For normal TD, this tries to render (color css class) a color to colorize the cell text inside the TD. 
+         * At the moment, this render method support two approach for this
+         *  - Call a custom function so its logic decides the color will be used in rendering the TD text                  [A]      | see `colorBinaryFn` (IColumnHeader object)
+         *  - A mapping between value -> color, so when the value match the mapping, the correspondent color will be used  [B]      | see `iconMapBinary` (IColumnHeader object)
          *
          * @param obj entity data used as a row
          * @param column IColumnHeader object
          */
-        const h_renderTDColor = ( obj: any, column: IColumnHeader ): string => {
+        const h_renderTDColor = ( obj: any, column: IColumnHeader ): string | undefined => {
 
-            if(column.colorMapValues?.length === undefined) return ''
+            // A
+            if (typeof column.colorRenFn === 'function')
+                return column.colorRenFn( hpr_getRowValue(obj, column) )
+
+            // B
+            if(column.colorMapValues?.length === undefined) return undefined
 
             const cellVal = hpr_getRowValue(obj, column)
 
@@ -841,7 +848,7 @@ export default defineComponent({
                 if(cellVal === column.colorMapValues[i].val)
                     return column.colorMapValues[i].color
 
-            return ''
+            return undefined
         }
 
         //endregion =============================================================================

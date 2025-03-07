@@ -1,4 +1,5 @@
 import {
+    
     INV_STATUS,
     ADDRESS_TYPE,
     SHIPPING_POL,
@@ -290,10 +291,10 @@ export default function useFactory() {
     const mkPicking = (): IDtoPicking => {
         return {
             id:                  0,
-            contactId:           0,
+            contactID:           0,
             pickingType:         0,
-            pSrcWareLocationId:  0,
-            pDestWareLocationId: 0,
+            pSrcWareLocationID:  0,
+            pDestWareLocationID: 0,
             pSrcDocument:        undefined,
             pScheduleDate:       date2UIStr(new Date()),
             pShippingPolicy:     SHIPPING_POL.DIRECT,
@@ -301,8 +302,6 @@ export default function useFactory() {
             pNotes:              undefined,
 
             moves:               new Array<IDtoMove>(),
-
-            //-- IDtoPickingBase props
 
             pickName: undefined,
             state:    INV_STATUS.DRAFT

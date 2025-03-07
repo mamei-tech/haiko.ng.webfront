@@ -10,7 +10,7 @@ interface IConfig {
         grand_type: string;                             // authentication grants type | Oauth2 flow
     };
     app: {
-        scale: number                                   // integer conversion scale used in the backend e.g 100 | ❗ Has to be synced with scale number using in the backend
+        store_cache_ttl: number                         // store cache time to live (TTL) in minutes
     }
 }
 
@@ -27,7 +27,7 @@ function getConfig(): IConfig {
             grand_type: 'password'
         },
         app:    {
-            scale: 100
+            store_cache_ttl: 5                         // store cache time to live (TTL) in minutes
         }
     }
 }

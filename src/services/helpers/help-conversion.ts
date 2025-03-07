@@ -41,7 +41,7 @@ export function toShell<T extends IIndexable>(items: Array<T>): IShell<T> {
  * @param target Target object to update
  * @param source source object to copy from
  */
-export function copyTo<T, K extends T>(target: T, source: K) {
+export function copyTo<T extends object, K extends T>(target: T, source: K) {
     Object.keys(source)
         .filter(key => Object.keys(target).includes(key))
         .forEach(key => {

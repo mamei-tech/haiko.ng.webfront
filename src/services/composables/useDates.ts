@@ -80,11 +80,11 @@ export default function useDates() {
         const diff = givenDate.getTime() - now.getTime()                // the value of 'diff' will be in milliseconds
 
         const s = diff < 0                                              // s = seconds
-            ? Math.floor(-diff / 1000)                               // time is behind (in the past)
-            : Math.floor(diff / 1000)                                // future is ahead in the future
-        const m = Math.floor(s / 60)                                 // m = minutes
-        const h = Math.floor(m / 60)                                 // h = hours
-        const d = Math.floor(h / 24)                                 // d = days
+            ? Math.floor(-diff / 1000)                                  // time is behind (in the past)
+            : Math.floor(diff / 1000)                                   // future is ahead in the future
+        const m = Math.floor(s / 60)                                    // m = minutes
+        const h = Math.floor(m / 60)                                    // h = hours
+        const d = Math.floor(h / 24)                                    // d = days
 
         const headI18nKey = diff < 0 ? 'data.elapsed-time' : 'data.remaining-time'
 

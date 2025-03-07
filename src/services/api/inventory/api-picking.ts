@@ -2,7 +2,8 @@ import axios from '../api'
 import appConfig from '@/configs/app.conf'
 
 import type { AxiosPromise } from 'axios'
-import type { IDtoPicking } from '@/services/definitions'
+import type { IPickingRow } from '@/services/definitions/entities/types-picking'
+import type { IDataTablePage, IDataTableQuery, IDtoPicking } from '@/services/definitions'
 
 
 const version = appConfig.server.current_version
@@ -14,6 +15,20 @@ const url = `v${ version }/inventory/cpicking`
 export class ApiPicking {
 
     //#region ======= SERVER INTERACTION METHODS (PROMISES / REQUESTS) ====================
+
+    public static getPage( queryParams: IDataTableQuery ): AxiosPromise<IDataTablePage<IPickingRow>> {
+
+        const payload = {
+            Orderer: queryParams.Orderer,
+            OrderDir: queryParams.OrderDir,
+            Limit: queryParams.Limit,
+            Search: queryParams.Search,
+            Offset: queryParams.Offset,
+            ...queryParams.Filters
+        }
+
+        return axios.get(`${url}/page`, { params: payload })
+    }
 
     /**
      * Making a draft picking / transfer.
