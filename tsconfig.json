@@ -1,14 +1,15 @@
 {
-    "extends":         "@vue/tsconfig/tsconfig.web.json",
-    "include":         ["env.d.ts", "src/**/*", "src/**/*.vue"],
+    "extends": "@vue/tsconfig/tsconfig.web.json",
+    "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
     "compilerOptions": {
         "baseUrl": ".",
-        "paths":   {
+        "paths": {
             "@/*": ["./src/*"]
         },
-        "lib":     ["dom", "es2017"]
-        //        "lib":                          ["esnext"]
-        // https://stackoverflow.com/questions/45422573/property-entries-does-not-exist-on-type-objectconstructor
+        "lib":     ["dom", "es2017"],
+        "isolatedModules": true,
+        "importsNotUsedAsValues": "remove",
+        "preserveValueImports": false
     },
     "references":      [
         {

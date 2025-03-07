@@ -11,27 +11,19 @@
 
 		"cSpell.language": "en,es",		
 		"cSpell.minWordLength": 4,
-		"cSpell.ignoreWords": [],
-		"cSpell.ignorePaths": [
-			"package-lock.json",
-			"node_modules",
-			"vscode-extension",
-			".git/{info,lfs,logs,refs,objects}/**",
-			".git/{index,*refs,*HEAD}",
-			".vscode",
-			".vscode-insiders",
-			"tsconfig.json"
-		],
-		"cSpell.words": [
+		"cSpell.ignoreWords": [
 			"TTL",
 			"strg",
 			"Odoo",
 			"abar",
 			"Pinia",
+			"vcard",
 			"fmode",
 			"FMODE",
 			"uomid",
 			"nomenc",
+			"dtable",
+			"RELPATH",
 			"IFEMPTY",
 			"abutton",
 			"Toastify",
@@ -43,9 +35,24 @@
 			"wlocation",
 			"wlocations",
 			"pickingtype",
+			"strgcategory",
+			"warelocation",
+			"warelocations",
 			"toastification",
 			"Toastification",
 			"DT_ACTIONBAR_MODE"
-		]
+		],
+		"cSpell.ignorePaths": [
+			"package-lock.json",
+			"node_modules",
+			"vscode-extension",
+			".git/{info,lfs,logs,refs,objects}/**",
+			".git/{index,*refs,*HEAD}",
+			".vscode",
+			".vscode-insiders",
+			"tsconfig.json",
+			"haiko.ng.webfront.code-workspace"
+		],
+		"cSpell.words": []
 	}
 }
